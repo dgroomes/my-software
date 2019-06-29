@@ -1,0 +1,26 @@
+{
+  "title": "Escape",
+  "rules": [
+    {
+      "description": "right_control + n to escape",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+              "key_code": "n",
+              "modifiers": {
+                  "mandatory": [
+                      "right_control"
+                  ]
+              }
+          },
+          "to": [
+              {
+                  "key_code": "escape"
+              }
+          ]
+        }
+      ]
+    }
+  ]
+}

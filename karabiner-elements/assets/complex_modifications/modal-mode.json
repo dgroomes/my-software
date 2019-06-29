@@ -1,0 +1,32 @@
+{
+  "title": "Modal mode",
+  "rules": [
+    {
+      "description": "right_control + m to hyper (ctrl + cmd + shift + option) + m",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+              "key_code": "m",
+              "modifiers": {
+                  "mandatory": [
+                      "right_control"
+                  ]
+              }
+          },
+          "to": [
+              {
+                  "key_code": "m",
+                  "modifiers": [
+                      "left_control",
+                      "left_command",
+                      "left_option",
+                      "left_shift"
+                  ]
+              }
+          ]
+        }
+      ]
+    }
+  ]
+}
