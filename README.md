@@ -1,4 +1,4 @@
-# Personal configuration stuff for Mac OS X 
+# Personal configuration stuff 
 
 ### Karabiner-elements
 
