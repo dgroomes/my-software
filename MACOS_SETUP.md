@@ -17,3 +17,4 @@
     * `pip3 install --upgrade pip`
 1. Install powerline <https://powerline.readthedocs.io/en/master/installation/osx.html> `pip3 install --user powerline-status`
 1. Add `~/.inputrc`
+1. Install bash completion for `pip`: `pip3 completion --bash > /usr/local/etc/bash_completion.d/pip`
