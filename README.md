@@ -1,4 +1,6 @@
-# Personal configuration stuff 
+# my-config 
+
+Personal configuration stuff.
 
 ### Karabiner-elements
 
@@ -25,3 +27,7 @@ Android Studio) via <https://www.jetbrains.com/help/idea/sharing-your-ide-settin
 `.tmux.conf`
 
 <https://github.com/tmux/tmux>
+
+### macOS setup
+
+My log of how I've set up my Mac is in `MACOS_SETUP.md`.
