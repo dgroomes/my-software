@@ -15,6 +15,9 @@
 1. `brew install coreutils` (I like to use `grealpath`)
 1. Install Python 3 <https://www.python.org/downloads/> 
     * `pip3 install --upgrade pip`
+    * Add user-installed Python packages to the `PATH` by adding this line in `.bash_profile`: `export PATH="$PATH:/Users/davidgroomes/Library/Python/3.8/bin"`
 1. Install powerline <https://powerline.readthedocs.io/en/master/installation/osx.html> `pip3 install --user powerline-status`
+    * Do the fonts installation `git clone https://github.com/powerline/fonts.git; cd fonts; ./install.sh`
+    * Restart iTerm2, configure "Use a different font for non-ASCII text" and choose the DejaVu font to get the Powerline arrow symbols
 1. Add `~/.inputrc`
 1. Install bash completion for `pip`: `pip3 completion --bash > /usr/local/etc/bash_completion.d/pip`
