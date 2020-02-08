@@ -1,5 +1,10 @@
 # My macOS setup
 
+1. Install iTerm2 <https://iterm2.com/downloads.html>. Configure it with my configuration:
+    * Create `~/.config/iterm2`
+    * Copy `iterm2/com.googlecode.iterm2.plist` to `~/.config/iterm2/com.googlecode.iterm2.plist`
+    * Navigate to `Preferences > General > Preferences`. Check `Load preferences from a custom folder or URL` and set it 
+      to `~/.config/iterm2`. Check `Save changes to folder when iTerm2 quits`. 
 1. Install Homebrew <https://brew.sh/>
 1. `brew install bash`
     * macOS uses a years old version of Bash and will never update it because of licensing
