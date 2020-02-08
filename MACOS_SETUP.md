@@ -32,3 +32,7 @@
         * You will have to restart the powerline daemon for the config change to take effect: `powerline-daemon --replace`  
 1. Add `~/.inputrc`
 1. Install bash completion for `pip`: `pip3 completion --bash > /usr/local/etc/bash_completion.d/pip`
+1. Install SDKMAN <https://sdkman.io/>
+    * Install Graal `sdk install java 19.3.1.r11-grl`
+    * Use Graal `sdk use java 19.3.1.r11-grl`
+    * Because Graal comes with npm, we can install bash completion for npm with `npm completion > /usr/local/etc/bash_completion.d/npm` 
