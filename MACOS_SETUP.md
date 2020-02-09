@@ -36,3 +36,7 @@
     * Install Graal `sdk install java 19.3.1.r11-grl`
     * Use Graal `sdk use java 19.3.1.r11-grl`
     * Because Graal comes with npm, we can install bash completion for npm with `npm completion > /usr/local/etc/bash_completion.d/npm` 
+1. Install `nvm` Node Version Manager <https://github.com/nvm-sh/nvm>
+    * Install the latest version of node with `nvm install`
+    * Install npx Bash completion from this cool person's completion script `https://gist.github.com/gibatronic/44073260ffdcbd122e9520756c8e35a1`
+      Just save it to `/usr/local/etc/bash_completion.d/npx`
