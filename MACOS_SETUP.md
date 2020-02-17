@@ -44,3 +44,7 @@
     * Install the latest version of node with `nvm install`
     * Install npx Bash completion from this cool person's completion script `https://gist.github.com/gibatronic/44073260ffdcbd122e9520756c8e35a1`
       Just save it to `/usr/local/etc/bash_completion.d/npx`
+1. Enable "Tab Hover Cards" in Chrome
+    * Open `chrome://flags/` in Chrome
+    * Set "Tab Hover Cards" to enabled
+    * Tab Hover Cards make it faster to preview the title of a tab 
