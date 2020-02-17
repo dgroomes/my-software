@@ -12,7 +12,8 @@
     * `sudo bash -c 'echo /usr/local/bin/bash >> /etc/shells'`
     * `chsh -s /usr/local/bin/bash`
     * Open a new session and verify the new version of Bash is being used `echo $BASH_VERSION`
-1. `brew install bash-completion@2`
+1. Install bash completion. See additional information in `bash/BASH_COMPLETION.md`
+    * Execute `brew install bash-completion@2`
     * Add `[[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"` to `~/.bash_profile`
     * <https://github.com/Homebrew/homebrew-core/blob/fecd9b0cb2aa855ec24c109ff2b4507c0b37fb2a/Formula/bash-completion%402.rb#L36>
 1. `brew install jq`
@@ -21,7 +22,9 @@
 1. Install Python 3 <https://www.python.org/downloads/> 
     * `pip3 install --upgrade pip`
     * Add user-installed Python packages to the `PATH` by adding this line in `.bash_profile`: `export PATH="$PATH:/Users/davidgroomes/Library/Python/3.8/bin"`
-1. Install powerline <https://powerline.readthedocs.io/en/master/installation/osx.html> `pip3 install --user powerline-status`
+1. Install the "powerline" status line <https://powerline.readthedocs.io/en/master/installation/osx.html>
+    * `pip3 install --user powerline-status`
+    * Add initialization commands to your `.bashrc`. Follow <https://powerline.readthedocs.io/en/master/usage/shell-prompts.html#bash-prompt>
     * Do the fonts installation `git clone https://github.com/powerline/fonts.git; cd fonts; ./install.sh`
     * Restart iTerm2, configure "Use a different font for non-ASCII text" and choose the DejaVu font to get the Powerline arrow symbols
     * Start a custom config.json by starting with a copy of the base config:
