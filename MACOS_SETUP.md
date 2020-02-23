@@ -83,3 +83,5 @@
       branching is a little confusing. I'm not sure what the latest stable version of the software is.
         * `go get -u github.com/posener/complete/gocomplete` (I couldn't get `go get -u github.com/posener/complete/v2/gocomplete` to work)
         * `gocomplete -install` (how does this work?)
+1. Install Bash completion for Gradle
+    * `curl https://raw.githubusercontent.com/gradle/gradle-completion/7b084bd68c79be27b8200c7a25e6d00c9c65f9a9/gradle-completion.bash -o /usr/local/etc/bash_completion.d/gradle-completion.bash`
