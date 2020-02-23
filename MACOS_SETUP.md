@@ -59,3 +59,9 @@
     * Use credentials helper <https://help.github.com/en/github/using-git/caching-your-github-password-in-git>
       * `git config --global credential.helper osxkeychain`
       * The next time you `git push` you will get a popup. Enter your password and choose "Always allow"
+1. Install Xcode from the app store
+1. Install Rectangle <https://github.com/rxhanson/Rectangle> for fast and easy window resizing
+    * Uncheck all keyboard shortcuts. Configure the following:
+        * "Left Half": Option + Cmd + Left Arrow
+        * "Right Half": Option + Cmd + Right Arrow
+        * "Maximize": Option + Cmd + F
