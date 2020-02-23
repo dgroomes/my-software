@@ -6,9 +6,9 @@ Personal configuration stuff.
 
 My log of how I've set up my Mac is in `MACOS_SETUP.md`.
 
-### Karabiner-elements
+### Karabiner-Elements
 
-`karabiner-elements/`
+`karabiner/`
 
 <https://github.com/tekezo/Karabiner-Elements>
 

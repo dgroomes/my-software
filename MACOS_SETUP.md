@@ -68,5 +68,5 @@
 1. Install Docker <https://hub.docker.com/editions/community/docker-ce-desktop-mac/>
 1. Install Karabiner-Elements from source <https://github.com/pqrs-org/Karabiner-Elements> and configure it with:
     * `mkdir -p ~/.config/karabiner/assets/complex_modifications`
-    * `cp karabiner-elements/karabiner.json ~/.config/karabiner`
-    * `cp karabiner-elements/assets/complex_modifications/* ~/.config/karabiner/assets/complex_modifications`
+    * `cp karabiner/karabiner.json ~/.config/karabiner`
+    * `cp karabiner/assets/complex_modifications/* ~/.config/karabiner/assets/complex_modifications`
