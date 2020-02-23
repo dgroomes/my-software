@@ -62,6 +62,11 @@
 1. Install Xcode from the app store
 1. Install Rectangle <https://github.com/rxhanson/Rectangle> for fast and easy window resizing
     * Uncheck all keyboard shortcuts. Configure the following:
-        * "Left Half": Option + Cmd + Left Arrow
-        * "Right Half": Option + Cmd + Right Arrow
-        * "Maximize": Option + Cmd + F
+        * "Left Half": `Ctrl + [`
+        * "Right Half": `Ctrl + ]`
+        * "Maximize": `Ctrl + \`
+1. Install Docker <https://hub.docker.com/editions/community/docker-ce-desktop-mac/>
+1. Install Karabiner-Elements from source <https://github.com/pqrs-org/Karabiner-Elements> and configure it with:
+    * `mkdir -p ~/.config/karabiner/assets/complex_modifications`
+    * `cp karabiner-elements/karabiner.json ~/.config/karabiner`
+    * `cp karabiner-elements/assets/complex_modifications/* ~/.config/karabiner/assets/complex_modifications`

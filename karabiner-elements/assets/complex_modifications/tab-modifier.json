@@ -1,0 +1,37 @@
+{
+  "title": "Tab as a modifier",
+  "rules": [
+    {
+      "description": "Tab as a modifier (thank you https://github.com/pqrs-org/Karabiner-Elements/issues/831#issuecomment-343720386)",
+      "manipulators": [
+        {
+            "from": {
+                "key_code": "tab"
+            },
+            "to": [
+                {
+                    "set_variable": {
+                        "name": "tab_modifier",
+                        "value": 1
+                    }
+                }
+            ],
+            "to_after_key_up": [
+                {
+                    "set_variable": {
+                        "name": "tab_modifier",
+                        "value": 0
+                    }
+                }
+            ],
+            "to_if_alone": [
+              {
+                "key_code": "tab"
+              }
+            ],
+            "type": "basic"
+        }
+      ]
+    }
+  ]
+}
