@@ -50,3 +50,11 @@
     * Set "Tab Hover Cards" to enabled
     * Set "Tab Hover Card Images" to enabled
     * Tab Hover Cards make it faster to preview the title of a tab 
+1. Install latest `git` and configure it
+    * `brew install git`
+    * Configure `git` config <https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup>
+      * `git config --global user.name "John Doe"`
+      * `git config --global user.email johndoe@example.com`
+    * Configure `git` credentials to Github. Follow <https://help.github.com/en/github/authenticating-to-github/accessing-github-using-two-factor-authentication#using-two-factor-authentication-with-the-command-line>
+    * Use credentials helper <https://help.github.com/en/github/using-git/caching-your-github-password-in-git>
+      * `git config --global credential.helper osxkeychain`
