@@ -66,6 +66,8 @@
         * "Right Half": `Ctrl + ]`
         * "Maximize": `Ctrl + \`
 1. Install Docker <https://hub.docker.com/editions/community/docker-ce-desktop-mac/>
+    * Install Bash completion for `docker`: `curl https://raw.githubusercontent.com/docker/cli/master/contrib/completion/bash/docker -o /usr/local/etc/bash_completion.d/bash`
+    * Install Bash completion for `docker-compose`: `curl https://raw.githubusercontent.com/docker/compose/1.25.4/contrib/completion/bash/docker-compose -o /usr/local/etc/bash_completion.d/docker-compose` 
 1. Install Karabiner-Elements from source <https://github.com/pqrs-org/Karabiner-Elements> and configure it with:
     * `mkdir -p ~/.config/karabiner/assets/complex_modifications`
     * `cp karabiner/karabiner.json ~/.config/karabiner`
