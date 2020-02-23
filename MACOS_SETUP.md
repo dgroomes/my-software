@@ -58,3 +58,4 @@
     * Configure `git` credentials to Github. Follow <https://help.github.com/en/github/authenticating-to-github/accessing-github-using-two-factor-authentication#using-two-factor-authentication-with-the-command-line>
     * Use credentials helper <https://help.github.com/en/github/using-git/caching-your-github-password-in-git>
       * `git config --global credential.helper osxkeychain`
+      * The next time you `git push` you will get a popup. Enter your password and choose "Always allow"
