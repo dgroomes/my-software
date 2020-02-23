@@ -70,3 +70,4 @@
     * `mkdir -p ~/.config/karabiner/assets/complex_modifications`
     * `cp karabiner/karabiner.json ~/.config/karabiner`
     * `cp karabiner/assets/complex_modifications/* ~/.config/karabiner/assets/complex_modifications`
+1. Install Insomnia <https://insomnia.rest/download/>

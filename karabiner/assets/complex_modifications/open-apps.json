@@ -1,0 +1,143 @@
+{
+  "title": "Open Apps with tab modifier",
+  "rules": [
+    {
+      "description": "Open Chrome with 'tab + c'",
+      "manipulators": [
+        {
+          "conditions": [
+            {
+              "type": "variable_if",
+              "name": "tab_modifier",
+              "value": 1
+            }
+          ],
+          "from": {
+            "key_code": "c"
+          },
+          "to": [
+            {
+              "shell_command": "open -a 'Google Chrome.app'"
+            }
+          ],
+          "type": "basic"
+        }
+      ]
+    },
+    {
+      "description": "Open Intellij Idea with 'tab + i'",
+      "manipulators": [
+        {
+          "conditions": [
+            {
+              "type": "variable_if",
+              "name": "tab_modifier",
+              "value": 1
+            }
+          ],
+          "from": {
+            "key_code": "i"
+          },
+          "to": [
+            {
+              "shell_command": "/Users/davidgroomes/dev/jetbrains-scripts/idea"
+            }
+          ],
+          "type": "basic"
+        }
+      ]
+    },
+    {
+      "description": "Open iTerm2 with 'tab + t'",
+      "manipulators": [
+        {
+          "conditions": [
+            {
+              "type": "variable_if",
+              "name": "tab_modifier",
+              "value": 1
+            }
+          ],
+          "from": {
+            "key_code": "t"
+          },
+          "to": [
+            {
+              "shell_command": "open -a 'iTerm.app'"
+            }
+          ],
+          "type": "basic"
+        }
+      ]
+    },
+    {
+      "description": "Open Visual Studio Code with 'tab + v'",
+      "manipulators": [
+        {
+          "conditions": [
+            {
+              "type": "variable_if",
+              "name": "tab_modifier",
+              "value": 1
+            }
+          ],
+          "from": {
+            "key_code": "v"
+          },
+          "to": [
+            {
+              "shell_command": "open -a 'Visual Studio Code.app'"
+            }
+          ],
+          "type": "basic"
+        }
+      ]
+    },
+    {
+      "description": "Open Insomnia with 'tab + s'",
+      "manipulators": [
+        {
+          "conditions": [
+            {
+              "type": "variable_if",
+              "name": "tab_modifier",
+              "value": 1
+            }
+          ],
+          "from": {
+            "key_code": "s"
+          },
+          "to": [
+            {
+              "shell_command": "open -a 'Insomnia.app'"
+            }
+          ],
+          "type": "basic"
+        }
+      ]
+    },
+    {
+      "description": "Open Finder with 'tab + f'",
+      "manipulators": [
+        {
+          "conditions": [
+            {
+              "type": "variable_if",
+              "name": "tab_modifier",
+              "value": 1
+            }
+          ],
+          "from": {
+            "key_code": "f"
+          },
+          "to": [
+            {
+              "shell_command": "open -a 'Finder.app'"
+            }
+          ],
+          "type": "basic"
+        }
+      ]
+    }
+  ]
+}
