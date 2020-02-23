@@ -19,7 +19,7 @@ Personal configuration stuff.
 
 `jetbrains/`
 
-Build a `settings.zip` with `./build-jetbrains-settings` and then import it into your Jetbrains IDE (e.g. Intellij, 
+Build a `settings.zip` with `./build-jetbrains-settings.sh` and then import it into your Jetbrains IDE (e.g. Intellij, 
 Android Studio) via <https://www.jetbrains.com/help/idea/sharing-your-ide-settings.html#import-export-settings>.
 
 ### tmux

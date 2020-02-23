@@ -14,14 +14,15 @@
     * Open a new session and verify the new version of Bash is being used `echo $BASH_VERSION`
 1. Install bash completion. See additional information in `bash/BASH_COMPLETION.md`
     * Execute `brew install bash-completion@2`
-    * Add `[[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"` to `~/.bash_profile`
+    * Add `BASH_COMPLETION_COMPAT_DIR="/usr/local/etc/bash_completion.d"` to `~/.bashrc`
+    * Add `[[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"` to `~/.bashrc`
     * <https://github.com/Homebrew/homebrew-core/blob/fecd9b0cb2aa855ec24c109ff2b4507c0b37fb2a/Formula/bash-completion%402.rb#L36>
 1. Copy over the contents of `bash/bash-aliases.sh` and `bash/bash-functions.sh` to your `.bashrc`
 1. `brew install jq`
 1. `brew install kafkacat`
 1. `brew install coreutils` (I like to use `grealpath`)
 1. Install Python 3 <https://www.python.org/downloads/> 
-    * `pip3 install --upgrade pip`
+    * `sudo pip3 install --upgrade pip`
     * Add user-installed Python packages to the `PATH` by adding this line in `.bash_profile`: `export PATH="$PATH:/Users/davidgroomes/Library/Python/3.8/bin"`
 1. Install the "powerline" status line <https://powerline.readthedocs.io/en/master/installation/osx.html>
     * `pip3 install --user powerline-status`
@@ -37,14 +38,15 @@
 1. Add `~/.inputrc`
 1. Install bash completion for `pip`: `pip3 completion --bash > /usr/local/etc/bash_completion.d/pip`
 1. Install SDKMAN <https://sdkman.io/>
-    * Install Graal `sdk install java 19.3.1.r11-grl`
-    * Use Graal `sdk use java 19.3.1.r11-grl`
+    * Install Graal `sdk install java <latest Graal>`
+    * Use Graal `sdk use java <<latest Graal>`
     * Because Graal comes with npm, we can install bash completion for npm with `npm completion > /usr/local/etc/bash_completion.d/npm` 
 1. Install `nvm` Node Version Manager <https://github.com/nvm-sh/nvm>
-    * Install the latest version of node with `nvm install`
+    * Install the latest Long-Term Support version of node with `nvm install --lts`
     * Install npx Bash completion from this cool person's completion script `https://gist.github.com/gibatronic/44073260ffdcbd122e9520756c8e35a1`
       Just save it to `/usr/local/etc/bash_completion.d/npx`
 1. Enable "Tab Hover Cards" in Chrome
     * Open `chrome://flags/` in Chrome
     * Set "Tab Hover Cards" to enabled
+    * Set "Tab Hover Card Images" to enabled
     * Tab Hover Cards make it faster to preview the title of a tab 
