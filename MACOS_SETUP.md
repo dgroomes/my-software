@@ -40,6 +40,7 @@
 1. Install SDKMAN <https://sdkman.io/>
     * Install Graal `sdk install java <latest Graal>`
     * Use Graal `sdk use java <<latest Graal>`
+    * Install a community provided Bash completion for SDKMAN `curl https://raw.githubusercontent.com/Bash-it/bash-it/ac5a8aca47f42c6feab6bde3fb7e5a06d53f28ff/completion/available/sdkman.completion.bash -o /usr/local/etc/bash_completion.d/sdkman`
     * Because Graal comes with npm, we can install bash completion for npm with `npm completion > /usr/local/etc/bash_completion.d/npm` 
 1. Install `nvm` Node Version Manager <https://github.com/nvm-sh/nvm>
     * Install the latest Long-Term Support version of node with `nvm install --lts`
@@ -73,3 +74,12 @@
     * `cp karabiner/karabiner.json ~/.config/karabiner`
     * `cp karabiner/assets/complex_modifications/* ~/.config/karabiner/assets/complex_modifications`
 1. Install Insomnia <https://insomnia.rest/download/>
+1. Install Golang <https://golang.org/dl/>
+    * Create the go home dir `mkdir -p ~/go`
+    * Make a best attempt at configuring the Go environment variables (reference <https://stackoverflow.com/questions/7970390/what-should-be-the-values-of-gopath-and-goroot>) 
+        * Add to `~/.bashrc`: `export GOPATH="$HOME/go"`
+        * Add to `~/.bashrc`: `export PATH="$PATH:$GOPATH/bin"`
+    * Download and install Bash completion for `go` from <https://github.com/posener/complete/tree/master>. Warning, the
+      branching is a little confusing. I'm not sure what the latest stable version of the software is.
+        * `go get -u github.com/posener/complete/gocomplete` (I couldn't get `go get -u github.com/posener/complete/v2/gocomplete` to work)
+        * `gocomplete -install` (how does this work?)
