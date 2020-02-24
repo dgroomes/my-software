@@ -16,6 +16,7 @@ alias yaml2json="ruby -ryaml -rjson -e 'puts JSON.pretty_generate(YAML.load(ARGF
 ## Convert JSON to YAML. Either pipe a JSON file to this command or give it as an argument.
 alias json2yaml="ruby -ryaml -rjson -e 'puts YAML.dump(JSON.load(ARGF))'"
 alias gcmp="git checkout master && git pull"
+alias ll="ls -lahF"
 
 # SDKMAN aliases to quickly switch between different "candidates" of Java, Gradle, etc.
 alias java8="sdk use java 8.0.222.hs-adpt"

@@ -12,6 +12,7 @@
     * `sudo bash -c 'echo /usr/local/bin/bash >> /etc/shells'`
     * `chsh -s /usr/local/bin/bash`
     * Open a new session and verify the new version of Bash is being used `echo $BASH_VERSION`
+    * Add colors to Bash. Add the following to `~/.bashrc`: `export CLICOLOR=1`
 1. Install bash completion. See additional information in `bash/BASH_COMPLETION.md`
     * Execute `brew install bash-completion@2`
     * Add `BASH_COMPLETION_COMPAT_DIR="/usr/local/etc/bash_completion.d"` to `~/.bashrc`
