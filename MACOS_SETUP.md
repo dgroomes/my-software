@@ -43,6 +43,10 @@
     * Use Graal `sdk use java <<latest Graal>`
     * Install a community provided Bash completion for SDKMAN `curl https://raw.githubusercontent.com/Bash-it/bash-it/ac5a8aca47f42c6feab6bde3fb7e5a06d53f28ff/completion/available/sdkman.completion.bash -o /usr/local/etc/bash_completion.d/sdkman`
     * Because Graal comes with npm, we can install bash completion for npm with `npm completion > /usr/local/etc/bash_completion.d/npm` 
+    * Install Java 8, 11, and 14
+    * Install `visualvm` and then configure visualvm to use the Java 8.
+      * Follow the instructions at <https://gist.github.com/gavvvr/c9891684f9ef062502d58c80903be5cc>
+      * Specifically, edit the file `~/.sdkman/candidates/visualvm/current/etc/visualvm.conf` 
 1. Install `nvm` Node Version Manager <https://github.com/nvm-sh/nvm>
     * Install the latest Long-Term Support version of node with `nvm install --lts`
     * Install npx Bash completion from this cool person's completion script `https://gist.github.com/gibatronic/44073260ffdcbd122e9520756c8e35a1`
