@@ -30,12 +30,12 @@
     * Add initialization commands to your `.bashrc`. Follow <https://powerline.readthedocs.io/en/master/usage/shell-prompts.html#bash-prompt>
     * Do the fonts installation `git clone https://github.com/powerline/fonts.git; cd fonts; ./install.sh`
     * Restart iTerm2, configure "Use a different font for non-ASCII text" and choose the DejaVu font to get the Powerline arrow symbols
-    * Start a custom config.json by starting with a copy of the base config:
-        * `mkdir -p ~/.config/powerline`
-        * `cp /Users/davidgroomes/Library/Python/3.8/lib/python/site-packages/powerline/config_files/config.json ~/.config/powerline`
-        * Change the "shell" "theme" from "default" to "default_leftonly" to get the current Git branch stuff in the 
-          status line (see <https://github.com/powerline/powerline/issues/186>)
-        * You will have to restart the powerline daemon for the config change to take effect: `powerline-daemon --replace`  
+    * Install a powerline git status extension <https://github.com/jaspernbrouwer/powerline-gitstatus> 
+      * `pip3 install --user powerline-gitstatus`
+    * Initialize the custom config directory and copy over configuration files
+      * `mkdir -p ~/.config/powerline`
+      * `cp -r powerline ~/.config/powerline`      
+      * You will have to restart the powerline daemon for the config change to take effect: `powerline-daemon --replace`
 1. Add `~/.inputrc`
 1. Install bash completion for `pip`: `pip3 completion --bash > /usr/local/etc/bash_completion.d/pip`
 1. Install SDKMAN <https://sdkman.io/>
