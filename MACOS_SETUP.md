@@ -40,8 +40,8 @@
 1. Install bash completion for `pip`: `pip3 completion --bash > /usr/local/etc/bash_completion.d/pip`
 1. Install SDKMAN <https://sdkman.io/>
     * Install Graal `sdk install java <latest Graal>`
-    * Use Graal `sdk use java <<latest Graal>`
-    * Install a community provided Bash completion for SDKMAN `curl https://raw.githubusercontent.com/Bash-it/bash-it/ac5a8aca47f42c6feab6bde3fb7e5a06d53f28ff/completion/available/sdkman.completion.bash -o /usr/local/etc/bash_completion.d/sdkman`
+    * Use Graal `sdk use java <latest Graal>`
+    * Install a community provided Bash completion script for SDKMAN `curl https://raw.githubusercontent.com/Bash-it/bash-it/ac5a8aca47f42c6feab6bde3fb7e5a06d53f28ff/completion/available/sdkman.completion.bash -o /usr/local/etc/bash_completion.d/sdkman`
     * Because Graal comes with npm, we can install bash completion for npm with `npm completion > /usr/local/etc/bash_completion.d/npm` 
     * Install Java 8, 11, and 14
     * Install `visualvm` and then configure visualvm to use the Java 8.
