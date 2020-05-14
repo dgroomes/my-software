@@ -90,3 +90,9 @@
         * `gocomplete -install` (how does this work?)
 1. Install Bash completion for Gradle
     * `curl https://raw.githubusercontent.com/gradle/gradle-completion/7b084bd68c79be27b8200c7a25e6d00c9c65f9a9/gradle-completion.bash -o /usr/local/etc/bash_completion.d/gradle-completion.bash`
+1. Install `libpq` so we can get `psql`
+    * Follow directions at <https://blog.timescale.com/tutorials/how-to-install-psql-on-mac-ubuntu-debian-windows/>
+    * `brew install libpq`
+    * `brew link --force libpq`
+    
+    

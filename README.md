@@ -22,4 +22,4 @@ Android Studio) via <https://www.jetbrains.com/help/idea/sharing-your-ide-settin
 Conversely, to export more/updated settings *from* Intellij into this repo, refer to the same link to find the 
 instructions on exporting the settings to a `settings.zip` file. Then, unzip `settings.zip` and commit the individual 
 settings files to version control as desired (e.g. `settings/keymaps/mycustomkeymap.xml`, 
-`settings/templates/mycustomlivetemplates.xml`) 
+`settings/templates/mycustomlivetemplates.xml`).
