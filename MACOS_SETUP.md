@@ -94,5 +94,8 @@
     * Follow directions at <https://blog.timescale.com/tutorials/how-to-install-psql-on-mac-ubuntu-debian-windows/>
     * `brew install libpq`
     * `brew link --force libpq`
-    
-    
+1. Build and install Apache JMeter, a load testing and performance measurement tool
+    1. `git clone https://github.com/apache/jmeter`
+    1. Build it with `./gradlew createDist`
+    1. Add the `bin/` directory to the path.
+        * For example, append something like `export PATH="$PATH:~/repos/opensource/jmeter/bin"` to your `.bashrc`
