@@ -33,8 +33,7 @@
     * Restart iTerm2, configure "Use a different font for non-ASCII text" and choose the DejaVu font to get the Powerline arrow symbols
     * Install a powerline git status extension <https://github.com/jaspernbrouwer/powerline-gitstatus> 
       * `pip3 install --user powerline-gitstatus`
-    * Initialize the custom config directory and copy over configuration files
-      * `mkdir -p ~/.config/powerline`
+    * Copy the configuration files into the powerline config directory
       * `cp -r powerline ~/.config/powerline`      
       * You will have to restart the powerline daemon for the config change to take effect: `powerline-daemon --replace`
 1. Add `~/.inputrc`
