@@ -15,7 +15,7 @@ alias cplastcmd='echo -n $(fc -ln -1 -1) | pbcopy'
 alias yaml2json="ruby -ryaml -rjson -e 'puts JSON.pretty_generate(YAML.load(ARGF))'"
 ## Convert JSON to YAML. Either pipe a JSON file to this command or give it as an argument.
 alias json2yaml="ruby -ryaml -rjson -e 'puts YAML.dump(JSON.load(ARGF))'"
-alias gcmp="git checkout master && git pull"
+alias gcmp="git checkout main && git pull"
 alias ll="ls -lahF"
 
 # SDKMAN aliases to quickly switch between different "candidates" of Java, Gradle, etc.
