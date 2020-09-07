@@ -1,5 +1,5 @@
 # Intellij IDEA diff
-ideadiff() {
+ideaDiff() {
     if [[ -z "$1" || -z "$2" ]]; then
         echo >&2 "Usage: $0 file1 file2"
         exit 1
@@ -8,7 +8,7 @@ ideadiff() {
 }
 
 # Open the browser to the current Git "remote" URL
-gitbrowse() {
+gitBrowse() {
     local REMOTE=$(git remote)
     local URL=$(git remote get-url $REMOTE)
     echo "Opening $URL ..."
@@ -17,10 +17,10 @@ gitbrowse() {
 
 # Make a new directory for some "subject".
 #
-# E.g. `mkdir_subject myexperiment` will create the directory `~/subjects/2020-02-09_myexperiment`
+# E.g. `mkdirSubject myexperiment` will create the directory `~/subjects/2020-02-09_myexperiment`
 # The "subject" argument is optional.
-# E.g. `mkdir_subject` will create the directory `~/subjects/2020-02-09_18-02-05`
-function mkdir_subject() {
+# E.g. `mkdirSubject` will create the directory `~/subjects/2020-02-09_18-02-05`
+function mkdirSubject() {
     local today=$(date +%Y-%m-%d)
     local descriptor
     if [ -z "$1" ]; then
@@ -56,6 +56,20 @@ function formatEpochMilli() {
 }
 
 # Print the PATH with each entry on a new line
-function showpath() {
+function showPath() {
     tr ':' '\n' <<< "$PATH"
+}
+
+# Switch to a project repository.
+#
+# Uses 'fzf' and 'find' to easily change directories to any of those that are *two levels* below the "~/repos"
+# directory. By convention, I like to put my git projects under directories like "~/repos/personal" and
+# "~/repos/opensource". So, with this shell function, I can take advantage of that convention and make a quick-switcher
+# with 'fzf' and 'find'.
+function cdRepo() {
+  local EXIT_STATUS
+  local DEST
+  DEST=$(find ~/repos -type d -maxdepth 2 -mindepth 2 -not -path '*./*' | fzf)
+  EXIT_STATUS=$?
+  [[ $EXIT_STATUS -eq 0 ]] && cd $DEST
 }
