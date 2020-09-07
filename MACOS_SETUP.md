@@ -99,3 +99,9 @@
     1. Build it with `./gradlew createDist`
     1. Add the `bin/` directory to the path.
         * For example, append something like `export PATH="$PATH:~/repos/opensource/jmeter/bin"` to your `.bashrc`
+1. Install fzf <https://github.com/junegunn/fzf>
+    1. Install it using the git option: <https://github.com/junegunn/fzf/tree/0db65c22d369026a0a9af079bfa7e8110e850ec9#using-git>
+      1. Specifically, execute `git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf` and `~/.fzf/install`
+      1. When it prompts for *Do you want to enable fuzzy auto-completion?* Answer yes
+      1. When it prompts for *Do you want to enable key bindings?* Answer yes
+      1. When it prompts for *Do you want to update your shell configuration files?* Answer yes
