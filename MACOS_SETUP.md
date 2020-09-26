@@ -107,3 +107,5 @@
       1. When it prompts for *Do you want to enable fuzzy auto-completion?* Answer yes
       1. When it prompts for *Do you want to enable key bindings?* Answer yes
       1. When it prompts for *Do you want to update your shell configuration files?* Answer yes
+1. Install `gh` https://github.com/cli/cli
+    1. `brew install gh`

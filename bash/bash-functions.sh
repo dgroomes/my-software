@@ -8,11 +8,9 @@ ideaDiff() {
 }
 
 # Open the browser to the current Git "remote" URL
+# Uses GitHub's 'gh' CLI https://github.com/cli/cli
 gitBrowse() {
-    local REMOTE=$(git remote)
-    local URL=$(git remote get-url $REMOTE)
-    echo "Opening $URL ..."
-    open "$URL"
+    gh repo view --web
 }
 
 # Make a new directory for some "subject".
@@ -69,7 +67,7 @@ function showPath() {
 function cdRepo() {
   local EXIT_STATUS
   local DEST
-  DEST=$(find ~/repos -type d -maxdepth 2 -mindepth 2 -not -path '*./*' | fzf)
+  DEST=$(find ~/repos -type d -maxdepth 2 -mindepth 2 -not -path '*./*' | fzf --exact)
   EXIT_STATUS=$?
   [[ $EXIT_STATUS -eq 0 ]] && cd $DEST
 }
