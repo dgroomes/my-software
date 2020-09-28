@@ -18,7 +18,7 @@ gitBrowse() {
 # E.g. `mkdirSubject myexperiment` will create the directory `~/subjects/2020-02-09_myexperiment`
 # The "subject" argument is optional.
 # E.g. `mkdirSubject` will create the directory `~/subjects/2020-02-09_18-02-05`
-function mkdirSubject() {
+mkdirSubject() {
     local today=$(date +%Y-%m-%d)
     local descriptor
     if [ -z "$1" ]; then
@@ -34,7 +34,7 @@ function mkdirSubject() {
 
 # Format a date/time string from a "seconds from the Unix epoch" value
 # E.g. `formatEpoch 1581293097` will return 'Sun Feb  9 18:04:57 CST 2020'
-function formatEpoch() {
+formatEpoch() {
     if [[ -z "$1" ]]; then
         echo >&2 "Missing argument: 'seconds from Unix epoch'"
         return
@@ -44,7 +44,7 @@ function formatEpoch() {
 
 # Format a date/time string from a "milliseconds from the Unix epoch" value. The fractional seconds will be truncated.
 # E.g. `formatEpochMilli 1581293097123` is equivalent to `formatEpoch 1581293097`.
-function formatEpochMilli() {
+formatEpochMilli() {
     if [[ -z "$1" ]]; then
         echo >&2 "Missing argument: 'milliseconds from Unix epoch'"
         return
@@ -54,7 +54,7 @@ function formatEpochMilli() {
 }
 
 # Print the PATH with each entry on a new line
-function showPath() {
+showPath() {
     tr ':' '\n' <<< "$PATH"
 }
 
@@ -64,10 +64,15 @@ function showPath() {
 # directory. By convention, I like to put my git projects under directories like "~/repos/personal" and
 # "~/repos/opensource". So, with this shell function, I can take advantage of that convention and make a quick-switcher
 # with 'fzf' and 'find'.
-function cdRepo() {
+cdRepo() {
   local EXIT_STATUS
   local DEST
   DEST=$(find ~/repos -type d -maxdepth 2 -mindepth 2 -not -path '*./*' | fzf --exact)
   EXIT_STATUS=$?
   [[ $EXIT_STATUS -eq 0 ]] && cd $DEST
+}
+
+# https://gist.github.com/dgroomes/3bfe7f24670e74ee814a7f8e3956cce6
+upgradeGradleWrapper() {
+  ./gradlew wrapper --gradle-version 6.6.1
 }

@@ -20,7 +20,7 @@
     * Add `[[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"` to `~/.bashrc`
     * <https://github.com/Homebrew/homebrew-core/blob/fecd9b0cb2aa855ec24c109ff2b4507c0b37fb2a/Formula/bash-completion%402.rb#L36>
 1. Copy `bash/bash-aliases.sh` and `bash/bash-functions.sh` to `~/.config/bash/` and source them from your `.bashrc`
-    * `cp bash/*.sh ~/.config/bash`
+    * `cp bash/bash-*.sh ~/.config/bash`
     * Add `for f in ~/.config/bash/*.sh; do . $f; done` to your `.bashrc` 
 1. `brew install jq`
 1. `brew install kafkacat`
