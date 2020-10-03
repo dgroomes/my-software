@@ -63,7 +63,6 @@
        ``` 
 1. `brew install jq`
 1. `brew install kafkacat`
-1. `brew install coreutils` (I like to use `grealpath`)
 1. Install Python 3 <https://www.python.org/downloads/> 
     * `sudo pip3 install --upgrade pip`
     * Add user-installed Python packages to the `PATH` by adding this line in `.bashrc`: `export PATH="$PATH:/Users/davidgroomes/Library/Python/3.8/bin"`
