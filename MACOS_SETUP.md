@@ -34,7 +34,9 @@
     * Log in to your JetBrains account (for some reason this didn't work for me in ToolBox. Nothing happened when I
       clicked "Log in". So, I just logged in in Intellij)
     * Enable "Use non-modal commit interface". See <https://www.jetbrains.com/help/idea/managing-changelists.html>
-      Can I save this in my Intellij preferences 
+      Can I save this in my Intellij preferences
+    * In macOS settings, disable the "Cmd + Shift + A" system keyboard shortcut so it does not conflict with the
+      "Find Action" Intellij keyboard shorcut. See instructions at <https://intellij-support.jetbrains.com/hc/en-us/articles/360005137400-Cmd-Shift-A-hotkey-opens-Terminal-with-apropos-search-instead-of-the-Find-Action-dialog> 
 1. Install Homebrew <https://brew.sh/>
 1. `brew install bash`
     * macOS uses a years old version of Bash and will never update it because of licensing
@@ -94,6 +96,7 @@
     * Install a community-provided Bash completion script for SDKMAN with `curl https://raw.githubusercontent.com/Bash-it/bash-it/ac5a8aca47f42c6feab6bde3fb7e5a06d53f28ff/completion/available/sdkman.completion.bash -o /usr/local/etc/bash_completion.d/sdkman` 
     * Install the latest LTS (Java 11) and the latest Java (Java 15)
     * Install the latest version of Gradle
+    * Install the latest version of Maven
     * Install `visualvm` and then configure visualvm to use the Java 8.
       * Follow the instructions at <https://gist.github.com/gavvvr/c9891684f9ef062502d58c80903be5cc>
       * Specifically, edit the file `~/.sdkman/candidates/visualvm/current/etc/visualvm.conf` 
