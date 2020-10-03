@@ -14,6 +14,11 @@
         * "Left Half": `Ctrl + [`
         * "Right Half": `Ctrl + ]`
         * "Maximize": `Ctrl + \`
+1. macOS preferences
+    * `Clock preferences > Show Date`
+    * `Battery > Show percentage`
+    * `Preferences > Dock > Automatically hide and show the Dock`
+    * `Preferences > Keyboard > Use F keys as F keys`
 1. Clone this repository
     * First make the "repos" directory with `mkdir -p ~/repos/personal`
     * `cd ~/repos/personal && git clone https://github.com/dgroomes/my-config.git`
@@ -28,6 +33,7 @@
     * Restart iTerm
 1. Install JetBrains Toolbox <https://www.jetbrains.com/toolbox-app/>
     * Install Intellij
+    * Disable unneeded plugins
     * Enable shell integration. Go to the Toolbox App Settings in the top right corner (click the hexagon), expand "Shell Scripts", enable the toggle, and set the location to `/usr/local/bin`
     * Build my JetBrains preferences file (`settings.zip`). See instructions in the root `README.md`
     * Open Intellij from the command line with `idea .` 
@@ -121,11 +127,33 @@
       * The next time you `git push` you will get a popup. Enter your password and choose "Always allow"
 1. Install Docker <https://hub.docker.com/editions/community/docker-ce-desktop-mac/>
     * Install Bash completion for `docker`: `curl https://raw.githubusercontent.com/docker/cli/master/contrib/completion/bash/docker -o /usr/local/etc/bash_completion.d/bash`
-    * Install Bash completion for `docker-compose`: `curl https://raw.githubusercontent.com/docker/compose/1.25.4/contrib/completion/bash/docker-compose -o /usr/local/etc/bash_completion.d/docker-compose` 
-1. Install Karabiner-Elements from source <https://github.com/pqrs-org/Karabiner-Elements> and configure it with:
-    * `mkdir -p ~/.config/karabiner/assets/complex_modifications`
-    * `cp karabiner/karabiner.json ~/.config/karabiner`
-    * `cp karabiner/assets/complex_modifications/* ~/.config/karabiner/assets/complex_modifications`
+    * Install Bash completion for `docker-compose`: `curl https://raw.githubusercontent.com/docker/compose/1.25.4/contrib/completion/bash/docker-compose -o /usr/local/etc/bash_completion.d/docker-compose`
+1. Install Karabiner-Elements from source <https://github.com/pqrs-org/Karabiner-Elements> and configure it with.
+    1. First, we must configure Xcode command line tools correctly. Follow these instructions <https://stackoverflow.com/a/61725799>
+    1. Then, install `xcodegen` from source <https://github.com/yonaskolb/XcodeGen>:
+     ```
+     git clone --depth 1 https://github.com/yonaskolb/XcodeGen.git
+     cd XcodeGen
+     make install
+     ```
+    1. 
+     ```
+     brew install xz
+     brew install cmake
+     ```
+    1. Then, install Karabiner Elements
+     ```
+     git clone --depth 1 https://github.com/pqrs-org/Karabiner-Elements.git
+     cd Karabiner-Elements
+     git submodule update --init --recursive --depth 1
+     make package
+     ``` 
+    1. Then, configure it with my custom settings
+     ```
+     mkdir -p ~/.config/karabiner/assets/complex_modifications
+     cp karabiner/karabiner.json ~/.config/karabiner
+     cp karabiner/assets/complex_modifications/* ~/.config/karabiner/assets/complex_modifications
+     ```
 1. Install Insomnia <https://insomnia.rest/download/>
 1. Install Golang <https://golang.org/dl/>
     * Create the go home dir `mkdir -p ~/go`
@@ -155,3 +183,9 @@
       1. When it prompts for *Do you want to update your shell configuration files?* Answer yes
 1. Install `gh` https://github.com/cli/cli
     1. `brew install gh`
+    1. Use it for the first time and log in.
+    
+    
+### Optional
+
+1. `git clone --depth 1 https://github.com/vsch/idea-multimarkdown`
