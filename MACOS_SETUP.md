@@ -102,6 +102,7 @@
     * Configure `git` config <https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup>
       * `git config --global user.name "John Doe"`
       * `git config --global user.email johndoe@example.com`
+      * `git config --global pull.ff only`
     * Configure `git` credentials to Github. Follow <https://help.github.com/en/github/authenticating-to-github/accessing-github-using-two-factor-authentication#using-two-factor-authentication-with-the-command-line>
     * Use credentials helper <https://help.github.com/en/github/using-git/caching-your-github-password-in-git>
       * `git config --global credential.helper osxkeychain`
