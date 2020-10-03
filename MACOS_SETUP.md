@@ -80,20 +80,19 @@
       * `cp -r powerline ~/.config/powerline`      
       * You will have to restart the powerline daemon for the config change to take effect: `powerline-daemon --replace`
 1. Add `~/.inputrc`
+    * `cp .inputrc ~`
 1. Install bash completion for `pip`: `pip3 completion --bash > /usr/local/etc/bash_completion.d/pip`
 1. Install SDKMAN <https://sdkman.io/>
-    * Install Graal `sdk install java <latest Graal>`
-    * Use Graal `sdk use java <latest Graal>`
-    * Install a community provided Bash completion script for SDKMAN `curl https://raw.githubusercontent.com/Bash-it/bash-it/ac5a8aca47f42c6feab6bde3fb7e5a06d53f28ff/completion/available/sdkman.completion.bash -o /usr/local/etc/bash_completion.d/sdkman`
-    * Because Graal comes with npm, we can install bash completion for npm with `npm completion > /usr/local/etc/bash_completion.d/npm` 
-    * Install Java 8, 11, and 14
+    * Install a community-provided Bash completion script for SDKMAN with `curl https://raw.githubusercontent.com/Bash-it/bash-it/ac5a8aca47f42c6feab6bde3fb7e5a06d53f28ff/completion/available/sdkman.completion.bash -o /usr/local/etc/bash_completion.d/sdkman` 
+    * Install the latest LTS (Java 11) and the latest Java (Java 15)
+    * Install the latest version of Gradle
     * Install `visualvm` and then configure visualvm to use the Java 8.
       * Follow the instructions at <https://gist.github.com/gavvvr/c9891684f9ef062502d58c80903be5cc>
       * Specifically, edit the file `~/.sdkman/candidates/visualvm/current/etc/visualvm.conf` 
-1. Install `nvm` Node Version Manager <https://github.com/nvm-sh/nvm>
+1. Install `nvm` Node Version Manager <https://github.com/nvm-sh/nvm> and Node.js
     * Install the latest Long-Term Support version of node with `nvm install --lts`
-    * Install npx Bash completion from this cool person's completion script `https://gist.github.com/gibatronic/44073260ffdcbd122e9520756c8e35a1`
-      Just save it to `/usr/local/etc/bash_completion.d/npx`
+    * Install npm completion with `npm completion > /usr/local/etc/bash_completion.d/npm`
+    * Install a community-provided Bash completion script for npx with `curl https://gist.github.com/gibatronic/44073260ffdcbd122e9520756c8e35a1 -o /usr/local/etc/bash_completion.d/npx`
 1. Enable "Tab Hover Cards" in Chrome
     * Open `chrome://flags/` in Chrome
     * Set "Tab Hover Cards" to enabled
