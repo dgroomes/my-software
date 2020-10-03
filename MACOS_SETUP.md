@@ -80,7 +80,7 @@
         POWERLINE_BASH_SELECT=1
         . /Users/davidgroomes/Library/Python/3.8/lib/python/site-packages/powerline/bindings/bash/powerline.sh
         ```
-    * Do the fonts installation `git clone https://github.com/powerline/fonts.git; cd fonts; ./install.sh`
+    * Do the fonts installation `git clone https://github.com/powerline/fonts.git ~/repos/opensource/fonts && cd ~/repos/opensource/fonts && ./install.sh && cd -`
     * Restart iTerm2, configure "Use a different font for non-ASCII text" and choose the DejaVu font to get the Powerline arrow symbols
     * Install a powerline git status extension <https://github.com/jaspernbrouwer/powerline-gitstatus> 
       * `pip3 install --user powerline-gitstatus`
@@ -100,7 +100,7 @@
 1. Install `nvm` Node Version Manager <https://github.com/nvm-sh/nvm> and Node.js
     * Install the latest Long-Term Support version of node with `nvm install --lts`
     * Install npm completion with `npm completion > /usr/local/etc/bash_completion.d/npm`
-    * Install a community-provided Bash completion script for npx with `curl https://gist.github.com/gibatronic/44073260ffdcbd122e9520756c8e35a1 -o /usr/local/etc/bash_completion.d/npx`
+    * Install a community-provided Bash completion script for npx with `curl https://gist.githubusercontent.com/gibatronic/44073260ffdcbd122e9520756c8e35a1/raw/54cacab82b57ce965cf9f69edcd3477d81e1fa58/complete_npx -o /usr/local/etc/bash_completion.d/npx`
 1. Enable "Tab Hover Cards" in Chrome
     * Open `chrome://flags/` in Chrome
     * Set "Tab Hover Cards" to enabled
