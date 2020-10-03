@@ -72,6 +72,14 @@
 1. Install the "powerline" status line <https://powerline.readthedocs.io/en/master/installation/osx.html>
     * `pip3 install --user powerline-status`
     * Add initialization commands to your `.bashrc`. Follow <https://powerline.readthedocs.io/en/master/usage/shell-prompts.html#bash-prompt>
+      Specifically, add:
+        ```
+        # Configure and initialize the powerline-status line https://powerline.readthedocs.io/en/master/usage/shell-prompts.html#bash-prompt
+        powerline-daemon -q
+        POWERLINE_BASH_CONTINUATION=1
+        POWERLINE_BASH_SELECT=1
+        . /Users/davidgroomes/Library/Python/3.8/lib/python/site-packages/powerline/bindings/bash/powerline.sh
+        ```
     * Do the fonts installation `git clone https://github.com/powerline/fonts.git; cd fonts; ./install.sh`
     * Restart iTerm2, configure "Use a different font for non-ASCII text" and choose the DejaVu font to get the Powerline arrow symbols
     * Install a powerline git status extension <https://github.com/jaspernbrouwer/powerline-gitstatus> 
