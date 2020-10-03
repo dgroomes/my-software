@@ -54,13 +54,16 @@
     * Create the directory with `mkdir ~/.config/bash`
     * `cp bash/bash-*.sh ~/.config/bash`
     * Add the following to your `.bashrc`:
-       ```
-       # Source configuration files
-       for filename in ~/.config/bash/*.sh; do
-           [ -e "$filename" ] || echo >&2 "Bash configuration files not found!" && continue
-           . "$filename"
-       done
-       ``` 
+        ```
+        # Source configuration files
+        for filename in ~/.config/bash/*.sh; do
+            if [[ ! -e "$filename" ]]; then              
+              echo >&2 "Bash configuration files not found!"
+              continue
+            fi
+            . "$filename"
+        done
+        ``` 
 1. `brew install jq`
 1. `brew install kafkacat`
 1. Install Python 3 <https://www.python.org/downloads/> 
