@@ -1,10 +1,40 @@
 # My macOS setup
 
+1. Set up the keyboard (if using a Windows keyboard)
+    * Open `System Preference > Keyboard >  Modifier Keys`
+    * Select the keyboard from the `Select keyboard` dropdown
+    * Map the following:
+      * "Caps lock" to "Control"
+      * "Command" to "Option"
+      * "Option" to "Command"
+1. Install Xcode from the app store
+    * Agree to the license (try to execute `git` in the terminal and it will prompt you to read the license and agree to it)
+1. Install Rectangle <https://github.com/rxhanson/Rectangle> for fast and easy window resizing
+    * Uncheck all keyboard shortcuts. Configure the following:
+        * "Left Half": `Ctrl + [`
+        * "Right Half": `Ctrl + ]`
+        * "Maximize": `Ctrl + \`
+1. Clone this repository
+    * First make the "repos" directory with `mkdir -p ~/repos/personal`
+    * `cd ~/repos/personal && git clone https://github.com/dgroomes/my-config.git`
+    * Finally, move to this directory because many of the later setup steps assume you are in this directory because they use relatives paths: `cd my-config`
 1. Install iTerm2 <https://iterm2.com/downloads.html>. Configure it with my configuration:
-    * Create `~/.config/iterm2`
-    * Copy `iterm2/com.googlecode.iterm2.plist` to `~/.config/iterm2/com.googlecode.iterm2.plist`
-    * Navigate to `Preferences > General > Preferences`. Check `Load preferences from a custom folder or URL` and set it 
-      to `~/.config/iterm2`. Check `Save changes to folder when iTerm2 quits`. 
+    * Create the iTerm config directory with  `mkdir -p ~/.config/iterm2`
+    * Copy the plist file with `cp iterm2/com.googlecode.iterm2.plist ~/.config/iterm2/com.googlecode.iterm2.plist`
+    * Open iTerm and navigate to `Preferences > General > Preferences`. Check `Load preferences from a custom folder or URL` and set it 
+      to `~/.config/iterm2`.
+    * A prompt will come up to save the current settings. Do *not* save the current settings.
+    * Check `Save changes to folder when iTerm2 quits`.
+    * Restart iTerm
+1. Install JetBrains Toolbox <https://www.jetbrains.com/toolbox-app/>
+    * Install Intellij
+    * Enable shell integration. Go to the Toolbox App Settings in the top right corner (click the hexagon), expand "Shell Scripts", enable the toggle, and set the location to `/usr/local/bin`
+    * Build my JetBrains preferences file (`settings.zip`). See instructions in the root `README.md`
+    * Open Intellij from the command line with `idea .` 
+    * Log in to your JetBrains account (for some reason this didn't work for me in ToolBox. Nothing happened when I
+      clicked "Log in". So, I just logged in in Intellij)
+    * Enable "Use non-modal commit interface". See <https://www.jetbrains.com/help/idea/managing-changelists.html>
+      Can I save this in my Intellij preferences 
 1. Install Homebrew <https://brew.sh/>
 1. `brew install bash`
     * macOS uses a years old version of Bash and will never update it because of licensing
@@ -12,22 +42,31 @@
     * `sudo bash -c 'echo /usr/local/bin/bash >> /etc/shells'`
     * `chsh -s /usr/local/bin/bash`
     * Open a new session and verify the new version of Bash is being used `echo $BASH_VERSION`
-    * Copy over `bash/.bash_profile` to the home directory.
+    * Copy over the `.bash_profile` to the home directory with: `cp bash/.bash_profile ~`
+    * Create a `.bashrc` with `touch ~/.bashrc`
     * Add colors to Bash. Add the following to `~/.bashrc`: `export CLICOLOR=1`
 1. Install bash completion. See additional information in `bash/BASH_COMPLETION.md`
     * Execute `brew install bash-completion@2`
     * Add `BASH_COMPLETION_COMPAT_DIR="/usr/local/etc/bash_completion.d"` to `~/.bashrc`
     * Add `[[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"` to `~/.bashrc`
-    * <https://github.com/Homebrew/homebrew-core/blob/fecd9b0cb2aa855ec24c109ff2b4507c0b37fb2a/Formula/bash-completion%402.rb#L36>
+    * For reference, see: <https://github.com/Homebrew/homebrew-core/blob/fecd9b0cb2aa855ec24c109ff2b4507c0b37fb2a/Formula/bash-completion%402.rb#L36>
 1. Copy `bash/bash-aliases.sh` and `bash/bash-functions.sh` to `~/.config/bash/` and source them from your `.bashrc`
+    * Create the directory with `mkdir ~/.config/bash`
     * `cp bash/bash-*.sh ~/.config/bash`
-    * Add `for f in ~/.config/bash/*.sh; do . $f; done` to your `.bashrc` 
+    * Add the following to your `.bashrc`:
+       ```
+       # Source configuration files
+       for filename in ~/.config/bash/*.sh; do
+           [ -e "$filename" ] || echo >&2 "Bash configuration files not found!" && continue
+           . "$filename"
+       done
+       ``` 
 1. `brew install jq`
 1. `brew install kafkacat`
 1. `brew install coreutils` (I like to use `grealpath`)
 1. Install Python 3 <https://www.python.org/downloads/> 
     * `sudo pip3 install --upgrade pip`
-    * Add user-installed Python packages to the `PATH` by adding this line in `.bash_profile`: `export PATH="$PATH:/Users/davidgroomes/Library/Python/3.8/bin"`
+    * Add user-installed Python packages to the `PATH` by adding this line in `.bashrc`: `export PATH="$PATH:/Users/davidgroomes/Library/Python/3.8/bin"`
 1. Install the "powerline" status line <https://powerline.readthedocs.io/en/master/installation/osx.html>
     * `pip3 install --user powerline-status`
     * Add initialization commands to your `.bashrc`. Follow <https://powerline.readthedocs.io/en/master/usage/shell-prompts.html#bash-prompt>
@@ -67,12 +106,6 @@
     * Use credentials helper <https://help.github.com/en/github/using-git/caching-your-github-password-in-git>
       * `git config --global credential.helper osxkeychain`
       * The next time you `git push` you will get a popup. Enter your password and choose "Always allow"
-1. Install Xcode from the app store
-1. Install Rectangle <https://github.com/rxhanson/Rectangle> for fast and easy window resizing
-    * Uncheck all keyboard shortcuts. Configure the following:
-        * "Left Half": `Ctrl + [`
-        * "Right Half": `Ctrl + ]`
-        * "Maximize": `Ctrl + \`
 1. Install Docker <https://hub.docker.com/editions/community/docker-ce-desktop-mac/>
     * Install Bash completion for `docker`: `curl https://raw.githubusercontent.com/docker/cli/master/contrib/completion/bash/docker -o /usr/local/etc/bash_completion.d/bash`
     * Install Bash completion for `docker-compose`: `curl https://raw.githubusercontent.com/docker/compose/1.25.4/contrib/completion/bash/docker-compose -o /usr/local/etc/bash_completion.d/docker-compose` 
