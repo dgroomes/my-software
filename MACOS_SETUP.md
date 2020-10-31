@@ -76,7 +76,7 @@
 1. `brew install kafkacat`
 1. Install Python 3 <https://www.python.org/downloads/> 
     * `sudo pip3 install --upgrade pip`
-    * Add user-installed Python packages to the `PATH` by adding this line in `.bashrc`: `export PATH="$PATH:/Users/davidgroomes/Library/Python/3.8/bin"`
+    * Add user-installed Python packages to the `PATH` by adding this line in `.bashrc`: `export PATH="$PATH:/Users/davidgroomes/Library/Python/3.9/bin"`
 1. Install the "powerline" status line <https://powerline.readthedocs.io/en/master/installation/osx.html>
     * `pip3 install --user powerline-status`
     * Add initialization commands to your `.bashrc`. Follow <https://powerline.readthedocs.io/en/master/usage/shell-prompts.html#bash-prompt>
@@ -86,7 +86,7 @@
         powerline-daemon -q
         POWERLINE_BASH_CONTINUATION=1
         POWERLINE_BASH_SELECT=1
-        . /Users/davidgroomes/Library/Python/3.8/lib/python/site-packages/powerline/bindings/bash/powerline.sh
+        . /Users/davidgroomes/Library/Python/3.9/lib/python/site-packages/powerline/bindings/bash/powerline.sh
         ```
     * Do the fonts installation `git clone https://github.com/powerline/fonts.git ~/repos/opensource/fonts && cd ~/repos/opensource/fonts && ./install.sh && cd -`
     * Restart iTerm2, configure "Use a different font for non-ASCII text" and choose the DejaVu font to get the Powerline arrow symbols
