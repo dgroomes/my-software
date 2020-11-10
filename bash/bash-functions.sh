@@ -71,8 +71,3 @@ cdRepo() {
   EXIT_STATUS=$?
   [[ $EXIT_STATUS -eq 0 ]] && cd $DEST
 }
-
-# https://gist.github.com/dgroomes/3bfe7f24670e74ee814a7f8e3956cce6
-upgradeGradleWrapper() {
-  ./gradlew wrapper --gradle-version 6.6.1
-}

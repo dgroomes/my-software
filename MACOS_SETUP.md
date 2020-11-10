@@ -185,7 +185,9 @@
 1. Install `gh` https://github.com/cli/cli
     1. `brew install gh`
     1. Use it for the first time and log in.
-    
+1. Clone `gradle-wrapper-upgrader`
+    1. `git clone https://github.com/dgroomes/gradle-wrapper-upgrader.git`
+    1. Add it to the PATH
     
 ### Optional
 
