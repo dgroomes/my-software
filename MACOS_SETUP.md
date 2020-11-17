@@ -5,8 +5,9 @@
     * Select the keyboard from the `Select keyboard` dropdown
     * Map the following:
       * "Caps lock" to "Control"
-      * "Command" to "Option"
-      * "Option" to "Command"
+      * "Command" to "Option" (if on an external Windows keyboard)
+      * "Option" to "Command" (if on an external Windows keyboard)
+    * "Use F keys as F keys"
 1. Install Xcode from the app store
     * Agree to the license (try to execute `git` in the terminal and it will prompt you to read the license and agree to it)
 1. Install Rectangle <https://github.com/rxhanson/Rectangle> for fast and easy window resizing
@@ -18,7 +19,6 @@
     * `Clock preferences > Show Date`
     * `Battery > Show percentage`
     * `Preferences > Dock > Automatically hide and show the Dock`
-    * `Preferences > Keyboard > Use F keys as F keys`
 1. Clone this repository
     * First make the "repos" directory with `mkdir -p ~/repos/personal`
     * `cd ~/repos/personal && git clone https://github.com/dgroomes/my-config.git`
