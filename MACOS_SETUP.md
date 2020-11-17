@@ -15,10 +15,10 @@
         * "Left Half": `Ctrl + [`
         * "Right Half": `Ctrl + ]`
         * "Maximize": `Ctrl + \`
-1. macOS preferences
-    * `Clock preferences > Show Date`
-    * `Battery > Show percentage`
-    * `Preferences > Dock > Automatically hide and show the Dock`
+1. macOS System Preferences
+    * `Dock & Menu Bar > Automatically hide and show the Dock`
+    * `Dock & Menu Bar > Clock > Show date` and `Show the day of the week`
+    * `Dock & Menu Bar > Battery > Show percentage`
 1. Clone this repository
     * First make the "repos" directory with `mkdir -p ~/repos/personal`
     * `cd ~/repos/personal && git clone https://github.com/dgroomes/my-config.git`
