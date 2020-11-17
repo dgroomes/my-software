@@ -1,4 +1,7 @@
 <keymap version="1" name="Mac OS X (Custom 2019-06-29)" parent="Mac OS X">
+  <action id="ActivateCommitToolWindow">
+    <keyboard-shortcut first-keystroke="meta 0" />
+  </action>
   <action id="Back">
     <keyboard-shortcut first-keystroke="meta alt left" />
     <mouse-shortcut keystroke="button4" />
