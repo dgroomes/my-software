@@ -32,15 +32,17 @@
     * Check `Save changes to folder when iTerm2 quits`.
     * Restart iTerm
 1. Install JetBrains Toolbox <https://www.jetbrains.com/toolbox-app/>
-    * Install Intellij
+    * Open Toolbox
+    * Log in to your JetBrains account
+    * Install Intellij Ultimate
+    * In `my-config`, build my JetBrains preferences file (`settings.zip`). See instructions in the root `README.md`
+    * Open Intellij
+    * Import settings from the `settings.zip` created earlier
     * Disable unneeded plugins
     * Enable shell integration. Go to the Toolbox App Settings in the top right corner (click the hexagon), expand "Shell Scripts", enable the toggle, and set the location to `/usr/local/bin`
-    * Build my JetBrains preferences file (`settings.zip`). See instructions in the root `README.md`
     * Open Intellij from the command line with `idea .` 
-    * Log in to your JetBrains account (for some reason this didn't work for me in ToolBox. Nothing happened when I
-      clicked "Log in". So, I just logged in in Intellij)
     * Enable "Use non-modal commit interface". See <https://www.jetbrains.com/help/idea/managing-changelists.html>
-      Can I save this in my Intellij preferences
+      Can I save this in my Intellij preferences?
     * In macOS settings, disable the "Cmd + Shift + A" system keyboard shortcut so it does not conflict with the
       "Find Action" Intellij keyboard shorcut. See instructions at <https://intellij-support.jetbrains.com/hc/en-us/articles/360005137400-Cmd-Shift-A-hotkey-opens-Terminal-with-apropos-search-instead-of-the-Find-Action-dialog> 
 1. Install Homebrew <https://brew.sh/>
