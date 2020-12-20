@@ -1,12 +1,3 @@
-# Intellij IDEA diff
-ideaDiff() {
-    if [[ -z "$1" || -z "$2" ]]; then
-        echo >&2 "Usage: $0 file1 file2"
-        exit 1
-    fi
-    /Users/davidgroomes/Library/Application\ Support/JetBrains/Toolbox/apps/IDEA-U/ch-0/193.6015.39/IntelliJ\ IDEA.app/Contents/MacOS/idea diff "$1" "$2"
-}
-
 # Open the browser to the current Git "remote" URL
 # Uses GitHub's 'gh' CLI https://github.com/cli/cli
 gitBrowse() {
