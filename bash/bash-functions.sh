@@ -62,3 +62,35 @@ cdRepo() {
   EXIT_STATUS=$?
   [[ $EXIT_STATUS -eq 0 ]] && cd $DEST
 }
+
+# Start a Postgres server instance.
+# By convention, the data directory "/usr/local/pgsql/data" is used. The Postgres official docs use this directory in
+# their examples. See https://www.postgresql.org/docs/current/creating-cluster.html
+pgStart() {
+  pg_ctl -D /usr/local/pgsql/data start
+}
+
+# Stop the Postgres server instance
+pgStop() {
+  pg_ctl -D /usr/local/pgsql/data stop
+}
+
+# Completely destroy the contents of the local Postgres data directory.
+# WARNING: this will delete all of the data!
+#
+# For convenience, this function will also:
+#   * Stop the Postgres instance if it is already running
+#   * Initialize a new Postgres data directory
+#   * Start a Postgres instance
+#   * Define a role named 'postgres' (this role is often used as a convention by programs and apps).
+pgDestroy() {
+  pg_ctl -D /usr/local/pgsql/data stop
+
+  rm -rf /usr/local/pgsql/data
+  mkdir -p /usr/local/pgsql/data
+
+  pg_ctl -D /usr/local/pgsql/data initdb
+  pg_ctl -D /usr/local/pgsql/data start
+
+  psql postgres -c 'create role postgres with login superuser'
+}
