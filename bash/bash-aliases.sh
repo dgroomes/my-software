@@ -3,7 +3,6 @@ alias eb='code ~/.bashrc'
 
 # Docker aliases
 alias dcl="docker container ls"
-alias dcu="docker-compuse up --detach"
 alias dcuv="docker-compose up --detach --renew-anon-volumes"
 alias dcd="docker-compose down --remove-orphans"
 
