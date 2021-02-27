@@ -94,3 +94,58 @@ pgDestroy() {
 
   psql postgres -c 'create role postgres with login superuser'
 }
+
+# Show the MongoDB logs
+mongoLog() {
+  tail +1f "/usr/local/mongodb/mongod.log"
+}
+
+# Start a MongoDB server instance using the 'mongod' command
+mongoStart() {
+
+  local log_file=/usr/local/mongodb/mongod.log
+  # Truncate the existing log file.
+  > "$log_file"
+
+  # Start the server as a daemon process. Use a custom data directory and log location. Do NOT rotate the logs (I don't
+  # need to retain old logs)
+  mongod \
+    --dbpath "/usr/local/mongodb/data" \
+    --fork \
+    --logpath "$log_file" \
+    --logRotate reopen \
+    --logappend \
+    --bind_ip 127.0.0.1
+
+  # Wait for it to become ready.
+  sleep 2
+
+  # Disable the monitoring advertisement when starting a 'mongo' shell session
+  mongo --quiet << EOF
+  db.disableFreeMonitoring()
+EOF
+}
+
+# Stop MongoDB if it is running
+mongoStop() {
+  mongo --quiet admin << EOF
+    db.shutdownServer()
+EOF
+}
+
+# Completely destroy the existing MongoDB data directory then start a MongoDB server instance using the 'mongod' command
+mongoDestroy() {
+  if [[ ! -d "/usr/local/mongodb" ]]; then
+    echo >&2 "MongoDB base directory does not exist! '/usr/local/mongodb'"
+    return
+  fi
+
+  # Stop MongoDB if it is already running
+  mongoStop
+
+  # DESTROY ALL EXISTING DATA!
+  rm -rf "/usr/local/mongodb/data"
+  mkdir -p "/usr/local/mongodb/data"
+
+  mongoStart
+}

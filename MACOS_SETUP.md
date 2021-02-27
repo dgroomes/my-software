@@ -197,3 +197,11 @@
 ### Optional
 
 1. `git clone --depth 1 https://github.com/vsch/idea-multimarkdown`
+1. Install MongoDB *Community Server*
+    1. Download from <https://www.mongodb.com/try/download/community>.
+    1. Extract and put somewhere on the PATH.
+    1. Create a base directory that we will use by convention for the MongoDB data files and logs:
+         * `sudo mkdir /usr/local/mongodb`
+    1. Assign ownership to the normal user so that our convenience scripts defined in `bash/bash-functions.sh` will work
+       without sudo.
+         * `sudo chown -R $(whoami) /usr/local/mongodb`    
