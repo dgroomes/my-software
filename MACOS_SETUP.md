@@ -200,9 +200,14 @@
 1. Install MongoDB *Community Server*
     1. Download from <https://www.mongodb.com/try/download/community>.
     1. Extract and put somewhere on the PATH.
+         * e.g. symlink it to `~/dev/mongodb` and then add to `.bashrc` the following: `export PATH="$PATH:~/dev/mongodb/bin"`  
     1. Create a base directory that we will use by convention for the MongoDB data files and logs:
          * `sudo mkdir /usr/local/mongodb`
     1. Assign ownership to the normal user so that our convenience scripts defined in `bash/bash-functions.sh` will work
        without sudo.
          * `sudo chown -R $(whoami) /usr/local/mongodb`
     1. Also, download and install the [*The MongoDB Database Tools*](https://docs.mongodb.com/database-tools/installation/installation-macos/)
+         * e.g. symlink it to `~/dev/mongodb-database-tools` and then add to `.bashrc` the following: `export PATH="$PATH:~/dev/mongodb-database-tools/bin"`
+    1. Also, consider downloading and installing the beta (but pretty feature-ful and cool) *new* Mongo shell called `mongosh`
+         * Download from the [GitHub Releases page for the project](https://github.com/mongodb-js/mongosh/releases)
+         * e.g. symlink it to `~/dev/mongosh` and then add to `.bashrc` the following: `export PATH="$PATH:~/dev/mongosh/bin"`
