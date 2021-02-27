@@ -204,4 +204,5 @@
          * `sudo mkdir /usr/local/mongodb`
     1. Assign ownership to the normal user so that our convenience scripts defined in `bash/bash-functions.sh` will work
        without sudo.
-         * `sudo chown -R $(whoami) /usr/local/mongodb`    
+         * `sudo chown -R $(whoami) /usr/local/mongodb`
+    1. Also, download and install the [*The MongoDB Database Tools*](https://docs.mongodb.com/database-tools/installation/installation-macos/)
