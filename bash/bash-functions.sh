@@ -149,3 +149,8 @@ mongoDestroy() {
 
   mongoStart
 }
+
+# MongoDB. Execute the "mongo" command with the "quiet" option
+mon() {
+  mongo --quiet "$@"
+}

@@ -16,5 +16,3 @@ alias yaml2json="ruby -ryaml -rjson -e 'puts JSON.pretty_generate(YAML.load(ARGF
 alias json2yaml="ruby -ryaml -rjson -e 'puts YAML.dump(JSON.load(ARGF))'"
 alias gcmp="git checkout main && git pull"
 alias ll="ls -lahF"
-# MongoDB. Start a mongo shell with the "quiet" option
-alias mon="mongo --quiet"
