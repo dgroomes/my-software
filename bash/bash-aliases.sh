@@ -16,3 +16,19 @@ alias yaml2json="ruby -ryaml -rjson -e 'puts JSON.pretty_generate(YAML.load(ARGF
 alias json2yaml="ruby -ryaml -rjson -e 'puts YAML.dump(JSON.load(ARGF))'"
 alias gcmp="git checkout main && git pull"
 alias ll="ls -lahF"
+
+# Taken from https://github.com/tednaleid/shared-zshrc/blob/e4a9c7b17ba1dc5e708e52d5144b98d3948e8f77/zshrc_base#L337
+# Thank you!
+jqpath_cmd='
+def path_str: [.[] | if (type == "string") then "." + . else "[" + (. | tostring) + "]" end] | add;
+
+  . as $orig |
+    paths(scalars) as $paths |
+    $paths |
+    . as $path |
+    $orig |
+    [($path | path_str), "\u00a0", (getpath($path) | tostring)] |
+    add
+'
+# pipe json in to use fzf to search through it for jq paths, uses a non-breaking space as an fzf column delimiter
+alias jqpath="jq -rc '$jqpath_cmd' | cat <(echo $'PATH\u00a0VALUE') - | column -t -s $'\u00a0' | fzf +s -m --header-lines=1"
