@@ -90,9 +90,26 @@ pgDestroy() {
   mkdir -p /usr/local/pgsql/data
 
   pg_ctl -D /usr/local/pgsql/data initdb
+  _pgConfCustom
   pg_ctl -D /usr/local/pgsql/data start
 
   psql postgres -c 'create role postgres with login superuser'
+}
+
+# Replace some properties in the postgresql.conf file that are tuned for a local development environment where durability
+# is not needed! Also, increase the memory settings.
+#
+# For reference, see https://stackoverflow.com/a/9407940
+_pgConfCustom() {
+  local CONF=/usr/local/pgsql/data/postgresql.conf
+
+  # Backup the original conf file contents into a new file with extension '.bak'. Make several substitutions.
+  sed -i.bak \
+   -e "/^#fsync = on/             s/#fsync = on/fsync = off/" \
+   -e "/^#full_page_writes = on/  s/#full_page_writes = on/full_page_writes = off/" \
+   -e "/^shared_buffers/          s/128MB/4GB/" \
+   -e "/^#work_mem = 4MB/         s/#work_mem = 4MB/work_mem = 1GB/" \
+   "$CONF"
 }
 
 # Show the MongoDB logs
