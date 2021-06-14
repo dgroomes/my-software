@@ -211,3 +211,13 @@
     1. Also, consider downloading and installing the beta (but pretty feature-ful and cool) *new* Mongo shell called `mongosh`
          * Download from the [GitHub Releases page for the project](https://github.com/mongodb-js/mongosh/releases)
          * e.g. symlink it to `~/dev/mongosh` and then add to `.bashrc` the following: `export PATH="$PATH:~/dev/mongosh/bin"`
+1. Install Rust
+   1. Install `rustup` using the instructions in the official [rust-lang site](https://www.rust-lang.org/tools/install). 
+   1. Add to `~/.config/bash/bash-env.sh`: `source ~/.cargo/env"`
+      * This is a slightly clever way to configure the `PATH`. It comes installed with Rust so let's use it (idiomatic).
+   1. Install `rustup` Bash autocompletion:
+      * `rustup completions bash > "$BASH_COMPLETION_COMPAT_DIR/rustup"`
+   1. Install `cargo` Bash autocompletion:
+      * Note: the official Rust installation uses different mechanisms for Bash completion between `rustup`, `cargo`, etc.
+        Keep an eye out for if/when this improves some day (fingers crossed!).
+      * Add to `~/.config/bash/bash-env.sh`: `source "$(rustc --print sysroot)/etc/bash_completion.d/cargo"`
