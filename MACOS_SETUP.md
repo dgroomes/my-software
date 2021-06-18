@@ -221,3 +221,6 @@
       * Note: the official Rust installation uses different mechanisms for Bash completion between `rustup`, `cargo`, etc.
         Keep an eye out for if/when this improves some day (fingers crossed!).
       * Add to `~/.config/bash/bash-env.sh`: `source "$(rustc --print sysroot)/etc/bash_completion.d/cargo"`
+1. Install [`gron`](https://github.com/tomnomnom/gron)
+   > Make JSON greppable!
+   1. `brew install gron`
