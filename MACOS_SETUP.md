@@ -221,6 +221,13 @@
       * Note: the official Rust installation uses different mechanisms for Bash completion between `rustup`, `cargo`, etc.
         Keep an eye out for if/when this improves some day (fingers crossed!).
       * Add to `~/.config/bash/bash-env.sh`: `source "$(rustc --print sysroot)/etc/bash_completion.d/cargo"`
+1. Rust-based tools
+   1. There is a nascent but rich eco-system of Rust-based command-line tools. Many of them are substitutes for traditional
+      commands like `ls`, `du`, and `cat` but they bring a bevy of extra features. Best of all, they are fast. Keep track
+      of this "re-implemented in Rust" trend and follow this great article [*Rewritten in Rust: Modern Alternatives of Command-Line Tools*](https://zaiste.net/posts/shell-commands-rust/)
+      on <https://zaiste.net/>.
+      * In particular, take a serious look at <https://github.com/starship/starship>
+        * > The minimal, blazing-fast, and infinitely customizable prompt for any shell! 
 1. Install [`gron`](https://github.com/tomnomnom/gron)
    > Make JSON greppable!
    1. `brew install gron`
