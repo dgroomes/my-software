@@ -1,5 +1,8 @@
 # starship configuration file. See the docs: https://starship.rs/config
 
+# Inserts a blank line (or not) between shell prompts
+add_newline = false
+
 # Customize the 'directory' module
 [directory]
 truncation_length = 10
@@ -8,9 +11,21 @@ truncation_symbol = "…/"
 style = "fg:31" # Sometimes an ASCII color code is used instead of a named color like "cyan". See the ASCII color codes: https://i.stack.imgur.com/KTSQa.png
 
 [java]
-version_format = "v$major" # No reason to know the minor version
+version_format = "v$major.$minor" # Ideally we would only print the major version number. But Java 8 and older actually have a major version of "1". E.g. "1.8.0_292". So we need to print the minor version too.
 style = "green"
+detect_files = [# Out-of-the box, "settings.gradle.kts" and "settings.gradle" files are not detected but I need those to be detected for projects like https://github.com/dgroomes/jmeter-playground
+    "pom.xml",
+    "build.gradle.kts",
+    "build.sbt",
+    ".java-version",
+    ".deps.edn",
+    "project.clj",
+    "build.boot",
+    "settings.gradle",
+    "settings.gradle.kts",
+]
 
 # Disable the Kotlin module. I don't use Kotlin directly on the commandline and so don't need to know the version on the path.
 [kotlin]
 disabled = true
+
