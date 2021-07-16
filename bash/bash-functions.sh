@@ -171,3 +171,12 @@ mongoDestroy() {
 mon() {
   mongo --quiet "$@"
 }
+
+# Start a Python3 server in the current directory.
+#
+# The bind address is intentionally set to the "127.0.0.1" IPV4 address instead of the default value which is the "::"
+# IPV6 address. This is because iTerm recognizes the former one as a URL which you can conveniently "Cmd + click" into
+# while it doesn't recognize the latter as a URL.
+httpServe() {
+  python3 -m http.server --bind 127.0.0.1
+}
