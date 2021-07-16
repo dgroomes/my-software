@@ -1,0 +1,16 @@
+# starship configuration file. See the docs: https://starship.rs/config
+
+# Customize the 'directory' module
+[directory]
+truncation_length = 10
+truncate_to_repo = false
+truncation_symbol = "…/"
+style = "fg:31" # Sometimes an ASCII color code is used instead of a named color like "cyan". See the ASCII color codes: https://i.stack.imgur.com/KTSQa.png
+
+[java]
+version_format = "v$major" # No reason to know the minor version
+style = "green"
+
+# Disable the Kotlin module. I don't use Kotlin directly on the commandline and so don't need to know the version on the path.
+[kotlin]
+disabled = true

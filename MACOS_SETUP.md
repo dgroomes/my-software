@@ -108,6 +108,8 @@
        popd
        ```
    * Restart iTerm2, configure "Use a different font for non-ASCII text" and choose the just installed "FiraCode Nerd Font Mono" font to get the special symbols
+   * Copy over the custom starship config file:
+     * `mkdir -p ~/.config && cp starship/starship.toml ~/.config`
 1. Add `~/.inputrc`
     * `cp .inputrc ~`
 1. Install bash completion for `pip`: `pip3 completion --bash > /usr/local/etc/bash_completion.d/pip`
