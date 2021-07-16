@@ -79,24 +79,35 @@
 1. Install Python 3 <https://www.python.org/downloads/> 
     * `sudo pip3 install --upgrade pip`
     * Add user-installed Python packages to the `PATH` by adding this line in `.bashrc`: `export PATH="$PATH:/Users/davidgroomes/Library/Python/3.9/bin"`
-1. Install the "powerline" status line <https://powerline.readthedocs.io/en/master/installation/osx.html>
-    * `pip3 install --user powerline-status`
-    * Add initialization commands to your `.bashrc`. Follow <https://powerline.readthedocs.io/en/master/usage/shell-prompts.html#bash-prompt>
+1. Install starship <https://github.com/starship/starship>
+    * > The minimal, blazing-fast, and infinitely customizable prompt for any shell!
+    * `brew install starship`
+    * Add the initialization code to your `.bashrc`. Follow the instructions in the [starship README.md](https://github.com/starship/starship#-installation).
       Specifically, add:
         ```
-        # Configure and initialize the powerline-status line https://powerline.readthedocs.io/en/master/usage/shell-prompts.html#bash-prompt
-        powerline-daemon -q
-        POWERLINE_BASH_CONTINUATION=1
-        POWERLINE_BASH_SELECT=1
-        . /Users/davidgroomes/Library/Python/3.9/lib/python/site-packages/powerline/bindings/bash/powerline.sh
+        # starship
+        # https://github.com/starship/starship
+        eval "$(starship init bash)"
         ```
-    * Do the fonts installation `git clone https://github.com/powerline/fonts.git ~/repos/opensource/fonts && cd ~/repos/opensource/fonts && ./install.sh && cd -`
-    * Restart iTerm2, configure "Use a different font for non-ASCII text" and choose the DejaVu font to get the Powerline arrow symbols
-    * Install a powerline git status extension <https://github.com/jaspernbrouwer/powerline-gitstatus> 
-      * `pip3 install --user powerline-gitstatus`
-    * Copy the configuration files into the powerline config directory
-      * `cp -r powerline ~/.config/powerline`      
-      * You will have to restart the powerline daemon for the config change to take effect: `powerline-daemon --replace`
+   * Do the fonts installation (Note that this uses [a neat feature of git](https://stackoverflow.com/a/52269934) that
+     only downloads a specific directory of the repo):
+     * ```
+       git clone \
+         --depth 1  \
+         --filter=blob:none  \
+         --sparse \
+         https://github.com/ryanoasis/nerd-fonts.git ~/repos/opensource/nerd-fonts
+       pushd ~/repos/opensource/nerd-fonts
+       git sparse-checkout set patched-fonts/FiraCode
+       open patched-fonts/FiraCode/Bold/complete/Fira\ Code\ Bold\ Nerd\ Font\ Complete\ Mono.ttf
+       open patched-fonts/FiraCode/Light/complete/Fira\ Code\ Light\ Nerd\ Font\ Complete\ Mono.ttf
+       open patched-fonts/FiraCode/Medium/complete/Fira\ Code\ Medium\ Nerd\ Font\ Complete\ Mono.ttf
+       open patched-fonts/FiraCode/Regular/complete/Fira\ Code\ Regular\ Nerd\ Font\ Complete\ Mono.ttf
+       open patched-fonts/FiraCode/Retina/complete/Fira\ Code\ Retina\ Nerd\ Font\ Complete\ Mono.ttf
+       open patched-fonts/FiraCode/SemiBold/complete/Fira\ Code\ SemiBold\ Nerd\ Font\ Complete\ Mono.ttf
+       popd
+       ```
+   * Restart iTerm2, configure "Use a different font for non-ASCII text" and choose the just installed "FiraCode Nerd Font Mono" font to get the special symbols
 1. Add `~/.inputrc`
     * `cp .inputrc ~`
 1. Install bash completion for `pip`: `pip3 completion --bash > /usr/local/etc/bash_completion.d/pip`
