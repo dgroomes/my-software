@@ -79,13 +79,13 @@
 1. Install Python 3 <https://www.python.org/downloads/> 
     * `sudo pip3 install --upgrade pip`
     * Add user-installed Python packages to the `PATH` by adding this line in `.bashrc`: `export PATH="$PATH:/Users/davidgroomes/Library/Python/3.9/bin"`
-1. Install starship <https://github.com/starship/starship>
+1. Install Starship <https://github.com/starship/starship>
     * > The minimal, blazing-fast, and infinitely customizable prompt for any shell!
     * `brew install starship`
-    * Add the initialization code to your `.bashrc`. Follow the instructions in the [starship README.md](https://github.com/starship/starship#-installation).
+    * Add the initialization code to your `.bashrc`. Follow the instructions in the [Starship README.md](https://github.com/starship/starship#-installation).
       Specifically, add:
         ```
-        # starship
+        # Starship
         # https://github.com/starship/starship
         eval "$(starship init bash)"
         ```
@@ -108,7 +108,7 @@
        popd
        ```
    * Restart iTerm2, configure "Use a different font for non-ASCII text" and choose the just installed "FiraCode Nerd Font Mono" font to get the special symbols
-   * Copy over the custom starship config file:
+   * Copy over the custom Starship config file:
      * `mkdir -p ~/.config && cp starship/starship.toml ~/.config`
 1. Add `~/.inputrc`
     * `cp .inputrc ~`

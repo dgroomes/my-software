@@ -1,20 +1,26 @@
 # my-config 
 
-Personal configuration stuff.
+Personal configuration stuff including dot files, instructions and other configuration files.
 
-### macOS setup
+## Organization
 
-My log of how I've set up my Mac is in `MACOS_SETUP.md`.
+The repo is organized in the following directories:
 
-### Karabiner-Elements
+### `mac-os/`
 
-`karabiner/`
+Start here. It includes my instructions for how I like to set up my macOS computers in the file `MACOS_SETUP.md`.
 
-<https://github.com/tekezo/Karabiner-Elements>
+### `bash/`
 
-### JetBrains IDEs
+My Bash config and notes about Bash auto-completion (I always forget how to set this up!).
 
-`jetbrains/`
+### `iterm2/`
+
+My iTerm2 config.
+
+### `jetbrains/`
+
+JetBrains IDEs.
 
 Build a `settings.zip` with `./build-jetbrains-settings.sh` and then import it into your Jetbrains IDE (e.g. Intellij, 
 Android Studio) via <https://www.jetbrains.com/help/idea/sharing-your-ide-settings.html#import-export-settings>.
@@ -23,3 +29,12 @@ Conversely, to export more/updated settings *from* Intellij into this repo, refe
 instructions on exporting the settings to a `settings.zip` file. Then, unzip `settings.zip` and commit the individual 
 settings files to version control as desired (e.g. `settings/keymaps/mycustomkeymap.xml`, 
 `settings/templates/mycustomlivetemplates.xml`).
+
+### `karabiner/`
+
+My configuration for the amazing tool *Karabiner-Elements* <https://github.com/tekezo/Karabiner-Elements>.
+
+### `starship/`
+
+My config file for Starship <https://github.com/starship/starship>
+> The minimal, blazing-fast, and infinitely customizable prompt for any shell!
