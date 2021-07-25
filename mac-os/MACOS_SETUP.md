@@ -137,6 +137,7 @@
       * `git config --global user.email johndoe@example.com`
       * `git config --global pull.ff only`
       * `git config --global init.defaultBranch main`
+      * `git config --global alias.lg "log --all --graph --pretty=format:'%C(green)%ad%C(reset) %C(auto)%h%d %s %C(blue)<%aN>%C(reset)' --date=format-local:'%Y-%m-%d'"`
     * Configure `git` credentials to Github. Follow <https://help.github.com/en/github/authenticating-to-github/accessing-github-using-two-factor-authentication#using-two-factor-authentication-with-the-command-line>
     * Use credentials helper <https://help.github.com/en/github/using-git/caching-your-github-password-in-git>
       * `git config --global credential.helper osxkeychain`
