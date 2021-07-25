@@ -206,6 +206,13 @@
 1. Clone `gradle-wrapper-upgrader`
     1. `git clone https://github.com/dgroomes/gradle-wrapper-upgrader.git`
     1. Add it to the PATH
+1. Install [navi](https://github.com/denisidoro/navi)
+    1. `brew install navi`
+    1. Copy of the config files.
+       ```
+       mkdir -p ~/Library/Application\ Support/navi/cheats/mycheats
+       cp navi/*.cheat ~/Library/Application\ Support/navi/cheats/mycheats
+       ```   
     
 ### Optional
 
