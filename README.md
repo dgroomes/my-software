@@ -34,7 +34,22 @@ settings files to version control as desired (e.g. `settings/keymaps/mycustomkey
 
 My configuration for the amazing tool *Karabiner-Elements* <https://github.com/tekezo/Karabiner-Elements>.
 
+> Karabiner-Elements is a powerful utility for keyboard customization on macOS Sierra or later.
+> 
+> https://github.com/pqrs-org/Karabiner-Elements
+
+### `navi/`
+
+My [navi](https://github.com/denisidoro/navi) cheat sheets.
+
+> An interactive cheatsheet tool for the command-line.
+> 
+> https://github.com/denisidoro/navi
+
 ### `starship/`
 
-My config file for Starship <https://github.com/starship/starship>
+My config file for Starship.
+
 > The minimal, blazing-fast, and infinitely customizable prompt for any shell!
+>
+> https://github.com/starship/starship

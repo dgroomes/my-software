@@ -64,16 +64,16 @@
     * Create the directory with `mkdir ~/.config/bash`
     * `cp bash/bash-*.sh ~/.config/bash`
     * Add the following to your `.bashrc`:
-        ```
-        # Source configuration files
-        for filename in ~/.config/bash/*.sh; do
-            if [[ ! -e "$filename" ]]; then              
-              echo >&2 "Bash configuration files not found!"
-              continue
-            fi
-            . "$filename"
-        done
-        ``` 
+      ```
+      # Source configuration files
+      for filename in ~/.config/bash/*.sh; do
+          if [[ ! -e "$filename" ]]; then              
+            echo >&2 "Bash configuration files not found!"
+            continue
+          fi
+          . "$filename"
+      done
+      ``` 
 1. `brew install jq`
 1. `brew install kafkacat`
 1. Install Python 3 <https://www.python.org/downloads/> 
@@ -84,32 +84,32 @@
     * `brew install starship`
     * Add the initialization code to your `.bashrc`. Follow the instructions in the [Starship README.md](https://github.com/starship/starship#-installation).
       Specifically, add:
-        ```
-        # Starship
-        # https://github.com/starship/starship
-        eval "$(starship init bash)"
-        ```
+      ```
+      # Starship
+      # https://github.com/starship/starship
+      eval "$(starship init bash)"
+      ```
    * Do the fonts installation (Note that this uses [a neat feature of git](https://stackoverflow.com/a/52269934) that
      only downloads a specific directory of the repo):
-     * ```
-       git clone \
-         --depth 1  \
-         --filter=blob:none  \
-         --sparse \
-         https://github.com/ryanoasis/nerd-fonts.git ~/repos/opensource/nerd-fonts
-       pushd ~/repos/opensource/nerd-fonts
-       git sparse-checkout set patched-fonts/FiraCode
-       open patched-fonts/FiraCode/Bold/complete/Fira\ Code\ Bold\ Nerd\ Font\ Complete\ Mono.ttf
-       open patched-fonts/FiraCode/Light/complete/Fira\ Code\ Light\ Nerd\ Font\ Complete\ Mono.ttf
-       open patched-fonts/FiraCode/Medium/complete/Fira\ Code\ Medium\ Nerd\ Font\ Complete\ Mono.ttf
-       open patched-fonts/FiraCode/Regular/complete/Fira\ Code\ Regular\ Nerd\ Font\ Complete\ Mono.ttf
-       open patched-fonts/FiraCode/Retina/complete/Fira\ Code\ Retina\ Nerd\ Font\ Complete\ Mono.ttf
-       open patched-fonts/FiraCode/SemiBold/complete/Fira\ Code\ SemiBold\ Nerd\ Font\ Complete\ Mono.ttf
-       popd
-       ```
+     ```
+     git clone \
+       --depth 1  \
+       --filter=blob:none  \
+       --sparse \
+       https://github.com/ryanoasis/nerd-fonts.git ~/repos/opensource/nerd-fonts
+     pushd ~/repos/opensource/nerd-fonts
+     git sparse-checkout set patched-fonts/FiraCode
+     open patched-fonts/FiraCode/Bold/complete/Fira\ Code\ Bold\ Nerd\ Font\ Complete\ Mono.ttf
+     open patched-fonts/FiraCode/Light/complete/Fira\ Code\ Light\ Nerd\ Font\ Complete\ Mono.ttf
+     open patched-fonts/FiraCode/Medium/complete/Fira\ Code\ Medium\ Nerd\ Font\ Complete\ Mono.ttf
+     open patched-fonts/FiraCode/Regular/complete/Fira\ Code\ Regular\ Nerd\ Font\ Complete\ Mono.ttf
+     open patched-fonts/FiraCode/Retina/complete/Fira\ Code\ Retina\ Nerd\ Font\ Complete\ Mono.ttf
+     open patched-fonts/FiraCode/SemiBold/complete/Fira\ Code\ SemiBold\ Nerd\ Font\ Complete\ Mono.ttf
+     popd
+     ```
    * Restart iTerm2, configure "Use a different font for non-ASCII text" and choose the just installed "FiraCode Nerd Font Mono" font to get the special symbols
    * Copy over the custom Starship config file:
-     * `mkdir -p ~/.config && cp starship/starship.toml ~/.config`
+      * `mkdir -p ~/.config && cp starship/starship.toml ~/.config`
 1. Add `~/.inputrc`
     * `cp .inputrc ~`
 1. Install bash completion for `pip`: `pip3 completion --bash > /usr/local/etc/bash_completion.d/pip`
@@ -119,8 +119,8 @@
     * Install the latest version of Gradle
     * Install the latest version of Maven
     * Install `visualvm` and then configure visualvm to use the Java 8.
-      * Follow the instructions at <https://gist.github.com/gavvvr/c9891684f9ef062502d58c80903be5cc>
-      * Specifically, edit the file `~/.sdkman/candidates/visualvm/current/etc/visualvm.conf` 
+       * Follow the instructions at <https://gist.github.com/gavvvr/c9891684f9ef062502d58c80903be5cc>
+       * Specifically, edit the file `~/.sdkman/candidates/visualvm/current/etc/visualvm.conf` 
 1. Install `nvm` Node Version Manager <https://github.com/nvm-sh/nvm> and Node.js
     * Install the latest Long-Term Support version of node with `nvm install --lts`
     * Install npm completion with `npm completion > /usr/local/etc/bash_completion.d/npm`
@@ -133,57 +133,56 @@
 1. Install latest `git` and configure it
     * `brew install git`
     * Configure `git` config <https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup>
-      * `git config --global user.name "John Doe"`
-      * `git config --global user.email johndoe@example.com`
-      * `git config --global pull.ff only`
-      * `git config --global init.defaultBranch main`
-      * `git config --global alias.lg "log --all --graph --pretty=format:'%C(green)%ad%C(reset) %C(auto)%h%d %s %C(blue)<%aN>%C(reset)' --date=format-local:'%Y-%m-%d'"`
+       * `git config --global user.name "John Doe"`
+       * `git config --global user.email johndoe@example.com`
+       * `git config --global pull.ff only`
+       * `git config --global init.defaultBranch main`
+       * `git config --global alias.lg "log --all --graph --pretty=format:'%C(green)%ad%C(reset) %C(auto)%h%d %s %C(blue)<%aN>%C(reset)' --date=format-local:'%Y-%m-%d'"`
     * Configure `git` credentials to Github. Follow <https://help.github.com/en/github/authenticating-to-github/accessing-github-using-two-factor-authentication#using-two-factor-authentication-with-the-command-line>
     * Use credentials helper <https://help.github.com/en/github/using-git/caching-your-github-password-in-git>
-      * `git config --global credential.helper osxkeychain`
-      * The next time you `git push` you will get a popup. Enter your password and choose "Always allow"
+       * `git config --global credential.helper osxkeychain`
+       * The next time you `git push` you will get a popup. Enter your password and choose "Always allow"
 1. Install Docker <https://hub.docker.com/editions/community/docker-ce-desktop-mac/>
     * Then, install Bash completion for `docker` and `docker-compose` by following [the docs](https://docs.docker.com/docker-for-mac/#bash). It boils down to:
-     ```
-     ln -s /Applications/Docker.app/Contents/Resources/etc/docker.bash-completion /usr/local/etc/bash_completion.d/docker
-     ln -s /Applications/Docker.app/Contents/Resources/etc/docker-compose.bash-completion /usr/local/etc/bash_completion.d/docker-compose
-     ```
+      ```
+      ln -s /Applications/Docker.app/Contents/Resources/etc/docker.bash-completion /usr/local/etc/bash_completion.d/docker
+      ln -s /Applications/Docker.app/Contents/Resources/etc/docker-compose.bash-completion /usr/local/etc/bash_completion.d/docker-compose
+      ```
 1. Install Karabiner-Elements from source <https://github.com/pqrs-org/Karabiner-Elements> and configure it with.
     1. First, we must configure Xcode command line tools correctly. Follow these instructions <https://stackoverflow.com/a/61725799>
     1. Then, install `xcodegen` from source <https://github.com/yonaskolb/XcodeGen>:
-     ```
-     git clone --depth 1 https://github.com/yonaskolb/XcodeGen.git
-     cd XcodeGen
-     make install
-     ```
-    1. 
-     ```
-     brew install xz
-     brew install cmake
-     ```
+       ```
+       git clone --depth 1 https://github.com/yonaskolb/XcodeGen.git
+       cd XcodeGen
+       make install
+       ```
+    1. ```
+       brew install xz
+       brew install cmake
+       ```
     1. Then, install Karabiner Elements
-     ```
-     git clone --depth 1 https://github.com/pqrs-org/Karabiner-Elements.git
-     cd Karabiner-Elements
-     git submodule update --init --recursive --depth 1
-     make package
-     ``` 
+       ```
+       git clone --depth 1 https://github.com/pqrs-org/Karabiner-Elements.git
+       cd Karabiner-Elements
+       git submodule update --init --recursive --depth 1
+       make package
+       ``` 
     1. Then, configure it with my custom settings
-     ```
-     mkdir -p ~/.config/karabiner/assets/complex_modifications
-     cp karabiner/karabiner.json ~/.config/karabiner
-     cp karabiner/assets/complex_modifications/* ~/.config/karabiner/assets/complex_modifications
-     ```
+       ```
+       mkdir -p ~/.config/karabiner/assets/complex_modifications
+       cp karabiner/karabiner.json ~/.config/karabiner
+       cp karabiner/assets/complex_modifications/* ~/.config/karabiner/assets/complex_modifications
+       ```
 1. Install Insomnia <https://insomnia.rest/download/>
 1. Install Golang <https://golang.org/dl/>
     * Create the go home dir `mkdir -p ~/go`
     * Make a best attempt at configuring the Go environment variables (reference <https://stackoverflow.com/questions/7970390/what-should-be-the-values-of-gopath-and-goroot>) 
-        * Add to `~/.bashrc`: `export GOPATH="$HOME/go"`
-        * Add to `~/.bashrc`: `export PATH="$PATH:$GOPATH/bin"`
+       * Add to `~/.bashrc`: `export GOPATH="$HOME/go"`
+       * Add to `~/.bashrc`: `export PATH="$PATH:$GOPATH/bin"`
     * Download and install Bash completion for `go` from <https://github.com/posener/complete/tree/master>. Warning, the
       branching is a little confusing. I'm not sure what the latest stable version of the software is.
-        * `go get -u github.com/posener/complete/gocomplete` (I couldn't get `go get -u github.com/posener/complete/v2/gocomplete` to work)
-        * `gocomplete -install` (how does this work?)
+       * `go get -u github.com/posener/complete/gocomplete` (I couldn't get `go get -u github.com/posener/complete/v2/gocomplete` to work)
+       * `gocomplete -install` (how does this work?)
 1. Install Bash completion for Gradle
     * `curl https://raw.githubusercontent.com/gradle/gradle-completion/7b084bd68c79be27b8200c7a25e6d00c9c65f9a9/gradle-completion.bash -o /usr/local/etc/bash_completion.d/gradle-completion.bash`
 1. Install `libpq` so we can get `psql`
@@ -197,10 +196,10 @@
         * For example, append something like `export PATH="$PATH:~/repos/opensource/jmeter/bin"` to your `.bashrc`
 1. Install fzf <https://github.com/junegunn/fzf>
     1. Install it using the git option: <https://github.com/junegunn/fzf/tree/0db65c22d369026a0a9af079bfa7e8110e850ec9#using-git>
-      1. Specifically, execute `git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf` and `~/.fzf/install`
-      1. When it prompts for *Do you want to enable fuzzy auto-completion?* Answer yes
-      1. When it prompts for *Do you want to enable key bindings?* Answer yes
-      1. When it prompts for *Do you want to update your shell configuration files?* Answer yes
+        1. Specifically, execute `git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf` and `~/.fzf/install`
+        1. When it prompts for *Do you want to enable fuzzy auto-completion?* Answer yes
+        1. When it prompts for *Do you want to enable key bindings?* Answer yes
+        1. When it prompts for *Do you want to update your shell configuration files?* Answer yes
 1. Install `gh` https://github.com/cli/cli
     1. `brew install gh`
     1. Use it for the first time and log in.
@@ -214,34 +213,32 @@
 1. Install MongoDB *Community Server*
     1. Download from <https://www.mongodb.com/try/download/community>.
     1. Extract and put somewhere on the PATH.
-         * e.g. symlink it to `~/dev/mongodb` and then add to `.bashrc` the following: `export PATH="$PATH:~/dev/mongodb/bin"`  
+        * e.g. symlink it to `~/dev/mongodb` and then add to `.bashrc` the following: `export PATH="$PATH:~/dev/mongodb/bin"`  
     1. Create a base directory that we will use by convention for the MongoDB data files and logs:
-         * `sudo mkdir /usr/local/mongodb`
+        * `sudo mkdir /usr/local/mongodb`
     1. Assign ownership to the normal user so that our convenience scripts defined in `bash/bash-functions.sh` will work
        without sudo.
-         * `sudo chown -R $(whoami) /usr/local/mongodb`
+        * `sudo chown -R $(whoami) /usr/local/mongodb`
     1. Also, download and install the [*The MongoDB Database Tools*](https://docs.mongodb.com/database-tools/installation/installation-macos/)
-         * e.g. symlink it to `~/dev/mongodb-database-tools` and then add to `.bashrc` the following: `export PATH="$PATH:~/dev/mongodb-database-tools/bin"`
+        * e.g. symlink it to `~/dev/mongodb-database-tools` and then add to `.bashrc` the following: `export PATH="$PATH:~/dev/mongodb-database-tools/bin"`
     1. Also, consider downloading and installing the beta (but pretty feature-ful and cool) *new* Mongo shell called `mongosh`
-         * Download from the [GitHub Releases page for the project](https://github.com/mongodb-js/mongosh/releases)
-         * e.g. symlink it to `~/dev/mongosh` and then add to `.bashrc` the following: `export PATH="$PATH:~/dev/mongosh/bin"`
+        * Download from the [GitHub Releases page for the project](https://github.com/mongodb-js/mongosh/releases)
+        * e.g. symlink it to `~/dev/mongosh` and then add to `.bashrc` the following: `export PATH="$PATH:~/dev/mongosh/bin"`
 1. Install Rust
-   1. Install `rustup` using the instructions in the official [rust-lang site](https://www.rust-lang.org/tools/install). 
-   1. Add to `~/.config/bash/bash-env.sh`: `source ~/.cargo/env"`
-      * This is a slightly clever way to configure the `PATH`. It comes installed with Rust so let's use it (idiomatic).
-   1. Install `rustup` Bash autocompletion:
-      * `rustup completions bash > "$BASH_COMPLETION_COMPAT_DIR/rustup"`
-   1. Install `cargo` Bash autocompletion:
-      * Note: the official Rust installation uses different mechanisms for Bash completion between `rustup`, `cargo`, etc.
-        Keep an eye out for if/when this improves some day (fingers crossed!).
-      * Add to `~/.config/bash/bash-env.sh`: `source "$(rustc --print sysroot)/etc/bash_completion.d/cargo"`
+    1. Install `rustup` using the instructions in the official [rust-lang site](https://www.rust-lang.org/tools/install). 
+    1. Add to `~/.config/bash/bash-env.sh`: `source ~/.cargo/env"`
+        * This is a slightly clever way to configure the `PATH`. It comes installed with Rust so let's use it (idiomatic).
+    1. Install `rustup` Bash autocompletion:
+        * `rustup completions bash > "$BASH_COMPLETION_COMPAT_DIR/rustup"`
+    1. Install `cargo` Bash autocompletion:
+        * Note: the official Rust installation uses different mechanisms for Bash completion between `rustup`, `cargo`, etc.
+         Keep an eye out for if/when this improves some day (fingers crossed!).
+        * Add to `~/.config/bash/bash-env.sh`: `source "$(rustc --print sysroot)/etc/bash_completion.d/cargo"`
 1. Rust-based tools
-   1. There is a nascent but rich eco-system of Rust-based command-line tools. Many of them are substitutes for traditional
+    * There is a nascent but rich eco-system of Rust-based command-line tools. Many of them are substitutes for traditional
       commands like `ls`, `du`, and `cat` but they bring a bevy of extra features. Best of all, they are fast. Keep track
       of this "re-implemented in Rust" trend and follow this great article [*Rewritten in Rust: Modern Alternatives of Command-Line Tools*](https://zaiste.net/posts/shell-commands-rust/)
       on <https://zaiste.net/>.
-      * In particular, take a serious look at <https://github.com/starship/starship>
-        * > The minimal, blazing-fast, and infinitely customizable prompt for any shell! 
 1. Install [`gron`](https://github.com/tomnomnom/gron)
    > Make JSON greppable!
-   1. `brew install gron`
+    1. `brew install gron`
