@@ -134,10 +134,16 @@
     * `brew install git`
     * Configure `git` config <https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup>
        * `git config --global user.name "John Doe"`
+          * But change the name
        * `git config --global user.email johndoe@example.com`
+          * But change the address
        * `git config --global pull.ff only`
+          * When I pull, I don't want it to create a merge if I am behind the remote.
        * `git config --global init.defaultBranch main`
        * `git config --global alias.lg "log --all --graph --pretty=format:'%C(green)%ad%C(reset) %C(auto)%h%d %s %C(blue)<%aN>%C(reset)' --date=format-local:'%Y-%m-%d'"`
+          * Create a cool alternative to `git log` named `git lg`
+       * `git config --global core.editor subl`
+          * Use Sublime Text as the editor instead of Vim. This is for things things like git rebase and amend operations.  
     * Configure `git` credentials to Github. Follow <https://help.github.com/en/github/authenticating-to-github/accessing-github-using-two-factor-authentication#using-two-factor-authentication-with-the-command-line>
     * Use credentials helper <https://help.github.com/en/github/using-git/caching-your-github-password-in-git>
        * `git config --global credential.helper osxkeychain`
