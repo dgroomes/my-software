@@ -89,27 +89,27 @@
       # https://github.com/starship/starship
       eval "$(starship init bash)"
       ```
-   * Do the fonts installation (Note that this uses [a neat feature of git](https://stackoverflow.com/a/52269934) that
-     only downloads a specific directory of the repo):
-     ```
-     git clone \
-       --depth 1  \
-       --filter=blob:none  \
-       --sparse \
-       https://github.com/ryanoasis/nerd-fonts.git ~/repos/opensource/nerd-fonts
-     pushd ~/repos/opensource/nerd-fonts
-     git sparse-checkout set patched-fonts/FiraCode
-     open patched-fonts/FiraCode/Bold/complete/Fira\ Code\ Bold\ Nerd\ Font\ Complete\ Mono.ttf
-     open patched-fonts/FiraCode/Light/complete/Fira\ Code\ Light\ Nerd\ Font\ Complete\ Mono.ttf
-     open patched-fonts/FiraCode/Medium/complete/Fira\ Code\ Medium\ Nerd\ Font\ Complete\ Mono.ttf
-     open patched-fonts/FiraCode/Regular/complete/Fira\ Code\ Regular\ Nerd\ Font\ Complete\ Mono.ttf
-     open patched-fonts/FiraCode/Retina/complete/Fira\ Code\ Retina\ Nerd\ Font\ Complete\ Mono.ttf
-     open patched-fonts/FiraCode/SemiBold/complete/Fira\ Code\ SemiBold\ Nerd\ Font\ Complete\ Mono.ttf
-     popd
-     ```
-   * Restart iTerm2, configure "Use a different font for non-ASCII text" and choose the just installed "FiraCode Nerd Font Mono" font to get the special symbols
-   * Copy over the custom Starship config file:
-      * `mkdir -p ~/.config && cp starship/starship.toml ~/.config`
+    * Do the fonts installation (Note that this uses [a neat feature of git](https://stackoverflow.com/a/52269934) that
+      only downloads a specific directory of the repo):
+      ```
+      git clone \
+        --depth 1  \
+        --filter=blob:none  \
+        --sparse \
+        https://github.com/ryanoasis/nerd-fonts.git ~/repos/opensource/nerd-fonts
+      pushd ~/repos/opensource/nerd-fonts
+      git sparse-checkout set patched-fonts/FiraCode
+      open patched-fonts/FiraCode/Bold/complete/Fira\ Code\ Bold\ Nerd\ Font\ Complete\ Mono.ttf
+      open patched-fonts/FiraCode/Light/complete/Fira\ Code\ Light\ Nerd\ Font\ Complete\ Mono.ttf
+      open patched-fonts/FiraCode/Medium/complete/Fira\ Code\ Medium\ Nerd\ Font\ Complete\ Mono.ttf
+      open patched-fonts/FiraCode/Regular/complete/Fira\ Code\ Regular\ Nerd\ Font\ Complete\ Mono.ttf
+      open patched-fonts/FiraCode/Retina/complete/Fira\ Code\ Retina\ Nerd\ Font\ Complete\ Mono.ttf
+      open patched-fonts/FiraCode/SemiBold/complete/Fira\ Code\ SemiBold\ Nerd\ Font\ Complete\ Mono.ttf
+      popd
+      ```
+    * Restart iTerm2, configure "Use a different font for non-ASCII text" and choose the just installed "FiraCode Nerd Font Mono" font to get the special symbols
+    * Copy over the custom Starship config file:
+       * `mkdir -p ~/.config && cp starship/starship.toml ~/.config`
 1. Add `~/.inputrc`
     * `cp .inputrc ~`
 1. Install bash completion for `pip`: `pip3 completion --bash > /usr/local/etc/bash_completion.d/pip`
@@ -142,6 +142,7 @@
        * `git config --global init.defaultBranch main`
        * `git config --global alias.lg "log --all --graph --pretty=format:'%C(green)%ad%C(reset) %C(auto)%h%d %s %C(blue)<%aN>%C(reset)' --date=format-local:'%Y-%m-%d'"`
           * Create a cool alternative to `git log` named `git lg`
+       * `git config --global alias.st "status --short --branch"`
        * `git config --global core.editor subl`
           * Use Sublime Text as the editor instead of Vim. This is for things things like git rebase and amend operations.  
     * Configure `git` credentials to Github. Follow <https://help.github.com/en/github/authenticating-to-github/accessing-github-using-two-factor-authentication#using-two-factor-authentication-with-the-command-line>

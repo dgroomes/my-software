@@ -29,3 +29,7 @@ detect_files = [# Out-of-the box, "settings.gradle.kts" and "settings.gradle" fi
 [kotlin]
 disabled = true
 
+# Make it clear when the last command exited with a non-zero status code (which indicates an error)
+# Use the built-in "status" plugin: https://starship.rs/config/#status
+[status]
+disabled = false
