@@ -1,0 +1,6 @@
+# This is a configuration file for markdownlint-cli
+
+# Configuration docs: https://github.com/DavidAnson/markdownlint#optionsconfig
+comment: Using my custom lint rules
+default: false # Disable all rules by default
+dgroomes-list-alignment: true # Enable the custom rule

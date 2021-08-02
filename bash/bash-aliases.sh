@@ -12,3 +12,7 @@ alias gcmp="git checkout main && git pull"
 # It's a common convention to create an alias named "ll" to execute the long-hand options in "ls", often "ls -ls".
 # Let's use "exa" (https://github.com/ogham/exa) instead.
 alias ll="exa -la"
+
+# Run the markdownlint-cli tool (https://github.com/igorshubovych/markdownlint-cli) against a file or files. The file(s)
+# must be given as an argument after the alias.
+alias mdlint="markdownlint --config ~/repos/personal/my-config/markdownlint/.markdownlint-cli.yml --rules lint-rules"
