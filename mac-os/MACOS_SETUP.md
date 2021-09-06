@@ -143,8 +143,9 @@
        * `git config --global alias.lg "log --all --graph --pretty=format:'%C(green)%ad%C(reset) %C(auto)%h%d %s %C(blue)<%aN>%C(reset)' --date=format-local:'%Y-%m-%d'"`
           * Create a cool alternative to `git log` named `git lg`
        * `git config --global alias.st "status --short --branch"`
-       * `git config --global core.editor subl`
-          * Use Sublime Text as the editor instead of Vim. This is for things things like git rebase and amend operations.  
+       * `git config --global core.editor "subl -n -w"`
+          * Use Sublime Text as the editor instead of Vim. This is for things things like git rebase and amend operations.
+            See [this nice GitHub doc](https://docs.github.com/en/get-started/getting-started-with-git/associating-text-editors-with-git) about configuring external editors. 
     * Configure `git` credentials to Github. Follow <https://help.github.com/en/github/authenticating-to-github/accessing-github-using-two-factor-authentication#using-two-factor-authentication-with-the-command-line>
     * Use credentials helper <https://help.github.com/en/github/using-git/caching-your-github-password-in-git>
        * `git config --global credential.helper osxkeychain`
