@@ -182,15 +182,15 @@
        cp karabiner/assets/complex_modifications/* ~/.config/karabiner/assets/complex_modifications
        ```
 1. Install Insomnia <https://insomnia.rest/download/>
-1. Install Golang <https://golang.org/dl/>
-    * Create the go home dir `mkdir -p ~/go`
-    * Make a best attempt at configuring the Go environment variables (reference <https://stackoverflow.com/questions/7970390/what-should-be-the-values-of-gopath-and-goroot>) 
-       * Add to `~/.bashrc`: `export GOPATH="$HOME/go"`
-       * Add to `~/.bashrc`: `export PATH="$PATH:$GOPATH/bin"`
-    * Download and install Bash completion for `go` from <https://github.com/posener/complete/tree/master>. Warning, the
-      branching is a little confusing. I'm not sure what the latest stable version of the software is.
-       * `go get -u github.com/posener/complete/gocomplete` (I couldn't get `go get -u github.com/posener/complete/v2/gocomplete` to work)
-       * `gocomplete -install` (how does this work?)
+1. Install Go <https://golang.org/dl/>
+    * Create the go home dir `mkdir -p ~/repos/go`
+    * Make a best attempt at configuring the Go environment variables (
+      reference <https://stackoverflow.com/questions/7970390/what-should-be-the-values-of-gopath-and-goroot>)
+        * Add to `~/.bashrc`: `export GOPATH="$HOME/repos/go"`
+        * Add to `~/.bashrc`: `export PATH="$PATH:$GOPATH/bin"`
+    * Download and install Bash completion for `go` from <https://github.com/posener/complete/tree/master> (You might
+      notice that the default branch is "v1" but this is only for legacy reasons. Read the project's README for more
+      info.)
 1. Install Bash completion for Gradle
     * `curl https://raw.githubusercontent.com/gradle/gradle-completion/7b084bd68c79be27b8200c7a25e6d00c9c65f9a9/gradle-completion.bash -o /usr/local/etc/bash_completion.d/gradle-completion.bash`
 1. Install `libpq` so we can get `psql`
