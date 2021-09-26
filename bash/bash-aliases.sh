@@ -1,6 +1,10 @@
 # Docker aliases
 alias dcl="docker container ls"
-alias dcuv="docker-compose up --detach --renew-anon-volumes"
+# This is what I'll call a "hard restart" version of the "up" command. It forces the containers to be created fresh
+# instead of being reused and it does the same for anonymous volumes. This is very convenient for the development process
+# where you frequently want to throw everything away and start with a clean slate. I use this for stateful workloads like
+# Postgres and Kafka.
+alias dcuf="docker-compose up --detach --force-recreate --renew-anon-volumes"
 alias dcd="docker-compose down --remove-orphans"
 
 # Misc aliases
