@@ -20,3 +20,7 @@ alias ll="exa -la"
 # Run the markdownlint-cli tool (https://github.com/igorshubovych/markdownlint-cli) against a file or files. The file(s)
 # must be given as an argument after the alias.
 alias mdlint="markdownlint --config ~/repos/personal/my-config/markdownlint/.markdownlint-cli.yml --rules lint-rules"
+
+# Use ripgrep to find files
+# See https://github.com/BurntSushi/ripgrep/issues/193#issuecomment-513201558
+alias rgf='rg --files | rg'
