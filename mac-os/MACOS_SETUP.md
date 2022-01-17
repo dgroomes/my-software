@@ -150,12 +150,14 @@
     * Use credentials helper <https://help.github.com/en/github/using-git/caching-your-github-password-in-git>
        * `git config --global credential.helper osxkeychain`
        * The next time you `git push` you will get a popup. Enter your password and choose "Always allow"
-1. Install Docker <https://hub.docker.com/editions/community/docker-ce-desktop-mac/>
+1. Install Docker Desktop <https://hub.docker.com/editions/community/docker-ce-desktop-mac/>
     * Then, install Bash completion for `docker` and `docker-compose` by following [the docs](https://docs.docker.com/docker-for-mac/#bash). It boils down to:
       ```
       ln -s /Applications/Docker.app/Contents/Resources/etc/docker.bash-completion /usr/local/etc/bash_completion.d/docker
       ln -s /Applications/Docker.app/Contents/Resources/etc/docker-compose.bash-completion /usr/local/etc/bash_completion.d/docker-compose
       ```
+    * Add to `~/.config/bash/bash-env.sh`: `export DOCKER_SCAN_SUGGEST=false` to disable the "Use 'docker scan'" message
+      on every build. For reference, see [this GitHub issue discussion](https://github.com/docker/scan-cli-plugin/issues/149#issuecomment-823969364).
 1. Install Karabiner-Elements from source <https://github.com/pqrs-org/Karabiner-Elements> and configure it with.
     1. First, we must configure Xcode command line tools correctly. Follow these instructions <https://stackoverflow.com/a/61725799>
     1. Then, install `xcodegen` from source <https://github.com/yonaskolb/XcodeGen>:
