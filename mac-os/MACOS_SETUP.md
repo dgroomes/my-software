@@ -260,7 +260,9 @@
    > Make JSON greppable!
     1. `brew install gron`
 1. Install and configure linting for Markdown
-   1. Install [`markdownlint-cli`](https://github.com/igorshubovych/markdownlint-cli):
-      * `npm install markdownlint-cli --global`
+   1. Install [`markdownlint-cli2`](https://github.com/DavidAnson/markdownlint-cli2):
+      * `npm install markdownlint-cli2 --global`
    1. Clone <https://github.com/dgroomes/markdownlint-playground>
+   1. Build the `lint-rules/` package
+      * `cd lint-rules; npm install -g`
    1. Use the alias `mdlint` to lint a file. See earlier instructions to configure Bash with this and other aliases.
