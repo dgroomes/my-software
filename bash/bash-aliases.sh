@@ -15,7 +15,10 @@ alias gcmp="git checkout main && git pull"
 
 # It's a common convention to create an alias named "ll" to execute the long-hand options in "ls", often "ls -ls".
 # Let's use "exa" (https://github.com/ogham/exa) instead.
-alias ll="exa -la"
+alias ll="exa --long --git --git-ignore --icons"
+# Similarly, "la" is a convention for listing "all" files which will show dot files.
+alias la="exa --long --git --all --icons"
+alias tree="exa --tree --git-ignore --icons"
 
 # Run the markdownlint-cli2 tool (https://github.com/DavidAnson/markdownlint-cli2) using my custom rules. The glob
 # pattern must be given as an argument after the alias.

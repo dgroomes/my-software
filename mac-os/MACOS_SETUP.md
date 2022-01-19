@@ -256,6 +256,8 @@
       commands like `ls`, `du`, and `cat` but they bring a bevy of extra features. Best of all, they are fast. Keep track
       of this "re-implemented in Rust" trend and follow this great article [*Rewritten in Rust: Modern Alternatives of Command-Line Tools*](https://zaiste.net/posts/shell-commands-rust/)
       on <https://zaiste.net/>.
+    * `exa` might be my favorite. Install it with the following command.
+    * `cargo install exa`
 1. Install [`gron`](https://github.com/tomnomnom/gron)
    > Make JSON greppable!
     1. `brew install gron`
