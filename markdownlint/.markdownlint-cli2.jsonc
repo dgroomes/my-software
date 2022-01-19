@@ -7,6 +7,12 @@
     // My custom rule. See https://github.com/dgroomes/markdownlint-playground/tree/main/lint-rules
     "lint-rules/src/ListAlignmentRule"
   ],
+  "outputFormatters": [
+    [
+      // Use the official pretty formatter for markdownlint-cli2: https://github.com/DavidAnson/markdownlint-cli2/tree/main/formatter-pretty
+      "markdownlint-cli2-formatter-pretty"
+    ]
+  ],
   "config": { // Configuration docs: https://github.com/DavidAnson/markdownlint#optionsconfig
 
     "comment": "Using a combination of out-of-the-box and custom lint rules that match my preferred style",

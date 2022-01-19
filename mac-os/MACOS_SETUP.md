@@ -262,6 +262,8 @@
 1. Install and configure linting for Markdown
    1. Install [`markdownlint-cli2`](https://github.com/DavidAnson/markdownlint-cli2):
       * `npm install markdownlint-cli2 --global`
+   1. Install [`markdownlint-cli2-formatter-pretty`](https://github.com/DavidAnson/markdownlint-cli2/tree/main/formatter-pretty)
+      * `npm install markdownlint-cli2-formatter-pretty --global`
    1. Clone <https://github.com/dgroomes/markdownlint-playground>
    1. Build the `lint-rules/` package
       * `cd lint-rules; npm install -g`
