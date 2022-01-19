@@ -13,12 +13,15 @@
       "markdownlint-cli2-formatter-pretty"
     ]
   ],
-  "config": { // Configuration docs: https://github.com/DavidAnson/markdownlint#optionsconfig
+  "config": { // 'markdownlint' Configuration docs: https://github.com/DavidAnson/markdownlint#optionsconfig
 
-    "comment": "Using a combination of out-of-the-box and custom lint rules that match my preferred style",
-    "default": false, // Disable all rules, Instead, the rules be enabled explicitly. See below.
+    // In this markdownlint configuration, I'm using a combination of out-of-the-box and custom lint rules that match
+    // my preferred style. It starts by disabling all rules and then explicitly opting into those I care about.
+    //
+    // For reference, see the exhaustive document of all markdown lint rules: https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md
 
-    // Rules docs: https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md
+    "default": false,
+
     "dgroomes-list-alignment": true, // My custom rule. See https://github.com/dgroomes/markdownlint-playground/tree/main/lint-rules
     "MD001": true, // "Heading levels should only increment by one level at a time"
     "MD041": true, // "First line in a file should be a top-level heading"

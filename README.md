@@ -18,9 +18,17 @@ My Bash config and notes about Bash auto-completion (I always forget how to set 
 
 My iTerm2 config.
 
+> iTerm2 is a terminal emulator for macOS that does amazing things.
+> 
+> -- <cite>https://iterm2.com</cite>
+
 ### `jetbrains/`
 
-JetBrains IDEs.
+My configuration for JetBrains IDEs.
+
+> Essential tools for software developers and teams
+> 
+> <cite>https://www.jetbrains.com</cite>
 
 Build a `settings.zip` with `./build-jetbrains-settings.sh` and then import it into your Jetbrains IDE (e.g. Intellij, 
 Android Studio) via <https://www.jetbrains.com/help/idea/sharing-your-ide-settings.html#import-export-settings>.
@@ -36,7 +44,7 @@ My configuration for the amazing tool *Karabiner-Elements* <https://github.com/t
 
 > Karabiner-Elements is a powerful utility for keyboard customization on macOS Sierra or later.
 > 
-> https://github.com/pqrs-org/Karabiner-Elements
+> -- <cite>https://github.com/pqrs-org/Karabiner-Elements</cite>
 
 ### `navi/`
 
@@ -44,7 +52,7 @@ My [navi](https://github.com/denisidoro/navi) cheat sheets.
 
 > An interactive cheatsheet tool for the command-line.
 > 
-> https://github.com/denisidoro/navi
+> -- <cite>https://github.com/denisidoro/navi</cite>
 
 ### `starship/`
 
@@ -52,4 +60,16 @@ My config file for Starship.
 
 > The minimal, blazing-fast, and infinitely customizable prompt for any shell!
 >
-> https://github.com/starship/starship
+> -- <cite>https://github.com/starship/starship</cite>
+
+### `markdownlint/`
+
+My configuration for `markdownlint` and `markdownlint-cli2`. 
+
+> A Node.js style checker and lint tool for Markdown/CommonMark files.
+> 
+> -- <cite>https://github.com/DavidAnson/markdownlint</cite>
+
+> A fast, flexible, configuration-based command-line interface for linting Markdown/CommonMark files with the markdownlint library
+> 
+> -- <cite>https://github.com/DavidAnson/markdownlint-cli2</cite>
