@@ -17,7 +17,7 @@ alias gcmp="git checkout main && git pull"
 # Let's use "exa" (https://github.com/ogham/exa) instead.
 alias ll="exa -la"
 
-# Run the markdownlint-cli2 tool (https://github.com/igorshubovych/markdownlint-cli) using my custom rules. The glob
+# Run the markdownlint-cli2 tool (https://github.com/DavidAnson/markdownlint-cli2) using my custom rules. The glob
 # pattern must be given as an argument after the alias.
 alias mdlint="markdownlint-cli2-config ~/repos/personal/my-config/markdownlint/.markdownlint-cli2.jsonc"
 
