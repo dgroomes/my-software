@@ -18,6 +18,9 @@ alias gcmp="git checkout main && git pull"
 alias ll="exa --long --git --git-ignore --icons"
 # Similarly, "la" is a convention for listing "all" files which will show dot files.
 alias la="exa --long --git --all --icons"
+# 't' for tree. Limit the maximum depth
+alias lt="exa --tree --git --git-ignore --icons --level 2"
+# Full tree. Include everything and no limits on depth.
 alias tree="exa --tree --git-ignore --icons"
 
 # Run the markdownlint-cli2 tool (https://github.com/DavidAnson/markdownlint-cli2) using my custom rules. The glob

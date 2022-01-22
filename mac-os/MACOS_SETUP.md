@@ -220,8 +220,8 @@
     1. `brew install navi`
     1. Copy of the config files.
        ```
-       mkdir -p ~/Library/Application\ Support/navi/cheats/mycheats
-       cp navi/*.cheat ~/Library/Application\ Support/navi/cheats/mycheats
+       mkdir -p "$HOME/Library/Application Support/navi/cheats/mycheats"
+       cp navi/*.cheat "$HOME/Library/Application Support/navi/cheats/mycheats"
        ```   
     
 ### Optional
