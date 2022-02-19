@@ -1,4 +1,5 @@
 # Docker aliases
+alias d="docker"
 alias dcl="docker container ls"
 # This is what I'll call a "hard restart" version of the "up" command. It forces the containers to be created fresh
 # instead of being reused and it does the same for anonymous volumes. This is very convenient for the development process
@@ -30,3 +31,6 @@ alias mdlint="markdownlint-cli2-config ~/repos/personal/my-config/markdownlint/.
 # Use ripgrep to find files
 # See https://github.com/BurntSushi/ripgrep/issues/193#issuecomment-513201558
 alias rgf='rg --files | rg'
+
+# Gradle
+alias gw="./gradlew"

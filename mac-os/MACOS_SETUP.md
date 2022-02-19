@@ -156,6 +156,17 @@
       ln -s /Applications/Docker.app/Contents/Resources/etc/docker.bash-completion /usr/local/etc/bash_completion.d/docker
       ln -s /Applications/Docker.app/Contents/Resources/etc/docker-compose.bash-completion /usr/local/etc/bash_completion.d/docker-compose
       ```
+    * Apply the Bash completion to the `d` alias (the alias was defined in the `bash-aliases.sh` script) with the
+      following command.
+    * ```bash
+      cat << EOF > "$BASH_COMPLETION_COMPAT_DIR/d"
+          # This is a neat trick to apply Bash completion to an aliased version of a command.
+          # You need to know the location of the Bash completion script and the exact 'complete ...' command that's
+          # used to apply it. See https://unix.stackexchange.com/a/685829/215204
+          source "$BASH_COMPLETION_COMPAT_DIR/docker"
+          complete -F _docker d
+      EOF
+      ```
     * Add to `~/.config/bash/bash-env.sh`: `export DOCKER_SCAN_SUGGEST=false` to disable the "Use 'docker scan'" message
       on every build. For reference, see [this GitHub issue discussion](https://github.com/docker/scan-cli-plugin/issues/149#issuecomment-823969364).
 1. Install Karabiner-Elements from source <https://github.com/pqrs-org/Karabiner-Elements> and configure it with.
@@ -195,6 +206,17 @@
       info.)
 1. Install Bash completion for Gradle
     * `curl https://raw.githubusercontent.com/gradle/gradle-completion/7b084bd68c79be27b8200c7a25e6d00c9c65f9a9/gradle-completion.bash -o /usr/local/etc/bash_completion.d/gradle-completion.bash`
+    * Apply the Bash completion to the `gw` alias (the alias was defined in the `bash-aliases.sh` script) with the
+      following command.
+    * ```bash
+      cat << EOF > "$BASH_COMPLETION_COMPAT_DIR/gw"
+          # This is a neat trick to apply Bash completion to an aliased version of a command.
+          # You need to know the location of the Bash completion script and the exact 'complete ...' command that's
+          # used to apply it. See https://unix.stackexchange.com/a/685829/215204
+          source "$BASH_COMPLETION_COMPAT_DIR/gradle-completion.bash"
+          complete -F _gradle gw
+      EOF
+      ```
 1. Install `libpq` so we can get `psql`
     * Follow directions at <https://blog.timescale.com/tutorials/how-to-install-psql-on-mac-ubuntu-debian-windows/>
     * `brew install libpq`

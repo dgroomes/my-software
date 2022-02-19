@@ -29,15 +29,15 @@ v2 is the new version. It contains a large amount of built-in completions for a 
 
 The relevant files are: 
 
-* `/usr/local/etc/profile.d/bash_completion.sh`. This gets called from `.bash_profile`. It symlinks to `../../Cellar/bash-completion@2/2.10/etc/profile.d/bash_completion.sh`
-* `/usr/local/Cellar/bash-completion@2/2.10/etc/profile.d/bash_completion.sh` This is the configuration file hook. It 
+* `/usr/local/etc/profile.d/bash_completion.sh`. This gets called from `.bash_profile`. It symlinks to `../../Cellar/bash-completion@2/2.11/etc/profile.d/bash_completion.sh`
+* `/usr/local/Cellar/bash-completion@2/2.11/etc/profile.d/bash_completion.sh` This is the configuration file hook. It 
   loads bash-completion.
-* `/usr/local/Cellar/bash-completion@2/2.10/share/bash-completion/bash_completion` This is the bash-configuration 
+* `/usr/local/Cellar/bash-completion@2/2.11/share/bash-completion/bash_completion` This is the bash-completion 
   program itself
-* `/usr/local/share/bash-completion/bash_completion` what is this? What is the point? Its contents are identical to
-  `/usr/local/Cellar/bash-completion@2/2.10/share/bash-completion/bash_completion` and it is not a symlink.
+* `/usr/local/share/bash-completion/bash_completion` this symlinks to the bash-completion program (`/usr/local/Cellar/bash-completion@2/2.11/share/bash-completion/bash_completion`)
 
 The environment variable `BASH_COMPLETION_COMPAT_DIR` is a compatibility option to enable `bash-completion v2` to load
 third-party completion scripts that were designed in the era of `bash-completion v1` (at least that's how I understand 
 it). For example, set `BASH_COMPLETION_COMPAT_DIR="/usr/local/etc/bash_completion.d"` if you want to load those 
-completions. (Where do third-party completion scripts go for v2?)
+completions. (Where are third-party (non-bundled) completion scripts supposed to go in the v2 era? Confusingly I think
+they are supposed to go in the "compat" directory. Shouldn't they have a proper–rather, intentional–directory?)
