@@ -9,6 +9,10 @@
 git checkout <branch>
 $ branch: git branch | awk '{print $NF}'
 
+# Prune local tracking branches
+; From this great StackOverflow answer https://stackoverflow.com/a/17029936
+git fetch -p ; git branch -r | awk '{print $1}' | egrep -v -f /dev/fd/0 <(git branch -vv | grep origin) | awk '{print $1}' | xargs git branch -d
+
 
 % json, yaml
 
