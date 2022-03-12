@@ -11,6 +11,7 @@
     <keyboard-shortcut first-keystroke="meta f4" />
     <keyboard-shortcut first-keystroke="meta w" />
   </action>
+  <action id="ContextHelp" />
   <action id="EditorCodeBlockEnd">
     <keyboard-shortcut first-keystroke="meta alt close_bracket" />
   </action>
@@ -55,4 +56,8 @@
     <keyboard-shortcut first-keystroke="shift ctrl alt equals" />
     <keyboard-shortcut first-keystroke="shift ctrl alt add" />
   </action>
+  <action id="ToggleBookmark">
+    <keyboard-shortcut first-keystroke="meta f11" />
+  </action>
+  <action id="ToggleBookmarkWithMnemonic" />
 </keymap>
