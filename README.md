@@ -221,6 +221,17 @@ These are the instructions I follow when I get a new Mac or after I re-install m
     * Use credentials helper <https://help.github.com/en/github/using-git/caching-your-github-password-in-git>
         * `git config --global credential.helper osxkeychain`
         * The next time you `git push` you will get a popup. Enter your password and choose "Always allow"
+    * Create and configure a global [gitignore file](https://git-scm.com/docs/gitignore)
+        * ```bash
+          cat << EOF > "$HOME/.gitignore_global"
+          .DS_Store
+          EOF
+          git config --global core.excludesfile "$HOME/.gitignore_global"
+          ``` 
+        * The exclusions described by a global gitignore file should be sparing for two reasons. 1) If a project is
+          shared, it's convenient for everyone else if the exclusions are version-controlled in the project-specific
+          gitignore file. 2) Projects are diverse and unpredictable. There might be a project that wants to version-control
+          the `build/` or `out/` directories, and for good reason. For me, the `.DS_Store` exclusion is a very safe bet. 
 1. Install Docker Desktop <https://hub.docker.com/editions/community/docker-ce-desktop-mac/>
     * Then, install Bash completion for `docker` and `docker-compose` by following [the docs](https://docs.docker.com/docker-for-mac/#bash). It boils down to:
       ```
