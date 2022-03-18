@@ -203,7 +203,7 @@ These are the instructions I follow when I get a new Mac or after I re-install m
     * Tab Hover Cards make it faster to preview the title of a tab
 1. Install latest `git` and configure it
     * `brew install git`
-    * Configure `git` config <https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup>
+    * Configure basic `git` config elements <https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup>
         * `git config --global user.name "John Doe"`
             * But change the name
         * `git config --global user.email johndoe@example.com`
