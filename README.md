@@ -359,6 +359,8 @@ These are the instructions I follow when I get a new Mac or after I re-install m
       on <https://zaiste.net/>.
     * `exa` might be my favorite. Install it with the following command.
     * `cargo install exa`
+    * `jless` is a CLI tool for helping you view JSON. Install it with the following command.
+    * `cargo install --git https://github.com/PaulJuliusMartinez/jless`
 1. Install [`gron`](https://github.com/tomnomnom/gron)
    > Make JSON greppable!
     1. `brew install gron`

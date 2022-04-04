@@ -48,3 +48,20 @@ subl ~/.config/bash/bash-env.sh
 
 # Edit Bash functions file
 subl ~/.config/bash/bash-functions.sh
+
+% Insomnia
+
+# View Insomnia response in jless
+; This command pipes the latest Insomnia response to 'jless'.
+;
+; Insomnia has a hard time rendering large JSON files (even beyond 500KB) in the UI. The content will take a few seconds
+; to appear, and then subsequent interactions with the content, like minimizing a section, might cause another slow
+; re-render procedure.
+;
+; An effective alternative is to jump to the commandline and use a tool fit for the job. "jless" (https://github.com/PaulJuliusMartinez/jless)
+; is an awesome JSON explorer tool.
+;
+; This navi cheat will find the newest file in Insomnia's internal "responses/" directory and pipe it to jless.
+; Note that the execution of a request in Insomnia actually produces two files: a ".response" file and a ".timeline"
+; file. The ".response" file contains the actual response content.
+cat "$(ls -t "$HOME/Library/Application Support/Insomnia/responses"/*.response | head -n 1)" | jless
