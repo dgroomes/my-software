@@ -180,3 +180,22 @@ mon() {
 httpServe() {
   python3 -m http.server --bind 127.0.0.1
 }
+
+# Obtain the absolute path of a file
+#
+# For example, given the command
+#
+# $ filepath ../README.md
+#
+# It will print:
+#
+# /Users/davidgroomes/repos/personal/my-config/README.md
+#
+# This function is adapted from https://stackoverflow.com/a/21188136. See the question and litany of different answers.
+# Yes, it is startling that a simple and reasonable task like "Find the absolute path to this file" can be answered only
+# by a long list of circuitous and partially effective solutions. That is the state of the most popular shell, even in
+# 2022.
+filepath() {
+  local relative_file="$1"
+  echo "$(cd "$(dirname "$relative_file")" && pwd)/$(basename "$relative_file")"
+}
