@@ -79,6 +79,9 @@ These are the instructions I follow when I get a new Mac or after I re-install m
         * "Command" to "Option" (if on an external Windows keyboard)
         * "Option" to "Command" (if on an external Windows keyboard)
     * "Use F keys as F keys"
+    * (I think only applicable on some models, like the Macbook Air) Change the behavior of the function/globe key so that it
+      doesn't annoyingly bring up the character picker even when I'm using the function key to do something like change the volume.
+      See instructions in this [StackExchange answer](https://apple.stackexchange.com/a/419081/).
 1. Install Xcode from the app store
     * Agree to the license (try to execute `git` in the terminal and it will prompt you to read the license and agree to it)
 1. Install Rectangle <https://github.com/rxhanson/Rectangle> for fast and easy window resizing
