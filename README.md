@@ -120,11 +120,17 @@ These are the instructions I follow when I get a new Mac or after I re-install m
     * In macOS settings, disable the "Cmd + Shift + A" system keyboard shortcut so it does not conflict with the
       "Find Action" Intellij keyboard shorcut. See instructions at <https://intellij-support.jetbrains.com/hc/en-us/articles/360005137400-Cmd-Shift-A-hotkey-opens-Terminal-with-apropos-search-instead-of-the-Find-Action-dialog>
 8. Install Homebrew <https://brew.sh/>
+    * Make sure to install Homebrew in the Apple Silicon configuration. I won't repeat the details here, but basically,
+      it should be installed at `/opt/homebrew` and not `/usr/local`. 
 9. `brew install bash`
     * macOS uses a years old version of Bash and will never update it because of licensing
     * After installing from Homebrew, you will need to change the default shell with the following.:
-    * `sudo bash -c 'echo /usr/local/bin/bash >> /etc/shells'`
-    * `chsh -s /usr/local/bin/bash`
+    * ```shell
+      sudo bash -c 'echo /opt/homebrew/bin/bash >> /etc/shells'
+      ```
+    * ```shell
+      chsh -s /opt/homebrew/bin/bash
+      ```
     * Open a new session and verify the new version of Bash is being used `echo $BASH_VERSION`
     * Copy over the `.bash_profile` to the home directory with: `cp bash/.bash_profile ~`
     * Create a `.bashrc` with `touch ~/.bashrc`
