@@ -226,6 +226,8 @@ These are the instructions I follow when I get a new Mac or after I re-install m
          * `git config --global core.editor "subl -n -w"`
              * Use Sublime Text as the editor instead of Vim. This is for things things like git rebase and amend operations.
                See [this nice GitHub doc](https://docs.github.com/en/get-started/getting-started-with-git/associating-text-editors-with-git) about configuring external editors.
+         * `git config --global push.autoSetupRemote true`
+             * This makes it so that your first `git push` will work and you don't need `git push --set-upstream ...`.
      * Configure `git` credentials to Github. Follow <https://help.github.com/en/github/authenticating-to-github/accessing-github-using-two-factor-authentication#using-two-factor-authentication-with-the-command-line>
      * Use credentials helper <https://help.github.com/en/github/using-git/caching-your-github-password-in-git>
          * `git config --global credential.helper osxkeychain`
