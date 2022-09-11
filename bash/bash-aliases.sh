@@ -13,6 +13,7 @@ alias psql_local='psql --username postgres --host localhost'
 ## Copy the last command into the clipboard. Executes the 'fc' command in a subshell to remove the trailing newline
 alias cplastcmd='echo -n $(fc -ln -1 -1) | pbcopy'
 alias gcmp="git checkout main && git pull"
+alias gs="git status"
 
 # It's a common convention to create an alias named "ll" to execute the long-hand options in "ls", often "ls -ls".
 # Let's use "exa" (https://github.com/ogham/exa) instead.

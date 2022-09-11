@@ -199,3 +199,31 @@ filepath() {
   local relative_file="$1"
   echo "$(cd "$(dirname "$relative_file")" && pwd)/$(basename "$relative_file")"
 }
+
+# `whichLong` is like `which` but it prints a long-form description of the command-under-inspection.
+#
+# For example, you might use `which` to find out where the `gs` command is coming from. It looks like this:
+#
+# $ which gs
+# /usr/local/bin/gs
+#
+# That's not super useful because `/usr/local/bin/gs` is actually a symlink, which you can't tell from the short-form
+# output.
+#
+# Which `whichLong`, you can find more information about the file that represents the command-under-inspection:
+#
+# $ whichLong gs
+# lrwxr-xr-x  1 davidgroomes  admin    35B Jul  2 14:40 /usr/local/bin/gs -> ../Cellar/ghostscript/9.56.1/bin/gs
+#
+# Great, we've learned something more useful! It turns out 'gs' is a program called "GhostScript" and it was installed
+# via HomeBrew (probably as a transitive dependency of another HomeBrew-managed package).
+whichLong() {
+  local command="$1"
+
+  if [ -z "$command" ]; then
+    echo >&2 "Missing argument: please pass the name of a command."
+    return
+  fi
+
+  ls -lh $(which "$command")
+}
