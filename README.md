@@ -194,8 +194,7 @@ These are the instructions I follow when I get a new Mac or after I re-install m
      * `cp .inputrc ~`
 17. Install bash completion for `pip`: `pip3 completion --bash > /usr/local/etc/bash_completion.d/pip`
 18. Install SDKMAN <https://sdkman.io/>
-     * Install a community-provided Bash completion script for SDKMAN with `curl https://raw.githubusercontent.com/Bash-it/bash-it/ac5a8aca47f42c6feab6bde3fb7e5a06d53f28ff/completion/available/sdkman.completion.bash -o /usr/local/etc/bash_completion.d/sdkman`
-     * Install the latest LTS (Java 11) and the latest Java (Java 15)
+     * Install the latest LTS Java and perhaps older versions as needed and the latest Java if you want to explore its features.
      * Install the latest version of Gradle
      * Install the latest version of Maven
      * Install `visualvm` and then configure visualvm to use the Java 8.

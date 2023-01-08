@@ -10,7 +10,8 @@ gitBrowse() {
 # The "subject" argument is optional.
 # E.g. `mkdirSubject` will create the directory `~/subjects/2020-02-09_18-02-05`
 mkdirSubject() {
-    local today=$(date +%Y-%m-%d)
+    local today
+    today=$(date +%Y-%m-%d)
     local descriptor
     if [ -z "$1" ]; then
         descriptor=$(date +%H-%M-%S)
@@ -20,7 +21,7 @@ mkdirSubject() {
     local dirname="$HOME/subjects/${today}_${descriptor}"
     mkdir -p "$dirname"
     echo "Created directory: $dirname. Navigating to it."
-    cd "$dirname"
+    cd "$dirname" || return 1
 }
 
 # Format a date/time string from a "seconds from the Unix epoch" value
@@ -28,9 +29,9 @@ mkdirSubject() {
 formatEpoch() {
     if [[ -z "$1" ]]; then
         echo >&2 "Missing argument: 'seconds from Unix epoch'"
-        return
+        return 1
     fi
-    date -r $1
+    date -r "$1"
 }
 
 # Format a date/time string from a "milliseconds from the Unix epoch" value. The fractional seconds will be truncated.
@@ -38,10 +39,10 @@ formatEpoch() {
 formatEpochMilli() {
     if [[ -z "$1" ]]; then
         echo >&2 "Missing argument: 'milliseconds from Unix epoch'"
-        return
+        return 1
     fi
     local S=${1::-3}
-    formatEpoch $S
+    formatEpoch "$S"
 }
 
 # Print the PATH with each entry on a new line
@@ -58,16 +59,28 @@ showPath() {
 cdRepo() {
   local EXIT_STATUS
   local DEST
-  DEST=$(find ~/repos -type d -maxdepth 2 -mindepth 2 -not -path '*./*' | fzf --exact)
+  DEST="$(find ~/repos -type d -maxdepth 2 -mindepth 2 -not -path '*./*' | fzf --exact)"
   EXIT_STATUS=$?
-  [[ $EXIT_STATUS -eq 0 ]] && cd $DEST
+  [[ $EXIT_STATUS -eq 0 ]] && cd "$DEST" || return 1
 }
 
-# Start a Postgres server instance.
+# Start (and initialize if needed) a Postgres server instance.
+#
 # By convention, the data directory "/usr/local/pgsql/data" is used. The Postgres official docs use this directory in
 # their examples. See https://www.postgresql.org/docs/current/creating-cluster.html
 pgStart() {
-  pg_ctl -D /usr/local/pgsql/data start
+  if [[ ! -d /usr/local/pgsql/data ]]; then
+    echo "The '/usr/local/pgsql/data' directory does not exist. Creating it and initializing it ..."
+    mkdir /usr/local/pgsql/data
+
+    pg_ctl -D /usr/local/pgsql/data initdb
+    _pgConfCustom
+
+    pg_ctl -D /usr/local/pgsql/data start
+    psql postgres -c 'create role postgres with login superuser'
+  else
+    pg_ctl -D /usr/local/pgsql/data start
+  fi
 }
 
 # Stop the Postgres server instance
@@ -122,7 +135,7 @@ mongoStart() {
 
   local log_file=/usr/local/mongodb/mongod.log
   # Truncate the existing log file.
-  > "$log_file"
+  true > "$log_file"
 
   # Start the server as a daemon process. Use a custom data directory and log location. Do NOT rotate the logs (I don't
   # need to retain old logs)
@@ -154,7 +167,7 @@ EOF
 mongoDestroy() {
   if [[ ! -d "/usr/local/mongodb" ]]; then
     echo >&2 "MongoDB base directory does not exist! '/usr/local/mongodb'"
-    return
+    return 1
   fi
 
   # Stop MongoDB if it is already running
@@ -222,8 +235,8 @@ whichLong() {
 
   if [ -z "$command" ]; then
     echo >&2 "Missing argument: please pass the name of a command."
-    return
+    return 1
   fi
 
-  ls -lh $(which "$command")
+  ls -lh "$(which "$command")"
 }
