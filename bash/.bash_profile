@@ -53,8 +53,8 @@ source_and_time() {
 # The .bashrc file is sourced last because it's the "catch-all". We can't completely abstract away .bashrc because some
 # software installs init/config snippets to it. It would be too annoying to work against that idiom.
 files=(
-  "$HOME/.config/bash/bash-functions.sh"
-  "$HOME/.config/bash/bash-aliases.sh"
+  "$HOME/.config/bash/bash-functions.bash"
+  "$HOME/.config/bash/bash-aliases.bash"
   "$HOME/.bashrc"
 )
 
