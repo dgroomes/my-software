@@ -140,20 +140,11 @@ These are the instructions I follow when I get a new Mac or after I re-install m
      * Add `BASH_COMPLETION_COMPAT_DIR="/usr/local/etc/bash_completion.d"` to `~/.bashrc`
      * Add `[[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"` to `~/.bashrc`
      * For reference, see: <https://github.com/Homebrew/homebrew-core/blob/fecd9b0cb2aa855ec24c109ff2b4507c0b37fb2a/Formula/bash-completion%402.rb#L36>
-11. Copy `bash/bash-aliases.sh` and `bash/bash-functions.sh` to `~/.config/bash/` and source them from your `.bashrc`
+11. Copy `bash/bash-aliases.bash` and `bash/bash-functions.bash` to `~/.config/bash/` and source them from your `.bash_profile`
      * Create the directory with `mkdir ~/.config/bash`
-     * `cp bash/bash-*.sh ~/.config/bash`
-     * Add the following to your `.bashrc`:
-       ```
-       # Source configuration files
-       for filename in ~/.config/bash/*.sh; do
-           if [[ ! -e "$filename" ]]; then              
-             echo >&2 "Bash configuration files not found!"
-             continue
-           fi
-           . "$filename"
-       done
-       ``` 
+     * `cp bash/bash-*.bash ~/.config/bash`
+     * Copy the contents of `bash/.bash_profile` to your own `.bash_profile`. Or, if you don't have anything there of
+       your own, just replace the whole file.
 12. `brew install jq`
 13. `brew install kafkacat`
 14. Install Python 3 <https://www.python.org/downloads/>
@@ -398,3 +389,11 @@ These are the instructions I follow when I get a new Mac or after I re-install m
     * ```shell
        npm install -g aws-cdk
        ```  
+
+
+## Wish List
+
+General clean-ups, TODOs and things I wish to implement for this project
+
+* [x] DONE System for measuring the time it takes to load scripts in `.bashrc` and `.bash_profile`. I want to do something
+  like [this very cool project](https://github.com/colindean/hejmo/blob/0f14c6d00c653fcbb49236c4f2c2f64b267ffb3c/dotfiles/bash_profile#L93)!
