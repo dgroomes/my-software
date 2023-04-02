@@ -397,3 +397,5 @@ General clean-ups, TODOs and things I wish to implement for this project
 
 * [x] DONE System for measuring the time it takes to load scripts in `.bashrc` and `.bash_profile`. I want to do something
   like [this very cool project](https://github.com/colindean/hejmo/blob/0f14c6d00c653fcbb49236c4f2c2f64b267ffb3c/dotfiles/bash_profile#L93)!
+* [ ] Loading my bash completions is slow. Doesn't bash completions support lazy loading? I have some good notes in `bash/BASH_COMPLETION.md`.
+  Maybe most software still only provides v1 completion (which doesn't support lazy/on-demand)...

@@ -29,7 +29,7 @@ v2 is the new version. It contains a large amount of built-in completions for a 
 
 The relevant files are: 
 
-* `/usr/local/etc/profile.d/bash_completion.sh`. This gets called from `.bash_profile`. It symlinks to `../../Cellar/bash-completion@2/2.11/etc/profile.d/bash_completion.sh`
+* `/usr/local/etc/profile.d/bash_completion.sh`. This gets sourced from `.bash_profile`. It symlinks to `../../Cellar/bash-completion@2/2.11/etc/profile.d/bash_completion.sh`
 * `/usr/local/Cellar/bash-completion@2/2.11/etc/profile.d/bash_completion.sh` This is the configuration file hook. It 
   loads bash-completion.
 * `/usr/local/Cellar/bash-completion@2/2.11/share/bash-completion/bash_completion` This is the bash-completion 
