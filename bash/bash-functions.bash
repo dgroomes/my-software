@@ -274,4 +274,6 @@ whichx() {
           return 0
       fi
   fi
+
+  echo >&2 "The token '$token' is not a command, alias or function."
 }
