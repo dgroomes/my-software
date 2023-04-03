@@ -30,8 +30,8 @@ trap 'failure "${BASH_LINENO[*]}" "$LINENO" "${FUNCNAME[*]:-script}" "$?" "$BASH
 # Source all the other Bash scripts to "superpower our shell experience".
 source_all() {
   # We use this file to record how long it took to execute (i.e. "timing") each Bash script that we source.
-  # Truncate it to delete any previous timings.
-  true > "$HOME/.bash_source_timings.tsv"
+  # Truncate it to delete any previous timings and include the header row.
+  printf "Script\tDuration (milliseconds) to source into the Bash shell\n" > "$HOME/.bash_source_timings.tsv"
 
   # The order is important. Sourcing 'bash-function.bash' should come first so that a function can be invoked from a later
   # script. 'bash-aliases.bash' doesn't matter because aliases can only be used in interactive shells (that's why we don't
