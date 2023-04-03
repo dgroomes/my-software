@@ -45,6 +45,8 @@ The relevant files/directories are:
 * `/usr/local/Cellar/bash-completion@2/2.11/share/bash-completion/bash_completion` This is the bash-completion 
   program itself
 * `/usr/local/share/bash-completion/bash_completion` this symlinks to the bash-completion program (`/usr/local/Cellar/bash-completion@2/2.11/share/bash-completion/bash_completion`)
+* `$HOME/.local/share/bash-completion/completions/` I think this is where you are supposed to put v2 completions that you yourself write
+* `/opt/homebrew/etc/bash_completion.d` is where HomeBrew puts v2 completions
 
 The environment variable `BASH_COMPLETION_COMPAT_DIR` is a compatibility option to enable `bash-completion v2` to load
 third-party completion scripts that were designed in the era of `bash-completion v1`. For example, set `BASH_COMPLETION_COMPAT_DIR="/usr/local/etc/bash_completion.d"`
@@ -64,6 +66,3 @@ have a great solution for this othe than this big warning section. See my relate
 
 ---
 
-`$HOME/.local/share/bash-completion/completions/` I think this is where you are supposed to put v2 completions. (Where does
-HomeBrew put v2 completions? Are v1 and v2 completions using different feautures? In other words, if someone developed
-a sophisticated v1 completion do they have to rewrite it for v2?).
