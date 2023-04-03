@@ -27,10 +27,6 @@ failure() {
 
 trap 'failure "${BASH_LINENO[*]}" "$LINENO" "${FUNCNAME[*]:-script}" "$?" "$BASH_COMMAND"' ERR
 
-# We use this file to record how long it took to execute (i.e. "timing") each Bash script that we source.
-TIMINGS="$HOME/.bash_source_timings.tsv"
-> "$TIMINGS"
-
 # Source a Bash script and record the timing.
 source_and_time() {
   local script="$1"
@@ -41,30 +37,49 @@ source_and_time() {
   load_end=$(current_time)
   load_duration=$((load_end - load_start))
 
-  echo -e "$script\t$load_duration" >> "$TIMINGS"
+  echo -e "$script\t$load_duration" >> "$HOME/.bash_source_timings.tsv"
 }
 
 # These are the Bash scripts that we want to "source into our shell" to superpower our shell experience.
 #
-# The order is important. Sourcing 'bash-function.bash' should come first so that a function can be invoked from a later
-# script. 'bash-aliases.bash' doesn't matter because aliases can only be used in interactive shells (that's why we don't
-# uses aliases in scripts right??).
-#
-# The .bashrc file is sourced last because it's the "catch-all". We can't completely abstract away .bashrc because some
-# software installs init/config snippets to it. It would be too annoying to work against that idiom.
-files=(
-  "$HOME/.config/bash/bash-functions.bash"
-  "$HOME/.config/bash/bash-aliases.bash"
-  "$HOME/.bashrc"
-)
+source_all() {
+  # We use this file to record how long it took to execute (i.e. "timing") each Bash script that we source.
+  # Truncate it to delete any previous timings.
+  true > "$HOME/.bash_source_timings.tsv"
 
-# Source all the scripts.
-for i in "${files[@]}"; do
-  source_and_time "$i"
-done
+  # The order is important. Sourcing 'bash-function.bash' should come first so that a function can be invoked from a later
+  # script. 'bash-aliases.bash' doesn't matter because aliases can only be used in interactive shells (that's why we don't
+  # uses aliases in scripts right??).
+  #
+  # The .bashrc file is sourced last because it's the "catch-all". We can't completely abstract away .bashrc because some
+  # software installs init/config snippets to it. It would be too annoying to work against that idiom.
+  #
+  # Instead of declaring all the entries in the array in one statement, we declare each entry on a separate line by
+  # appending to the array. This makes it easier to comment out a line or give a comment to a line. You should add
+  # files to the array with your own Bash scripts.
+  local files=()
+  files+=("$HOME/.config/bash/bash-functions.bash")
+  files+=("$HOME/.config/bash/bash-aliases.bash")
+  files+=("$HOME/.config/bash/bash-completion.bash")
+  files+=("$HOME/.config/bash/bash-fzf.bash")
+  files+=("$HOME/.bashrc")
+
+  # Source all the scripts.
+  for i in "${files[@]}"; do
+    source_and_time "$i"
+  done
+}
 
 # (b)ash (s)ource (t)imings
 #
 # This is a handy alias that we can use to see how long it took to source each script by looking at the
 # "bash_source_timings.tsv" file. Where are the slow scripts?
-alias bst='cat "$TIMINGS" | sort -n -k 2 | column -t'
+bst() {
+  sort "$HOME/.bash_source_timings.tsv" -n -k 2 | column -t
+}
+
+source_all
+
+# These two lines are taken directly from this great project: https://github.com/colindean/hejmo/blob/0f14c6d00c653fcbb49236c4f2c2f64b267ffb3c/dotfiles/bash_profile#L21
+# drop the custom error handler
+trap - ERR

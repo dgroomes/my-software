@@ -1,17 +1,20 @@
 # my-config 
 
-Personal configuration stuff including dot files, instructions and other configuration files.
+Personal configuration stuff including dot files, installation instructions and other configuration files.
+
+
+## Overview
 
 The most useful component of this repository is the [My macOS Setup](#my-macos-setup) section. It provides step-by-step
 instructions I like to follow for setting up a new Mac.
 
-## Organization
-
 The repo is organized in the following directories:
+
 
 ### `bash/`
 
 My Bash config and notes about Bash auto-completion (I always forget how to set this up!).
+
 
 ### `iterm2/`
 
@@ -20,6 +23,7 @@ My iTerm2 config.
 > iTerm2 is a terminal emulator for macOS that does amazing things.
 > 
 > -- <cite>https://iterm2.com</cite>
+
 
 ### `jetbrains/`
 
@@ -31,6 +35,7 @@ My configuration for JetBrains IDEs (e.g. Intellij and Android Studio).
 
 See the README in [jetbrains/](jetbrains/).
 
+
 ### `karabiner/`
 
 My configuration for the amazing tool *Karabiner-Elements* <https://github.com/tekezo/Karabiner-Elements>.
@@ -38,6 +43,7 @@ My configuration for the amazing tool *Karabiner-Elements* <https://github.com/t
 > Karabiner-Elements is a powerful utility for keyboard customization on macOS Sierra or later.
 > 
 > -- <cite>https://github.com/pqrs-org/Karabiner-Elements</cite>
+
 
 ### `navi/`
 
@@ -47,6 +53,7 @@ My [navi](https://github.com/denisidoro/navi) cheat sheets.
 > 
 > -- <cite>https://github.com/denisidoro/navi</cite>
 
+
 ### `starship/`
 
 My config file for Starship.
@@ -54,6 +61,7 @@ My config file for Starship.
 > The minimal, blazing-fast, and infinitely customizable prompt for any shell!
 >
 > -- <cite>https://github.com/starship/starship</cite>
+
 
 ### `markdownlint/`
 
@@ -66,6 +74,7 @@ My configuration for `markdownlint` and `markdownlint-cli2`.
 > A fast, flexible, configuration-based command-line interface for linting Markdown/CommonMark files with the markdownlint library
 > 
 > -- <cite>https://github.com/DavidAnson/markdownlint-cli2</cite>
+
 
 ## My macOS Setup
 
@@ -135,24 +144,37 @@ These are the instructions I follow when I get a new Mac or after I re-install m
     * Copy over the `.bash_profile` to the home directory with: `cp bash/.bash_profile ~`
     * Create a `.bashrc` with `touch ~/.bashrc`
     * Add colors to Bash. Add the following to `~/.bashrc`: `export CLICOLOR=1`
-10. Install bash completion. See additional information in `bash/BASH_COMPLETION.md`
-     * Execute `brew install bash-completion@2`
-     * Add `BASH_COMPLETION_COMPAT_DIR="/usr/local/etc/bash_completion.d"` to `~/.bashrc`
-     * Add `[[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"` to `~/.bashrc`
-     * For reference, see: <https://github.com/Homebrew/homebrew-core/blob/fecd9b0cb2aa855ec24c109ff2b4507c0b37fb2a/Formula/bash-completion%402.rb#L36>
-11. Copy `bash/bash-aliases.bash` and `bash/bash-functions.bash` to `~/.config/bash/` and source them from your `.bash_profile`
-     * Create the directory with `mkdir ~/.config/bash`
-     * `cp bash/bash-*.bash ~/.config/bash`
+10. Install bash completion.
+     * ```shell
+       brew install bash-completion@2
+       ```
+     * See additional information in `bash/BASH_COMPLETION.md`. 
+11. Configure a base setup for "sourcing into Bash"
+     * The `.bash_profile` is the home base for configuring your shell just the way you like it.
      * Copy the contents of `bash/.bash_profile` to your own `.bash_profile`. Or, if you don't have anything there of
        your own, just replace the whole file.
-12. `brew install jq`
-13. `brew install kafkacat`
-14. Install Python 3 <https://www.python.org/downloads/>
+     * Copy over some base Bash scripts that are designed to be sourced by `.bash_profile`. Use the following commands.
+     * ```shell
+       mkdir -p ~/.config/bash
+       cp bash/bash-aliases.bash ~/.config/bash
+       cp bash/bash-functions.bash ~/.config/bash
+       cp bash/bash-completion.bash ~/.config/bash
+       cp bash/bash-fzf.bash ~/.config/bash
+       cp bash/bash-fzf.bash ~/.config/bash
+       ```
+12. ```shell
+    brew install jq
+    ```
+13. `brew install kcat`
+14. Install Python 3 and do basic setup
+     * Download and install following the instructions on the official site: <https://www.python.org/downloads/>.
      * `sudo pip3 install --upgrade pip`
      * Add user-installed Python packages to the `PATH` by adding this line in `.bashrc`: `export PATH="$PATH:/Users/davidgroomes/Library/Python/3.9/bin"`
 15. Install Starship <https://github.com/starship/starship>
      * > The minimal, blazing-fast, and infinitely customizable prompt for any shell!
-     * `brew install starship`
+     * ```shell
+       brew install starship
+       ```
      * Add the initialization code to your `.bashrc`. Follow the instructions in the [Starship README.md](https://github.com/starship/starship#-installation).
        Specifically, add:
        ```
@@ -234,8 +256,8 @@ These are the instructions I follow when I get a new Mac or after I re-install m
            gitignore file. 2) Projects are diverse and unpredictable. There might be a project that wants to version-control
            the `build/` or `out/` directories, and for good reason. For me, the `.DS_Store` exclusion is a very safe bet. 
 22. Install Docker Desktop <https://hub.docker.com/editions/community/docker-ce-desktop-mac/>
-     * Then, install Bash completion for `docker` and `docker-compose` by following [the docs](https://docs.docker.com/docker-for-mac/#bash). It boils down to:
-       ```
+     * Then, install Bash completion for `docker` and `docker-compose` by following [the docs](https://docs.docker.com/desktop/faqs/macfaqs/#how-do-i-install-shell-completion). It boils down to:
+       ```bash
        ln -s /Applications/Docker.app/Contents/Resources/etc/docker.bash-completion /usr/local/etc/bash_completion.d/docker
        ln -s /Applications/Docker.app/Contents/Resources/etc/docker-compose.bash-completion /usr/local/etc/bash_completion.d/docker-compose
        ```
@@ -310,11 +332,19 @@ These are the instructions I follow when I get a new Mac or after I re-install m
      1. Add the `bin/` directory to the path.
          * For example, append something like `export PATH="$PATH:~/repos/opensource/jmeter/bin"` to your `.bashrc`
 29. Install fzf <https://github.com/junegunn/fzf>
-     1. Install it using the git option: <https://github.com/junegunn/fzf/tree/0db65c22d369026a0a9af079bfa7e8110e850ec9#using-git>
-         1. Specifically, execute `git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf` and `~/.fzf/install`
-         1. When it prompts for *Do you want to enable fuzzy auto-completion?* Answer yes
-         1. When it prompts for *Do you want to enable key bindings?* Answer yes
-         1. When it prompts for *Do you want to update your shell configuration files?* Answer yes
+     1. Install it using the [HomeBrew option](https://github.com/junegunn/fzf/blob/20230402d087858ca9a93aa8fe53d289f29c1836/README.md?plain=1#L28)
+     2. ```shell
+        brew install fzf
+        ```
+     3. Enable fuzzy auto-completion and key bindings with the following command (for some reason I'm having trouble
+        executing this command from Intellij's embedded terminal but I can't deal with this right now so just execute it
+        from iTerm.
+     4. ```shell
+        $(brew --prefix)/opt/fzf/install
+        ```
+     5. When it prompts for *Do you want to enable fuzzy auto-completion?* Answer YES
+     6. When it prompts for *Do you want to enable key bindings?* Answer YES
+     7. When it prompts for *Do you want to update your shell configuration files?* Answer NO (instead we use the `bash/bash-fzf.bash` file)
 30. Install `gh` https://github.com/cli/cli
      1. `brew install gh`
      1. Use it for the first time and log in.
@@ -322,9 +352,11 @@ These are the instructions I follow when I get a new Mac or after I re-install m
      1. `git clone https://github.com/dgroomes/gradle-wrapper-upgrader.git`
      1. Add it to the PATH
 32. Install [navi](https://github.com/denisidoro/navi)
-     1. `brew install navi`
-     1. Copy of the config files.
+     1. ```shell
+        brew install navi
         ```
+     2. Copy of the config files.
+        ```shell
         mkdir -p "$HOME/Library/Application Support/navi/cheats/mycheats"
         cp navi/*.cheat "$HOME/Library/Application Support/navi/cheats/mycheats"
         ```
