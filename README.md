@@ -380,7 +380,7 @@ These are the instructions I follow when I get a new Mac or after I re-install m
      1. Add to `~/.config/bash/bash-env.sh`: `source ~/.cargo/env"`
          * This is a slightly clever way to configure the `PATH`. It comes installed with Rust so let's use it (idiomatic).
      1. Install `rustup` Bash autocompletion:
-         * `rustup completions bash > "$BASH_COMPLETION_COMPAT_DIR/rustup"`
+         * `rustup completions bash > "$HOME/.local/share/bash-completion/completions/rustup"`
      1. Install `cargo` Bash autocompletion:
          * Note: the official Rust installation uses different mechanisms for Bash completion between `rustup`, `cargo`, etc.
            Keep an eye out for if/when this improves some day (fingers crossed!).

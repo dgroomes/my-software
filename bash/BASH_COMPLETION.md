@@ -46,7 +46,7 @@ The relevant files/directories are:
   program itself
 * `/usr/local/share/bash-completion/bash_completion` this symlinks to the bash-completion program (`/usr/local/Cellar/bash-completion@2/2.11/share/bash-completion/bash_completion`)
 * `$HOME/.local/share/bash-completion/completions/` I think this is where you are supposed to put v2 completions that you yourself write
-* `/opt/homebrew/etc/bash_completion.d` is where HomeBrew puts v2 completions
+* `/opt/homebrew/etc/bash_completion.d/` is where HomeBrew puts v2 completions
 
 The environment variable `BASH_COMPLETION_COMPAT_DIR` is a compatibility option to enable `bash-completion v2` to load
 third-party completion scripts that were designed in the era of `bash-completion v1`. For example, set `BASH_COMPLETION_COMPAT_DIR="/usr/local/etc/bash_completion.d"`

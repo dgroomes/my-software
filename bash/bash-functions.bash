@@ -213,30 +213,65 @@ filepath() {
   echo "$(cd "$(dirname "$relative_file")" && pwd)/$(basename "$relative_file")"
 }
 
-# `whichLong` is like `which` but it prints a long-form description of the command-under-inspection.
+# The `whichx` function is like `which` but it prints a long-form description of the command-under-inspection. It also
+# identifies if the command is not even a command, but rather a Bash alias or function.
 #
-# For example, you might use `which` to find out where the `gs` command is coming from. It looks like this:
+# For example, you might use `which` to find out where the `code` command is coming from. It looks like this:
 #
-# $ which gs
-# /usr/local/bin/gs
+#   $ which code
+#   /usr/local/bin/code
 #
-# That's not super useful because `/usr/local/bin/gs` is actually a symlink, which you can't tell from the short-form
+# That's not super useful because `/usr/local/bin/code` is actually a symlink, which you can't tell from the short-form
 # output.
 #
-# Which `whichLong`, you can find more information about the file that represents the command-under-inspection:
+# With `whichx`, you can find more information about the file that represents the token-under-inspection:
 #
-# $ whichLong gs
-# lrwxr-xr-x  1 davidgroomes  admin    35B Jul  2 14:40 /usr/local/bin/gs -> ../Cellar/ghostscript/9.56.1/bin/gs
+#   $ whichx code
+#   'code' is an executable at the symlink '/usr/local/bin/code'. Here is the output of 'ls -lh /usr/local/bin/code':
+#   lrwxr-xr-x  1 root  wheel    68B Nov 17  2020 /usr/local/bin/code -> /Applications/Visual Studio Code.app/Contents/Resources/app/bin/code
 #
-# Great, we've learned something more useful! It turns out 'gs' is a program called "GhostScript" and it was installed
-# via HomeBrew (probably as a transitive dependency of another HomeBrew-managed package).
-whichLong() {
-  local command="$1"
+# Great, we've learned something more useful! It turns out 'code' is a commandline launcher for Visual Studio Code.
+#
+# Also, consider this example where we use `whichx` to find out that 'nvm' is a Bash function.
+#
+#   $ whichx nvm
+#   'nvm' is a Bash function. Inspect the function definition with 'declare -f nvm'
+#
+# Also, consider this example where we use `whichx` to find out that 'la' is an alias.
+#   $ whichx la
+#   'la' is an alias. Inspect the alias definition with 'alias la'
 
-  if [ -z "$command" ]; then
-    echo >&2 "Missing argument: please pass the name of a command."
+whichx() {
+  local token="$1"
+
+  if [ -z "$token" ]; then
+    echo >&2 "Missing argument: please pass the name of a command, alias or function."
     return 1
   fi
 
-  ls -lh "$(which "$command")"
+  # Check if the token is an alias
+  if alias "$token" >/dev/null 2>&1; then
+      echo "'$token' is an alias. Inspect the alias definition with 'alias $token'"
+      return 0
+  fi
+
+  # Check if the token is a Bash function
+  if declare -f "$token" >/dev/null 2>&1; then
+      echo "'$token' is a Bash function. Inspect the function definition with 'declare -f $token'"
+      return 0
+  fi
+
+  # Check if the token is a command
+  path="$(command -v "$token" 2>/dev/null)"
+  if [[ -n "$path" ]]; then
+      # Check if it is a symlink
+      if [[ -L "$path" ]]; then
+          echo "'$token' is an executable at the symlink '$path'. Here is the output of 'ls -lh $path':"
+          ls -lh "$path"
+          return 0
+      else
+          echo "'$token' is an executable at '$path'"
+          return 0
+      fi
+  fi
 }
