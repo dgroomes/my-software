@@ -27,21 +27,7 @@ failure() {
 
 trap 'failure "${BASH_LINENO[*]}" "$LINENO" "${FUNCNAME[*]:-script}" "$?" "$BASH_COMMAND"' ERR
 
-# Source a Bash script and record the timing.
-source_and_time() {
-  local script="$1"
-  local load_start load_end load_duration
-
-  load_start=$(current_time)
-  source "$script"
-  load_end=$(current_time)
-  load_duration=$((load_end - load_start))
-
-  echo -e "$script\t$load_duration" >> "$HOME/.bash_source_timings.tsv"
-}
-
-# These are the Bash scripts that we want to "source into our shell" to superpower our shell experience.
-#
+# Source all the other Bash scripts to "superpower our shell experience".
 source_all() {
   # We use this file to record how long it took to execute (i.e. "timing") each Bash script that we source.
   # Truncate it to delete any previous timings.
@@ -64,10 +50,25 @@ source_all() {
   files+=("$HOME/.config/bash/bash-fzf.bash")
   files+=("$HOME/.bashrc")
 
+  # Sum up the return value of the 'source_and_time' function. This is the total time it took to source all the scripts.
+  local load_total_load_duration=0
+
   # Source all the scripts.
   for i in "${files[@]}"; do
-    source_and_time "$i"
+    # Source a Bash script and record the timing.
+    local script="$i"
+    local load_start load_end load_duration
+
+    load_start=$(current_time)
+    source "$script"
+    load_end=$(current_time)
+    load_duration=$((load_end - load_start))
+
+    echo -e "$script\t$load_duration" >> "$HOME/.bash_source_timings.tsv"
+    load_total_load_duration=$((load_total_load_duration + load_duration))
   done
+
+  echo -e "Total duration to source all Bash scripts\t$load_total_load_duration" >> "$HOME/.bash_source_timings.tsv"
 }
 
 # (b)ash (s)ource (t)imings
@@ -75,7 +76,7 @@ source_all() {
 # This is a handy alias that we can use to see how long it took to source each script by looking at the
 # "bash_source_timings.tsv" file. Where are the slow scripts?
 bst() {
-  sort "$HOME/.bash_source_timings.tsv" -n -k 2 | column -t
+  sort -t $'\t' -n -k 2 "$HOME/.bash_source_timings.tsv" | column -t -s $'\t'
 }
 
 source_all
