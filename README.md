@@ -142,7 +142,7 @@ These are the instructions I follow when I get a new Mac or after I re-install m
       ```
     * Open a new session and verify the new version of Bash is being used `echo $BASH_VERSION`
     * Copy over the `.bash_profile` to the home directory with: `cp bash/.bash_profile ~`
-    * Create a `.bashrc` with `touch ~/.bashrc`
+    * (OUTDATED! Do not create a .bashrc. Instead use `bb`. See [bash/bashrc-bundler.pl](bash/bashrc-bundler.pl)) Create a `.bashrc` with `touch ~/.bashrc`
     * Add colors to Bash. Add the following to `~/.bashrc`: `export CLICOLOR=1`
 10. Install bash completion.
      * ```shell
@@ -429,5 +429,9 @@ General clean-ups, TODOs and things I wish to implement for this project
 
 * [x] DONE System for measuring the time it takes to load scripts in `.bashrc` and `.bash_profile`. I want to do something
   like [this very cool project](https://github.com/colindean/hejmo/blob/0f14c6d00c653fcbb49236c4f2c2f64b267ffb3c/dotfiles/bash_profile#L93)!
-* [ ] Loading my bash completions is slow. Doesn't bash completions support lazy loading? I have some good notes in `bash/BASH_COMPLETION.md`.
+* [x] DONE (The answer is: never use eager completionloading) Loading my bash completions is slow. Doesn't bash completions support lazy loading? I have some good notes in `bash/BASH_COMPLETION.md`.
   Maybe most software still only provides v1 completion (which doesn't support lazy/on-demand)...
+* [x] DONE Create my personal framework/strategy for managing "scripts to source during Bash shell initialization time"
+    * DONE Scaffold out a Perl script
+* [ ] Add more external documentation to `bb` (the internal documentation in the '--help' is already extremely thorough)
+* [ ] Implement the fifo/domain-socket -based benchmarking described in `bb`
