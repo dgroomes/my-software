@@ -10,6 +10,7 @@ use Time::Piece;
 use Time::HiRes qw(gettimeofday);
 use File::Copy;
 use IPC::Open3;
+use Term::ReadKey;
 
 sub main {
     my $instrument_with_perf;
@@ -227,7 +228,7 @@ EOF
 
     # Back up the existing '.bashrc' file.
     if (-e $bashrc_file) {
-        print "Your existing '.bashrc' file will be backed up and replaced with a generated file. Is this okay? (y/n)\n";
+        print "Your existing '.bashrc' file will be backed up and replaced with a generated file. Is this okay? (y/n)";
         my $allowed = prompt_yes_or_no();
         if ($allowed == 0) {
             die "The '.bashrc' file will NOT be replaced. Exiting.\n";
@@ -282,14 +283,6 @@ current_time() {
   perl -MTime::HiRes -e 'printf("%.0f\n",Time::HiRes::time()*1000)'
 }
 
-# A global array variable to store the execution timings of the Bash scripts that we source.
-# It is an array of arrays. For example,
-# (
-#  ("bash-functions.bash", 1680581012805, 1680581012810)
-#  ("bash-homebrew.bash", 1680581012811, 1680581012832)
-# )
-# DELETE THIS declare -ag BASH_SOURCE_TIMINGS=()
-
 # We use this file to record how long it took to execute (i.e. "timing", "benchmarking") each Bash script that we source.
 # Truncate it to delete any previous timings and include the header row.
 printf "Script\tDuration (milliseconds) to source into the Bash shell\n" > "$HOME/.bash_source_timings.tsv"
@@ -330,12 +323,19 @@ EOF
 # Prompts the user for a 'y' or 'n' response.
 # A return value of 1 means 'yes', 0 means 'no'.
 sub prompt_yes_or_no {
-    my $input;
     while (1) {
-        chomp($input = <STDIN>);
+        # Not sure how this works exactly but 'cbreak' must send some terminal escape control codes so that characters
+        # typed are not actually show in the terminal AND as soon as a character is typed it is readable by this script
+        # (no need for pressing the 'enter' key).
+        ReadMode('cbreak');
+        my $input = ReadKey(0);
+        $input = lc($input);
+        ReadMode('normal');
         if ($input eq 'y') {
+            print("\n");
             return 1;
         } elsif ($input eq 'n') {
+            print("\n");
             return 0;
         } else {
             print "Invalid input, please enter 'y' or 'n'\n";
@@ -407,9 +407,9 @@ sub codegen_normal_mode {
     if ($file =~ /dynamic/) {
         # This is a dynamic file. We need to execute the given script. Prompt the user for permission to do so, then
         # execute it, and capture the output.
-        print "Allow execution of '$filepath'? (y/n)\n";
+        print "Allow execution of '$filepath'? (y/n)";
         if (prompt_yes_or_no()) {
-            print "Executing '$filepath'... ";
+            print "\tExecuting '$filepath'... ";
             # First, check if the script is executable. If it is, execute it directly. Otherwise, execute it using
             # 'bash'.
             if (!-x $filepath) {
@@ -417,6 +417,12 @@ sub codegen_normal_mode {
                 exit 1;
             }
             $out .= qx("$filepath");
+            # Exit if the script failed.
+            if ($? != 0) {
+                # The terminal escape sequences print the text as red then resets it.
+                print "\e[31mThe script '$filepath' exited with an error. Exiting.\e[0m\n";
+                exit 1;
+            }
             print "done.\n";
         } else {
             print "Skipping '$filepath'.\n";
