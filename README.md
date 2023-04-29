@@ -240,10 +240,18 @@ These are the instructions I follow when I get a new Mac or after I re-install m
                See [this nice GitHub doc](https://docs.github.com/en/get-started/getting-started-with-git/associating-text-editors-with-git) about configuring external editors.
          * `git config --global push.autoSetupRemote true`
              * This makes it so that your first `git push` will work and you don't need `git push --set-upstream ...`.
-     * Configure `git` credentials to Github. Follow <https://help.github.com/en/github/authenticating-to-github/accessing-github-using-two-factor-authentication#using-two-factor-authentication-with-the-command-line>
-     * Use credentials helper <https://help.github.com/en/github/using-git/caching-your-github-password-in-git>
-         * `git config --global credential.helper osxkeychain`
-         * The next time you `git push` you will get a popup. Enter your password and choose "Always allow"
+     * Configure `git` credentials
+         * Note: when it comes to learning and configuring Git credentials, I recommend you bias towards official Git
+           mechanisms and not to the GitHub-specific advice which touts the GitHub CLI and something called Git Credential
+           Manager (GCM) which is not a Git official project. Know your options.
+         * Read the [*7.14 Git Tools - Credential Storage*](https://git-scm.com/book/en/v2/Git-Tools-Credential-Storage)
+           section of the *Git Book*.
+         * ```shell
+           git config --global credential.helper osxkeychain
+           ```
+         * The next time you `git push` you will get a popup. Enter a Personal Access Token (PAT) and choose "Always allow".
+           When the PAT expires, I'm not 100% sure what the UX is. I think it just prompts for the username/password again
+           and doesn't given an error message.
      * Create and configure a global [gitignore file](https://git-scm.com/docs/gitignore)
          * ```bash
            cat << EOF > "$HOME/.gitignore_global"
