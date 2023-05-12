@@ -20,8 +20,18 @@
     <keyboard-shortcut first-keystroke="meta alt open_bracket" />
   </action>
   <action id="EditorCodeBlockStartWithSelection" />
+  <action id="EditorScrollDown" />
+  <action id="EditorScrollUp" />
   <action id="EditorSelectWord">
     <keyboard-shortcut first-keystroke="ctrl w" />
+  </action>
+  <action id="EditorTextEnd">
+    <keyboard-shortcut first-keystroke="meta end" />
+    <keyboard-shortcut first-keystroke="meta down" />
+  </action>
+  <action id="EditorTextStart">
+    <keyboard-shortcut first-keystroke="meta home" />
+    <keyboard-shortcut first-keystroke="meta up" />
   </action>
   <action id="EditorUnSelectWord">
     <keyboard-shortcut first-keystroke="shift meta w" />
@@ -38,6 +48,14 @@
     <keyboard-shortcut first-keystroke="meta close_bracket" />
   </action>
   <action id="Git.Branches" />
+  <action id="Markdown.Layout.EditorOnly">
+    <keyboard-shortcut first-keystroke="ctrl e" />
+  </action>
+  <action id="Markdown.Layout.PreviewOnly">
+    <keyboard-shortcut first-keystroke="ctrl p" />
+  </action>
+  <action id="MethodOverloadSwitchDown" />
+  <action id="MethodOverloadSwitchUp" />
   <action id="NextProjectWindow" />
   <action id="NextTab">
     <keyboard-shortcut first-keystroke="ctrl right" />

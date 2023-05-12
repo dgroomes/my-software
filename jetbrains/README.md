@@ -21,9 +21,24 @@ Conversely, to export settings *from* Intellij into this repo, follow these inst
 
 1. Export a `settings.zip` file from the IDE
     * Follow [these instructions in the Intellij docs](https://www.jetbrains.com/help/idea/sharing-your-ide-settings.html#import-export-settings)
+    * Export the following items.
+    * `Code Style (schemes)`
+    * `Editor Colors`
+    * `EqualsHashCodeTemplates`
+    * `File Types`
+    * `General`
+    * `InlayHintsSettings, Editor`
+    * `Keymaps`
+    * `Keymaps (schemes)`
+    * `Live templates (schemes)`
+    * `LogHighlightingSettings`
+    * `Look and Feel`
+    * `Notifications`
+    * `UI Settings`
+    * `Vcs.Log.App, VCS`
 2. Unzip it
     * ```shell
-      unzip settings.zip
+      unzip settings.zip -d settings-fresh-export
       ```
 3. Review and commit the individual files
     * The settings are stored in multiple XML files (e.g. `settings/keymaps/mycustomkeymap.xml`, `settings/templates/mycustomlivetemplates.xml`)

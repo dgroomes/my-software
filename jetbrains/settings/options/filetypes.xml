@@ -1,0 +1,12 @@
+<application>
+  <component name="FileTypeManager" version="18">
+    <extensionMap>
+      <mapping pattern="api-extractor.json" type="JSON5" />
+      <mapping pattern="devcontainer.json" type="JSON5" />
+      <mapping ext="jsonc" type="JSON5" />
+      <mapping pattern=".bash_profile" type="Shell Script" />
+      <mapping ext="plist" type="XML" />
+      <mapping ext="jmx" type="XML" />
+    </extensionMap>
+  </component>
+</application>
