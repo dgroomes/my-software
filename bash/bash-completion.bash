@@ -5,7 +5,8 @@
 # so it is a de facto standard.
 
 # The BASH_COMPLETION_COMPAT_DIR environment variable tells the "bash-completion" program where to find v1 (legacy)
-# completions. By default, the value is "/usr/local/etc/bash_completion.d".
+# completions. By default, the value is "/opt/homebrew/etc/bash_completion.d/" (Apple Silicon HomeBrew) or "/usr/local/etc/bash_completion.d"
+# (Intel Mac HomeBrew).
 #
 # After a lot of trial and error, I've come to an unintuitive decision: DO NOT SUPPORT LEGACY COMPLETIONS AT ALL.
 # Specifically, I want "bash-completion" to not even consider legacy completion scripts. This is for two reasons. For
