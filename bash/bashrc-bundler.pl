@@ -140,7 +140,7 @@ setup code. Can you turn a 1 second startup time into a 0.1 second startup time?
 'bb' bundles your scripts with the following rules:
 
   * Scripts with the word 'early' in their name are bundled at the top so they execute first.
-  * Scripts with the word 'last' in their name are bundled at the bottom so they execute last.
+  * Scripts with the word 'late' in their name are bundled at the bottom so they execute last.
   * After taking into account the other ordering rules, scripts are bundled lexicographically by name so that the order is
     deterministic between bundle procedures.
   * Scripts with the word 'ignore' in their name are ignored.
