@@ -422,6 +422,10 @@ These are the instructions I follow when I get a new Mac or after I re-install m
         brew install gh
         ```
      2. Use it for the first time and log in.
+     3. Generate a 'bash-completion' completion file and save it to a file. Use the following command.
+     4. ```shell
+        gh completion --shell bash > "$HOME/.local/share/bash-completion/completions/gh"
+        ``` 
 31. Install [navi](https://github.com/denisidoro/navi)
      1. ```shell
         brew install navi
