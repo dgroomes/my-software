@@ -182,8 +182,6 @@ These are the instructions I follow when I get a new Mac or after I re-install m
       ```
     * Import settings from the `settings.zip` created earlier
     * Disable unneeded plugins
-    * Enable "Use non-modal commit interface". See <https://www.jetbrains.com/help/idea/managing-changelists.html>
-      Can I save this in my Intellij preferences?
     * In macOS settings, disable the "Cmd + Shift + A" system keyboard shortcut so it does not conflict with the
       "Find Action" Intellij keyboard shorcut. See instructions at <https://intellij-support.jetbrains.com/hc/en-us/articles/360005137400-Cmd-Shift-A-hotkey-opens-Terminal-with-apropos-search-instead-of-the-Find-Action-dialog>
 12. Install `jq`
