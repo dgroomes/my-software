@@ -181,7 +181,9 @@ These are the instructions I follow when I get a new Mac or after I re-install m
       idea .
       ```
     * Import settings from the `settings.zip` created earlier
-    * Disable unneeded plugins
+    * Disable unneeded plugins (there are a lot!)
+    * Install desired plugins (which ones do I like? JetBrains is pretty great about bundling and supporting tons already
+      that I don't need many third-party ones).
     * In macOS settings, disable the "Cmd + Shift + A" system keyboard shortcut so it does not conflict with the
       "Find Action" Intellij keyboard shorcut. See instructions at <https://intellij-support.jetbrains.com/hc/en-us/articles/360005137400-Cmd-Shift-A-hotkey-opens-Terminal-with-apropos-search-instead-of-the-Find-Action-dialog>
 12. Install `jq`
@@ -261,6 +263,15 @@ These are the instructions I follow when I get a new Mac or after I re-install m
        fnm completions --shell bash > ~/.local/share/bash-completion/completions/fnm
        ```
      * Install the latest Long-Term Support (LTS) version of node
+     * Incorporate fnm initialization code using the "-dynamic" Bash file and then regenerate the `.bashrc` with `bb`.
+       Use the following commands.
+     * ```shell
+       cp bash/bash-fnm-dynamic.bash ~/.config/bash/
+       ```
+     * Regenerate the `.bashrc` with `bb` using the following command.
+     * ```shell
+       bb
+       ```
 20. Enable "Tab Hover Cards" in Chrome
      * Open `chrome://flags/` in Chrome
      * Set "Tab Hover Cards" to enabled
@@ -342,6 +353,7 @@ These are the instructions I follow when I get a new Mac or after I re-install m
            complete -F _docker d
        EOF
        ```
+     * Configure Docker to use fewer resources. Consider only 2-3 cores and 6GB (but it depends on the need and constraints).
 23. Install Karabiner-Elements <https://github.com/pqrs-org/Karabiner-Elements> from source (or HomeBrew) and configure it with.
      1. First, we must configure Xcode command line tools correctly. Follow these instructions <https://stackoverflow.com/a/61725799>
      2. Then, install `xcodegen` from source <https://github.com/yonaskolb/XcodeGen>:
@@ -491,7 +503,10 @@ These are the instructions I follow when I get a new Mac or after I re-install m
        ```  
     * ```shell
        npm install -g aws-cdk
-       ```  
+       ```
+38. Install [CleanShot](https://cleanshot.com/)
+   * Enter the license key
+   * Go through the configuration steps in the prompt.
 
 
 ## Wish List
