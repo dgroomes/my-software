@@ -194,7 +194,9 @@ These are the instructions I follow when I get a new Mac or after I re-install m
      * ```shell
        brew install kcat
        ```
-14. Install Python 3 and do basic setup (consider installing from HomeBrew)
+14. Install Python 3 and do basic setup
+     * Note: Consider installing manually or using something like HomeBrew. There are pros and cons to each approach.
+       To install using HomeBrew, use the following command.
      * ```shell
        brew install python
        ```
@@ -383,14 +385,11 @@ These are the instructions I follow when I get a new Mac or after I re-install m
         ```
 24. Install Insomnia <https://insomnia.rest/download/>
 25. Install Go <https://golang.org/dl/>
-     * Create the go home dir `mkdir -p ~/repos/go`
-     * Make a best attempt at configuring the Go environment variables (
-       reference <https://stackoverflow.com/questions/7970390/what-should-be-the-values-of-gopath-and-goroot>)
-         * Add to `~/.bashrc`: `export GOPATH="$HOME/repos/go"`
-         * Add to `~/.bashrc`: `export PATH="$PATH:$GOPATH/bin"`
-     * Download and install Bash completion for `go` from <https://github.com/posener/complete/tree/master> (You might
-       notice that the default branch is "v1" but this is only for legacy reasons. Read the project's README for more
-       info.)
+     * Note: Consider installing manually or using something like HomeBrew. There are pros and cons to each approach.
+       To install using HomeBrew, use the following command.
+     * ```shell
+       brew install go
+       ```
 26. Install Bash completion for Gradle
      * `curl https://raw.githubusercontent.com/gradle/gradle-completion/7b084bd68c79be27b8200c7a25e6d00c9c65f9a9/gradle-completion.bash -o /usr/local/etc/bash_completion.d/gradle-completion.bash`
      * Apply the Bash completion to the `gw` alias (the alias was defined in the `bash-aliases.sh` script) with the
