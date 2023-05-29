@@ -504,8 +504,14 @@ These are the instructions I follow when I get a new Mac or after I re-install m
        npm install -g aws-cdk
        ```
 38. Install [CleanShot](https://cleanshot.com/)
-   * Enter the license key
-   * Go through the configuration steps in the prompt.
+    * Enter the license key
+    * Go through the configuration steps in the prompt.
+39. Install Rosetta
+    * ```shell
+      softwareupdate --install-rosetta
+      ```
+    * I don't love that I have to do this (to support some rare binaries like Java gRPC codegen) because sometimes I might
+      forget that I'm running a binary that is not native to the M1 chip. But, I'm doing it anyway.
 
 
 ## Wish List
