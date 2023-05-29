@@ -14,3 +14,6 @@ export PATH="$PATH:$HOME/.cargo/bin"
 
 # Disable the "Use 'docker scan'" message on every Docker build. For reference, see this GitHub issue discussion: https://github.com/docker/scan-cli-plugin/issues/149#issuecomment-823969364
 export DOCKER_SCAN_SUGGEST=false
+
+# Add Go binaries to the PATH.
+export PATH="$PATH:$HOME/go/bin"
