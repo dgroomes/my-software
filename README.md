@@ -85,10 +85,11 @@ These are the instructions I follow when I get a new Mac or after I re-install m
     * `System Settings > Keyboard > Keyboard Shortcuts... > Function Keys` and toggle on "Use F1, F2, etc. keys as standard function keys"
     * Consider changing the behavior of the function/globe key so that it doesn't annoyingly bring up the character picker even when I'm
       using the function key to do something like change the volume. See instructions in this [StackExchange answer](https://apple.stackexchange.com/a/419081/).
-    * Remove clutter macOSS app icons from the Dock. Remove an icon with the context menu item "Remove from Dock".
+    * Remove clutter macOS app icons from the Dock. Remove an icon with the context menu item "Remove from Dock".
     * `System Settings > Desktop & Dock > Automatically hide and show the Dock`
     * `System Settings > Control Center > Clock Options > Display the time with seconds`
     * `System Settings > Control Center > Battery > Show percentage`
+    * `System Settings > General > AirDrop & Handoff` and turn `AirPlay Receiver` off because [it uses port 500](https://developer.apple.com/forums/thread/682332).
 2. Install Sublime Text
     * The `subl` command is convenient for launching Sublime Text and opening a specific file or directory. In a later
       setup step, my shell is configured so that `subl` is always available on the `PATH`. But for now, you can execute
