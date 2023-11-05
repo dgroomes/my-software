@@ -265,7 +265,11 @@ These are the instructions I follow when I get a new Mac or after I re-install m
      * ```shell
        fnm completions --shell bash > ~/.local/share/bash-completion/completions/fnm
        ```
-     * Install the latest Long-Term Support (LTS) version of node
+     * Install the latest Long-Term Support (LTS) version of node with the following command.
+     * ```shell
+       fnm install --lts
+       ```
+     * Tip: learn about releases and support horizons for Node.js versions on the official [*Previous Releases* page](https://nodejs.org/en/about/previous-releases). 
      * Incorporate fnm initialization code using the "-dynamic" Bash file and then regenerate the `.bashrc` with `bb`.
        Use the following commands.
      * ```shell
@@ -275,12 +279,7 @@ These are the instructions I follow when I get a new Mac or after I re-install m
      * ```shell
        bb
        ```
-20. Enable "Tab Hover Cards" in Chrome
-     * Open `chrome://flags/` in Chrome
-     * Set "Tab Hover Cards" to enabled
-     * Set "Tab Hover Card Images" to enabled
-     * Tab Hover Cards make it faster to preview the title of a tab
-21. Install latest `git` and configure it
+20. Install latest `git` and configure it
      * ```shell
        brew install git
        ```
@@ -339,7 +338,7 @@ These are the instructions I follow when I get a new Mac or after I re-install m
            shared, it's convenient for everyone else if the exclusions are version-controlled in the project-specific
            gitignore file. 2) Projects are diverse and unpredictable. There might be a project that wants to version-control
            the `build/` or `out/` directories, and for good reason. For me, the `.DS_Store` exclusion is a very safe bet. 
-22. Install Docker Desktop <https://docs.docker.com/desktop/install/mac-install/>
+21. Install Docker Desktop <https://docs.docker.com/desktop/install/mac-install/>
      * Then, install Bash completion for `docker` and `docker-compose` by following [the docs](https://docs.docker.com/desktop/faqs/macfaqs/#how-do-i-install-shell-completion). It boils down to:
        ```bash
        ln -s /Applications/Docker.app/Contents/Resources/etc/docker.bash-completion ~/.local/share/bash-completion/completions/docker
@@ -357,7 +356,7 @@ These are the instructions I follow when I get a new Mac or after I re-install m
        EOF
        ```
      * Configure Docker to use fewer resources. Consider only 2-3 cores and 6GB (but it depends on the need and constraints).
-23. Install Karabiner-Elements <https://github.com/pqrs-org/Karabiner-Elements> from source (or HomeBrew) and configure it with.
+22. Install Karabiner-Elements <https://github.com/pqrs-org/Karabiner-Elements> from source (or HomeBrew) and configure it with.
      1. First, we must configure Xcode command line tools correctly. Follow these instructions <https://stackoverflow.com/a/61725799>
      2. Then, install `xcodegen` from source <https://github.com/yonaskolb/XcodeGen>:
         ```shell
@@ -384,14 +383,14 @@ These are the instructions I follow when I get a new Mac or after I re-install m
         cp karabiner/karabiner.json ~/.config/karabiner
         cp karabiner/assets/complex_modifications/* ~/.config/karabiner/assets/complex_modifications
         ```
-24. Install Insomnia <https://insomnia.rest/download/>
-25. Install Go <https://golang.org/dl/>
+23. Install Insomnia <https://insomnia.rest/download/>
+24. Install Go <https://golang.org/dl/>
      * Note: Consider installing manually or using something like HomeBrew. There are pros and cons to each approach.
        To install using HomeBrew, use the following command.
      * ```shell
        brew install go
        ```
-26. Install Bash completion for Gradle
+25. Install Bash completion for Gradle
      * `curl https://raw.githubusercontent.com/gradle/gradle-completion/7b084bd68c79be27b8200c7a25e6d00c9c65f9a9/gradle-completion.bash -o /usr/local/etc/bash_completion.d/gradle-completion.bash`
      * Apply the Bash completion to the `gw` alias (the alias was defined in the `bash-aliases.sh` script) with the
        following command.
@@ -404,16 +403,16 @@ These are the instructions I follow when I get a new Mac or after I re-install m
            complete -F _gradle gw
        EOF
        ```
-27. Install `libpq` so we can get `psql`
+26. Install `libpq` so we can get `psql`
      * Follow directions at <https://blog.timescale.com/tutorials/how-to-install-psql-on-mac-ubuntu-debian-windows/>
      * `brew install libpq`
      * `brew link --force libpq`
-28. Build and install Apache JMeter, a load testing and performance measurement tool
+27. Build and install Apache JMeter, a load testing and performance measurement tool
      1. `git clone https://github.com/apache/jmeter`
      2. Build it with `./gradlew createDist`
      3. Add the `bin/` directory to the path.
          * For example, append something like `export PATH="$PATH:~/repos/opensource/jmeter/bin"` to your `.bashrc`
-29. Install fzf <https://github.com/junegunn/fzf>
+28. Install fzf <https://github.com/junegunn/fzf>
      1. Install it using the [HomeBrew option](https://github.com/junegunn/fzf/blob/20230402d087858ca9a93aa8fe53d289f29c1836/README.md?plain=1#L28)
      2. ```shell
         brew install fzf
@@ -427,7 +426,7 @@ These are the instructions I follow when I get a new Mac or after I re-install m
      5. When it prompts for *Do you want to enable fuzzy auto-completion?* Answer YES
      6. When it prompts for *Do you want to enable key bindings?* Answer YES
      7. When it prompts for *Do you want to update your shell configuration files?* Answer NO (instead we use the `bash/bash-fzf.bash` file)
-30. Install `gh` https://github.com/cli/cli
+29. Install `gh` https://github.com/cli/cli
      1. ```shell
         brew install gh
         ```
@@ -436,7 +435,7 @@ These are the instructions I follow when I get a new Mac or after I re-install m
      4. ```shell
         gh completion --shell bash > "$HOME/.local/share/bash-completion/completions/gh"
         ``` 
-31. Install [navi](https://github.com/denisidoro/navi)
+30. Install [navi](https://github.com/denisidoro/navi)
      1. ```shell
         brew install navi
         ```
@@ -445,7 +444,7 @@ These are the instructions I follow when I get a new Mac or after I re-install m
         mkdir -p "$HOME/Library/Application Support/navi/cheats/mycheats"
         cp navi/*.cheat "$HOME/Library/Application Support/navi/cheats/mycheats"
         ```
-32. Install MongoDB *Community Server*
+31. Install MongoDB *Community Server*
      1. Download from <https://www.mongodb.com/try/download/community>.
      2. Extract and put somewhere on the PATH.
          * e.g. symlink it to `~/dev/mongodb` and then add to `.bashrc` the following: `export PATH="$PATH:~/dev/mongodb/bin"`
@@ -459,7 +458,7 @@ These are the instructions I follow when I get a new Mac or after I re-install m
      6. Also, consider downloading and installing the beta (but pretty feature-ful and cool) *new* Mongo shell called `mongosh`
          * Download from the [GitHub Releases page for the project](https://github.com/mongodb-js/mongosh/releases)
          * e.g. symlink it to `~/dev/mongosh` and then add to `.bashrc` the following: `export PATH="$PATH:~/dev/mongosh/bin"`
-33. Install Rust
+32. Install Rust
      1. Install `rustup` using the instructions in the official [rust-lang site](https://www.rust-lang.org/tools/install)
      and **do not** allow it to modify the `PATH`.
      2. Install `rustup` and `cargo` Bash completions with the following commands.
@@ -467,20 +466,20 @@ These are the instructions I follow when I get a new Mac or after I re-install m
         rustup completions bash > "$HOME/.local/share/bash-completion/completions/rustup"
         rustup completions bash cargo >> "$HOME/.local/share/bash-completion/completions/cargo"
         ```
-34. Rust-based tools
+33. Rust-based tools
      * There is a nascent but rich ecosystem of Rust-based command-line tools. Many of them are substitutes for traditional
        commands like `ls`, `du`, and `cat` but they bring a bevy of extra features. Best of all, they are fast. Keep track
        of this "re-implemented in Rust" trend and follow this great article [*Rewritten in Rust: Modern Alternatives of Command-Line Tools*](https://zaiste.net/posts/shell-commands-rust/)
        on <https://zaiste.net/>.
-     * `exa` might be my favorite. Install it with the following command.
+     * `eza` might be my favorite. Install it with the following command.
      * ```shell
-       cargo install exa
+       cargo install eza
        ```
      * `jless` is a CLI tool for helping you view JSON. Install it with the following command.
      * ```shell
        cargo install --git https://github.com/PaulJuliusMartinez/jless
        ```
-35. Install and configure linting for Markdown
+34. Install and configure linting for Markdown
      1. Install [`markdownlint-cli2`](https://github.com/DavidAnson/markdownlint-cli2):
          * `npm install markdownlint-cli2 --global`
      2. Install [`markdownlint-cli2-formatter-pretty`](https://github.com/DavidAnson/markdownlint-cli2/tree/main/formatter-pretty)
@@ -489,10 +488,10 @@ These are the instructions I follow when I get a new Mac or after I re-install m
      4. Build the `lint-rules/` package
          * `cd lint-rules; npm install -g`
      5. Use the alias `mdlint` to lint a file. See earlier instructions to configure Bash with this and other aliases.
-36. Install the AWS CLI
+35. Install the AWS CLI
      * Follow the [installation instructions in the AWS doc site](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html).
        I followed the GUI instructions.
-37. Install the AWS Cloud Development Kit (CDK) CLI
+36. Install the AWS Cloud Development Kit (CDK) CLI
      * Follow the [installation instructions in the AWS doc site](https://aws.amazon.com/getting-started/guides/setup-cdk/module-two/)
      * These are the commands I ran.
      * ```shell
@@ -504,10 +503,10 @@ These are the instructions I follow when I get a new Mac or after I re-install m
     * ```shell
        npm install -g aws-cdk
        ```
-38. Install [CleanShot](https://cleanshot.com/)
+37. Install [CleanShot](https://cleanshot.com/)
     * Enter the license key
     * Go through the configuration steps in the prompt.
-39. Install Rosetta
+38. Install Rosetta
     * ```shell
       softwareupdate --install-rosetta
       ```
