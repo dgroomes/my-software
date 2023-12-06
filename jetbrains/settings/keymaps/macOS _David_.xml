@@ -1,0 +1,62 @@
+<keymap version="1" name="macOS (David)" parent="Mac OS X 10.5+">
+  <action id="DatabaseView.OpenFamilyAction">
+    <keyboard-shortcut first-keystroke="f4" />
+  </action>
+  <action id="EditSource">
+    <keyboard-shortcut first-keystroke="f4" />
+  </action>
+  <action id="EditorBackwardParagraph">
+    <keyboard-shortcut first-keystroke="meta up" />
+  </action>
+  <action id="EditorForwardParagraph">
+    <keyboard-shortcut first-keystroke="meta down" />
+  </action>
+  <action id="EditorSelectWord">
+    <keyboard-shortcut first-keystroke="alt up" />
+    <keyboard-shortcut first-keystroke="ctrl w" />
+  </action>
+  <action id="EditorUp">
+    <keyboard-shortcut first-keystroke="up" />
+  </action>
+  <action id="ExternalSystem.OpenConfig">
+    <keyboard-shortcut first-keystroke="f4" />
+  </action>
+  <action id="FileChooser.GoToParent" />
+  <action id="Jdbc.OpenEditor.Data">
+    <keyboard-shortcut first-keystroke="f4" />
+  </action>
+  <action id="Markdown.Layout.EditorOnly">
+    <keyboard-shortcut first-keystroke="ctrl e" />
+  </action>
+  <action id="Markdown.Layout.PreviewOnly">
+    <keyboard-shortcut first-keystroke="ctrl p" />
+  </action>
+  <action id="NavBar-navigate">
+    <keyboard-shortcut first-keystroke="f4" />
+  </action>
+  <action id="OpenBookmarkGroup">
+    <keyboard-shortcut first-keystroke="f4" />
+  </action>
+  <action id="OpenModuleSettings">
+    <keyboard-shortcut first-keystroke="f4" />
+  </action>
+  <action id="ProjectViewEditSource">
+    <keyboard-shortcut first-keystroke="f4" />
+  </action>
+  <action id="RemoteHostView.EditSource">
+    <keyboard-shortcut first-keystroke="f4" />
+  </action>
+  <action id="SearchEverywhere.NavigateToNextGroup">
+    <keyboard-shortcut first-keystroke="page_down" />
+  </action>
+  <action id="SearchEverywhere.NavigateToPrevGroup">
+    <keyboard-shortcut first-keystroke="page_up" />
+  </action>
+  <action id="ShowNavBar">
+    <keyboard-shortcut first-keystroke="alt home" />
+  </action>
+  <action id="Sql.EditParameter">
+    <keyboard-shortcut first-keystroke="f4" />
+  </action>
+  <action id="copilot.disposeInlays" />
+</keymap>

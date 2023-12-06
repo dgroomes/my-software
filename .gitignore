@@ -1,3 +1,5 @@
 .DS_Store
 build/
 .idea/
+settings.zip
+settings-fresh-export/
