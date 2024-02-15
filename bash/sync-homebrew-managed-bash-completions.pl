@@ -50,6 +50,14 @@ while (my $filename = readdir $dh) {
     my $source_file = catfile($homebrew_completions_dir, $filename);
     my $dest_file = catfile($local_completions_dir, $filename);
 
+    # Special case for git completion. Annoyingly, git is the only completion file among the packages that I manage with
+    # HomeBrew that uses a name that is not compatible for Bash completion. It uses the name 'git-completion.bash'. It
+    # needs to be either 'git' (my preference and the norm) or 'git.bash' (perfectly fine too). So, let's do a special
+    # check.
+    if ($filename eq 'git-completion.bash') {
+        $dest_file = catfile($local_completions_dir, 'git');
+    }
+
     # Skip if it's a directory
     next if -d $source_file;
 
