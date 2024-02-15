@@ -13,25 +13,15 @@ use Cwd 'abs_path';
 # '/opt/homebrew/etc/bash_completion.d/' and the symlink files are created in
 # '$HOME/.local/share/bash-completion/completions' which is a conventional directory that 'bash-completion' looks for
 # v2-based completions.
-# 
+#
 # As an additional feature, the script also cleans up any dangling symlinks in the '.local' directory, which will
 # occur if you uninstall a HomeBrew package that came with completions, like 'docker', 'kcat', etc.
 #
 # For more information, see https://github.com/dgroomes/my-config
 
-sub create_symlink {
-    my ($source_file, $dest_file) = @_;
-    
-    # Create symlink if it doesn't exist
-    if (!-l $dest_file) {
-        print "Creating symlink for " . basename($source_file) . "...\n";
-        symlink($source_file, $dest_file) or warn "Couldn't create symlink: $!";
-    }
-}
-
 sub remove_symlink {
     my ($dest_file) = @_;
-    
+
     # Check if the symlink is dangling
     if (!-e $dest_file) {
         print "Removing dangling symlink for " . basename($dest_file) . "...\n";
@@ -39,48 +29,50 @@ sub remove_symlink {
     }
 }
 
-# Define source and destination directories
-my $source_dir = '/opt/homebrew/etc/bash_completion.d/';
-my $dest_dir = "$ENV{HOME}/.local/share/bash-completion/completions";
+my $homebrew_completions_dir = '/opt/homebrew/etc/bash_completion.d/';
+my $local_completions_dir = "$ENV{HOME}/.local/share/bash-completion/completions";
 
-# Check if source directory exists
-if (!-d $source_dir) {
-    print "Source directory does not exist. Exiting...\n";
+if (!-d $homebrew_completions_dir) {
+    print "The HomeBrew Bash completions directory ('$homebrew_completions_dir') does not exist. There is no work to do. Exiting...\n";
     exit;
 }
 
-# Check if destination directory exists, if not create it (and intermediate directories).
-if (!-d $dest_dir) {
-    print "Destination directory ($dest_dir) does not exist. Creating...\n";
-    make_path($dest_dir) or die "Unable to create destination directory: $!";
+if (!-d $local_completions_dir) {
+    print "The local completions directory ('$local_completions_dir') does not exist. Creating it...\n";
+    make_path($local_completions_dir) or die "Unable to create destination directory: $!";
 }
 
-# Loop through each file in source directory
-opendir(my $dh, $source_dir) or die "Can't open $source_dir: $!";
+# Loop through each HomeBrew completions file and symlink it to the local completions directory
+opendir(my $dh, $homebrew_completions_dir) or die "Can't open $homebrew_completions_dir: $!";
 while (my $filename = readdir $dh) {
     next if $filename =~ /^\./;  # Skip hidden files and directories
-    
-    my $source_file = catfile($source_dir, $filename);
-    my $dest_file = catfile($dest_dir, $filename);
-    
+
+    my $source_file = catfile($homebrew_completions_dir, $filename);
+    my $dest_file = catfile($local_completions_dir, $filename);
+
     # Skip if it's a directory
     next if -d $source_file;
-    
-    create_symlink($source_file, $dest_file);
+
+    # Skip if there is already a file at the destination. There are two cases where a file might exist:
+    #   - We've already created a symlink for this file
+    #   - Some HomeBrew-installed packages like 'fnm' and 'gh' seem to automatically copy their completions to the local
+    #     completions directory.
+    next if -e $dest_file;
+
+    print "Creating symlink for " . basename($source_file) . "...\n";
+    symlink($source_file, $dest_file) or warn "Couldn't create symlink: $!";
 }
 closedir $dh;
 
-# Clean up section
-# Loop through each file in destination directory
-opendir($dh, $dest_dir) or die "Can't open $dest_dir: $!";
+# Clean up any dangling symlinks in the local completions directory
+opendir($dh, $local_completions_dir) or die "Can't open $local_completions_dir: $!";
 while (my $filename = readdir $dh) {
     next if $filename =~ /^\./;  # Skip hidden files and directories
-    
-    my $dest_file = catfile($dest_dir, $filename);
-    
+
+    my $dest_file = catfile($local_completions_dir, $filename);
+
     # Skip if it's not a symlink
     next unless -l $dest_file;
-    
 
     remove_symlink($dest_file);
 }
