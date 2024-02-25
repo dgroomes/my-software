@@ -1,0 +1,9 @@
+auto_sync = false
+update_check = false
+
+# Use ctrl instead of alt as the shortcut modifier key for numerical UI shortcuts alt-0 ... alt-9
+ctrl_n_shortcuts = true
+
+# The enter key will immediately execute the highlighted command shown in the Atuin history. Remember, use tab to take
+# the highlighted command and put it in the input line for editing.
+enter_accept = true
