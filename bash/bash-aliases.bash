@@ -35,3 +35,6 @@ alias rgf='rg --files | rg'
 
 # Gradle
 alias gw="./gradlew"
+
+# fnm is basically a drop-in replacement for nvm. We can alias nvm to it.
+alias nvm="fnm"

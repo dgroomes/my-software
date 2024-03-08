@@ -179,7 +179,7 @@ These are the instructions I follow when I get a new Mac or after I re-install m
        Bash-Preexec with the following commands.
      * ```shell
        mkdir -p ~/.local/lib/bash-preexec
-       curl https://raw.githubusercontent.com/rcaloras/bash-preexec/da64ad4b7bb965d19dbeb5bb7447f1a63e3de2e3/bash-preexec.sh > ~/.local/lib/bash-preexec/bash-preexec.sh
+       curl https://raw.githubusercontent.com/rcaloras/bash-preexec/8926de0a1f69d17f5b05099cfaaa52d833084c2f/bash-preexec.sh > ~/.local/lib/bash-preexec/bash-preexec.sh
        ```
      * Install Atuin with the following command.
      * ```shell
