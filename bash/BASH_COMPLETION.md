@@ -19,52 +19,49 @@ convention to disambiguate it from the Bash feature.
 ## bash-completion v1
 
 The `bash-completion` project has been around for many years and lived as a 'v1' for a long time. While, you should
-mostly only need to use 'v2' in the year 2023, you can benefit from knowing about both versions. It's especially important
+mostly only need to use 'v2' in the year 2024, you can benefit from knowing about both versions. It's especially important
 that you can learn to identify if information you see online about `bash-completion` is referring to 'v1' or 'v2'. It
 won't be obvious, and if you can't tell the difference then you might get yourself more confused (I find myself in a
 perpetually confused state with the ecosystem of shell completion).
 
 Related:
 
-* [bash-completion v1 HomeBrew formula](https://github.com/Homebrew/homebrew-core/blob/master/Formula/bash-completion.rb)
+* [bash-completion v1 Homebrew formula](https://formulae.brew.sh/formula/bash-completion)
 * [Discussion about the tension and conflict between bash-completion v1 and v2 in HomeBew](https://discourse.brew.sh/t/bash-completion-2-vs-brews-auto-installed-bash-completions/2391/2)
 
 
-### bash-completion v2
+## bash-completion v2
 
-<https://github.com/Homebrew/homebrew-core/blob/master/Formula/bash-completion@2.rb>
+<https://formulae.brew.sh/formula/bash-completion@2>
 
 v2 is the new version. It contains a large amount of built-in completions for a diverse set of programs like `chmod`, 
 `7z`, `jq` `kill`, `ssh`, `curl`, `java`. See the full list at <https://github.com/scop/bash-completion/tree/master/completions>.
 
-The relevant files/directories are: 
+The relevant files (including symlinks) and directories are: 
 
 * `/opt/homebrew/etc/profile.d/bash_completion.sh`
-  * Note: for Intel Mac the path is `/usr/local/etc/profile.d/bash_completion.sh`
   * This file gets sourced from `.bash_profile`.
-  * This file symlinks to `../../Cellar/bash-completion@2/2.11/etc/profile.d/bash_completion.sh`
-* `/opt/homebrew/Cellar/bash-completion@2/2.11/etc/profile.d/bash_completion.sh`
-  * Note: for Intel Mac the path is `/usr/local/Cellar/bash-completion@2/2.11/etc/profile.d/bash_completion.sh`
+  * This file symlinks to `../../Cellar/bash-completion@2/2.13.0/etc/profile.d/bash_completion.sh`
+* `/opt/homebrew/Cellar/bash-completion@2/2.13.0/etc/profile.d/bash_completion.sh`
   * This is the configuration file hook. It loads bash-completion.
-* `/opt/homebrew/Cellar/bash-completion@2/2.11/share/bash-completion/bash_completion`
-  * Note: for Intel Mac the path is `/usr/local/Cellar/bash-completion@2/2.11/share/bash-completion/bash_completion`)
+* `/opt/homebrew/Cellar/bash-completion@2/2.13.0/share/bash-completion/bash_completion`
   * This is the bash-completion program itself.
 * `$HOME/.local/share/bash-completion/completions/`
   * I think this is where you are supposed to put v2 completions that you yourself write
 * `/opt/homebrew/etc/bash_completion.d/`
-  * Note: for Intel Mac the path is `/usr/local/etc/bash_completion.d`.
-  * This is where HomeBrew installs v1 (legacy) completions.
-  * For example, HomeBrew installs the `brew` completions here.
-* `/opt/homebrew/Cellar/bash-completion@2/2.11/share/bash-completion/completions/`
-  * These are the completions that come bundled with bash-completion. There are a lot (740 at the time of writing). There are completions
+  * This is where Homebrew formulas often install v1 (legacy) completions via symlinks.
+  * For example, for me, I find symlinks to completion scripts for `brew`, `cmake`, `gh`, `rg` and more.  
+* `/opt/homebrew/Cellar/bash-completion@2/2.13.0/share/bash-completion/completions`
+  * These are the completions that come bundled with bash-completion. There are a lot (910 at the time of writing). There are completions
     for commands like `7z`, `make`, `curl`, and interestingly many variations of Python like `python`, `python3`, `python3.3` etc.
 
 The environment variable `BASH_COMPLETION_COMPAT_DIR` is a compatibility option to enable `bash-completion v2` to load
-third-party completion scripts that were designed in the era of `bash-completion v1`. For example, set `BASH_COMPLETION_COMPAT_DIR="/usr/local/etc/bash_completion.d"`
-if you want to load those completions. HomeBrew formulas often install completions. But this is a problem...
+third-party completion scripts that were designed in the era of `bash-completion v1`. For example, set `BASH_COMPLETION_COMPAT_DIR="/opt/homebrew/etc/bash_completion.d/"`
+if you want to load those completions. But loading completion scripts in this way is a problem... read the next section
+for more information.
 
----
-**THE BIG PROBLEM**
+
+## **The Big Problem**
 
 Legacy bash-completion v1 completions make for a slow "start up a new shell" experience. This is because the "bash-completion"
 program [sources all these completions eagerly](https://github.com/scop/bash-completion/blob/b1d163e99e17bcfbc79ee1b6151d8295307d8bc6/bash_completion#L2634).
@@ -72,8 +69,25 @@ The 'docker' completion script, in particular, is slow. It takes roughly 0.5 sec
 actually really annoying because I open new shells all the time, especially by way of Intellij's convenient "run this
 Markdown shell snippet in an embedded terminal window" feature, which I use constantly I believe is "the way".
 
-So, I need to disable the v1 completions and routinely copy the v1 completions into the v2 completions directory. I don't
-have a great solution for this other than this big warning section. See my related note in the `bash-completion.bash` file.
 
----
+## A Workaround
+
+My workaround for the slowness problem is to disable the eager loading of the v1 completion scripts. Interestingly,
+I've found that the v1 completion scripts are perfectly fine to treat as v2 script. They can be loaded lazily along with
+the regular v2 completion scripts if I just re-located them (or symlink them) to the v2 location. I do not understand
+why `bash-completion` v2 even loads completion scripts the legacy way if loading them lazily should "just work". Well,
+there must be some compatibility reason, but I haven't run into it.
+
+My workaround requires routinely symlinking the v1 completions into the v2 completions directory. I'm using the script
+`sync-homebrew-managed-bash-completions.pl` as needed to do the symlinking, but you need to remember to actually run it
+after you install a new Homebrew formula. It's not perfect, but it works.
+
+An added wrinkle to disabling the eager-style loading was created when `bash-completion` v2 made a breaking change in
+2.12.0. A lot of work happened between, 2.11 and 2.12.0 including removing many functions of the bash-completion API
+like [`_get_comp_words_by_ref`](https://github.com/scop/bash-completion/commit/a9fb23207cbc66302a4500c0eec53fbd6c095377#diff-a4757074ff650000804fd3eaabe9b0a9e02e33040ca5b8afd4c0275fc5f3e136L532).
+Thankfully, a compatibility layer was also added in 2.12.0 that adds back the removed functions in a script called [`000_bash_completion_compat.bash`](https://github.com/scop/bash-completion/blob/27a0ef80a2dbd84d8a0d2f90945cc66577149726/bash_completion.d/000_bash_completion_compat.bash).
+This script is installed into the eager-style directory, but we are disabling eager loading and so we need to source it
+another way. My idea is to opt-out of the configuration file hook (`/opt/homebrew/etc/profile.d/bash_completion.sh`) and
+instead wire up `bash-completion` by hand. This way I can control the order of sourcing and ensure that the compatibility
+script is sourced eagerly.
 
