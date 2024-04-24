@@ -87,13 +87,13 @@ called "normal mode".
 
 "Normal mode" does the actual bundling work (the namesake of 'bb'). There are two aspects to this: pre-building and
 inlining. Pre-building is the process of executing scripts that they themselves produce lines of Bash code that are
-designed to be evaluated at Bash startup time. For example, HomeBrew recommends adding the snippet `eval "$(brew shellenv)"`
+designed to be evaluated at Bash startup time. For example, Homebrew recommends adding the snippet `eval "$(brew shellenv)"`
 to your .bashrc (or equivalent). This snippet takes about 20ms to execute on my computer. But `brew shellenv` outputs
 the same small snippet of text every time, so why bother with the dynamism and instead just evaluate the static output?
 (Technically you can make a good case for this dynamism, but I am choosing to optimize for startup speed and not
 authoring convenience). That's exactly what pre-building does: it evaluates `brew shellenv` and inlines the output
 into the generated .bashrc file. Your Bash startup time will always be about 20ms faster (in this example) because it
-saves time by eliminating the dynamism of executing `brew shellenv` (remember, HomeBrew is a Ruby program).
+saves time by eliminating the dynamism of executing `brew shellenv` (remember, Homebrew is a Ruby program).
 
 Inlining is straightforward. Inlining is the process of taking the contents of a script and pasting it into the
 generated .bashrc file. The performance savings are quite low because it only saves on the incremental I/O time of

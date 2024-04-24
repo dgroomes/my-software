@@ -120,8 +120,8 @@ These are the instructions I follow when I get a new Mac or after I re-install m
     * Make sure to install Homebrew in the Apple Silicon configuration. I won't repeat the details here, but basically,
       it should be installed at `/opt/homebrew` and not `/usr/local`.
 8. Install Bash
-    * macOS uses a years old version of Bash and will never update it because of licensing. We'll use HomeBrew to install a modern version of Bash.
-      First, initialize the HomeBrew environment config with the following command (yes, this is awkward but the nature of bootstrapping systems is
+    * macOS uses a years old version of Bash and will never update it because of licensing. We'll use Homebrew to install a modern version of Bash.
+      First, initialize the Homebrew environment config with the following command (yes, this is awkward but the nature of bootstrapping systems is
       indeed awkward).
     * ```shell
       eval $(/opt/homebrew/bin/brew shellenv)
@@ -170,7 +170,7 @@ These are the instructions I follow when I get a new Mac or after I re-install m
        brew install bash-completion@2
        ```
      * See additional information in `bash/BASH_COMPLETION.md`.
-     * Run the `bash/sync-homebrew-managed-bash-completions.pl` script whenever you install a HomeBrew package that comes with completion
+     * Run the `bash/sync-homebrew-managed-bash-completions.pl` script whenever you install a Homebrew package that comes with completion
        scripts. For more information, read the notes in that script.
 11. Install [Atuin](https://github.com/atuinsh/atuin)
      * I'm in the "kicking the tires" phase with Atuin. It's been popular for a few years and is getting even more refined.
@@ -219,8 +219,8 @@ These are the instructions I follow when I get a new Mac or after I re-install m
        brew install kcat
        ```
 15. Install Python 3 and do basic setup
-     * Note: Consider installing manually or using something like HomeBrew. There are pros and cons to each approach.
-       To install using HomeBrew, use the following command.
+     * Note: Consider installing manually or using something like Homebrew. There are pros and cons to each approach.
+       To install using Homebrew, use the following command.
      * ```shell
        brew install python
        ```
@@ -379,7 +379,7 @@ These are the instructions I follow when I get a new Mac or after I re-install m
        EOF
        ```
      * Configure Docker to use fewer resources. Consider only 2-3 cores and 6GB (but it depends on the need and constraints).
-23. Install Karabiner-Elements <https://github.com/pqrs-org/Karabiner-Elements> from source (or HomeBrew) and configure it with.
+23. Install Karabiner-Elements <https://github.com/pqrs-org/Karabiner-Elements> from source (or Homebrew) and configure it with.
      1. First, we must configure Xcode command line tools correctly. Follow these instructions <https://stackoverflow.com/a/61725799>
      2. Then, install `xcodegen` from source <https://github.com/yonaskolb/XcodeGen>:
         ```shell
@@ -408,8 +408,8 @@ These are the instructions I follow when I get a new Mac or after I re-install m
         ```
 24. Install Insomnia <https://insomnia.rest/download/>
 25. Install Go <https://golang.org/dl/>
-     * Note: Consider installing manually or using something like HomeBrew. There are pros and cons to each approach.
-       To install using HomeBrew, use the following command.
+     * Note: Consider installing manually or using something like Homebrew. There are pros and cons to each approach.
+       To install using Homebrew, use the following command.
      * ```shell
        brew install go
        ```
@@ -436,7 +436,7 @@ These are the instructions I follow when I get a new Mac or after I re-install m
      3. Add the `bin/` directory to the path.
          * For example, append something like `export PATH="$PATH:~/repos/opensource/jmeter/bin"` to your `.bashrc`
 29. Install fzf <https://github.com/junegunn/fzf>
-     1. Install it using the [HomeBrew option](https://github.com/junegunn/fzf/blob/20230402d087858ca9a93aa8fe53d289f29c1836/README.md?plain=1#L28)
+     1. Install it using the [Homebrew option](https://github.com/junegunn/fzf/blob/20230402d087858ca9a93aa8fe53d289f29c1836/README.md?plain=1#L28)
      2. ```shell
         brew install fzf
         ```
