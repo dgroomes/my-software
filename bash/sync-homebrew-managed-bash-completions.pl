@@ -58,6 +58,9 @@ while (my $filename = readdir $dh) {
         $dest_file = catfile($local_completions_dir, 'git');
     }
 
+    # Special case for the bash-completion compatibility script. This is not actually a completions file.
+    next if $filename eq '000_bash_completion_compat.bash';
+
     # Skip if it's a directory
     next if -d $source_file;
 
