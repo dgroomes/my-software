@@ -218,11 +218,20 @@ These are the instructions I follow when I get a new Mac or after I re-install m
      * ```shell
        brew install kcat
        ```
-15. Install Python 3 and do basic setup
-     * Note: Consider installing manually or using something like Homebrew. There are pros and cons to each approach.
-       To install using Homebrew, use the following command.
+15. Install Python core components
+     * There are multiple ways to install Python. Using the official installer is a perfectly valid approach. I'm already
+       invested in HomeBrew, and it's a good choice for me. Use the following command.
      * ```shell
        brew install python
+       ```
+     * The Python installation managed by HomeBrew is considered an ["externally managed" installation, and the Python
+       docs](https://packaging.python.org/en/latest/specifications/externally-managed-environments/) describe what this
+       means in detail. Consider reading those docs carefully because it will help you navigate the many facets of
+       managing the Python ecosystem on your computer. An effect of all this is that we should also install `pipx`
+       directly from HomeBrew (and basically never use the `pip3` binary that comes with the Python installation). We'll
+       use `pipx` to install Python packages globally for the user, like `poetry`, and others. Use the following command.
+     * ```shell
+       brew install pipx
        ```
 16. Install Starship <https://github.com/starship/starship>
      * > The minimal, blazing-fast, and infinitely customizable prompt for any shell!
