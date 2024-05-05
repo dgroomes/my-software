@@ -28,11 +28,14 @@ General clean-ups, TODOs and things I wish to implement for this project
 * [ ] What is Nushell's history and Ctrl-R (or the equivalent) support? Should I jump straight to atuin?
 * [ ] IN PROGRESS Define a `cd-repo` function like I have for Bash. Maybe study zoxide?
    * Update: need to read this page: [External Completers](https://www.nushell.sh/cookbook/external_completers.html)
-   * Make it work for more than just `personal/`
+   * DONE Make it work for more than just `personal/`
+   * Do an `fzf` implementation. I think that's just the state of things. And `fzf` is still a great tool. For
+     reference, see <https://github.com/nushell/nushell/issues/1275>.
 * [ ] Nushell support in Intellij? Intellij Ultimate has LSP support now and [Nushell has an LSP](https://github.com/nushell/nushell/tree/main/crates/nu-lsp).
 * [ ] Get completions working for `gh`. Is that even possible?
 * [ ] How can I integrate Nushell with Raycast? I don't want go overboard with an integration, but I want to know what's
   possible.
+* [ ] How do I copy the last command to clipboard? I should make a command/alias for that.
 
 
 ## Reference
