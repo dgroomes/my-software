@@ -173,27 +173,9 @@ These are the instructions I follow when I get a new Mac or after I re-install m
      * Run the `bash/sync-homebrew-managed-bash-completions.pl` script whenever you install a Homebrew package that comes with completion
        scripts. For more information, read the notes in that script.
 11. Install [Atuin](https://github.com/atuinsh/atuin)
-     * I'm in the "kicking the tires" phase with Atuin. It's been popular for a few years and is getting even more refined.
-       I do have a lack-luster shell history development experience, so I'm interested to see what Atuin has to offer.
-     * Atuin's Bash support requires that [Bash-Preexec](https://github.com/rcaloras/bash-preexec) is installed. Install
-       Bash-Preexec with the following commands.
-     * ```shell
-       mkdir -p ~/.local/lib/bash-preexec
-       curl https://raw.githubusercontent.com/rcaloras/bash-preexec/8926de0a1f69d17f5b05099cfaaa52d833084c2f/bash-preexec.sh > ~/.local/lib/bash-preexec/bash-preexec.sh
-       ```
      * Install Atuin with the following command.
      * ```shell
        brew install atuin
-       ```
-     * Copy over my config, and generate Bash completions with the following commands.
-     * ```shell
-       mkdir -p ~/.config/atuin && cp atuin/config.toml ~/.config/atuin
-       mkdir -p ~/.local/share/bash-completion/completions && atuin gen-completions --shell bash --out-dir ~/.local/share/bash-completion/completions
-       ```
-     * Finally, incorporate Bash-Preexec and Atuin into the bundler flow with the following command.
-     * ```shell
-       cp bash/bash-atuin-dynamic-late.bash ~/.config/bash
-       bb
        ```
 12. Install JetBrains Toolbox <https://www.jetbrains.com/toolbox-app/>
     * Open Toolbox
@@ -558,3 +540,5 @@ General clean-ups, TODOs and things I wish to implement for this project
     * DONE Scaffold out a Perl script
 * [ ] SKIP Add more external documentation to `bb` (the internal documentation in the '--help' is already extremely thorough)
 * [ ] Implement the fifo/domain-socket -based benchmarking described in `bb`
+* [ ] Remove `navi`. I don't use it. I'd rather put useful snippets as shell functions.
+* [ ] Properly add Nushell steps to instructions. Bootstrapping is important.

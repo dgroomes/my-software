@@ -1,3 +1,9 @@
+source ([$nu.default-config-dir core.nu] | path join)
+source ([$nu.default-config-dir starship.nu] | path join)
+source ([$nu.default-config-dir atuin.nu] | path join)
+source ([$nu.default-config-dir nu_scripts_sourcer.nu] | path join)
+
+
 def repos [] {
     glob --depth 2 ~/repos/*/* | each { |it|
 
@@ -15,7 +21,12 @@ def repos [] {
 #     * ~/repos/personal/nushell-playground
 #     * ~/repos/personal/my-config
 export def --env cd-repo [] {
-    repos | input list --display description --fuzzy 'Change directory to repository:' | get full_path | cd $in
+    repos | input list --display description --fuzzy 'Change directory to repository:'
+          | if ($in | is-empty) {
+              # If the user abandoned the selection, then don't do anything.
+              return
+            } else { $in }
+          | get full_path | cd $in
 }
 
 
@@ -29,3 +40,5 @@ export def cp-last-cmd [] {
 
 
 export alias clc = cp-last-cmd
+export alias ll = ls -l
+export alias la = ls -a
