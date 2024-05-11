@@ -1,3 +1,5 @@
+# I'm still zeroing in on the ideal sourcing strategy. I would prefer the "sourcing from a directory" approach, but this
+ # is not possible. The Nushell docs point this out: https://www.nushell.sh/book/modules.html#dumping-files-into-directory
 source ([$nu.default-config-dir core.nu] | path join)
 source ([$nu.default-config-dir starship.nu] | path join)
 source ([$nu.default-config-dir atuin.nu] | path join)

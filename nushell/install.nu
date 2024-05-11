@@ -111,6 +111,14 @@ def install_nu_scripts_sourcer [installed_file_path nu_scripts_dir?] {
     let completion_short_paths = [
         "git/git-completions.nu",
         "gh/gh-completions.nu"
+        "cargo/cargo-completions.nu"
+        "less/less-completions.nu"
+        "make/make-completions.nu"
+        "npm/npm-completions.nu"
+        "poetry/poetry-completions.nu"
+        "rg/rg-completions.nu"
+        "rustup/rustup-completions.nu"
+        "tar/tar-completions.nu"
     ]
 
     let source_lines = $completion_short_paths | each { |it|
@@ -125,6 +133,6 @@ def install_nu_scripts_sourcer [installed_file_path nu_scripts_dir?] {
     }
 
     let source_block = $source_lines | str join (char newline) | $in + (char newline)
-    echo $source_block out> $installed_file_path
+    $source_block | save --raw $installed_file_path
     print $"'nu_scripts' sourcer file generated and using ($completion_short_paths | length) completion scripts."
 }
