@@ -84,6 +84,28 @@ export def git-switch-default-pull [] {
     git pull
 }
 
+# Make a new directory for some "subject". The subject name is optional. If omitted, the created directory's name will
+# also include the current time.
+#
+#     mkdir-subject my-experiment   # Will create the directory '~/subjects/2020-02-09_my-experiment'
+#     mkdir-subject                 # Will create the directory '~/subjects/2020-02-09_18-02-05'
+def --env mkdir-subject [subject?] {
+    let today = date now | format date "%Y-%m-%d"
+    let descriptor = if ($subject != null) { $subject } else { date now | format date "%H-%M-%S" }
+    let dirname = $today + "_" + $descriptor
+    let dir = [$nu.home-path subjects $dirname] | path join | path expand
+    if ($dir | path exists) {
+        error make --unspanned {
+          msg: ("The directory already exists: " + $dir)
+          help: "Use another subject name."
+        }
+    }
+
+    mkdir $dir
+    print $"Created directory: ($dir). Navigating to it."
+    cd $dir
+}
+
 export alias clc = cp-last-cmd
 export alias ll = ls -l
 export alias la = ls -a
