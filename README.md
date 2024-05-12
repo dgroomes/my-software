@@ -220,8 +220,6 @@ These are the instructions I follow when I get a new Mac or after I re-install m
      * ```shell
        brew install starship
        ```
-     * Incorporate the Starship initialization code to your `.bashrc`. Use the `[bash-starship-dynamic.bash](bash%2Fbash-starship-dynamic.bash)
-       file and regenerate the `.bashrc` with `bb`.
      * For more information, read the official instructions in the [Starship README.md](https://github.com/starship/starship#-installation).
      * Do the fonts installation (Note that this uses [a neat feature of git](https://stackoverflow.com/a/52269934) that
        only downloads a specific directory of the repo). Choose "Keep Both" every time you are prompted.
@@ -540,5 +538,6 @@ General clean-ups, TODOs and things I wish to implement for this project
     * DONE Scaffold out a Perl script
 * [ ] SKIP Add more external documentation to `bb` (the internal documentation in the '--help' is already extremely thorough)
 * [ ] Implement the fifo/domain-socket -based benchmarking described in `bb`
-* [ ] Remove `navi`. I don't use it. I'd rather put useful snippets as shell functions.
+* [ ] Revisit `navi`. I don't use it. I think it is nice for boosting you on one-liners to the point where you might
+  learn them better. I think I should pare down the larger one-liners.
 * [ ] Properly add Nushell steps to instructions. Bootstrapping is important.
