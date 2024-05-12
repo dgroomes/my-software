@@ -10,8 +10,6 @@ alias dcd="docker-compose down --remove-orphans"
 
 # Misc aliases
 alias psql_local='psql --username postgres --host localhost'
-## Copy the last command into the clipboard. The "echo -n" and subshell is just a convenient way to remove the trailing newline
-alias cplastcmd='echo -n $(atuin history last --cmd-only) | pbcopy'
 alias gcmp="git checkout main && git pull"
 alias gs="git status"
 

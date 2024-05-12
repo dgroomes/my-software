@@ -35,7 +35,7 @@ good: <https://www.nushell.sh/book/configuration.html>. Also see <https://www.nu
 
 General clean-ups, TODOs and things I wish to implement for this project
 
-* [ ] Create an iTerm profile for Nushell. This way I don't have to change my login shell to Nushell. Not even close to
+* [x] DONE (although I didn't version control it) Create an iTerm profile for Nushell. This way I don't have to change my login shell to Nushell. Not even close to
   ready for that.
 * [x] DONE Consider using Starship
 * [x] DONE What is Nushell's history and Ctrl-R (or the equivalent) support? Should I jump straight to atuin?
