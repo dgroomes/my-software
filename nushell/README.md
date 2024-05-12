@@ -64,7 +64,8 @@ General clean-ups, TODOs and things I wish to implement for this project
   is in the style of a known workaround that I've seen others do: <https://discord.com/channels/601130461678272522/615253963645911060/1195458767622516738>.
 * [ ] I think I need to not version control `env.nu`. I need mutable content to some degree among my Nushell config
   system and I think `env.nu` is probably the ticket. For common fixtures that I want evaluated at the `env.nu` eval
-  time, I can jam them into a file like `env-common.nu` and source that from `env.nu`.  
+  time, I can jam them into a file like `env-common.nu` and source that from `env.nu`.
+* [x] DONE Implement a `git switch default pull` command.
 
 
 ## Reference
