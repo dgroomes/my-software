@@ -87,4 +87,21 @@ export def git-switch-default-pull [] {
 export alias clc = cp-last-cmd
 export alias ll = ls -l
 export alias la = ls -a
+
+# Git aliases
 export alias gsdp = git-switch-default-pull
+export alias gs = git status
+
+# Docker aliases
+export alias dcl = docker container ls
+## This is what I'll call a "hard restart" version of the "up" command. It forces the containers to be created fresh
+## instead of being reused and it does the same for anonymous volumes. This is very convenient for the development process
+## where you frequently want to throw everything away and start with a clean slate. I use this for stateful workloads like
+## Postgres and Kafka.
+export alias dcuf = docker-compose up --detach --force-recreate --renew-anon-volumes
+export alias dcd = docker-compose down --remove-orphans
+
+export alias gw = ./gradlew
+
+# fnm is basically a drop-in replacement for nvm. We can alias nvm to it.
+export alias nvm = fnm
