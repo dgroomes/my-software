@@ -136,3 +136,13 @@ def install_nu_scripts_sourcer [installed_file_path nu_scripts_dir?] {
     $source_block | save --raw $installed_file_path
     print $"'nu_scripts' sourcer file generated and using ($completion_short_paths | length) completion scripts."
 }
+
+# Install the one-shot Bash completion script. I'm not bothering supporting the "backup" flow for this script because
+# I don't have a reason to edit it. If I need to add features or implement bug fixes I would do that in the version
+# controlled file.
+export def install_one_shot_bash_completion [] {
+    let script_name = "one-shot-bash-completion.bash"
+    let vcs_file_path = [(pwd) $script_name] | path join
+    let installed_file_path = [$nu.default-config-dir $script_name] | path join
+    cp $vcs_file_path $installed_file_path
+}

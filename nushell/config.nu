@@ -29,7 +29,7 @@ export def --env cd-repo [] {
           | get full_path | cd $in
 }
 
-export alias cr = cd-repo
+export alias cdr = cd-repo
 
 # Copy the last command to the clipboard
 export def cp-last-cmd [] {
@@ -127,3 +127,58 @@ export alias gw = ./gradlew
 
 # fnm is basically a drop-in replacement for nvm. We can alias nvm to it.
 export alias nvm = fnm
+
+let bash_completer =  { |spans|
+    which bash | if ($in | is-empty) {
+        # Note: you won't see this message when the closure is invoked by Nushell's external completers machinery.
+        # Silencing (or "swallowing") the output of a rogue completer is designed as a feature. Totally fair, but that
+        # makes debugging external completer closures difficult. See the 'bash-complete' function which is designed to
+        # wrap this closure, which let's you see output like this normally. I didn't have any luck with the standard
+        # library logger or the internal logs (e.g. `nu --log-level debug`) either.
+        print "Bash is not installed. The Bash completer will not be registered."
+        return
+    }
+
+    let one_shot_bash_completion_script = [$nu.default-config-dir one-shot-bash-completion.bash] | path join | if ($in | path exists)  {
+        $in | path expand
+    } else {
+        print "The one-shot Bash completion script does not exist. No completions will be available."
+        return
+    }
+
+    let line = $spans | str join " "
+
+    # Note: the `--noprofile` flag is important. I've designed the one-shot Bash completion script to have everything
+    # it needs to bootstrap itself. I considered using "env -i" as well but decided it's not necessary.
+    let result = bash --noprofile $one_shot_bash_completion_script $line | complete
+    if ($result.exit_code != 0) {
+        error make --unspanned {
+            msg: ("Something unexpected happened while running the one-shot Bash completion." + (char newline) + $in.stderr)
+        }
+    }
+
+    # There are a few data quality problems with the completions produced by the Bash script. It's important to note
+    # that the Bash completion functions are able to produce anything they want. I've found that the completions for
+    # 'git' return duplicates when I do "git switch ". For example, for a repository that only has one branch ("main"),
+    # the completion scripts produce "main" twice. I only see that in my non-interactive flow, and I'm taking a wild
+    # guess that Bash has some presentation logic that actually de-duplicates (and sorts?) completions before presenting
+    # them to the user. Nushell does not do de-duplication of completions (totally fair).
+    #
+    # Another problem is the trailing newline produced by the Bash script. In general, you just need to be careful with
+    # the characters present in completion suggestions because Nushell seems to just let it fly. So a newline really
+    # messes things up.
+    #
+    # The serialization/deserialization of the generated completions from the Bash process to the Nushell process is a
+    # bit naive. Consider unhandled cases.
+    $result.stdout | split row (char newline) | where $it != '' | sort | uniq
+}
+
+# This function is meant for debugging the external completer closure. See the related note inside the closure.
+export def bash-complete [spans] {
+    do $bash_completer $spans
+}
+
+$env.config.completions.external = {
+  enable: true
+  completer: $bash_completer
+}
