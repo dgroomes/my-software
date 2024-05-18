@@ -59,8 +59,8 @@ _one_shot_bash_completion__parse_line() {
     # When there is whitespace at the end of the line, we know that the user is trying to complete a new word, not
     # complete the current word. We must model this new word as an empty string.
     if [[ "$COMP_LINE" =~ [[:space:]]$ ]]; then
-	  		COMP_WORDS+=("")
-	  fi
+        COMP_WORDS+=("")
+    fi
 }
 
 _one_shot_bash_completion__run() {
