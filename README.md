@@ -338,7 +338,7 @@ These are the instructions I follow when I get a new Mac or after I re-install m
            ```
          * The next time you `git push` you will get a popup. Enter a Personal Access Token (PAT) and choose "Always allow".
            When the PAT expires, I'm not 100% sure what the UX is. I think it just prompts for the username/password again
-           and doesn't given an error message.
+           and doesn't give an error message.
      * Create and configure a global [gitignore file](https://git-scm.com/docs/gitignore)
          * ```bash
            cat << EOF > "$HOME/.gitignore_global"

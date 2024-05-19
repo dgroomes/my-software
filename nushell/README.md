@@ -67,6 +67,11 @@ General clean-ups, TODOs and things I wish to implement for this project
   time, I can jam them into a file like `env-common.nu` and source that from `env.nu`.
 * [x] DONE Implement a `git switch default pull` command.
 * [x] DONE Bash completion via external completer. This was a large effort.
+* [ ] SKIP (Not feasible. SDKMAN is all bash code, which makes sense. I thought maybe there was a core of Groovy/Java, but it's all Bash) 'How can I use SDKMAN with Nushell? It only supports Bash and Zsh and there's quite a bit of shell code. I would have
+  to write a decent amount of Nu code, might be feasible.
+* [ ] Java version management: switch/install. This is going to be somewhat sophisticated, but also should play to Nushell's
+  strengths and is a good opportunity for me to learn a bit more about the Adoptium/Temurin project for OpenJDK (as far as
+  a user goes, not a contributor). Maybe figure something out for Gradle too but that's diminishing returns.
 
 
 ## Reference
