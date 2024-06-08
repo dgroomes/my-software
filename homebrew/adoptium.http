@@ -1,0 +1,26 @@
+### Eclipse Temurin "Release Names"
+#
+# Find versions of Eclipse Temurin (the OpenJDK distribution from Adoptium). The Adoptium API is feature-rich and well-
+# documented. You are encouraged to read the rendered Open API specification: https://api.adoptium.net/q/swagger-ui/
+#
+# I also like to browse the Adoptium website, and specifically the "Eclipse Temurin Latest Releases" page: https://adoptium.net/temurin/releases/
+# You can even deep-link to the releases filtered down to a specific platform like Apple Silicon macOS: https://adoptium.net/temurin/releases/?os=mac&arch=aarch64&package=jdk
+#
+# The API has an upper limit of 20 results per page.
+GET https://api.adoptium.net/v3/info/release_names?lts=true&page=0&page_size=20&release_type=ga
+
+### Download installer
+#
+# Download the installer for a specific release. Use the release name (URL-encoded) that we got from the "release_names"
+# endpoint. I think using the official installer is nice because it will install it to the conventional location on macOS
+# and so the funny macOS Java launcher things ("/Library/Java/JavaVirtualMachines/"). On the other hand, I might be able
+# to just download and extract the binary into the user directory like SDKMAN does, somewhere like `~/sdks/eclipse-temurin/17.0.11`
+# and not deal with sudo and modifying system directories like /Library. I don't know. Sudo in Nushell is pretty annoying
+# when I first had to deal with it but I could be holding it wrong.
+GET https://api.adoptium.net/v3/installer/version/jdk-17.0.11+9/mac/aarch64/jdk/hotspot/normal/eclipse
+
+### Download Checksum
+GET https://api.adoptium.net/v3/checksum/version/jdk-17.0.11+9/mac/aarch64/jdk/hotspot/normal/eclipse
+
+### Download binary
+GET https://api.adoptium.net/v3/binary/version/jdk-17.0.11+9/mac/aarch64/jdk/hotspot/normal/eclipse
