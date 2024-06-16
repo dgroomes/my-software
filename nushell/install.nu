@@ -22,14 +22,19 @@ const config_registry = {
         backup_success_msg: "Core configuration file backed up."
         install_success_msg: "Core configuration file installed."
     }
+    open_jdk: {
+        filename: "open-jdk.nu"
+        backup_success_msg: "OpenJDK configuration file backed up."
+        install_success_msg: "OpenJDK configuration file installed."
+    }
     starship: {
         filename: "starship.nu",
         backup_success_msg: "Starship configuration file backed up."
         install_success_msg: "Starship configuration file installed."
     }
     nu_scripts_sourcer: {
-        filename: "nu_scripts_sourcer.nu"
-        backup_success_msg: "'nu_scripts' sourcer file backed up."
+        filename: "nu-scripts-sourcer.nu"
+        backup_success_msg: "'nushell/nu_scripts' sourcer file backed up."
     }
 }
 
@@ -92,12 +97,12 @@ def bak_name_now [filename] {
 
 # There are many custom completion scripts and other neat scripts in the official "nu_scripts" repository: https://github.com/nushell/nu_scripts/tree/4eab7ea772f0a288c99a79947dd332efc1884315
 # We need to generate a script that hardcodes the file paths to a local clone of that repository. This script will source
-# the scripts from the local clone. The script is named "nu_scripts_sourcer.nu".
+# the scripts from the local clone. The script is named "nu-scripts-sourcer.nu".
 def install_nu_scripts_sourcer [installed_file_path nu_scripts_dir?] {
     if ($nu_scripts_dir == null) {
         # There's nothing to source. In this case, you may have a fresh install of Nu and you haven't cloned the
         # 'nu_scripts' repository yet.
-        print "Blank 'nu_scripts_sourcer.nu' file created."
+        print "Blank 'nu-scripts-sourcer.nu' file created."
         touch $installed_file_path
         return
     }

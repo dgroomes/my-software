@@ -9,18 +9,14 @@
 # The API has an upper limit of 20 results per page.
 GET https://api.adoptium.net/v3/info/release_names?lts=true&page=0&page_size=20&release_type=ga
 
-### Download installer
+### Assets
 #
-# Download the installer for a specific release. Use the release name (URL-encoded) that we got from the "release_names"
-# endpoint. I think using the official installer is nice because it will install it to the conventional location on macOS
-# and so the funny macOS Java launcher things ("/Library/Java/JavaVirtualMachines/"). On the other hand, I might be able
-# to just download and extract the binary into the user directory like SDKMAN does, somewhere like `~/sdks/eclipse-temurin/17.0.11`
-# and not deal with sudo and modifying system directories like /Library. I don't know. Sudo in Nushell is pretty annoying
-# when I first had to deal with it but I could be holding it wrong.
-GET https://api.adoptium.net/v3/installer/version/jdk-17.0.11+9/mac/aarch64/jdk/hotspot/normal/eclipse
+# Get the assets for a given release. I'm confused about the various "assets/" endpoints. There are four of them! This
+# one is working for me. The assets response describes the checksums of the installer/binary and the download links.
+GET https://api.adoptium.net/v3/assets/release_name/eclipse/jdk-17.0.11+9?architecture=aarch64&image_type=jdk&os=mac&project=jdk
 
 ### Download Checksum
 GET https://api.adoptium.net/v3/checksum/version/jdk-17.0.11+9/mac/aarch64/jdk/hotspot/normal/eclipse
 
 ### Download binary
-GET https://api.adoptium.net/v3/binary/version/jdk-17.0.11+9/mac/aarch64/jdk/hotspot/normal/eclipse
+GET https://api.adoptium.net/v3/binary/version/jdk-21.0.3+9/mac/aarch64/jdk/hotspot/normal/eclipse

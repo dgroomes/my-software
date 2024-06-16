@@ -5,15 +5,20 @@ Personal configuration stuff including dot files, installation instructions and 
 
 ## Overview
 
-The most useful component of this repository is the [My macOS Setup](#my-macos-setup) section. It provides step-by-step
-instructions I like to follow for setting up a new Mac.
+The most useful component of this repository is the [My macOS Setup](#my-macos-setup) section below. It provides
+step-by-step instructions I like to follow for setting up a new Mac.
 
-The repo is organized in the following directories:
+The rest of the repository is organized in the following directories:
 
 
 ### `bash/`
 
 My Bash config and notes about Bash auto-completion (I always forget how to set this up!).
+
+
+### `homebrew/`
+
+A description of my Homebrew strategy.
 
 
 ### `iterm2/`
@@ -45,6 +50,19 @@ My configuration for the amazing tool *Karabiner-Elements* <https://github.com/t
 > -- <cite>https://github.com/pqrs-org/Karabiner-Elements</cite>
 
 
+### `markdownlint/`
+
+My configuration for `markdownlint` and `markdownlint-cli2`.
+
+> A Node.js style checker and lint tool for Markdown/CommonMark files.
+>
+> -- <cite>https://github.com/DavidAnson/markdownlint</cite>
+
+> A fast, flexible, configuration-based command-line interface for linting Markdown/CommonMark files with the markdownlint library
+>
+> -- <cite>https://github.com/DavidAnson/markdownlint-cli2</cite>
+
+
 ### `navi/`
 
 My [navi](https://github.com/denisidoro/navi) cheat sheets.
@@ -54,6 +72,11 @@ My [navi](https://github.com/denisidoro/navi) cheat sheets.
 > -- <cite>https://github.com/denisidoro/navi</cite>
 
 
+### `nushell`
+
+My Nushell configuration.
+
+
 ### `starship/`
 
 My config file for Starship.
@@ -61,19 +84,6 @@ My config file for Starship.
 > The minimal, blazing-fast, and infinitely customizable prompt for any shell!
 >
 > -- <cite>https://github.com/starship/starship</cite>
-
-
-### `markdownlint/`
-
-My configuration for `markdownlint` and `markdownlint-cli2`. 
-
-> A Node.js style checker and lint tool for Markdown/CommonMark files.
-> 
-> -- <cite>https://github.com/DavidAnson/markdownlint</cite>
-
-> A fast, flexible, configuration-based command-line interface for linting Markdown/CommonMark files with the markdownlint library
-> 
-> -- <cite>https://github.com/DavidAnson/markdownlint-cli2</cite>
 
 
 ## My macOS Setup
@@ -119,13 +129,16 @@ These are the instructions I follow when I get a new Mac or after I re-install m
 7. Install Homebrew <https://brew.sh/>
     * Make sure to install Homebrew in the Apple Silicon configuration. I won't repeat the details here, but basically,
       it should be installed at `/opt/homebrew` and not `/usr/local`.
-8. EXPERIMENTAL Install my own formulas
+8. Install my own formulas
     * This is an experiment. I'm trying out maintaining my own Homebrew formulas.
     * ```shell
       brew tap dgroomes/my-config "$PWD"
       ```
     * ```shell
-      brew install dgroomes/my-config/my-temurin-open-jdk-17
+      brew install dgroomes/my-config/my-open-jdk@17
+      ```
+   *  ```shell
+      brew install dgroomes/my-config/my-open-jdk@21
       ```
 9. Install Bash
     * macOS uses a years old version of Bash and will never update it because of licensing. We'll use Homebrew to install a modern version of Bash.

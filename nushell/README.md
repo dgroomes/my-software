@@ -69,9 +69,20 @@ General clean-ups, TODOs and things I wish to implement for this project
 * [x] DONE Bash completion via external completer. This was a large effort.
 * [ ] SKIP (Not feasible. SDKMAN is all bash code, which makes sense. I thought maybe there was a core of Groovy/Java, but it's all Bash) 'How can I use SDKMAN with Nushell? It only supports Bash and Zsh and there's quite a bit of shell code. I would have
   to write a decent amount of Nu code, might be feasible.
-* [ ] Java version management: switch/install. This is going to be somewhat sophisticated, but also should play to Nushell's
+* [x] DONE Java version management: switch/install. This is going to be somewhat sophisticated, but also should play to Nushell's
   strengths and is a good opportunity for me to learn a bit more about the Adoptium/Temurin project for OpenJDK (as far as
   a user goes, not a contributor). Maybe figure something out for Gradle too but that's diminishing returns.
+   * I think the hard part is done. I went with using my own Homebrew formula for installing the JDK (a key point is
+     just having a convention place to put the JDK files).
+   * DONE Basic "activation" in programmatic Nu code.
+   * DONE Support switching
+   * DONE Activate an OpenJDK at Nushell startup. 
+* [ ] Use `chsh` to effectively use Nushell as the login shell but by first bootstrapping it with Bash. I don't feel
+  that it's feasible or wise to use Nushell directly as the login shell. I'm concerned about the annoying nature of
+  bootstrapping Nushell's environment within Nushell's own configuration/initialization scripts. I would much rather,
+  bootstrap a Bash environment and call all the many Bash-based initialization things like `brew shellenv` and then `exec`
+  `nu`. Plus, I don't think it's feasible or wise to stop understanding Bash. It will remain an important piece in my
+  environment for a long time, side-by-side Nushell.
 
 
 ## Reference

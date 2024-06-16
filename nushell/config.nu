@@ -3,7 +3,8 @@
 source ([$nu.default-config-dir core.nu] | path join)
 source ([$nu.default-config-dir starship.nu] | path join)
 source ([$nu.default-config-dir atuin.nu] | path join)
-source ([$nu.default-config-dir nu_scripts_sourcer.nu] | path join)
+source ([$nu.default-config-dir open-jdk.nu] | path join)
+source ([$nu.default-config-dir nu-scripts-sourcer.nu] | path join)
 
 def repos [] {
     glob --depth 2 ~/repos/*/* | each { |it|
@@ -61,14 +62,14 @@ export def cp-last-cmd [] {
 export def git-switch-default-pull [] {
     let result = git remote show origin | complete
     if ($result.exit_code != 0) {
-        if ($in.stderr | str contains "fatal: not a git repository") {
+        if ($result.stderr | str contains "fatal: not a git repository") {
             error make --unspanned {
               msg: "This is not a Git repository."
             }
             return
         }
         error make --unspanned {
-          msg: ("Something unexpected went wrong while inspecting the remote." + (char newline) + $in.stderr)
+          msg: ("Something unexpected went wrong while inspecting the remote." + (char newline) + $result.stderr)
         }
         return
     }
@@ -153,7 +154,7 @@ let bash_completer =  { |spans|
     let result = bash --noprofile $one_shot_bash_completion_script $line | complete
     if ($result.exit_code != 0) {
         error make --unspanned {
-            msg: ("Something unexpected happened while running the one-shot Bash completion." + (char newline) + $in.stderr)
+            msg: ("Something unexpected happened while running the one-shot Bash completion." + (char newline) + $result.stderr)
         }
     }
 
@@ -182,3 +183,19 @@ $env.config.completions.external = {
   enable: true
   completer: $bash_completer
 }
+
+# Activate a default OpenJDK.
+#
+# Oddly, at this point, $env.PATH is the typical colon-delimited value that we are familiar with in most environments.
+# In Nushell, $env.PATH is supposed to be a list but I guess we are too early in the bootstrapping process? Anyway, we
+# have to parse it into a list. Let' take the naive approach (after some quick searching I didn't find a better way)
+# and split on ":" (or are colons not allowed anywhere in paths and files across all systems?).
+def --env activate-default-open-jdk [version: string] {
+    let split_path = $env.PATH | split row ":"
+    $env.PATH = $split_path
+    try { activate-my-open-jdk $version } catch { print "(warn) A default OpenJDK was not activated." }
+}
+
+activate-default-open-jdk 21
+
+alias use-java = activate-my-open-jdk
