@@ -199,3 +199,22 @@ def --env activate-default-open-jdk [version: string] {
 activate-default-open-jdk 21
 
 alias use-java = activate-my-open-jdk
+
+# Like 'which' but it finds more information. This has the effect that you can see if an application is a symlink or
+# a normal file which I often need when debugging my PATH.
+export def whichx [application: string] {
+    let result = which $application
+
+    # When the application is not found.
+    if ($result | is-empty) {
+        return $result
+    }
+
+    # We're only supporting one application in the input, so we know the table will have one row. Let's turn it into a
+    # record
+    let which_details = $result.0 | into record
+
+    let path_details = (ls -l $which_details.path).0 | into record | select type target
+    let merged = $which_details | merge $path_details
+    return $merged
+}
