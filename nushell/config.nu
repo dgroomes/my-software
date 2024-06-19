@@ -124,7 +124,9 @@ export alias dcl = docker container ls
 export alias dcuf = docker-compose up --detach --force-recreate --renew-anon-volumes
 export alias dcd = docker-compose down --remove-orphans
 
+# Miscellaneous aliases
 export alias gw = ./gradlew
+export alias psql_local = psql --username postgres --host localhost
 
 # fnm is basically a drop-in replacement for nvm. We can alias nvm to it.
 export alias nvm = fnm
