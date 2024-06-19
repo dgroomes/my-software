@@ -114,7 +114,10 @@ def install_nu_scripts_sourcer [installed_file_path nu_scripts_dir?] {
     }
 
     let completion_short_paths = [
-        "git/git-completions.nu",
+        # The completions for 'git checkout ' don't yield values of tags. I think I've run into some other missing cases
+        # too. I'm happy to just use Bash completion for 'git'.
+        # "git/git-completions.nu",
+
         "gh/gh-completions.nu"
         "cargo/cargo-completions.nu"
         "less/less-completions.nu"
