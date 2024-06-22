@@ -35,6 +35,20 @@ good: <https://www.nushell.sh/book/configuration.html>. Also see <https://www.nu
 
 General clean-ups, TODOs and things I wish to implement for this project
 
+* [ ] Nushell support in Intellij? Intellij Ultimate has LSP support now and [Nushell has an LSP](https://github.com/nushell/nushell/tree/main/crates/nu-lsp).
+* [ ] How can I integrate Nushell with Raycast? I don't want go overboard with an integration, but I want to know what's
+  possible.
+* [ ] Use the conventional place for putting Nushell scripts designed to be sourced: `$nu.default-config-dir/scripts`.
+  I'm curious to know how entrenched this convention is. How much do I get for free by following it? I do like the
+  convention. The Nushell constraint on not being able to source from a directory is proving to be awkward. My `nu_script_source.nu`
+  is in the style of a known workaround that I've seen others do: <https://discord.com/channels/601130461678272522/615253963645911060/1195458767622516738>.
+* [ ] I think I need to not version control `env.nu`. I need mutable content to some degree among my Nushell config
+  system and I think `env.nu` is probably the ticket. For common fixtures that I want evaluated at the `env.nu` eval
+  time, I can jam them into a file like `env-common.nu` and source that from `env.nu`.
+
+
+## Finished Wish List Items
+
 * [x] DONE (although I didn't version control it) Create an iTerm profile for Nushell. This way I don't have to change my login shell to Nushell. Not even close to
   ready for that.
 * [x] DONE Consider using Starship
@@ -45,7 +59,6 @@ General clean-ups, TODOs and things I wish to implement for this project
    * SKIP (wait I found `input list` command which supports fuzzy search... <https://www.nushell.sh/commands/docs/input_list.html>) Do an `fzf` implementation. I think that's just the state of things. And `fzf` is still a great tool. For
      reference, see <https://github.com/nushell/nushell/issues/1275>.
    * DONE Explore `input list`
-* [ ] Nushell support in Intellij? Intellij Ultimate has LSP support now and [Nushell has an LSP](https://github.com/nushell/nushell/tree/main/crates/nu-lsp).
 * [x] DONE Load completions from ["nu_scripts"](https://github.com/nushell/nu_scripts/tree/4eab7ea772f0a288c99a79947dd332efc1884315/custom-completions)
    * This is a little tricky to bootstrap.
    * ~~Hmm, it seems like `source` in a script that itself is a `source` has no effect. I don't see any error message, but
@@ -53,18 +66,9 @@ General clean-ups, TODOs and things I wish to implement for this project
    * Update: no sourcing in sourcing does work... And now I get `source` and `use` better, and they are parse-time
      things not eval-time things so you can't conditionally use them. I need dynamic content in a static (reliable) file.
      I need to codegen it blank (bootstrap) or with completions (later bootstrap).
-* [ ] How can I integrate Nushell with Raycast? I don't want go overboard with an integration, but I want to know what's
-  possible.
 * [x] DONE How do I copy the last command to clipboard? I should make a command/alias for that.
 * [x] DONE Fix `cd-repo` so that when it is exited, it doesn't print an error.
 * [x] DONE (I implemented an installation/backup script) File strategy.
-* [ ] Use the conventional place for putting Nushell scripts designed to be sourced: `$nu.default-config-dir/scripts`.
-  I'm curious to know how entrenched this convention is. How much do I get for free by following it? I do like the
-  convention. The Nushell constraint on not being able to source from a directory is proving to be awkward. My `nu_script_source.nu`
-  is in the style of a known workaround that I've seen others do: <https://discord.com/channels/601130461678272522/615253963645911060/1195458767622516738>.
-* [ ] I think I need to not version control `env.nu`. I need mutable content to some degree among my Nushell config
-  system and I think `env.nu` is probably the ticket. For common fixtures that I want evaluated at the `env.nu` eval
-  time, I can jam them into a file like `env-common.nu` and source that from `env.nu`.
 * [x] DONE Implement a `git switch default pull` command.
 * [x] DONE Bash completion via external completer. This was a large effort.
 * [ ] SKIP (Not feasible. SDKMAN is all bash code, which makes sense. I thought maybe there was a core of Groovy/Java, but it's all Bash) 'How can I use SDKMAN with Nushell? It only supports Bash and Zsh and there's quite a bit of shell code. I would have
