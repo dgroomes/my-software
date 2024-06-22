@@ -77,12 +77,15 @@ General clean-ups, TODOs and things I wish to implement for this project
    * DONE Basic "activation" in programmatic Nu code.
    * DONE Support switching
    * DONE Activate an OpenJDK at Nushell startup. 
-* [ ] Use `chsh` to effectively use Nushell as the login shell but by first bootstrapping it with Bash. I don't feel
+* [x] DONE Use `chsh` to effectively use Nushell as the login shell but by first bootstrapping it with Bash. I don't feel
   that it's feasible or wise to use Nushell directly as the login shell. I'm concerned about the annoying nature of
   bootstrapping Nushell's environment within Nushell's own configuration/initialization scripts. I would much rather,
   bootstrap a Bash environment and call all the many Bash-based initialization things like `brew shellenv` and then `exec`
   `nu`. Plus, I don't think it's feasible or wise to stop understanding Bash. It will remain an important piece in my
   environment for a long time, side-by-side Nushell.
+    * `sudo cp ~/repos/personal/my-config/nushell/nushell.bash /usr/local/bin`
+    * `sudo bash -c 'echo /usr/local/bin/nushell.bash >> /etc/shells'`
+    * `chsh -s /usr/local/bin/nushell.bash`
 * [x] DONE I'm not getting file completions when using commands like `subl`. This is annoying. I think it's the issue
   described by this GitHub issue comment <https://github.com/nushell/nushell/issues/6407#issuecomment-1227250012>
   * > The current issue is that the external completer function doesn't differenciate between an empty result (nothing to complete at current position) and an external completer not being invoked (file fallback).
