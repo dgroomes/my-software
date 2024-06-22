@@ -6,8 +6,6 @@ source ([$nu.default-config-dir atuin.nu] | path join)
 source ([$nu.default-config-dir open-jdk.nu] | path join)
 source ([$nu.default-config-dir nu-scripts-sourcer.nu] | path join)
 
-# TODO make a note about "idea-light-edit" which is just a Bash launcher script for "idea -e". https://www.jetbrains.com/help/idea/lightedit-mode.html
-# I'm trying out Intellij LightEdit mode over Sublime Text.
 $env.config.buffer_editor = "idea-light-edit"
 
 def repos [] {

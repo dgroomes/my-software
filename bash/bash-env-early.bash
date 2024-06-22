@@ -6,9 +6,6 @@ export PATH="$PATH:$HOME/.local/bin"
 # commandline. Usually, I do "idea ." to open the current directory in Intellij.
 export PATH="$PATH:$HOME/Library/Application Support/JetBrains/Toolbox/scripts"
 
-# Add the Sublime Text launcher command to the PATH so that you can conveniently execute commands like `subl ~/.bashrc`.
-export PATH="$PATH:/Applications/Sublime Text.app/Contents/SharedSupport/bin"
-
 # Rust toolchain
 export PATH="$PATH:$HOME/.cargo/bin"
 
