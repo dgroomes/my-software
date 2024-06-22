@@ -151,9 +151,14 @@ let bash_completer =  { |spans|
 
     let line = $spans | str join " "
 
-    # Note: the `--noprofile` flag is important. I've designed the one-shot Bash completion script to have everything
-    # it needs to bootstrap itself. I considered using "env -i" as well but decided it's not necessary.
-    let result = bash --noprofile $one_shot_bash_completion_script $line | complete
+    let result = with-env {
+        BASH_COMPLETION_INSTALLATION_DIR: /opt/homebrew/opt/bash-completion@2
+        BASH_COMPLETION_USER_DIR: ([$env.HOME .local/share/bash-completion] | path join)
+        BASH_COMPLETION_COMPAT_DIR: /disable-legacy-bash-completions-by-pointing-to-a-dir-that-does-not-exist
+    } {
+        run-external $one_shot_bash_completion_script $line | complete
+    }
+
     if ($result.exit_code != 0) {
         error make --unspanned {
             msg: ("Something unexpected happened while running the one-shot Bash completion." + (char newline) + $result.stderr)

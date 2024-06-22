@@ -1,4 +1,6 @@
-# Generate completions for a command line string.
+#!/usr/bin/env bash --noprofile
+# Generate completions for a command line string based on completion definitions authored using the 'bash-completion'
+# library.
 #
 # In a normal completion context, a user is interactively typing commands in the shell, hitting 'TAB' for completions,
 # executing commands, and repeating this flow. In that flow, the 'bash-completion' library lazily loads completion
@@ -9,27 +11,64 @@
 # This script is adapted from my other code: https://github.com/dgroomes/bash-playground/blob/407f721f6d00700d353747f6c865c173da6aaab5/completion/bash-completion-example-non-interactive.sh
 #
 # This script is designed to be called from Nushell as an "external completer" (https://www.nushell.sh/cookbook/external_completers.html).
+#
+# This script requires that the 'bash-completion' library (v2) is installed and pointed to by the 'BASH_COMPLETION_INSTALLATION_DIR'
+# environment variable.
+#
+# Here are some examples of calling this script, where 'bash-completion' is installed via Homebrew:
+#
+#     Command:
+#         BASH_COMPLETION_INSTALLATION_DIR=/opt/homebrew/opt/bash-completion@2 ./one-shot-bash-completion.bash "7z "
+#     Yields:
+#         a
+#         b
+#         d
+#         (The rest is omitted for brevity)
+#
+#     Command:
+#         BASH_COMPLETION_INSTALLATION_DIR=/opt/homebrew/opt/bash-completion@2 ./one-shot-bash-completion.bash "git c"
+#     Yields:
+#         checkout
+#         cherry-pick
+#         citool
+#         (The rest is omitted for brevity)
+#
+# I recommend being even more explicit than setting just the 'BASH_COMPLETION_INSTALLATION_DIR' environment variable.
+# The 'bash-completion' library controls its behavior by a few other variables and I've found myself getting turned
+# around as I learned (and re-learned) 'bash-completion'. Explicitly acknowledging and reviewing these variables
+# keeps you in control. Here is an example invocation from a Nushell command line:
+#
+#     with-env {
+#         BASH_COMPLETION_INSTALLATION_DIR: /opt/homebrew/opt/bash-completion@2
+#         BASH_COMPLETION_USER_DIR: ([$env.HOME .local/share/bash-completion] | path join)
+#         BASH_COMPLETION_COMPAT_DIR: /disable-legacy-bash-completions-by-pointing-to-a-dir-that-does-not-exist
+#     } { ./one-shot-bash-completion.bash "7z " }
+#
+# In particular, the 'BASH_COMPLETION_USER_DIR' controls where 'bash-completion' looks for user-defined completion
+# scripts. The 'bash-completion' distribution comes with completion scripts for many standard command line
+# tools like 7z, lsof, rsync, and more. All other scripts are considered user-defined. Very rich command line tools like
+# "git" and "docker" are not distributed with 'bash-completion' and so we must install these separately and make
+# 'bash-completion' aware of their location.
+#
+# The 'BASH_COMPLETION_COMPAT_DIR' also helps us disable the eager-style loading of completion scripts. The v1 era of
+# 'bash-completion' only supported eager-style loading (I think), but we are using 'bash-completion' v2 and have no
+# interest in wasting time loading all completions scripts. We can set 'BASH_COMPLETION_COMPAT_DIR' to a non-existent
+# directory to effectively disable this behavior.
 
-
-# Load the 'bash-completion' library. On my system, it's installed via Homebrew.
+# Load the 'bash-completion' library.
 _one_shot_bash_completion__source() {
-    if [[ ! -d "/opt/homebrew/Cellar/bash-completion@2" ]]; then
-        >&2 echo "No bash-completion@2 installation found."
+    if [ -z "${BASH_COMPLETION_INSTALLATION_DIR:-}" ]; then
+        >&2 echo "BASH_COMPLETION_INSTALLATION_DIR is not set. Please set BASH_COMPLETION_INSTALLATION_DIR to the directory where the 'bash-completion' library is installed."
         exit 1
     fi
 
-    versioned_installations=(/opt/homebrew/Cellar/bash-completion@2/*)
-    if [ ${#versioned_installations[@]} -gt 1 ]; then
-        >&2 echo "Multiple bash-completion@2 versions found in Homebrew directory. Please remove all but one. Completions will not be loaded."
+    if [[ ! -d "$BASH_COMPLETION_INSTALLATION_DIR" ]]; then
+        >&2 echo "'$BASH_COMPLETION_INSTALLATION_DIR' is not a directory. Please set BASH_COMPLETION_INSTALLATION_DIR to the directory where the 'bash-completion' library is installed."
         exit 1
     fi
 
-    # This makes it so that 'bash-completion' will find 'completions/_describe-color' in its "lookup path" when it is
-    # trying to load the completion script for 'describe-color'.
-    export BASH_COMPLETION_USER_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-
-    . "${versioned_installations[0]}/share/bash-completion/bash_completion"
-    . "${versioned_installations[0]}/etc/bash_completion.d/000_bash_completion_compat.bash"
+    . "$BASH_COMPLETION_INSTALLATION_DIR/share/bash-completion/bash_completion"
+    . "$BASH_COMPLETION_INSTALLATION_DIR/etc/bash_completion.d/000_bash_completion_compat.bash"
 }
 
 # The one and only argument to the script should be a "command line" string. This string is characterized as a partial
@@ -71,14 +110,15 @@ _one_shot_bash_completion__run() {
     command="${COMP_WORDS[0]}"
 
     # Trigger the 'bash-completion' machinery to find and load a completion function for the command.
-    #
-    # A 124 exit code means success for this function. The Bash programmable completion docs have a note about the 124
-    # convention: https://www.gnu.org/software/bash/manual/html_node/Programmable-Completion.html
-    _comp_complete_load "$command"
-    if [[ $? -ne 124 ]]; then
+    _comp_load "$command" || {
         >&2 echo "Command '$command' has no completion function."
+
+        # I'm returning 0 because this is a normal scenario. But, I'm considering return a different exit code as a way
+        # to indicate to Nushell that indeed "There is no completion definition for this command" as a way to
+        # disambiguate from "There is a completion definition for this command but there are no completion suggestions
+        # for this command line string."
         exit 0
-    fi
+    }
 
     # Find the "comp spec" (completion specification). This describes the completion rules and completion function
     # for the command. For example:
@@ -90,9 +130,7 @@ _one_shot_bash_completion__run() {
     #   git       complete -o bashdefault -o default -o nospace -F __git_wrap__git_main git
     #
     comp_spec_line=$(complete -p "$command" 2> /dev/null) || {
-        # This is unexpected because we should have already bailed if the _comp_complete_load function appeared to not
-        # load a completion function.
-        >&2 echo "No completion function found for command: '$command'"
+        >&2 echo "Unexpected. No completion spec found for command '$command' but '_comp_complete' should have already loaded one by this point."
         exit 1
     }
 

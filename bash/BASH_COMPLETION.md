@@ -86,7 +86,7 @@ An added wrinkle to disabling the eager-style loading was created when `bash-com
 2.12.0. A lot of work happened between, 2.11 and 2.12.0 including removing many functions of the bash-completion API
 like [`_get_comp_words_by_ref`](https://github.com/scop/bash-completion/commit/a9fb23207cbc66302a4500c0eec53fbd6c095377#diff-a4757074ff650000804fd3eaabe9b0a9e02e33040ca5b8afd4c0275fc5f3e136L532).
 Thankfully, a compatibility layer was also added in 2.12.0 that adds back the removed functions in a script called [`000_bash_completion_compat.bash`](https://github.com/scop/bash-completion/blob/27a0ef80a2dbd84d8a0d2f90945cc66577149726/bash_completion.d/000_bash_completion_compat.bash).
-This script is installed into the eager-style directory, but we are disabling eager loading and so we need to source it
+This script is installed into the eager-style directory, but we are disabling eager loading, and so we need to source it
 another way. My idea is to opt-out of the configuration file hook (`/opt/homebrew/etc/profile.d/bash_completion.sh`) and
 instead wire up `bash-completion` by hand. This way I can control the order of sourcing and ensure that the compatibility
 script is sourced eagerly.

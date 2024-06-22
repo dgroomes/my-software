@@ -83,6 +83,17 @@ General clean-ups, TODOs and things I wish to implement for this project
   bootstrap a Bash environment and call all the many Bash-based initialization things like `brew shellenv` and then `exec`
   `nu`. Plus, I don't think it's feasible or wise to stop understanding Bash. It will remain an important piece in my
   environment for a long time, side-by-side Nushell.
+* [ ] I'm not getting file completions when using `cat`, and maybe other commands. Not sure what's going on. UPDATE: Ok
+  I think it's the fact that Nushell can't differentiate between when the external completion shows confidence in having
+  no completions vs. the completer not supporting completions for that command. At least I think that's what happens, I
+  didn't find this in the docs/issues/code but I'd like to. It makes sense. `cat` doesn't have completions in Bash and
+  I see the `bash one-shot-bash-completion.bash "cat "` actually throws an error
+  * > /opt/homebrew/Cellar/bash-completion@2/2.13.0/share/bash-completion/bash_completion: line 3120: compopt: not currently executing completion function
+  * First I'll address the error. Does the script "go too far" and should be stopped much earlier than the error shows
+    up? Is it a simple check?
+* [x] DONE Improve robustness of the 'one-shot-bash-completion.bash' script. Better error handling, more notes,
+  use `_comp_load` instead of `_comp_complete_load` because its more direct and the exit code can be keyed off of. I
+  think maybe there was a change in 'bash-completion', but either way, these changes are good.
 
 
 ## Reference
