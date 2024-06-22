@@ -159,6 +159,25 @@ let bash_completer =  { |spans|
         run-external $one_shot_bash_completion_script $line | complete
     }
 
+    # The one-shot Bash completion script will exit with a 127 exit code if it found no completion definition for the
+    # command. This is a normal case, because of course many commands don't have or need completion definitions. At
+    # this point, we can't just return an empty list because that would be interpreted by Nushell as "completion options
+    # were found to be empty", and the Nushell command line would show "NO RECORDS FOUND". We don't want that. We want
+    # Nushell to fallback to file completion. For example, we want "cat " to show the files and directories in the
+    # current directory.
+    #
+    # Right now (2024-06-21) there is not a way to tell Nushell that no completion definitions were found (see https://github.com/nushell/nushell/issues/6407#issuecomment-1227250012)
+    # but we can return unparseable JSON (see the note in https://www.nushell.sh/book/custom_completions.html#custom-descriptions)
+    # or we can throw an error. In either case, Nushell's completion machinery will actually catch the error and show
+    # the error message in a very fast flash of text on the command line. For example, https://github.com/nushell/nushell/blob/10e84038afe55ba63c9b3187e6d3a1749fa2cc65/crates/nu-cli/src/completions/completer.rs#L115
+    # While that's a little awkward, I'm perfectly happy with that. It's so fast you can't even read it (although you'll
+    # notice the flash). To limit the size of the flashing text, I'll actually use a short error message.
+    if ($result.exit_code == 127) {
+        error make --unspanned {
+            msg: ("No defs.")
+        }
+    }
+
     if ($result.exit_code != 0) {
         error make --unspanned {
             msg: ("Something unexpected happened while running the one-shot Bash completion." + (char newline) + $result.stderr)

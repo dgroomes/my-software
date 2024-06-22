@@ -10,7 +10,7 @@
 #
 # This script is adapted from my other code: https://github.com/dgroomes/bash-playground/blob/407f721f6d00700d353747f6c865c173da6aaab5/completion/bash-completion-example-non-interactive.sh
 #
-# This script is designed to be called from Nushell as an "external completer" (https://www.nushell.sh/cookbook/external_completers.html).
+# This script is designed to be called from Nushell as part of an "external completer" (https://www.nushell.sh/cookbook/external_completers.html).
 #
 # This script requires that the 'bash-completion' library (v2) is installed and pointed to by the 'BASH_COMPLETION_INSTALLATION_DIR'
 # environment variable.
@@ -32,6 +32,11 @@
 #         cherry-pick
 #         citool
 #         (The rest is omitted for brevity)
+#
+#     Command:
+#         BASH_COMPLETION_INSTALLATION_DIR=/opt/homebrew/opt/bash-completion@2 ./one-shot-bash-completion.bash "cat "
+#     Yields:
+#         (exit code 127, which indicates no completion definition was found for the command)
 #
 # I recommend being even more explicit than setting just the 'BASH_COMPLETION_INSTALLATION_DIR' environment variable.
 # The 'bash-completion' library controls its behavior by a few other variables and I've found myself getting turned
@@ -113,11 +118,13 @@ _one_shot_bash_completion__run() {
     _comp_load "$command" || {
         >&2 echo "Command '$command' has no completion function."
 
-        # I'm returning 0 because this is a normal scenario. But, I'm considering return a different exit code as a way
-        # to indicate to Nushell that indeed "There is no completion definition for this command" as a way to
-        # disambiguate from "There is a completion definition for this command but there are no completion suggestions
-        # for this command line string."
-        exit 0
+        # Exit with a 127 to convey that the command has no completion function. 127 is typically used to convey
+        # "Command not found". This is a pretty good fit for our need.
+        #
+        # It's important to let the caller disambiguate between "There is no completion definition for this command"
+        # and "There is a completion definition for this command but there are no completion suggestions for the command
+        # line string."
+        exit 127
     }
 
     # Find the "comp spec" (completion specification). This describes the completion rules and completion function
