@@ -241,31 +241,7 @@ These are the instructions I follow when I get a new Mac or after I re-install m
        pip3 completion --bash > ~/.local/share/bash-completion/completions/pip3
        ```
      * Note: I haven't vetted this in 2023.
-19. Install `fnm` (Fast Node Manager) <https://github.com/Schniz/fnm> and Node.js
-     * > 🚀 Fast and simple Node.js version manager, built in Rust
-     * ```shell
-       brew install fnm
-       ```
-     * I noticed the shell completion that was installed isn't working (there is no effect when pressing tab) but I had
-       success by installed completion with the following command.
-     * ```shell
-       fnm completions --shell bash > ~/.local/share/bash-completion/completions/fnm
-       ```
-     * Install the latest Long-Term Support (LTS) version of node with the following command.
-     * ```shell
-       fnm install --lts
-       ```
-     * Tip: learn about releases and support horizons for Node.js versions on the official [*Previous Releases* page](https://nodejs.org/en/about/previous-releases). 
-     * Incorporate fnm initialization code using the "-dynamic" Bash file and then regenerate the `.bashrc` with `bb`.
-       Use the following commands.
-     * ```shell
-       cp bash/bash-fnm-dynamic.bash ~/.config/bash/
-       ```
-     * Regenerate the `.bashrc` with `bb` using the following command.
-     * ```shell
-       bb
-       ```
-20. Install latest `git` and configure it
+19. Install latest `git` and configure it
      * ```shell
        brew install git
        ```
@@ -325,14 +301,14 @@ These are the instructions I follow when I get a new Mac or after I re-install m
            shared, it's convenient for everyone else if the exclusions are version-controlled in the project-specific
            gitignore file. 2) Projects are diverse and unpredictable. There might be a project that wants to version-control
            the `build/` or `out/` directories, and for good reason. For me, the `.DS_Store` exclusion is a very safe bet. 
-21. Install Docker Desktop <https://docs.docker.com/desktop/install/mac-install/>
+20. Install Docker Desktop <https://docs.docker.com/desktop/install/mac-install/>
      * Then, install Bash completion for `docker` and `docker-compose` by following [the docs](https://docs.docker.com/desktop/faqs/macfaqs/#how-do-i-install-shell-completion). It boils down to:
        ```bash
        ln -s /Applications/Docker.app/Contents/Resources/etc/docker.bash-completion ~/.local/share/bash-completion/completions/docker
        ln -s /Applications/Docker.app/Contents/Resources/etc/docker-compose.bash-completion ~/.local/share/bash-completion/completions/docker-compose
        ```
      * Configure Docker to use fewer resources. Consider only 2-3 cores and 6GB (but it depends on the need and constraints).
-22. Install Karabiner-Elements <https://github.com/pqrs-org/Karabiner-Elements> from source (or Homebrew) and configure it with.
+21. Install Karabiner-Elements <https://github.com/pqrs-org/Karabiner-Elements> from source (or Homebrew) and configure it with.
      1. First, we must configure Xcode command line tools correctly. Follow these instructions <https://stackoverflow.com/a/61725799>
      2. Then, install `xcodegen` from source <https://github.com/yonaskolb/XcodeGen>:
         ```shell
@@ -359,14 +335,14 @@ These are the instructions I follow when I get a new Mac or after I re-install m
         cp karabiner/karabiner.json ~/.config/karabiner
         cp karabiner/assets/complex_modifications/* ~/.config/karabiner/assets/complex_modifications
         ```
-23. Install Insomnia <https://insomnia.rest/download/>
-24. Install Go <https://golang.org/dl/>
+22. Install Insomnia <https://insomnia.rest/download/>
+23. Install Go <https://golang.org/dl/>
      * Note: Consider installing manually or using something like Homebrew. There are pros and cons to each approach.
        To install using Homebrew, use the following command.
      * ```shell
        brew install go
        ```
-25. Install Bash completion for Gradle
+24. Install Bash completion for Gradle
      * `curl https://raw.githubusercontent.com/gradle/gradle-completion/7b084bd68c79be27b8200c7a25e6d00c9c65f9a9/gradle-completion.bash -o /usr/local/etc/bash_completion.d/gradle-completion.bash`
      * Apply the Bash completion to the `gw` alias (the alias was defined in the `bash-aliases.sh` script) with the
        following command.
@@ -379,16 +355,16 @@ These are the instructions I follow when I get a new Mac or after I re-install m
            complete -F _gradle gw
        EOF
        ```
-26. Install `libpq` so we can get `psql`
+25. Install `libpq` so we can get `psql`
      * Follow directions at <https://blog.timescale.com/tutorials/how-to-install-psql-on-mac-ubuntu-debian-windows/>
      * `brew install libpq`
      * `brew link --force libpq`
-27. Build and install Apache JMeter, a load testing and performance measurement tool
+26. Build and install Apache JMeter, a load testing and performance measurement tool
      1. `git clone https://github.com/apache/jmeter`
      2. Build it with `./gradlew createDist`
      3. Add the `bin/` directory to the path.
          * For example, append something like `export PATH="$PATH:~/repos/opensource/jmeter/bin"` to your `.bashrc`
-28. Install `gh` https://github.com/cli/cli
+27. Install `gh` https://github.com/cli/cli
      1. ```shell
         brew install gh
         ```
@@ -397,7 +373,7 @@ These are the instructions I follow when I get a new Mac or after I re-install m
      4. ```shell
         gh completion --shell bash > "$HOME/.local/share/bash-completion/completions/gh"
         ``` 
-29. Install MongoDB *Community Server*
+28. Install MongoDB *Community Server*
      1. Download from <https://www.mongodb.com/try/download/community>.
      2. Extract and put somewhere on the PATH.
          * e.g. symlink it to `~/dev/mongodb` and then add to `.bashrc` the following: `export PATH="$PATH:~/dev/mongodb/bin"`
@@ -411,7 +387,7 @@ These are the instructions I follow when I get a new Mac or after I re-install m
      6. Also, consider downloading and installing the beta (but pretty feature-ful and cool) *new* Mongo shell called `mongosh`
          * Download from the [GitHub Releases page for the project](https://github.com/mongodb-js/mongosh/releases)
          * e.g. symlink it to `~/dev/mongosh` and then add to `.bashrc` the following: `export PATH="$PATH:~/dev/mongosh/bin"`
-30. Install Rust
+29. Install Rust
      1. Install `rustup` using the instructions in the official [rust-lang site](https://www.rust-lang.org/tools/install)
      and **do not** allow it to modify the `PATH`.
      2. Install `rustup` and `cargo` Bash completions with the following commands.
@@ -419,7 +395,7 @@ These are the instructions I follow when I get a new Mac or after I re-install m
         rustup completions bash > "$HOME/.local/share/bash-completion/completions/rustup"
         rustup completions bash cargo >> "$HOME/.local/share/bash-completion/completions/cargo"
         ```
-31. Rust-based tools
+30. Rust-based tools
      * There is a nascent but rich ecosystem of Rust-based command-line tools. Many of them are substitutes for traditional
        commands like `ls`, `du`, and `cat` but they bring a bevy of extra features. Best of all, they are fast. Keep track
        of this "re-implemented in Rust" trend and follow this great article [*Rewritten in Rust: Modern Alternatives of Command-Line Tools*](https://zaiste.net/posts/shell-commands-rust/)
@@ -432,25 +408,13 @@ These are the instructions I follow when I get a new Mac or after I re-install m
      * ```shell
        cargo install --git https://github.com/PaulJuliusMartinez/jless
        ```
-32. Install the AWS CLI
+31. Install the AWS CLI
      * Follow the [installation instructions in the AWS doc site](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html).
        I followed the GUI instructions.
-33. Install the AWS Cloud Development Kit (CDK) CLI
-     * Follow the [installation instructions in the AWS doc site](https://aws.amazon.com/getting-started/guides/setup-cdk/module-two/)
-     * These are the commands I ran.
-     * ```shell
-       nvm install --lts
-       ```
-     * ```shell
-       nvm use --lts
-       ```  
-    * ```shell
-       npm install -g aws-cdk
-       ```
-34. Install [CleanShot](https://cleanshot.com/)
+32. Install [CleanShot](https://cleanshot.com/)
     * Enter the license key
     * Go through the configuration steps in the prompt.
-35. Install Rosetta
+33. Install Rosetta
     * ```shell
       softwareupdate --install-rosetta
       ```
@@ -472,8 +436,8 @@ General clean-ups, TODOs and things I wish to implement for this project
   how much I'll ever use Mongo again.)
 * [ ] Python SDK management (I think this should be totally feasible since I figured this out with OpenJDK and am happy
   with that)
-* [ ] IN PROGRESS Node.js SDK management (I think this should be totally feasible since I figured this out with OpenJDK and am happy
-  with that). There is the added wrinkle of nvm/fnm. But, is that mostly/fully substituted by my own Nushell-based management?
+* [x] DONE Node.js SDK management (I think this should be totally feasible since I figured this out with OpenJDK and am happy
+  with that).
 
 
 ## Finished Wish List Items

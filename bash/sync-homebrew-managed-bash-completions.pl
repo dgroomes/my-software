@@ -66,7 +66,7 @@ while (my $filename = readdir $dh) {
 
     # Skip if there is already a file at the destination. There are two cases where a file might exist:
     #   - We've already created a symlink for this file
-    #   - Some Homebrew-installed packages like 'fnm' and 'gh' seem to automatically copy their completions to the local
+    #   - Some Homebrew-installed packages like 'gh' seem to automatically copy their completions to the local
     #     completions directory.
     next if -e $dest_file;
 
