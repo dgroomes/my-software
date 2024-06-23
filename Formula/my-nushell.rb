@@ -4,7 +4,7 @@
 # to get the benefit of Homebrew's uninstall/install mechanism. This formula assumes that the nu binary is already built
 # at the hardcoded path.
 class MyNushell < Formula
-  desc "My personal build of Nushell from source"
+  desc "My personal formula: my local build of Nushell from source"
 
   homepage "https://github.com/dgroomes/my-config"
 

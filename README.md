@@ -293,7 +293,7 @@ These are the instructions I follow when I get a new Mac or after I re-install m
            git config --global alias.st "status --short --branch"
            ```
          * ```shell
-           git config --global core.editor "idea-light-edit"
+           git config --global core.editor "idea -e -w"
            ```
              * Use Intellij IDEA in LightEdit mode as the editor instead of Vim. This is for things like git rebase and
                amend operations. See [this nice GitHub doc](https://docs.github.com/en/get-started/getting-started-with-git/associating-text-editors-with-git)
@@ -301,7 +301,7 @@ These are the instructions I follow when I get a new Mac or after I re-install m
          * ```shell
            git config --global push.autoSetupRemote true
            ```
-             * This makes it so that your first `git push` will work and you don't need `git push --set-upstream ...`.
+             * This makes it so that your first `git push` will work, and you don't need `git push --set-upstream ...`.
      * Configure `git` credentials
          * Note: when it comes to learning and configuring Git credentials, I recommend you bias towards official Git
            mechanisms and not to the GitHub-specific advice which touts the GitHub CLI and something called Git Credential
@@ -472,7 +472,7 @@ General clean-ups, TODOs and things I wish to implement for this project
   how much I'll ever use Mongo again.)
 * [ ] Python SDK management (I think this should be totally feasible since I figured this out with OpenJDK and am happy
   with that)
-* [ ] Node.js SDK management (I think this should be totally feasible since I figured this out with OpenJDK and am happy
+* [ ] IN PROGRESS Node.js SDK management (I think this should be totally feasible since I figured this out with OpenJDK and am happy
   with that). There is the added wrinkle of nvm/fnm. But, is that mostly/fully substituted by my own Nushell-based management?
 
 

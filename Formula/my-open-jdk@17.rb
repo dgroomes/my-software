@@ -1,7 +1,7 @@
 require "fileutils"
 
 class MyOpenJdkAT17 < Formula
-  desc "My personal formula of the Eclipse Temurin distribution of OpenJDK 17"
+  desc "My personal formula: Eclipse Temurin distribution of OpenJDK 17"
 
   homepage "https://github.com/dgroomes/my-config"
 

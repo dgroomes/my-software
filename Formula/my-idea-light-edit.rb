@@ -1,5 +1,5 @@
 class MyIdeaLightEdit < Formula
-  desc "Launch Intellij IDEA's 'LightEdit' mode"
+  desc "My personal formula: Launch Intellij IDEA's 'LightEdit' mode"
 
   homepage "https://github.com/dgroomes/my-config"
 
