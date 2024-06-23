@@ -22,6 +22,11 @@ const config_registry = {
         backup_success_msg: "Core configuration file backed up."
         install_success_msg: "Core configuration file installed."
     }
+    node: {
+        filename: "node.nu"
+        backup_success_msg: "Node.js configuration file backed up."
+        install_success_msg: "Node.js configuration file installed."
+    }
     open_jdk: {
         filename: "open-jdk.nu"
         backup_success_msg: "OpenJDK configuration file backed up."

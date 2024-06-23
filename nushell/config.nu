@@ -1,10 +1,13 @@
 # I'm still zeroing in on the ideal sourcing strategy. I would prefer the "sourcing from a directory" approach, but this
- # is not possible. The Nushell docs point this out: https://www.nushell.sh/book/modules.html#dumping-files-into-directory
+# is not possible. The Nushell docs point this out: https://www.nushell.sh/book/modules.html#dumping-files-into-directory
+# Let's let 'core.nu' go first. The rest let's organize alphabetically.
 source ([$nu.default-config-dir core.nu] | path join)
-source ([$nu.default-config-dir starship.nu] | path join)
+
 source ([$nu.default-config-dir atuin.nu] | path join)
-source ([$nu.default-config-dir open-jdk.nu] | path join)
+source ([$nu.default-config-dir node.nu] | path join)
 source ([$nu.default-config-dir nu-scripts-sourcer.nu] | path join)
+source ([$nu.default-config-dir open-jdk.nu] | path join)
+source ([$nu.default-config-dir starship.nu] | path join)
 
 $env.config.buffer_editor = "idea-light-edit"
 
