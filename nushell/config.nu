@@ -9,6 +9,12 @@ source ([$nu.default-config-dir nu-scripts-sourcer.nu] | path join)
 source ([$nu.default-config-dir open-jdk.nu] | path join)
 source ([$nu.default-config-dir starship.nu] | path join)
 
+# I don't really understand the essential coverage, or purpose, of the directories added to the PATH by the macOS
+# "/usr/libexec/path_helper" tool. But, at the least, I know it adds "/usr/local/bin" to the PATH and I need that.
+# I'm not going to dig into this further. I just vaguely know about /etc/paths and /etc/paths.d and today I learned
+# or maybe re-learned about /etc/profile and /etc/bashrc.
+$env.PATH = ($env.PATH | append "/usr/local/bin")
+
 $env.config.buffer_editor = "idea-light-edit"
 
 def repos [] {
@@ -132,6 +138,7 @@ export alias dcd = docker-compose down --remove-orphans
 # Miscellaneous aliases
 export alias gw = ./gradlew
 export alias psql_local = psql --username postgres --host localhost
+export alias edit = idea -e
 
 let bash_completer =  { |spans|
     which bash | if ($in | is-empty) {
@@ -212,21 +219,26 @@ $env.config.completions.external = {
   completer: $bash_completer
 }
 
-# Activate a default OpenJDK.
+# Activate a default OpenJDK, Node.js, etc.
 #
 # Oddly, at this point, $env.PATH is the typical colon-delimited value that we are familiar with in most environments.
 # In Nushell, $env.PATH is supposed to be a list but I guess we are too early in the bootstrapping process? Anyway, we
 # have to parse it into a list. Let' take the naive approach (after some quick searching I didn't find a better way)
 # and split on ":" (or are colons not allowed anywhere in paths and files across all systems?).
-def --env activate-default-open-jdk [version: string] {
+def --env activate-defaults [] {
+    let default_java = "21"
+    let default_node = "20"
+
     let split_path = $env.PATH | split row ":"
     $env.PATH = $split_path
-    try { activate-my-open-jdk $version } catch { print "(warn) A default OpenJDK was not activated." }
+    try { activate-my-open-jdk $default_java } catch { print "(warn) A default OpenJDK was not activated." }
+    try { activate-my-node $default_node } catch { print "(warn) A default Node.js was not activated." }
 }
 
-activate-default-open-jdk 21
+activate-defaults
 
 alias use-java = activate-my-open-jdk
+alias use-node = activate-my-node
 
 # Like 'which' but it finds more information. This has the effect that you can see if an application is a symlink or
 # a normal file which I often need when debugging my PATH.

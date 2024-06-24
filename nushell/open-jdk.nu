@@ -34,10 +34,9 @@ export def --env activate-my-open-jdk [version: string@my-open-jdk-keg-versions]
     }
 
     # Remove any previously active OpenJDKs from the PATH
-    let new_path = $env.PATH | where $it !~ "my-open-jdk@"
+    $env.PATH = ($env.PATH | where $it !~ "my-open-jdk@")
     # Add the new OpenJDK bin directory to the PATH
-    let new_path_2 = $new_path | prepend $bin_dir
-    $env.PATH = $new_path_2
+    $env.PATH = ($env.PATH | prepend $bin_dir)
 
     $env.JAVA_HOME = $jdk_home_dir
 }

@@ -19,10 +19,9 @@ export def --env activate-my-node [version: string@my-node-keg-versions] {
     }
 
     # Remove any previously active Node.js versions from the PATH
-    let new_path = $env.PATH | where $it !~ "my-node@"
+    $env.PATH = ($env.PATH | where $it !~ "my-node@")
     # Add the new Node.js bin directory to the PATH
-    let new_path_2 = $new_path | prepend $bin_dir
-    $env.PATH = $new_path_2
+    $env.PATH = ($env.PATH | prepend $bin_dir)
 }
 
 def my-node-keg-versions [] -> list<string> {
