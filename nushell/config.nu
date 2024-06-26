@@ -15,7 +15,7 @@ source ([$nu.default-config-dir starship.nu] | path join)
 # or maybe re-learned about /etc/profile and /etc/bashrc.
 $env.PATH = ($env.PATH | append "/usr/local/bin")
 
-$env.config.buffer_editor = "idea-light-edit"
+$env.config.buffer_editor = "subl"
 
 def repos [] {
     glob --depth 2 ~/repos/*/* | each { |it|
@@ -138,7 +138,6 @@ export alias dcd = docker-compose down --remove-orphans
 # Miscellaneous aliases
 export alias gw = ./gradlew
 export alias psql_local = psql --username postgres --host localhost
-export alias edit = idea -e
 
 let bash_completer =  { |spans|
     which bash | if ($in | is-empty) {

@@ -269,10 +269,10 @@ These are the instructions I follow when I get a new Mac or after I re-install m
            git config --global alias.st "status --short --branch"
            ```
          * ```shell
-           git config --global core.editor "idea -e -w"
+           git config --global core.editor "subl -n -w"
            ```
-             * Use Intellij IDEA in LightEdit mode as the editor instead of Vim. This is for things like git rebase and
-               amend operations. See [this nice GitHub doc](https://docs.github.com/en/get-started/getting-started-with-git/associating-text-editors-with-git)
+             * Use Sublime Text as the editor instead of Vim. This is for things like git rebase and amend operations.
+               See [this nice GitHub doc](https://docs.github.com/en/get-started/getting-started-with-git/associating-text-editors-with-git)
                about configuring external editors.
          * ```shell
            git config --global push.autoSetupRemote true
