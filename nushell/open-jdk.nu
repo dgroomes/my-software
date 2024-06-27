@@ -19,7 +19,7 @@ export def --env activate-my-open-jdk [version: string@my-open-jdk-keg-versions]
     }
 
     let keg_dir = $result.stdout | str trim
-    let jdk_home_dir = [$keg_dir "libexec/openjdk/Contents/Home"] | path join
+    let jdk_home_dir = [$keg_dir "libexec/Contents/Home"] | path join
     if not ($jdk_home_dir | path exists) {
         error make --unspanned {
             msg: ($"Expected to find an OpenJDK home directory at ($jdk_home_dir) but it does not exist.")

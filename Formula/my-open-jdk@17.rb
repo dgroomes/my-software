@@ -1,5 +1,3 @@
-require "fileutils"
-
 class MyOpenJdkAT17 < Formula
   desc "My personal formula: Eclipse Temurin distribution of OpenJDK 17"
 
@@ -20,16 +18,10 @@ class MyOpenJdkAT17 < Formula
     # The tar ball should extract exactly one top-level file, which is a directory named as the version number of
     # OpenJDK (e.g. "jdk-17.0.11+9"). Interestingly, at this point, Homebrew seems to have automatically changed the
     # current directory into that top-level directory. That's quite strange, because a tar ball could have multiple
-    # files and directories in the top-level. After some quick searching, I can't find any documentation that describes
-    # this behavior, so maybe I'm just interpreting something wrong. But this is actually annoying because I can't just
-    # `libexec.install Dir["jdk*"].first => "openjdk"`. Instead, I need to build a containing directory and then move
-    # "Contents" into it.
-    openjdk_dir = libexec/"openjdk"
-    openjdk_dir.mkpath
-    contents_dir = Pathname.new(Dir.pwd)/"Contents"
-    FileUtils.mv contents_dir, openjdk_dir
+    # files and directories in the top-level, right? After some quick searching, I can't find any documentation that
+    # describes this behavior, so maybe I'm just interpreting something wrong.
 
-    # Create symlinks for all executables in the bin directory
-    bin.install_symlink Dir[openjdk_dir/"Contents/Home/bin/*"]
+    libexec.install "Contents"
+    bin.install_symlink Dir[libexec/"Contents/Home/bin/*"]
   end
 end

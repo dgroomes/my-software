@@ -2,6 +2,11 @@ export CLICOLOR=1
 
 export PATH="$PATH:$HOME/.local/bin"
 
+# I don't need Homebrew auto-updates. I don't want the hint noise. Don't send telemetry.
+export HOMEBREW_NO_AUTO_UPDATE=1
+export HOMEBREW_NO_ENV_HINTS=1
+export HOMEBREW_NO_ANALYTICS=1
+
 # Add the JetBrains shell scripts directory to your path so you can launch the IDEs or launch the diff tool from the
 # commandline. Usually, I do "idea ." to open the current directory in Intellij.
 export PATH="$PATH:$HOME/Library/Application Support/JetBrains/Toolbox/scripts"

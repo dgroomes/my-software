@@ -438,6 +438,7 @@ General clean-ups, TODOs and things I wish to implement for this project
   with that)
 * [x] DONE Node.js SDK management (I think this should be totally feasible since I figured this out with OpenJDK and am happy
   with that).
+* [ ] Why isn't `enter_accept = true` working for Atuin? It has no effect.
 
 
 ## Finished Wish List Items
