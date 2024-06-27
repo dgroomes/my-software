@@ -159,7 +159,7 @@ _one_shot_bash_completion__run() {
     COMP_POINT=${#COMP_LINE}
     COMP_CWORD=$(( ${#COMP_WORDS[@]} - 1 ))
 
-    $completion_function
+    $completion_function $COMP_WORDS
 
     for completion in "${COMPREPLY[@]}"; do
         echo "$completion"

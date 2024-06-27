@@ -192,15 +192,15 @@ These are the instructions I follow when I get a new Mac or after I re-install m
        ```
 15. Install Python core components
      * There are multiple ways to install Python. Using the official installer is a perfectly valid approach. I'm already
-       invested in HomeBrew, and it's a good choice for me. Use the following command.
+       invested in Homebrew, and it's a good choice for me. Use the following command.
      * ```shell
        brew install python
        ```
-     * The Python installation managed by HomeBrew is considered an ["externally managed" installation, and the Python
+     * The Python installation managed by Homebrew is considered an ["externally managed" installation, and the Python
        docs](https://packaging.python.org/en/latest/specifications/externally-managed-environments/) describe what this
        means in detail. Consider reading those docs carefully because it will help you navigate the many facets of
        managing the Python ecosystem on your computer. An effect of all this is that we should also install `pipx`
-       directly from HomeBrew (and basically never use the `pip3` binary that comes with the Python installation). We'll
+       directly from Homebrew (and basically never use the `pip3` binary that comes with the Python installation). We'll
        use `pipx` to install Python packages globally for the user, like `poetry`, and others. Use the following command.
      * ```shell
        brew install pipx
@@ -434,8 +434,8 @@ General clean-ups, TODOs and things I wish to implement for this project
 * [ ] Consider restoring (at `b3154dde` and before) my Postgres-related Bash functions. These were hard fought and useful. Maybe reimplement in
   Nushell. Alternatively, I often use Postgres in Docker. But still. (Same is true of the Mongo functions but not sure
   how much I'll ever use Mongo again.)
-* [ ] Python SDK management (I think this should be totally feasible since I figured this out with OpenJDK and am happy
-  with that)
+* [ ] Python SDK management. Don't bother with custom formula. Just use the core ones, which already include
+  3.9, 3.10, 3.11 and 3.12. That's perfect.
 * [x] DONE Node.js SDK management (I think this should be totally feasible since I figured this out with OpenJDK and am happy
   with that).
 * [ ] Why isn't `enter_accept = true` working for Atuin? It has no effect.
