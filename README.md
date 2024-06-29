@@ -434,8 +434,11 @@ General clean-ups, TODOs and things I wish to implement for this project
 * [ ] Consider restoring (at `b3154dde` and before) my Postgres-related Bash functions. These were hard fought and useful. Maybe reimplement in
   Nushell. Alternatively, I often use Postgres in Docker. But still. (Same is true of the Mongo functions but not sure
   how much I'll ever use Mongo again.)
-* [ ] Python SDK management. Don't bother with custom formula. Just use the core ones, which already include
-  3.9, 3.10, 3.11 and 3.12. That's perfect.
+* [ ] (SKIP: virtual environments satisfy Python version switching) Python SDK management. Don't bother with custom formula. Just use the core ones, which already include
+  3.9, 3.10, 3.11 and 3.12. That's perfect. UPDATE: I think Python switching is not as necessary as Java or Node.js
+  switching because we often use virtual environments. So, in a Python project, you typically activate its virtual env
+  and that's your way of switching Python versions. And for one-off scripts, would I just be using the latest Python
+  anyway? I'm going to skip this for now.
 * [x] DONE Node.js SDK management (I think this should be totally feasible since I figured this out with OpenJDK and am happy
   with that).
 * [ ] Why isn't `enter_accept = true` working for Atuin? It has no effect.
