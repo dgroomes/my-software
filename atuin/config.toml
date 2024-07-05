@@ -6,4 +6,6 @@ ctrl_n_shortcuts = true
 
 # The enter key will immediately execute the highlighted command shown in the Atuin history. Remember, use tab to take
 # the highlighted command and put it in the input line for editing.
+#
+# Unfortunately, "enter to accept" has no effect on Nushell. Follow this GitHub issue for updates: https://github.com/atuinsh/atuin/issues/1392
 enter_accept = true
