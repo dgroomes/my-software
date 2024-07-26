@@ -257,3 +257,78 @@ export def whichx [application: string] {
     let merged = $which_details | merge $path_details
     return $merged
 }
+
+# Find all "dirty" (changes haven't been committed) Git projects recursively underneath some directory.
+#
+# This function is useful to run from time to time because of the "I don't want to lose my precious code" scenario. Days
+# and weeks ago you probably wrote some interesting code or notes but you never committed them because you got
+# side-tracked, you got stuck, or you ran out of time. You want a chance to revisit these changes and either officially
+# discard them or decide that they're useful and follow up on them. I especially feel this need when I'm about to
+# switch to a new computer.
+#
+# For example:
+#
+#   $ dirty-git-projects ~/repos/personal
+#   Searching for Git projects in '/Users/dave/repos/personal' at a depth of 1 ...
+#   Found 75 Git projects.
+#   Found 3 dirty Git projects:
+#   ╭───┬──────────────────────────────────────────────╮
+#   │ 0 │ /Users/dave/repos/personal/my-config         │
+#   │ 1 │ /Users/dave/repos/personal/react-playground  │
+#   │ 2 │ /Users/dave/repos/personal/ruby-playground   │
+#   ╰───┴──────────────────────────────────────────────╯
+#
+export def dirty-git-projects [search_directory = "." --depth: int = 1] {
+    # Consider this command:
+    #
+    #    dirty-git-projects ~/repos --depth 2
+    #
+    # Our objective is to find Git projects like:
+    #
+    #    ~/repos/personal/react-playground
+    #    ~/repos/opensource/react
+    #
+    # A convenient way to find Git projects is to look for '.git' directories. A '.git' directory is one level deeper
+    # than the depth of the Git projects themselves. So in this case, we need to glob search at 3 (2 + 1) levels deep.
+    # We need this command.
+    #
+    #     glob ~/repos/**/.git --depth 3
+    #
+    # Note: 'glob' is doing a lot of heavy lifting here. It's expanding the tilde ('~') character and it's
+    # interpreting the '**' wildcard to mean "search recursively". Very neat.
+    #
+    # Note: 'par-each' is a parallel version of 'each'. See https://www.nushell.sh/book/parallelism.html#par-each . This
+    # gives us a legit speed boost. I would prefer to use a parallel version of 'where' but there isn't one.
+    let search_glob_string = [$search_directory "**/.git"] | path join
+    glob $search_glob_string --depth ($depth + 1)
+        | each { || path dirname } # Get the parent directory of the '.git' directory
+        | sort
+        | par-each { |it| if (is-git-project-dirty $it) { $it } }
+}
+
+# Is the given Git project's working tree dirty?
+#
+# For example:
+#
+#    is-git-project-dirty ~/repos/personal/my-config        # true (a.k.a. "dirty". There are uncommitted changes.)
+#    is-git-project-dirty ~/repos/personal/react-playground # false (a.k.a "clean". There are no uncommitted changes.)
+#
+def is-git-project-dirty [project_path] {
+    # The 'git status --porcelain' command is a machine-readable version of 'git status'. That's exactly what we
+    # need. Each line represents a changed file. If the output is empty, then the working tree is clean.
+    #
+    # For example:
+    #
+    #    $ git status --porcelain
+    #    A  go/go.mod
+    #    A  go/go.sum
+    #    AD go/main.go
+    #    AM nushell/git-summarize.nu
+    #
+    let result = git -C $project_path status --porcelain | complete
+    if ($result.exit_code != 0) {
+        let error_msg = $"Something unexpected happened while running the 'git' command at '($project_path)' (char newline) ($result.stderr)"
+        error make --unspanned { msg: $error_msg }
+    }
+    $result.stdout | is-not-empty
+}
