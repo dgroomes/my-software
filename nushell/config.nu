@@ -7,6 +7,7 @@ source ([$nu.default-config-dir atuin.nu] | path join)
 source ([$nu.default-config-dir node.nu] | path join)
 source ([$nu.default-config-dir nu-scripts-sourcer.nu] | path join)
 source ([$nu.default-config-dir open-jdk.nu] | path join)
+source ([$nu.default-config-dir postgres.nu] | path join)
 source ([$nu.default-config-dir starship.nu] | path join)
 
 # I don't really understand the essential coverage, or purpose, of the directories added to the PATH by the macOS
@@ -227,17 +228,16 @@ $env.config.completions.external = {
 def --env activate-defaults [] {
     let default_java = "21"
     let default_node = "20"
+    let default_postgres = "16"
 
     let split_path = $env.PATH | split row ":"
     $env.PATH = $split_path
     try { activate-my-open-jdk $default_java } catch { print "(warn) A default OpenJDK was not activated." }
     try { activate-my-node $default_node } catch { print "(warn) A default Node.js was not activated." }
+    try { activate-postgres $default_postgres } catch { print "(warn) A default Postgres was not activated." }
 }
 
 activate-defaults
-
-alias use-java = activate-my-open-jdk
-alias use-node = activate-my-node
 
 # Like 'which' but it finds more information. This has the effect that you can see if an application is a symlink or
 # a normal file which I often need when debugging my PATH.

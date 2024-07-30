@@ -32,6 +32,11 @@ const config_registry = {
         backup_success_msg: "OpenJDK configuration file backed up."
         install_success_msg: "OpenJDK configuration file installed."
     }
+    postgres: {
+        filename: "postgres.nu"
+        backup_success_msg: "Postgres configuration file backed up."
+        install_success_msg: "Postgres configuration file installed."
+    }
     starship: {
         filename: "starship.nu",
         backup_success_msg: "Starship configuration file backed up."
