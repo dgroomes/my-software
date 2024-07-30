@@ -34,4 +34,8 @@ export def --env activate-postgres [version: string] {
     $env.PATH = ($env.PATH | where $it !~ "postgresql@")
     $env.PATH = ($env.PATH | prepend $bin_dir)
     $env.PGDATA = $data_dir
+    # And for convenience, let's set "PGDATABASE" to "postgres" because that's the default database. When this is
+    # set, we can just use "psql" without any connection-specific arguments: no need to specify username, database, or
+    # host. Very neat.
+    $env.PGDATABASE = "postgres"
 }
