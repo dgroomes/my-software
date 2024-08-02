@@ -349,7 +349,8 @@ def is-git-project-dirty [project_path] {
 export def run-from-readme [] {
   let readme_path = "README.md" | path expand
   if not ($readme_path | path exists) {
-    error make --unspanned { msg: "A README.md file does not exist in the current directory." }
+    print "No README.md file"
+    return
   }
 
   which markdown-code-fence-reader | if ($in | is-empty) {
@@ -365,6 +366,11 @@ export def run-from-readme [] {
 
   let shell_snippets = $result.stdout | from json | where { |snippet|
       [shell nushell bash] | any { |lang| $snippet.language == $lang }
+  }
+
+  if ($shell_snippets | is-empty) {
+    print "No shell snippets found."
+    return
   }
 
   $shell_snippets | input list --display content --fuzzy 'Execute command:'

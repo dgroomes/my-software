@@ -28,7 +28,7 @@ this program. See the accompanying Nushell code elsewhere in this repository.
       ```
 5. Install it somewhere
     * ```nushell
-      ln -sf ('markdown-code-fence-reader' | path expand) ~/.local/bin/markdown-code-fence-reader 
+      ln -sf ('build/install/markdown-code-fence-reader/bin/markdown-code-fence-reader' | path expand) ~/.local/bin/markdown-code-fence-reader 
       ```
 
 
