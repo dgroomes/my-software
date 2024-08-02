@@ -2,19 +2,13 @@
 
 Read code fences from Markdown files.
 
+<img alt="markdown-code-fence-reader-screenshot.png" src="markdown-code-fence-reader-screenshot.png" width="1000"/>
 
 ## Overview
 
-There are often shell snippets described in "code fences" inside Markdown files. This program parses those snippets out
-and returns them formatted in a JSON array. Extracting those snippets facilitates your ability to run those in your
-shell, and this is exactly why I wrote this program.
-
-In particular, I often write specific "how to build and run this project" instructions in my `README.md` files. The
-instructions include shell commands authored inside code fences (triple back-ticks). This `README.md` is no exception
-(look below). I usually execute these snippets by clicking the green play button that appears to the left of the
-instructions. This button is in the "gutter" part of the editor window in Intellij. This is super convenient. Later, I
-might re-execute the commands by using shell history (Ctrl-R) on the commandline. This is all perfectly fine, but I'd
-prefer to compress this workflow even further. That part will come next (and this whole paragraph should go with it). 
+This program parses code fences (triple back-tick content) out of a Markdown file and returns them formatted in a JSON
+array. Extracting those snippets facilitates your ability to run those in your shell, and this is exactly why I wrote
+this program. See the accompanying Nushell code elsewhere in this repository.
 
 
 ## Instructions
@@ -32,6 +26,10 @@ prefer to compress this workflow even further. That part will come next (and thi
     * ```shell
       ../gradlew installDist
       ```
+5. Install it somewhere
+    * ```nushell
+      ln -sf ('markdown-code-fence-reader' | path expand) ~/.local/bin/markdown-code-fence-reader 
+      ```
 
 
 ## Wish List
@@ -41,4 +39,4 @@ General clean-ups, TODOs and things I wish to implement for this project
 * [x] DONE Wire in ~~commonmark-java~~ [jetbrains/markdown](https://github.com/JetBrains/markdown). commonmark-java
   is not parsing code blocks inside lists at all unfortunately and that's the exact use case I have.
 * [x] DONE Return as JSON.
-* [ ] Nushell side of things.
+* [x] DONE Nushell side of things.

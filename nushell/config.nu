@@ -332,3 +332,47 @@ def is-git-project-dirty [project_path] {
     }
     $result.stdout | is-not-empty
 }
+
+# Run a shell command expressed in the README (Markdown) file in the current directory.
+#
+# I often write specific "how to build and run this project" instructions in the README.md files in my projects. The
+# instructions include shell commands authored inside "code fences" (triple back-ticks). I usually execute these
+# snippets by clicking the green play button that appears to the left of the instructions. This button is in the
+# "gutter" part of the editor window in Intellij. This is super convenient. Later, I might re-execute the commands by
+# using shell history (Ctrl-R) on the commandline. This is all perfectly fine, but I'd prefer to compress this workflow
+# even further.
+#
+# This command implements a compressed workflow. It parses shell snippets from the README.md file using the
+# 'markdown-code-fence-reader' program (source code is also in this repository), presents the snippets in a selectable
+# list and then rewrites the commandline with the selected snippet. It does NOT execute the command. You still need to
+# press the enter key, and better yet, you should also review the command before executing it.
+export def run-from-readme [] {
+  let readme_path = "README.md" | path expand
+  if not ($readme_path | path exists) {
+    error make --unspanned { msg: "A README.md file does not exist in the current directory." }
+  }
+
+  which markdown-code-fence-reader | if ($in | is-empty) {
+      error make --unspanned { msg: "The 'markdown-code-fence-reader' command is not installed." }
+  }
+
+  let result = markdown-code-fence-reader $readme_path | complete
+
+  if ($result.exit_code != 0) {
+      let msg = "Something unexpected happened while running the 'markdown-code-fence-reader' command." + (char newline) + $result.stderr
+      error make --unspanned { msg: $msg }
+  }
+
+  let shell_snippets = $result.stdout | from json | where { |snippet|
+      [shell nushell bash] | any { |lang| $snippet.language == $lang }
+  }
+
+  $shell_snippets | input list --display content --fuzzy 'Execute command:'
+    | if ($in | is-empty) {
+        # If the user abandoned the selection, then don't do anything.
+        return
+      } else { $in }
+    | get content | commandline edit $in
+}
+
+export alias rfr = run-from-readme
