@@ -6,15 +6,11 @@ import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor
 import org.intellij.markdown.parser.MarkdownParser
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.*
 import kotlin.system.exitProcess
-
-val log: Logger = LoggerFactory.getLogger("main")
 
 /**
  * Please see the README for more information.
@@ -81,7 +77,6 @@ fun findSnippets(markdownContent: String): List<ShellSnippet> {
 
     while (nodeStack.isNotEmpty()) {
         val node = nodeStack.pop()
-        log.debug("Popped node: {}", describe(node))
         if (node.type === MarkdownElementTypes.CODE_FENCE) snippets.add(extractSnippet(markdownContent, node))
         // Add all elements to the front of the stack (which is a little awkward to accomplish with a Deque)
         node.children.reversed().forEach { nodeStack.push(it) }
@@ -127,6 +122,7 @@ fun extractSnippet(markdownContent: String, node: ASTNode): ShellSnippet {
     return ShellSnippet(language, content.toString())
 }
 
+@Suppress("unused")
 fun describe(node: ASTNode): String {
     return String.format("type=%s children=%s", node.type, node.children.size)
 }

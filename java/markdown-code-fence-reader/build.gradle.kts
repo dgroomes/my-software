@@ -53,10 +53,8 @@ repositories {
 dependencies {
     implementation(libs.jackson.databind)
     implementation(libs.jetbrains.markdown)
-    implementation(libs.slf4j.api)
 
     runtimeOnly(libs.jackson.kotlin)
-    runtimeOnly(libs.logback.classic)
 
     testImplementation(libs.assertj)
     testImplementation(libs.junit.jupiter.api)
@@ -69,10 +67,6 @@ application {
 }
 
 tasks {
-    named<JavaExec>("run") {
-        jvmArgs = listOf("-Dlogback.configurationFile=logback.xml")
-    }
-
     test {
         useJUnitPlatform()
 
