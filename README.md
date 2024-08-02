@@ -1,6 +1,6 @@
 # my-config 
 
-Personal configuration stuff including dot files, installation instructions and other configuration files.
+My dot files, utility programs, installation instructions and more. This is in the "personal software" category.
 
 
 ## Overview
@@ -20,6 +20,8 @@ My Bash config and notes about Bash auto-completion (I always forget how to set 
 
 A description of my Homebrew strategy.
 
+See the README in [homebrew/](homebrew/).
+
 
 ### `iterm2/`
 
@@ -28,6 +30,13 @@ My iTerm2 config.
 > iTerm2 is a terminal emulator for macOS that does amazing things.
 > 
 > -- <cite>https://iterm2.com</cite>
+
+
+### `java/`
+
+Java code that supports my personal workflows.
+
+See the README in [java/](java/).
 
 
 ### `jetbrains/`
@@ -52,7 +61,9 @@ My configuration for the amazing tool *Karabiner-Elements* <https://github.com/t
 
 ### `nushell`
 
-My Nushell configuration.
+My Nushell configuration and scripts.
+
+See the README in [nushell/](nushell/).
 
 
 ### `starship/`
