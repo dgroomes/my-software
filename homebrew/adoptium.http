@@ -7,16 +7,16 @@
 # You can even deep-link to the releases filtered down to a specific platform like Apple Silicon macOS: https://adoptium.net/temurin/releases/?os=mac&arch=aarch64&package=jdk
 #
 # The API has an upper limit of 20 results per page.
-GET https://api.adoptium.net/v3/info/release_names?lts=false&page=0&page_size=20&release_type=ga
+GET https://api.adoptium.net/v3/info/release_names?lts=true&page=1&page_size=20&release_type=ga
 
 ### Assets
 #
 # Get the assets for a given release. I'm confused about the various "assets/" endpoints. There are four of them! This
 # one is working for me. The assets response describes the checksums of the installer/binary and the download links.
-GET https://api.adoptium.net/v3/assets/release_name/eclipse/jdk-17.0.11+9?architecture=aarch64&image_type=jdk&os=mac&project=jdk
+GET https://api.adoptium.net/v3/assets/release_name/eclipse/jdk-11.0.24+8?architecture=aarch64&image_type=jdk&os=mac&project=jdk
 
 ### Download Checksum
-GET https://api.adoptium.net/v3/checksum/version/jdk-22.0.1+8/mac/aarch64/jdk/hotspot/normal/eclipse
+GET https://api.adoptium.net/v3/checksum/version/jdk-11.0.24+8/mac/aarch64/jdk/hotspot/normal/eclipse
 
 ### Download binary
 GET https://api.adoptium.net/v3/binary/version/jdk-22.0.1+8/mac/aarch64/jdk/hotspot/normal/eclipse
