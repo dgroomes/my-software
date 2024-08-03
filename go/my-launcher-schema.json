@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dgroomes/my-config/go/my-launcher-schema.json",
+  "title": "Manifest file for 'my-launcher'",
+  "description": "A schema for the 'my-launcher.json' manifest file, which describes requirements for launching programs using the 'my-launcher' tool.",
+  "type": "object",
+  "properties": {
+    "program_type": {
+      "type": "string",
+      "description": "Type of program being launched (currently only supports Java)",
+      "enum": ["java"]
+    },
+    "entrypoint": {
+      "type": "string",
+      "description": "Path to the program entrypoint. For Java programs, this is the name of the class containing the 'public static void main' method",
+    },
+    "dry_run": {
+      "type": "boolean",
+      "description": "If true, the command will be printed instead of executed",
+      "default": false
+    },
+    "java_configuration": {
+      "type": "object",
+      "description": "Configuration specific to Java programs",
+      "properties": {
+        "java_version": {
+          "type": "integer",
+          "description": "Required Java version",
+          "enum": [11, 17, 21]
+        },
+        "classpath": {
+          "type": "array",
+          "description": "List of classpath entries. This must at least include the entrypoint class. In many cases, this will also include the program's dependencies",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        },
+        "system_properties": {
+          "type": "object",
+          "description": "Optional system properties to be set",
+          "additionalProperties": true
+        },
+        "debug_options": {
+          "type": "object",
+          "description": "Debugging configuration",
+          "properties": {
+            "remote_debugging": {
+              "type": "boolean",
+              "default": false
+            },
+            "debug_port": {
+              "type": "integer"
+            },
+            "suspend_on_start": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        }
+      },
+      "required": ["java_version", "classpath"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["program_type", "entrypoint"],
+  "additionalProperties": false
+}
