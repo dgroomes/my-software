@@ -226,7 +226,7 @@ $env.config.completions.external = {
 # have to parse it into a list. Let' take the naive approach (after some quick searching I didn't find a better way)
 # and split on ":" (or are colons not allowed anywhere in paths and files across all systems?).
 def --env activate-defaults [] {
-    let default_java = "21"
+    let default_java = 21
     let default_node = "20"
     let default_postgres = "16"
 
@@ -238,6 +238,20 @@ def --env activate-defaults [] {
 }
 
 activate-defaults
+
+# Discover keg installations of OpenJDK and make them available (i.e. "advertise") as version-specific "JAVA_HOME"
+# environment variables.
+#
+# For example, for a Java 17 OpenJDK keg installed at "/opt/homebrew/opt/my-open-jdk@17" then set the environment
+# variable "JAVA_HOME_17" to that path.
+def --env advertise-installed-open-jdks [] -> nothing {
+    for keg in (my-open-jdk-kegs) {
+        let java_x_home = $"JAVA_($keg.java_version)_HOME"
+        load-env { $java_x_home: $keg.jdk_home_dir }
+    }
+}
+
+advertise-installed-open-jdks
 
 # Like 'which' but it finds more information. This has the effect that you can see if an application is a symlink or
 # a normal file which I often need when debugging my PATH.
