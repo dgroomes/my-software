@@ -137,7 +137,6 @@ export alias dcuf = docker-compose up --detach --force-recreate --renew-anon-vol
 export alias dcd = docker-compose down --remove-orphans
 
 # Miscellaneous aliases
-export alias gw = ./gradlew
 export alias psql_local = psql --username postgres --host localhost
 
 let bash_completer =  { |spans|
@@ -396,3 +395,32 @@ export def run-from-readme [] {
 }
 
 export alias rfr = run-from-readme
+
+# Execute the Gradle wrapper ('gradlew') with the given arguments.
+#
+# 'gw' is short for "Gradle wrapper". This command looks for the 'gradlew' file in the current directories and containing
+# directories until it finds it.
+#
+# For example:
+#
+#    gw build
+#    gw --verbose my-project:installDist
+#
+# One downside of this is that shell completion won't work for the 'gradle' command. Although I rarely ever used that
+# because it's very slow and there are tons of commands. But it's still a downside.
+export def gw [...args] : nothing {
+    mut dir = (pwd)
+    loop {
+        let gradlew = $dir | path join "gradlew"
+        if ($gradlew | path exists) {
+            run-external $gradlew ...$args
+            return
+        }
+
+        let parent = $dir | path dirname
+        if ($parent == $dir) { # We've bottomed out at the root directory
+            error make --unspanned { msg: "No 'gradlew' script found." }
+        }
+        $dir = $parent
+    }
+}
