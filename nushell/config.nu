@@ -408,7 +408,7 @@ export alias rfr = run-from-readme
 #
 # One downside of this is that shell completion won't work for the 'gradle' command. Although I rarely ever used that
 # because it's very slow and there are tons of commands. But it's still a downside.
-export def gw [...args] : nothing {
+export def --wrapped gw [...args] : nothing {
     mut dir = (pwd)
     loop {
         let gradlew = $dir | path join "gradlew"
