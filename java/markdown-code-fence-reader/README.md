@@ -18,15 +18,11 @@ this program. See the accompanying Nushell code elsewhere in this repository.
     * ```shell
       ../gradlew test
       ```
-3. Build and run the program
-    * ```shell
-      ../gradlew run --args README.md
-      ```
-4. Build the program distribution
+3. Build the program distribution
     * ```shell
       ../gradlew installDist
       ```
-5. Install it somewhere
+4. Install it somewhere
     * ```nushell
       ln -sf ('build/install/markdown-code-fence-reader/bin/markdown-code-fence-reader' | path expand) ~/.local/bin/markdown-code-fence-reader 
       ```

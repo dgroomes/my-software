@@ -63,7 +63,10 @@ public class MyApplicationPlugin implements Plugin<Project> {
         });
 
         distSpec.into("bin", bin -> {
-            bin.from(findAndCopyMyLauncher);
+            bin.from(findAndCopyMyLauncher).rename("my-launcher", project.getName());
+        });
+
+        distSpec.into("bin", bin -> {
             bin.from(createMyLauncherManifest);
         });
     }

@@ -39,7 +39,17 @@ func fatal(msg string) {
 }
 
 func main() {
-	manifestPath := "my-launcher.json"
+	executablePath, err := os.Executable()
+	if err != nil {
+		fatal(fmt.Sprintf("[my-launcher error] Unable to determine the executable path: %v", err))
+	}
+	executablePath, err = filepath.EvalSymlinks(executablePath)
+	if err != nil {
+		fatal(fmt.Sprintf("[my-launcher error] Unable to resolve symlinks for executable path: %v", err))
+	}
+	executableDir := filepath.Dir(executablePath)
+
+	manifestPath := filepath.Join(executableDir, "my-launcher.json")
 	manifestData, err := os.ReadFile(manifestPath)
 	if err != nil {
 		if os.IsNotExist(err) {
@@ -66,6 +76,16 @@ func main() {
 	}
 	if len(manifest.JavaConfiguration.Classpath) == 0 {
 		fatal(fmt.Sprintf("[my-launcher error] 'classpath' must contain at least one entry"))
+	}
+
+	// Resolve classpath entries to absolute paths
+	for i, cp := range manifest.JavaConfiguration.Classpath {
+		absPath := filepath.Join(executableDir, cp)
+		absPath, err = filepath.Abs(absPath)
+		if err != nil {
+			fatal(fmt.Sprintf("[my-launcher error] Unable to resolve classpath entry '%s' to an absolute path: %v", cp, err))
+		}
+		manifest.JavaConfiguration.Classpath[i] = absPath
 	}
 
 	// Search for the appropriate Java executable. This search algorithm relies on a conventional approach:
