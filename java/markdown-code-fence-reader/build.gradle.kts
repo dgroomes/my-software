@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.kotlin.jvm)
-    application
+    id("dgroomes.my-application")
 }
 
 /*

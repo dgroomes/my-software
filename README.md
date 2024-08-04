@@ -453,7 +453,7 @@ General clean-ups, TODOs and things I wish to implement for this project
 * [x] DONE Node.js SDK management (I think this should be totally feasible since I figured this out with OpenJDK and am happy
   with that).
 * [ ] Why isn't `enter_accept = true` working for Atuin? It has no effect.
-* [ ] IN PROGRESS Make a "Java program launcher" in Go. In any interpreted program, (Java, Python, Ruby, JavaScript), the program
+* [x] DONE Make a "Java program launcher" in Go. In any interpreted program, (Java, Python, Ruby, JavaScript), the program
   needs to be run with an interpreter (JVM, `python`, `ruby`, `node`, etc.). This is totally fine, but distributing
   these programs is often a challenge because the user needs to have the interpreter installed, and it needs to be a
   compatible version, and it needs to be discoverable when launching the program. In Java, we have things like the `JAVA_HOME`
@@ -463,7 +463,7 @@ General clean-ups, TODOs and things I wish to implement for this project
   that works as long as my `JAVA_HOME` is a Java 21 JDK, but my shell environment differs per project. I want to solve
   this scenario.
     * DONE Go side
-    * Gradle side
+    * DONE Gradle side
 
 
 ## Finished Wish List Items

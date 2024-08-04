@@ -1,3 +1,3 @@
-rootProject.name = "my-config-java"
+rootProject.name = "java"
 
 include(":markdown-code-fence-reader")
