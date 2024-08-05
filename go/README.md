@@ -27,13 +27,13 @@ binary + JSON manifest" as a Java program launcher.
 
 1. Build the `my-launcher` binary:
     * ```shell
-      go build ./...
+      go build './...'
       ```
     * Try it out by running the binary in various scenarios. If you are satisfied, then you can install it globally with
       the next step.
 2. Build and install the binary to your `GOBIN`:
     * ```shell
-      go install ./...
+      go install './...'
       ```
     * Now you can run `my-launcher` from anywhere in your terminal.
 

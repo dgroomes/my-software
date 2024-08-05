@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "my_software"
+version = "0.1.0"
+description = "My Python personal software"
+authors = ["David Groomes <dwgroomes@gmail.com>"]
+readme = "README.md"
+
+
+[tool.poetry.dependencies]
+python = "^3.12"
+tiktoken = "^0.7.0"
+
+
+[tool.poetry.scripts]
+token-count = "my_software.token_count:token_count"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
