@@ -34,12 +34,10 @@ def repos [] {
 #     * ~/repos/personal/nushell-playground
 #     * ~/repos/personal/my-config
 export def --env cd-repo [] {
-    repos | input list --display description --fuzzy 'Change directory to repository:'
-          | if ($in | is-empty) {
-              # If the user abandoned the selection, then don't do anything.
-              return
-            } else { $in }
-          | get full_path | cd $in
+    let result = repos | mfzf
+    if ($result | is-empty) { return }
+
+    $result | get full_path | cd $in
 }
 
 export alias cdr = cd-repo
