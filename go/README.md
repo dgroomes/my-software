@@ -23,19 +23,51 @@ but now, I need to eject from Posix shell and get finer control and better inter
 binary + JSON manifest" as a Java program launcher.
 
 
+## `my-fuzzy-finder`
+
+`my-fuzzy-finder` is a commandline fuzzy finder that supports structured data (i.e. JSON) instead of only lines of
+strings. It's designed to have a similar user experience to `fzf`.
+
+I think `fzf` really got the UX right, and it's been replicated in many tools. `my-fuzzy-finder` is yet another of those
+tools. The main feature I'm missing from `fzf` is the ability to have structured output. I use [Nushell](https://www.nushell.sh/)
+which is a shell that uses structured data, and the more that my tools can support structured data, the better.
+
+`my-fuzzy-finder` is a TUI (text user interface) program built using the excellent [Bubble Tea](https://github.com/charmbracelet/bubbletea)
+TUI framework, [Bubbles](https://github.com/charmbracelet/bubbles) TUI component library, and the "fuzzy" library <https://github.com/sahilm/fuzzy>. 
+
+
 ## Instructions
 
-1. Build the `my-launcher` binary:
+Follow these instructions to build, run and install my software.
+
+1. Build and run the `my-fuzzy-finder` program with the example data:
     * ```shell
-      go build './...'
+      go run my-config/pkg/my-fuzzy-finder --example
       ```
-    * Try it out by running the binary in various scenarios. If you are satisfied, then you can install it globally with
-      the next step.
-2. Build and install the binary to your `GOBIN`:
+    * Next, try fuzzy finding among the filenames in the current directory.
+    * ```nushell
+      ls | get name | str join (char newline) | go run my-config/pkg/my-fuzzy-finder
+      ```
+    * Next, try a similar thing but with JSON output.
+    * ```nushell
+      ls | get name | str join (char newline) | go run my-config/pkg/my-fuzzy-finder --json-out | from json
+      ```
+    * Finally, try the program and enable debugging. The logs are printed to a local `my-fuzzy-finder.log` file.
+    * ```nushell
+      go run my-config/pkg/my-fuzzy-finder --example --debug
+      ```
+2. Build all executables:
+    * ```nushell
+      mkdir bin; go build -o bin  './...'
+      ```
+    * The executables (i.e. `my-launcher`, `my-fuzzy-finder`) will be in the `bin/` directory. Try them out as needed to
+      do validation and exploration. If you are satisfied, then you can install the executables globally with the next
+      step.
+3. Build and install the executables to your `GOBIN`:
     * ```shell
       go install './...'
       ```
-    * Now you can run `my-launcher` from anywhere in your terminal.
+    * Now you can run the executables, like `my-launcher`, from anywhere on your system.
 
 
 ## Wish List
@@ -44,3 +76,19 @@ General clean-ups, TODOs and things I wish to implement for this project
 
 * [x] DONE Scaffold a "hello world" program
 * [x] DONE Implement `my-launcher`
+* [x] DONE Implement `my-fuzzy-finder`
+    * DONE I need to start paring things down. Start with getting rid of most keybindings.
+      * DONE Let's get rid of the pagination first.
+    * DONE "enter" to complete the program.
+    * DONE "esc" to quit the program without a selection. Use an exit status.
+    * DONE (removed) What is the status message?
+    * DONE Drop the spinner
+    * DONE Copy in textinput and pare it down.
+      * I do really like the `ctrl+u` / `ctrl+e` / `ctrl+a` keybindings that it supports. That's a nice tough. But I don't need a
+        lot of it.
+    * DONE Is there a way to not leave the filtering input? I always want to be able to type and move down/up/enter. 
+    * DONE Pare down DefaultFilter
+    * DONE Pare down item interface stuff
+    * (partially done) Pare down (inline) styles
+    * Pare down delegate stuff
+    * defect: Cursor is not blinking at start.

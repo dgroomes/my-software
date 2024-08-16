@@ -10,4 +10,9 @@
 
 . "$HOME/.bashrc"
 
-exec "$HOME/repos/opensource/nushell/target/release/nu"
+if which nu &> /dev/null; then
+  exec nu
+else
+  echo "Nushell ('nu') was not found on the PATH. Staying in Bash as a fallback."
+fi
+
