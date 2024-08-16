@@ -367,7 +367,7 @@ export def run-from-readme [] {
   }
 
   which markdown-code-fence-reader | if ($in | is-empty) {
-      error make --unspanned { msg: "The 'markdown-code-fence-reader' command is not installed." }
+      error make --unspanned { msg: "The 'markdown-code-fence-reader' program is not installed." }
   }
 
   let result = markdown-code-fence-reader $readme_path | complete
@@ -423,4 +423,94 @@ export def --wrapped gw [...args] : nothing {
         }
         $dir = $parent
     }
+}
+
+# 'mfzf' is a Nushell command and wrapper over the 'my-fuzzy-finder' program.
+#
+# 'mfzf' adds the Nushell experience to 'my-fuzzy-finder' by supporting structured input and output and commandline
+# completions.
+#
+# For input tables, 'mfzf' will extract a "filter column" from the input table and pass the values as lines into
+# 'my-fuzzy-finder'. 'mfzf' will use the first table column as the filter column, or it will use the one specified by
+# the optional "--filter-column" flag. After you've selected a row, 'mfzf' will then convert the JSON object returned by
+# 'my-fuzzy-finder' into a record and return that.
+#
+# For example, fuzzy find files in the current directory:
+#
+#   $ ls | mfzf
+#
+#    ... You are in the TUI now. The 'name' column is used as the filter column because it is the first column in the
+#        table output by 'ls'. You interactively narrow down the list by typing 'mod'. You press enter.
+#
+#   ╭──────────┬────────────╮
+#   │ name     │ go.mod     │
+#   │ type     │ file       │
+#   │ size     │ 1.2 KiB    │
+#   │ modified │ 2 days ago │
+#   ╰──────────┴────────────╯
+#
+# Or you can fuzzy find on other columns using commands like:
+#
+#   $ ls | mfzf --filter-column type
+#   $ ls | mfzf -f size
+#   $ ls | mfzf -f modified
+#
+# 'mfzf' also supports lists as input. So, for example, you can do:
+#
+#   $ glob */** | mfzf
+#
+export def mfzf [--filter-column (-f): string] [list<string> -> string, table -> record] {
+    which my-fuzzy-finder | if ($in | is-empty) {
+        error make --unspanned { msg: "The 'my-fuzzy-finder' program is not installed." }
+    }
+
+    let _in = $in
+    if ($_in | is-empty) {
+        print "(mfzf) No input"
+        return
+    }
+
+    let in_type = if ($_in | describe | str starts-with table) {
+        "table"
+    } else if ($_in | describe | str starts-with list) {
+        "list"
+    } else {
+        error make --unspanned { msg: "Unsupported input type." }
+    }
+
+    let lines = match $in_type {
+        "table" => {
+            let _filter_column = if ($filter_column | is-not-empty) { $filter_column } else { $_in | columns | first }
+            $_in | get $_filter_column | str join (char newline)
+        }
+        "list" => {
+            $_in | str join (char newline)
+        }
+    }
+
+    let result = $lines | my-fuzzy-finder --json-out | complete
+
+    match $result.exit_code {
+        0 => {
+            # Success
+        }
+        1 => {
+            # This is a normal case. When there are no matches, 'my-fuzzy-finder' exits with a 1 status code. This is
+            # the same behavior as 'fzf'.
+            print "(mfzf) No match"
+            return
+        }
+        130 => {
+            # This is a normal case. When the user abandons the selection, 'my-fuzzy-finder' exits with a 130 status
+            # code. This is the same behavior as 'fzf'.
+            print "(mfzf) No selection"
+            return
+        }
+        _ => {
+            error make --unspanned { msg: "Something went wrong. Received an unexpected status code from 'my-fuzzy-finder'." }
+        }
+    }
+
+    let output_record = ($result.stdout | from json)
+    return ($_in | get $output_record.index)
 }
