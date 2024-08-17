@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/dgroomes/my-config/go/my-launcher-schema.json",
+  "$id": "https://github.com/dgroomes/my-software/go/my-launcher-schema.json",
   "title": "Manifest file for 'my-launcher'",
   "description": "A schema for the 'my-launcher.json' manifest file, which describes requirements for launching programs using the 'my-launcher' tool.",
   "type": "object",

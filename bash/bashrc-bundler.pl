@@ -22,7 +22,7 @@ sub main {
 bb: .(b)ashrc (b)undler
 
 Bundle together all the Bash code you source when you start a Bash shell.
-Source code: https://github.com/dgroomes/my-config/tree/main/bash
+Source code: https://github.com/dgroomes/my-software/tree/main/bash
 
 Usage: bb [--perf]
 

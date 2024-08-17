@@ -1,4 +1,4 @@
-# my-config 
+# my-software
 
 My dot files, utility programs, installation instructions and more. This is in the "personal software" category.
 
@@ -98,8 +98,8 @@ These are the instructions I follow when I get a new Mac or after I re-install m
         * "Maximize": `Ctrl + \`
 4. Clone this repository
     * First make the "repos" directory with `mkdir -p ~/repos/personal`
-    * `cd ~/repos/personal && git clone https://github.com/dgroomes/my-config.git`
-    * Finally, move to this directory because many of the later setup steps assume you are in this directory because they use relatives paths: `cd my-config`
+    * `cd ~/repos/personal && git clone https://github.com/dgroomes/my-software.git`
+    * Finally, move to this directory because many of the later setup steps assume you are in this directory because they use relatives paths: `cd my-software`
 5. Install iTerm2 <https://iterm2.com/downloads.html>. Configure it with my configuration:
     * Create the iTerm config directory with  `mkdir -p ~/.config/iterm2`
     * Copy the plist file with `cp iterm2/com.googlecode.iterm2.plist ~/.config/iterm2/com.googlecode.iterm2.plist`
@@ -114,13 +114,13 @@ These are the instructions I follow when I get a new Mac or after I re-install m
 7. Install my own formulas
     * This is an experiment. I'm trying out maintaining my own Homebrew formulas.
     * ```shell
-      brew tap dgroomes/my-config "$PWD"
+      brew tap dgroomes/my-software "$PWD"
       ```
     * ```shell
-      brew install dgroomes/my-config/my-open-jdk@17
+      brew install dgroomes/my-software/my-open-jdk@17
       ```
    *  ```shell
-      brew install dgroomes/my-config/my-open-jdk@21
+      brew install dgroomes/my-software/my-open-jdk@21
       ```
 8. Install Bash
     * macOS uses a years old version of Bash and will never update it because of licensing. We'll use Homebrew to install a modern version of Bash.
@@ -182,7 +182,7 @@ These are the instructions I follow when I get a new Mac or after I re-install m
     * Open Toolbox
     * Log in to your JetBrains account
     * Install Intellij Ultimate
-    * In `my-config`, build my JetBrains preferences file (`settings.zip`). See instructions in the root `README.md`
+    * In `my-software`, build my JetBrains preferences file (`settings.zip`). See instructions in the root `README.md`
     * Open this project in Intellij from the command line with the following command.
     * ```shell
       idea .

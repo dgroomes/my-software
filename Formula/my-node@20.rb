@@ -3,7 +3,7 @@ require "fileutils"
 class MyNodeAT20 < Formula
   desc "My personal formula: Node.js 20 pre-built binaries"
 
-  homepage "https://github.com/dgroomes/my-config"
+  homepage "https://github.com/dgroomes/my-software"
 
   url "https://nodejs.org/dist/v20.15.0/node-v20.15.0-darwin-arm64.tar.gz"
 

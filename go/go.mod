@@ -1,4 +1,4 @@
-module my-config
+module my-software
 
 go 1.22.5
 

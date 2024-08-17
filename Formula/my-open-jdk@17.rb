@@ -1,7 +1,7 @@
 class MyOpenJdkAT17 < Formula
   desc "My personal formula: Eclipse Temurin distribution of OpenJDK 17"
 
-  homepage "https://github.com/dgroomes/my-config"
+  homepage "https://github.com/dgroomes/my-software"
 
   url "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.11%2B9/OpenJDK17U-jdk_aarch64_mac_hotspot_17.0.11_9.tar.gz"
 

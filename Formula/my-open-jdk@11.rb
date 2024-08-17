@@ -1,7 +1,7 @@
 class MyOpenJdkAT11 < Formula
   desc "My personal formula: Eclipse Temurin distribution of OpenJDK 11"
 
-  homepage "https://github.com/dgroomes/my-config"
+  homepage "https://github.com/dgroomes/my-software"
 
   url "https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.24%2B8/OpenJDK11U-jdk_aarch64_mac_hotspot_11.0.24_8.tar.gz"
 

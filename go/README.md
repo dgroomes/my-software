@@ -42,19 +42,19 @@ Follow these instructions to build, run and install my software.
 
 1. Build and run the `my-fuzzy-finder` program with the example data:
     * ```shell
-      go run my-config/pkg/my-fuzzy-finder --example
+      go run my-software/pkg/my-fuzzy-finder --example
       ```
     * Next, try fuzzy finding among the filenames in the current directory.
     * ```nushell
-      ls | get name | str join (char newline) | go run my-config/pkg/my-fuzzy-finder
+      ls | get name | str join (char newline) | go run my-software/pkg/my-fuzzy-finder
       ```
     * Next, try a similar thing but with JSON output.
     * ```nushell
-      ls | get name | str join (char newline) | go run my-config/pkg/my-fuzzy-finder --json-out | from json
+      ls | get name | str join (char newline) | go run my-software/pkg/my-fuzzy-finder --json-out | from json
       ```
     * Finally, try the program and enable debugging. The logs are printed to a local `my-fuzzy-finder.log` file.
     * ```nushell
-      go run my-config/pkg/my-fuzzy-finder --example --debug
+      go run my-software/pkg/my-fuzzy-finder --example --debug
       ```
 2. Build all executables:
     * ```nushell

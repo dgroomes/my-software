@@ -17,7 +17,7 @@ use Cwd 'abs_path';
 # As an additional feature, the script also cleans up any dangling symlinks in the '.local' directory, which will
 # occur if you uninstall a Homebrew package that came with completions, like 'docker', 'kcat', etc.
 #
-# For more information, see https://github.com/dgroomes/my-config
+# For more information, see https://github.com/dgroomes/my-software
 
 sub remove_symlink {
     my ($dest_file) = @_;

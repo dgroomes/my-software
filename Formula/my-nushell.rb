@@ -6,7 +6,7 @@
 class MyNushell < Formula
   desc "My personal formula: my local build of Nushell from source"
 
-  homepage "https://github.com/dgroomes/my-config"
+  homepage "https://github.com/dgroomes/my-software"
 
   url "file:///Users/dave/repos/opensource/nushell/target/release/nu"
 

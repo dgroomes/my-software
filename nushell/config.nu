@@ -22,7 +22,7 @@ def repos [] {
     glob --depth 2 ~/repos/*/* | each { |it|
 
         # The description is the category directory and the repository directory.
-        # For example, 'personal/my-config' or 'opensource/nushell'
+        # For example, 'personal/my-software' or 'opensource/nushell'
         let description = $it | path split | last 2 | path join
         { description: $description full_path: $it }
     }
@@ -32,7 +32,7 @@ def repos [] {
 # example:
 #     * ~/repos/opensource/nushell
 #     * ~/repos/personal/nushell-playground
-#     * ~/repos/personal/my-config
+#     * ~/repos/personal/my-software
 export def --env cd-repo [] {
     let result = repos | mfzf
     if ($result | is-empty) { return }
@@ -57,8 +57,8 @@ export def cp-last-cmd [] {
 #
 #  $ git remote show origin
 #  * remote origin
-#    Fetch URL: https://github.com/dgroomes/my-config.git
-#    Push  URL: https://github.com/dgroomes/my-config.git
+#    Fetch URL: https://github.com/dgroomes/my-software.git
+#    Push  URL: https://github.com/dgroomes/my-software.git
 #    HEAD branch: main
 #    Remote branches:
 #      main                                            tracked
@@ -296,7 +296,7 @@ export def whichx [application: string] {
 #   Found 75 Git projects.
 #   Found 3 dirty Git projects:
 #   ╭───┬──────────────────────────────────────────────╮
-#   │ 0 │ /Users/dave/repos/personal/my-config         │
+#   │ 0 │ /Users/dave/repos/personal/my-software         │
 #   │ 1 │ /Users/dave/repos/personal/react-playground  │
 #   │ 2 │ /Users/dave/repos/personal/ruby-playground   │
 #   ╰───┴──────────────────────────────────────────────╯
@@ -333,7 +333,7 @@ export def dirty-git-projects [search_directory = "." --depth: int = 1] {
 #
 # For example:
 #
-#    is-git-project-dirty ~/repos/personal/my-config        # true (a.k.a. "dirty". There are uncommitted changes.)
+#    is-git-project-dirty ~/repos/personal/my-software        # true (a.k.a. "dirty". There are uncommitted changes.)
 #    is-git-project-dirty ~/repos/personal/react-playground # false (a.k.a "clean". There are no uncommitted changes.)
 #
 def is-git-project-dirty [project_path] {

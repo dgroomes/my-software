@@ -1,7 +1,7 @@
 class MyOpenJdkAT23 < Formula
   desc "My personal formula: An Early-Access version of OpenJDK 23 distributed by OpenJDK"
 
-  homepage "https://github.com/dgroomes/my-config"
+  homepage "https://github.com/dgroomes/my-software"
 
   url "https://download.java.net/java/early_access/jdk23/35/GPL/openjdk-23-ea+35_macos-aarch64_bin.tar.gz"
 
