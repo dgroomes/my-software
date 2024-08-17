@@ -117,10 +117,16 @@ These are the instructions I follow when I get a new Mac or after I re-install m
       brew tap dgroomes/my-software "$PWD"
       ```
     * ```shell
+      brew install dgroomes/my-software/my-open-jdk@11
+      ```
+    * ```shell
       brew install dgroomes/my-software/my-open-jdk@17
       ```
-   *  ```shell
+    * ```shell
       brew install dgroomes/my-software/my-open-jdk@21
+      ```
+    * ```shell
+      brew install dgroomes/my-software/my-node@20
       ```
 8. Install Bash
     * macOS uses a years old version of Bash and will never update it because of licensing. We'll use Homebrew to install a modern version of Bash.
