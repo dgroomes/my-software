@@ -138,7 +138,7 @@ export alias dcd = docker-compose down --remove-orphans
 export alias psql_local = psql --username postgres --host localhost
 
 let bash_completer =  { |spans|
-    which bash | if ($in | is-empty) {
+    let bash_path = which bash | if ($in | is-empty) {
         # Note: you won't see this message when the closure is invoked by Nushell's external completers machinery.
         # Silencing (or "swallowing") the output of a rogue completer is designed as a feature. Totally fair, but that
         # makes debugging external completer closures difficult. See the 'bash-complete' function which is designed to
@@ -146,6 +146,8 @@ let bash_completer =  { |spans|
         # library logger or the internal logs (e.g. `nu --log-level debug`) either.
         print "Bash is not installed. The Bash completer will not be registered."
         return
+    } else {
+       $in.0.path
     }
 
     let one_shot_bash_completion_script = [$nu.default-config-dir one-shot-bash-completion.bash] | path join | if ($in | path exists)  {
@@ -157,13 +159,23 @@ let bash_completer =  { |spans|
 
     let line = $spans | str join " "
 
-    let result = with-env {
+    # We set up a controlled environment so we have a better chance to debug completion problems. In particular, we are
+    # exercising control over the "search order" that 'bash-completion' uses to find completion definitions. For more
+    # context, see this section of the 'bash-completion' README: https://github.com/scop/bash-completion/blob/07605cb3e0a3aca8963401c8f7a8e7ee42dbc399/README.md?plain=1#L333
+    let env_vars = {
         BASH_COMPLETION_INSTALLATION_DIR: /opt/homebrew/opt/bash-completion@2
         BASH_COMPLETION_USER_DIR: ([$env.HOME .local/share/bash-completion] | path join)
         BASH_COMPLETION_COMPAT_DIR: /disable-legacy-bash-completions-by-pointing-to-a-dir-that-does-not-exist
-    } {
-        run-external $one_shot_bash_completion_script $line | complete
+        XDG_DATA_DIRS: /opt/homebrew/share
     }
+
+    # Turn the environment variables into "KEY=VALUE" strings in preparation for the 'env' command.
+    let env_var_args = $env_vars | items { |key, value| [$key "=" $value] | str join }
+
+    # Note: we are using "$bash_path" which is the absolute path to the Bash executable of the Bash that's installed
+    # via Homebrew. If we were to instead use "bash", then it would resolve to the "bash" that's installed by macOS
+    # which is too old to work with 'bash-completion'.
+    let result = env -i ...$env_var_args $bash_path --noprofile $one_shot_bash_completion_script $line | complete
 
     # The one-shot Bash completion script will exit with a 127 exit code if it found no completion definition for the
     # command. This is a normal case, because of course many commands don't have or need completion definitions. At
@@ -384,7 +396,7 @@ export def run-from-readme [] {
     return
   }
 
-  $shell_snippets | input list --display content --fuzzy 'Execute command:'
+  $shell_snippets | mfzf --filter-column content
     | if ($in | is-empty) {
         # If the user abandoned the selection, then don't do anything.
         return

@@ -41,13 +41,17 @@
 # I recommend being even more explicit than setting just the 'BASH_COMPLETION_INSTALLATION_DIR' environment variable.
 # The 'bash-completion' library controls its behavior by a few other variables and I've found myself getting turned
 # around as I learned (and re-learned) 'bash-completion'. Explicitly acknowledging and reviewing these variables
-# keeps you in control. Here is an example invocation from a Nushell command line:
+# keeps you in control. Unfortunately, Nushell doesn't have a native facility for running a command with a blank set of
+# environment variables, so we have to reach for the OS 'env' command which is a bit less ergonomic, but that's fine.
+# See this related discussion: "No way to completely unset an environment variable for child processes" https://github.com/nushell/nushell/issues/11495.
+# Here is an example of an explicit invocation (for readability, I recommend splitting this up into more than one
+# statement and commenting the obscure parts):
 #
-#     with-env {
+#     env -i ...({
 #         BASH_COMPLETION_INSTALLATION_DIR: /opt/homebrew/opt/bash-completion@2
 #         BASH_COMPLETION_USER_DIR: ([$env.HOME .local/share/bash-completion] | path join)
 #         BASH_COMPLETION_COMPAT_DIR: /disable-legacy-bash-completions-by-pointing-to-a-dir-that-does-not-exist
-#     } { ./one-shot-bash-completion.bash "7z " }
+#     } | items { |key, value| [$key "=" $value] | str join }) (which bash | get 0.path) --noprofile one-shot-bash-completion.bash "7z "
 #
 # In particular, the 'BASH_COMPLETION_USER_DIR' controls where 'bash-completion' looks for user-defined completion
 # scripts. The 'bash-completion' distribution comes with completion scripts for many standard command line
