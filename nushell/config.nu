@@ -435,19 +435,21 @@ export def --wrapped gw [...args] : nothing {
     }
 }
 
-# 'mfzf' is a Nushell command and wrapper over the 'my-fuzzy-finder' program.
+# 'fz' is a Nushell command and wrapper over the 'my-fuzzy-finder' program. I called it 'fz' because it's in the spirit
+# of 'fzf' but is distinct from it and short. I tried out 'mfzf' for a while but 'mfzf' takes both hands to type and the
+# 'z' is already hard.
 #
-# 'mfzf' adds the Nushell experience to 'my-fuzzy-finder' by supporting structured input and output and commandline
+# 'fz' adds the Nushell experience to 'my-fuzzy-finder' by supporting structured input and output and commandline
 # completions.
 #
-# For input tables, 'mfzf' will extract a "filter column" from the input table and pass the values as lines into
-# 'my-fuzzy-finder'. 'mfzf' will use the first table column as the filter column, or it will use the one specified by
-# the optional "--filter-column" flag. After you've selected a row, 'mfzf' will then convert the JSON object returned by
+# For input tables, 'fz' will extract a "filter column" from the input table and pass the values as lines into
+# 'my-fuzzy-finder'. 'fz' will use the first table column as the filter column, or it will use the one specified by
+# the optional "--filter-column" flag. After you've selected a row, 'fz' will then convert the JSON object returned by
 # 'my-fuzzy-finder' into a record and return that.
 #
 # For example, fuzzy find files in the current directory:
 #
-#   $ ls | mfzf
+#   $ ls | fz
 #
 #    ... You are in the TUI now. The 'name' column is used as the filter column because it is the first column in the
 #        table output by 'ls'. You interactively narrow down the list by typing 'mod'. You press enter.
@@ -461,22 +463,22 @@ export def --wrapped gw [...args] : nothing {
 #
 # Or you can fuzzy find on other columns using commands like:
 #
-#   $ ls | mfzf --filter-column type
-#   $ ls | mfzf -f size
-#   $ ls | mfzf -f modified
+#   $ ls | fz --filter-column type
+#   $ ls | fz -f size
+#   $ ls | fz -f modified
 #
-# 'mfzf' also supports lists as input. So, for example, you can do:
+# 'fz' also supports lists as input. So, for example, you can do:
 #
-#   $ glob */** | mfzf
+#   $ glob */** | fz
 #
-export def mfzf [--filter-column (-f): string] [list<string> -> string, table -> record] {
+export def fz [--filter-column (-f): string] [list<string> -> string, table -> record] {
     which my-fuzzy-finder | if ($in | is-empty) {
         error make --unspanned { msg: "The 'my-fuzzy-finder' program is not installed." }
     }
 
     let _in = $in
     if ($_in | is-empty) {
-        print "(mfzf) No input"
+        print "(fz) No input"
         return
     }
 
@@ -507,13 +509,13 @@ export def mfzf [--filter-column (-f): string] [list<string> -> string, table ->
         1 => {
             # This is a normal case. When there are no matches, 'my-fuzzy-finder' exits with a 1 status code. This is
             # the same behavior as 'fzf'.
-            print "(mfzf) No match"
+            print "(fz) No match"
             return
         }
         130 => {
             # This is a normal case. When the user abandons the selection, 'my-fuzzy-finder' exits with a 130 status
             # code. This is the same behavior as 'fzf'.
-            print "(mfzf) No selection"
+            print "(fz) No selection"
             return
         }
         _ => {
@@ -523,4 +525,14 @@ export def mfzf [--filter-column (-f): string] [list<string> -> string, table ->
 
     let output_record = ($result.stdout | from json)
     return ($_in | get $output_record.index)
+}
+
+# Let's wrap 'fd' to give it the Nushell treatment. Instead of outputting new-line delimited text, the wrapped 'fd'
+# command will output a proper Nushell list.
+#
+# Warning: In general, shadowing or overwriting well-known and highly-depended
+# upon APIs is a severe mistake. In your own shell, I can be convinced that it's ok. I'm still not really sure. But I'm
+# going to try it out.
+def --wrapped fd [...args] {
+    ^fd ...$args | split row (char newline)
 }
