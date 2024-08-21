@@ -18,14 +18,26 @@ this program. See the accompanying Nushell code elsewhere in this repository.
     * ```shell
       ../gradlew test
       ```
-3. Build the program distribution
+3. Build and install the program distribution with Homebrew
     * ```shell
-      ../gradlew installDist
+      ../gradlew distTar
       ```
-4. Install it somewhere
+    * Update the formula in the `Formula/` directory in the root of this program. You will need to update the hash. Use
+      the following command to compute the hash.
     * ```nushell
-      ln -sf ('build/install/markdown-code-fence-reader/bin/markdown-code-fence-reader' | path expand) ~/.local/bin/markdown-code-fence-reader 
+      open build/distributions/markdown-code-fence-reader.tar | hash sha256 | pbcopy
       ```
+
+
+For a quicker build/install/use cycle, build and install the program distribution the "short-cut" way (I want to move
+away from this if feasible and find a faster combination of commands and automation to do the Homebrew flow):
+
+1. ```shell
+   ../gradlew installDist
+   ```
+2. ```nushell
+   ln -sf ('build/install/markdown-code-fence-reader/bin/markdown-code-fence-reader' | path expand) ~/.local/bin/markdown-code-fence-reader 
+   ```
 
 
 ## Wish List

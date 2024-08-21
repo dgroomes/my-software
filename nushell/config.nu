@@ -34,7 +34,7 @@ def repos [] {
 #     * ~/repos/personal/nushell-playground
 #     * ~/repos/personal/my-software
 export def --env cd-repo [] {
-    let result = repos | mfzf
+    let result = repos | fz
     if ($result | is-empty) { return }
 
     $result | get full_path | cd $in
@@ -396,7 +396,7 @@ export def run-from-readme [] {
     return
   }
 
-  $shell_snippets | mfzf --filter-column content
+  $shell_snippets | fz --filter-column content
     | if ($in | is-empty) {
         # If the user abandoned the selection, then don't do anything.
         return
