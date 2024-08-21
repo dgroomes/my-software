@@ -27,4 +27,6 @@ Follow these instructions to build and use the plugin:
 General clean-ups, TODOs and things I wish to implement for this project:
 
 * [x] DONE Scaffold
-* [ ] Implement
+* [ ] IN PROGRESS Implement
+   * Wow, Claude Sonnet 3.5 one-shotted a working action... I want to clean it up, convert it to Kotlin, reconsider the
+     language and UX, but that was really cool.

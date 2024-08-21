@@ -19,4 +19,11 @@
                     factoryClass="dgroomes.MyToolWindowFactory"/>
     </extensions>
 
+    <actions>
+        <action id="CopyOpenTabs" class="dgroomes.CopyOpenTabsAction" text="Copy Open Tab Names" description="Copy names of open editor tabs to clipboard">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="control alt C"/>
+        </action>
+    </actions>
+
 </idea-plugin>
