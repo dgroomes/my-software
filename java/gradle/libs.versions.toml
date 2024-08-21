@@ -1,8 +1,10 @@
 [versions]
 assertj = "3.26.3" # AssertJ releases: https://github.com/assertj/assertj-core/tags
+intellij-platform-gradle-plugin = "2.0.1" # IntelliJ Platform Gradle Plugin releases: https://github.com/JetBrains/intellij-platform-gradle-plugin/releases
 jackson = "2.17.2" # Jackson releases: https://github.com/FasterXML/jackson/wiki/Jackson-Releases
 jetbrains-markdown = "0.7.3" # JetBrains Maven releases: https://central.sonatype.com/artifact/org.jetbrains/markdown?smo=true
 junit-jupiter = "5.10.3" # JUnit releases: https://junit.org/junit5/docs/current/release-notes/index.html
+slf4j = "2.0.16" # SLF4J releases: http://www.slf4j.org/news.html
 
 
 [libraries]
@@ -12,9 +14,12 @@ jackson-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin"
 jetbrains-markdown = { module = "org.jetbrains:markdown", version.ref = "jetbrains-markdown" }
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit-jupiter" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit-jupiter" }
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 
 
 [plugins]
+intellij-platform-gradle-plugin = { id = "org.jetbrains.intellij.platform", version.ref = "intellij-platform-gradle-plugin" }
+
 # Gradle's support for Kotlin: https://docs.gradle.org/current/userguide/compatibility.html
 # Kotlin's support for Gradle https://kotlinlang.org/docs/gradle.html
-kotlin-jvm = { version = "1.9.23", id = "org.jetbrains.kotlin.jvm" }
+kotlin-jvm = { version = "1.9.25", id = "org.jetbrains.kotlin.jvm" }

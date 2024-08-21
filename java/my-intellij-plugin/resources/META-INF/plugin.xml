@@ -1,0 +1,22 @@
+<idea-plugin>
+
+    <id>dgroomes.myIntellijPlugin</id>
+    <name>My IntelliJ Plugin</name>
+    <depends>com.intellij.modules.platform</depends>
+
+    <description>
+        <![CDATA[
+      NOT YET FULLY IMPLEMENTED. My personal IntelliJ plugin.<br>
+      See the project in GitHub:
+      <a href="https://github.com/dgroomes/my-software">my-software</a>
+    ]]>
+    </description>
+
+    <vendor url="https://github.com/dgroomes">https://github.com/dgroomes</vendor>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <toolWindow id="My IntelliJ Plugin:" secondary="true" icon="AllIcons.General.Modified" anchor="right"
+                    factoryClass="dgroomes.MyToolWindowFactory"/>
+    </extensions>
+
+</idea-plugin>
