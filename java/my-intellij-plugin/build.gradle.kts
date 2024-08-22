@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.intellij.platform.gradle.plugin)
-    alias(libs.plugins.kotlin.jvm)
+    kotlin("jvm")
 }
 
 repositories {
