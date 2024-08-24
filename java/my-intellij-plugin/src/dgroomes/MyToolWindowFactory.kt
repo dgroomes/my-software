@@ -10,7 +10,7 @@ class MyToolWindowFactory : ToolWindowFactory {
     private val contentFactory: ContentFactory = ContentFactory.getInstance()
 
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
-        val window = MyWindow()
+        val window = MyWindow(project)
         val content = contentFactory.createContent(window.rootElement, "", false)
         toolWindow.contentManager.addContent(content)
     }

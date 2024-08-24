@@ -15,8 +15,9 @@
     <vendor url="https://github.com/dgroomes">https://github.com/dgroomes</vendor>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow id="My IntelliJ Plugin:" secondary="true" icon="AllIcons.General.Modified" anchor="right"
+        <toolWindow id="Open Files" secondary="true" icon="AllIcons.General.Modified" anchor="right"
                     factoryClass="dgroomes.MyToolWindowFactory"/>
+        <projectService serviceImplementation="dgroomes.CopyOpenTabsService"/>
     </extensions>
 
     <actions>

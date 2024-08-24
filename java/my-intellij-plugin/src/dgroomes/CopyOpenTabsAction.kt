@@ -1,29 +1,20 @@
-package dgroomes;
+package dgroomes
 
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.fileEditor.FileEditorManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.ide.CopyPasteManager;
-import java.awt.datatransfer.StringSelection;
+import com.intellij.openapi.actionSystem.AnAction
+import com.intellij.openapi.actionSystem.AnActionEvent
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
-public class CopyOpenTabsAction extends AnAction {
+class CopyOpenTabsAction : AnAction() {
+    private val log: Logger = LoggerFactory.getLogger(CopyOpenTabsAction::class.java)
 
-    @Override
-    public void actionPerformed(AnActionEvent e) {
-        Project project = e.getProject();
-        if (project == null) return;
-
-        FileEditorManager fileEditorManager = FileEditorManager.getInstance(project);
-        VirtualFile[] openFiles = fileEditorManager.getOpenFiles();
-
-        StringBuilder fileNames = new StringBuilder();
-        for (VirtualFile file : openFiles) {
-            fileNames.append(file.getName()).append("\n");
+    override fun actionPerformed(e: AnActionEvent) {
+        val project = e.project ?: run {
+            log.error("Project was null.")
+            return
         }
 
-        // Copy to clipboard
-        CopyPasteManager.getInstance().setContents(new StringSelection(fileNames.toString()));
+        val service = project.getService(CopyOpenTabsService::class.java)
+        service.copyOpenTabNames()
     }
 }
