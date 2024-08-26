@@ -6,7 +6,7 @@
 
     <description>
         <![CDATA[
-      NOT YET FULLY IMPLEMENTED. My personal IntelliJ plugin.<br>
+      My personal IntelliJ plugin.<br>
       See the project in GitHub:
       <a href="https://github.com/dgroomes/my-software">my-software</a>
     ]]>
@@ -15,13 +15,14 @@
     <vendor url="https://github.com/dgroomes">https://github.com/dgroomes</vendor>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow id="Open Files" secondary="true" icon="AllIcons.General.Modified" anchor="right"
+        <toolWindow id="MySoftware - Project Details" secondary="true" icon="AllIcons.General.Modified" anchor="right"
                     factoryClass="dgroomes.MyToolWindowFactory"/>
-        <projectService serviceImplementation="dgroomes.CopyOpenTabsService"/>
+        <projectService serviceImplementation="dgroomes.ProjectDetailsService"/>
+        <notificationGroup id="MySoftware Notification Group" displayType="BALLOON" key="open.tabs.notification.group"/>
     </extensions>
 
     <actions>
-        <action id="CopyOpenTabs" class="dgroomes.CopyOpenTabsAction" text="Copy Open Tab Names" description="Copy names of open editor tabs to clipboard">
+        <action id="SaveProjectDetailsToFile" class="dgroomes.SaveProjectDetailsToFileAction" text="Save Project Details" description="Save project details as JSON to a file">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
             <keyboard-shortcut keymap="$default" first-keystroke="control alt C"/>
         </action>

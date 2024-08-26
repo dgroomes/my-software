@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
 
 /**
  * This is a GUI component and is controlled by some framework magic. That explains why some of the instance fields
@@ -27,22 +26,31 @@ public class MyWindow implements Disposable {
 
     private static final Logger log = LoggerFactory.getLogger(MyWindow.class);
     private final Project project;
-    private final CopyOpenTabsService copyOpenTabsService;
+    private final ProjectDetailsService projectDetailsService;
     private JPanel root;
     private JList<String> openFiles;
     private JButton copyButton;
+    private JButton saveToFileButton;
     private final MessageBusConnection messageBusConnection;
 
 
     public MyWindow(Project project) {
         this.project = project;
-        this.copyOpenTabsService = project.getService(CopyOpenTabsService.class);
-        copyButton.addActionListener(this::handleCopyButtonClick);
+        this.projectDetailsService = project.getService(ProjectDetailsService.class);
+        copyButton.addActionListener(e1 -> {
+            log.info("Copy button clicked.");
+            projectDetailsService.copyProjectDetailsToClipboard();
+        });
+        saveToFileButton.addActionListener(e -> {
+            log.info("Save button clicked.");
+            projectDetailsService.saveProjectDetailsToFile();
+        });
 
         // Initialize the list of open files
         updateOpenFilesList();
 
         // Set up listener for file editor changes
+        // Should I do this in the service? Should I keep the window/gui class leaner?
         messageBusConnection = project.getMessageBus().connect();
         messageBusConnection.subscribe(FileEditorManagerListener.FILE_EDITOR_MANAGER, new FileEditorManagerListener() {
             @Override
@@ -57,11 +65,6 @@ public class MyWindow implements Disposable {
                 updateOpenFilesList();
             }
         });
-    }
-
-    private void handleCopyButtonClick(ActionEvent e) {
-        log.info("Copy button clicked.");
-        copyOpenTabsService.copyOpenTabNames();
     }
 
     private void updateOpenFilesList() {

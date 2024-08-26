@@ -46,8 +46,10 @@ General clean-ups, TODOs and things I wish to implement for this project:
      using a service instead.  
    * DONE Serialize to JSON
    * DONE Include the root project path
-* [ ] Maybe write to a file instead (or also). I've thought a lot about the options. A custom URL scheme is cool to be
+* [x] DONE Maybe write to a file instead (or also). I've thought a lot about the options. A custom URL scheme is cool to be
   able to trigger it from another process, and then there's also something I totally didn't expect is that you can use
   the built HTTP server which is usually used for serving static assets, but you can just do whatever you want with it.
   But this opens up your project data potentially more than you thought. Let's just keep the control inside the IDE to
   actually click the button.   
+* [ ] Delete the "open files" UI components. Redundant. I don't need to perfect the UX, but I do want to discover
+  improvements and implement them as I see them.

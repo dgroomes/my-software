@@ -5,8 +5,8 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-class CopyOpenTabsAction : AnAction() {
-    private val log: Logger = LoggerFactory.getLogger(CopyOpenTabsAction::class.java)
+class SaveProjectDetailsToFileAction : AnAction() {
+    private val log: Logger = LoggerFactory.getLogger(SaveProjectDetailsToFileAction::class.java)
 
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.project ?: run {
@@ -14,7 +14,7 @@ class CopyOpenTabsAction : AnAction() {
             return
         }
 
-        val service = project.getService(CopyOpenTabsService::class.java)
-        service.copyOpenTabNames()
+        val service = project.getService(ProjectDetailsService::class.java)
+        service.saveProjectDetailsToFile()
     }
 }
