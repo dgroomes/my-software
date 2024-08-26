@@ -51,5 +51,5 @@ General clean-ups, TODOs and things I wish to implement for this project:
   the built HTTP server which is usually used for serving static assets, but you can just do whatever you want with it.
   But this opens up your project data potentially more than you thought. Let's just keep the control inside the IDE to
   actually click the button.   
-* [ ] Delete the "open files" UI components. Redundant. I don't need to perfect the UX, but I do want to discover
+* [x] DONE Delete the "open files" UI components. Redundant. I don't need to perfect the UX, but I do want to discover
   improvements and implement them as I see them.
