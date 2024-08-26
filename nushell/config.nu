@@ -536,3 +536,26 @@ export def fz [--filter-column (-f): string] [list<string> -> string, table -> r
 def --wrapped fd [...args] {
     ^fd ...$args | split row (char newline)
 }
+
+# Similar to 'cat' but includes the filename in a header section.
+#
+# The 'in' parameter is either a file name or a list of file names.
+export def cat-with-filename [] : [string -> string, list<string> -> string] {
+    let in_type = ($in | describe)
+    let x = match $in_type  {
+        "list<string>" => $in
+        "string" => [$in]
+        _ => {
+            error make --unspanned { msg:  $"'cat-with-filename' expects a list of file names (list<string>) or a single file name (string) but found ()." }
+        }
+    }
+
+    $x | each { |path|
+$"---
+File: ($path)
+---
+
+(open --raw $path)
+"
+} | str join (char newline)
+}
