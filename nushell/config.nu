@@ -95,14 +95,27 @@ export def git-switch-default-pull [] {
     git pull
 }
 
+def coalesce [...vals] {
+    for val in $vals {
+        if ($val | is-not-empty) {
+            return $val
+        }
+    }
+
+    # Implicitly returns nothing if we've exhausted the values.
+}
+
 # Make a new directory for some "subject". The subject name is optional. If omitted, the created directory's name will
 # also include the current time.
 #
-#     mkdir-subject my-experiment   # Will create the directory '~/subjects/2020-02-09_my-experiment'
-#     mkdir-subject                 # Will create the directory '~/subjects/2020-02-09_18-02-05'
-def --env mkdir-subject [subject?] {
+#     new-subject my-experiment   # Will create the directory '~/subjects/2020-02-09_my-experiment'
+#     new-subject                 # Will create the directory '~/subjects/2020-02-09_18-02-05'
+#
+# Some conventional files are also created: README.md' and 'do.nu'. You are expected to write as much miscellaneous code
+# in the 'do.nu' as you need. These files are just a minimal starting point.
+def --env new-subject [subject?] {
     let today = date now | format date "%Y-%m-%d"
-    let descriptor = if ($subject != null) { $subject } else { date now | format date "%H-%M-%S" }
+    let descriptor = coalesce $subject (date now | format date "%H-%M-%S")
     let dirname = $today + "_" + $descriptor
     let dir = [$nu.home-path subjects $dirname] | path join | path expand
     if ($dir | path exists) {
@@ -115,6 +128,27 @@ def --env mkdir-subject [subject?] {
     mkdir $dir
     print $"Created directory: ($dir). Navigating to it."
     cd $dir
+
+    let title = coalesce $subject "README"
+
+    # Create the conventional files
+    $"# ($title)
+
+" | save README.md
+
+    r#'
+# Bundle up this subject so that it's ready to be pasted into an AI Chat (LLM).
+#
+# Specifically, concatenate the README.md, and all the file sets described in each of the '.file-set.json' files.
+export def "bundle all" [] {
+    let file_sets = glob *.file-set.json | each { bundle file-set $in } | str join ((char newline) + (char newline))
+
+    $"(open --raw README.md)
+
+($file_sets)
+" | save --force bundle.txt
+}
+'# | save do.nu
 }
 
 export alias clc = cp-last-cmd
@@ -537,10 +571,23 @@ def --wrapped fd [...args] {
     ^fd ...$args | split row (char newline)
 }
 
-# Similar to 'cat' but includes the filename in a header section.
+# Similar to 'cat' but bookends the file content with frontmatter and a footer. For example:
+#
+# --- FILE ---
+# File: src/README.md
+# Line count: 3
+# --- START OF FILE ---
+# # my-project
+#
+# Hello world!
+# --- END OF FILE 'src/README.md' ---
+#
+#
+# The advantage of restating the file name in the footer is that it helps to reground the reader (i.e you ar an LLM) to
+# remember what file it's been looking at. This is especially useful for huge files.
 #
 # The 'in' parameter is either a file name or a list of file names.
-export def cat-with-filename [] : [string -> string, list<string> -> string] {
+export def cat-with-frontmatter [] : [string -> string, list<string> -> string] {
     let in_type = ($in | describe)
     let x = match $in_type  {
         "list<string>" => $in
@@ -550,12 +597,97 @@ export def cat-with-filename [] : [string -> string, list<string> -> string] {
         }
     }
 
-    $x | each { |path|
-$"---
+    $x | enumerate | each { |it|
+        let index = $it.index + 1
+        let path = $it.item
+        let content = (open --raw $path)
+        let line_count = ($content | lines | length)
+        $"--- FILE ($index) ---
 File: ($path)
+Line count: ($line_count)
+--- START OF FILE ---
+($content)
+--- END OF FILE '($path)' ---"
+    } | str join ((char newline) + (char newline))
+}
+
+export def "bundle file-set" [file_set: string --save] -> string {
+    let name = $file_set | path basename | str replace --regex '\.file-set\.json$' ''
+    let fs_obj = (open --raw $file_set | from json)
+
+    cd $fs_obj.root
+    let files_content = $fs_obj.files | cat-with-frontmatter
+    cd -
+
+    # Note: we are restating the file set name at the end of the content to help the reground reader (i.e. you or an LLM)
+    # on which logical file set they were just reading. This especially useful for large files sets and/or file sets
+    # with huge files.
+    let full_content = $"--- FILE SET ---
+File set: ($name)
+Files: ($fs_obj.files | length)
 ---
 
-(open --raw $path)
+($files_content)
+--- END OF FILE SET '($name)' ---
 "
-} | str join (char newline)
+
+    if $save {
+        $full_content | save --force ($name + '.file-set-bundle.txt')
+    }
+
+    $full_content
+}
+
+# Turn a JetBrains "project details" JSON document (defined by 'my-intellij-plugin') into a 'file set' JSON document
+# which is designed to be used in bundling.
+export def project-details-to-file-set []: [record -> record] {
+    let root = $in.project_base_path
+    let files = ($in.open_files | get path | path relative-to $root)
+
+    { root: $root, files: $files }
+}
+
+export def is-text-file [file_name?: string --print] [string -> bool, nothing -> bool] {
+    let _file_name = coalesce $file_name $in
+
+    # I don't know a super idiomatic way to do this. But using the 'str stats' command is a neat trick to try to figure
+    # out if a file is text or not (some binary). I looked into mime types but that's not really the right fit because
+    # that's an always growing list of stuff.
+
+    try {
+        open --raw $_file_name | str stats
+    } catch {
+        if $print {
+            print $"'($_file_name)' is not a text file."
+        }
+        return false
+    }
+
+    return true
+}
+
+
+# Upgrade the Gradle wrapper in the given directory and its subdirectories.
+#
+# This function searches for Gradle projects in the current directory and subdirectories. It upgrades the Gradle wrapper
+# in each project to the specified version.
+export def upgrade-gradle-wrapper [gradle_version: string = "8.10"  --depth: int = 1] {
+    let gradle_wrapper_files = glob --depth $depth **/gradlew
+
+    if ($gradle_wrapper_files | is-empty) {
+        print $"No Gradle projects found in '($directory)' or subdirectories at a depth of ($depth)."
+        return
+    }
+
+    for wrapper_file in $gradle_wrapper_files {
+        let project = $wrapper_file | path dirname
+        print $"Upgrading Gradle wrapper to version ($gradle_version) for project: ($project)"
+
+        cd $project
+        # I don't totally understand why I need the fully qualified path. I haven't grokked knowing when 'run-external'
+        # is needed.
+        let wrapper_file_fully_qualified = $wrapper_file | path expand
+        run-external $wrapper_file_fully_qualified "wrapper" "--gradle-version" $gradle_version
+        cd -
+    }
 }
