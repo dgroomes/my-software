@@ -1,6 +1,6 @@
 # my-software
 
-My dot files, utility programs, installation instructions and more. This is in the "personal software" category.
+My personal software: dot files, utility programs, installation instructions, and more.
 
 
 ## Overview

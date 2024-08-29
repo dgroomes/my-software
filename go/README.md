@@ -25,15 +25,18 @@ binary + JSON manifest" as a Java program launcher.
 
 ## `my-fuzzy-finder`
 
-`my-fuzzy-finder` is a commandline fuzzy finder that supports structured data (i.e. JSON) instead of only lines of
-strings. It's designed to have a similar user experience to `fzf`.
+`my-fuzzy-finder` is a commandline fuzzy finder that has a JSON API. It's designed to have a similar user experience to
+`fzf` but supports input/output expressed in JSON instead of newline-delimited strings.
 
-I think `fzf` really got the UX right, and it's been replicated in many tools. `my-fuzzy-finder` is yet another of those
-tools. The main feature I'm missing from `fzf` is the ability to have structured output. I use [Nushell](https://www.nushell.sh/)
-which is a shell that uses structured data, and the more that my tools can support structured data, the better.
+I think `fzf` really got the UX right, and it's been replicated in many tools. The main feature I'm missing from `fzf`
+is the ability to have structured output. I use [Nushell](https://www.nushell.sh/) which is a shell that uses
+structured data, and the more that my tools can support structured data, the better.
 
-`my-fuzzy-finder` is a TUI (text user interface) program built using the excellent [Bubble Tea](https://github.com/charmbracelet/bubbletea)
-TUI framework, [Bubbles](https://github.com/charmbracelet/bubbles) TUI component library, and the "fuzzy" library <https://github.com/sahilm/fuzzy>. 
+`my-fuzzy-finder` is a TUI (text user interface) program built using these excellent projects:
+
+- The [Bubble Tea](https://github.com/charmbracelet/bubbletea) TUI framework
+- The [Bubbles](https://github.com/charmbracelet/bubbles) TUI component library
+- The "fuzzy" library <https://github.com/sahilm/fuzzy>.
 
 
 ## Instructions
@@ -90,5 +93,8 @@ General clean-ups, TODOs and things I wish to implement for this project
     * DONE Pare down DefaultFilter
     * DONE Pare down item interface stuff
     * (partially done) Pare down (inline) styles
-    * Pare down delegate stuff
     * defect: Cursor is not blinking at start.
+* [x] DONE Re-use the `textinput` Bubbles component and in general compress the code 
+* [ ] Re-size defect. When resizing and then moving the cursor, the program panics.
+* [ ] Consider ranking "exact matches" before fuzzy matches? If I type "rea" I want to see "README.md" appear before
+  "gradlew.bat".
