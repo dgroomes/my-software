@@ -93,8 +93,10 @@ General clean-ups, TODOs and things I wish to implement for this project
     * DONE Pare down DefaultFilter
     * DONE Pare down item interface stuff
     * (partially done) Pare down (inline) styles
-    * defect: Cursor is not blinking at start.
 * [x] DONE Re-use the `textinput` Bubbles component and in general compress the code 
 * [ ] Re-size defect. When resizing and then moving the cursor, the program panics.
 * [ ] Consider ranking "exact matches" before fuzzy matches? If I type "rea" I want to see "README.md" appear before
   "gradlew.bat".
+* [x] DONE Support multi-line
+* [ ] Support special (longer unicode?) characters like `°` in the underline highlighting.
+* [ ] Defect: Cursor is not blinking at start.

@@ -53,15 +53,13 @@ var keyAcceptWhileFiltering = key.NewBinding(
 )
 
 var styleDoc = lipgloss.NewStyle().Margin(1, 2)
-var styleNormalTitle = lipgloss.NewStyle().
-	Foreground(lipgloss.AdaptiveColor{Light: "#1a1a1a", Dark: "#dddddd"}).
-	Padding(0, 0, 0, 2)
-var styleSelectedTitle = lipgloss.NewStyle().
+var styleNormalTitle = lipgloss.NewStyle().Foreground(lipgloss.Color("#1a1a1a"))
+var styleNormalTitleBox = lipgloss.NewStyle().Padding(0, 0, 0, 2)
+var styleSelectedTitle = lipgloss.NewStyle().Foreground(lipgloss.Color("#EE6FF8"))
+var styleSelectedTitleBox = lipgloss.NewStyle().
 	Border(lipgloss.NormalBorder(), false, false, false, true).
-	BorderForeground(lipgloss.AdaptiveColor{Light: "#F793FF", Dark: "#AD58B4"}).
-	Foreground(lipgloss.AdaptiveColor{Light: "#EE6FF8", Dark: "#EE6FF8"}).
+	BorderForeground(lipgloss.Color("#F793FF")).
 	Padding(0, 0, 0, 1)
-var styleFilterMatch = lipgloss.NewStyle().Underline(true)
 var styleFilterPrompt = lipgloss.NewStyle().
 	Foreground(lipgloss.AdaptiveColor{Light: "#04B575", Dark: "#ECFD65"})
 var styleFilterCursor = lipgloss.NewStyle().
@@ -372,17 +370,18 @@ func (m listModel) populatedView() string {
 
 		isSelected := index == m.selectedIndex()
 
-		var titleStyle lipgloss.Style
+		var titleInlineStyle lipgloss.Style
+		var titleBlockStyle lipgloss.Style
 		if isSelected {
-			titleStyle = styleSelectedTitle
+			titleInlineStyle = styleSelectedTitle
+			titleBlockStyle = styleSelectedTitleBox
 		} else {
-			titleStyle = styleNormalTitle
+			titleInlineStyle = styleNormalTitle
+			titleBlockStyle = styleNormalTitleBox
 		}
 
-		unmatched := titleStyle.Inline(true)
-		matched := unmatched.Inherit(styleFilterMatch)
-		title = lipgloss.StyleRunes(title, m.filteredItems[index].matches, matched, unmatched)
-		title = titleStyle.Render(title)
+		title = underlineMatches(title, m.filteredItems[index].matches, titleInlineStyle)
+		title = titleBlockStyle.Render(title)
 
 		fmt.Fprintf(&b, "%s", title)
 		if i != len(docs)-1 {
@@ -449,7 +448,7 @@ func main() {
 
 	if *example {
 		exampleStrings := []string{
-			"20° Weather\nHello", // This is my problem. Can I get multiline items? It's getting truncated...
+			"20 Weather\nHello",
 			"Afternoon tea",
 			"Bitter melon",
 			"Board game nights",
@@ -593,4 +592,48 @@ func Map[E, T any](items []E, f func(E, int) T) []T {
 		result[i] = f(item, i)
 	}
 	return result
+}
+
+// Similar to lipgloss.StyleRunes but adapted to work for multi-line text.
+func underlineMatches(str string, indices []int, style lipgloss.Style) string {
+	underlineStyle := lipgloss.NewStyle().Underline(true).Inherit(style)
+
+	// Convert slice of indices to a map for easier lookups
+	m := make(map[int]struct{})
+	for _, i := range indices {
+		m[i] = struct{}{}
+	}
+
+	noStyle := lipgloss.NewStyle()
+
+	var (
+		out   strings.Builder
+		group strings.Builder
+		runes = []rune(str)
+	)
+
+	for i, r := range runes {
+		if r == '\n' {
+			out.WriteString(noStyle.Render("\n"))
+			continue
+		}
+
+		group.WriteRune(r)
+
+		_, matches := m[i]
+		_, nextMatches := m[i+1]
+
+		if matches != nextMatches || i == len(runes)-1 || runes[i+1] == '\n' {
+			s := group.String()
+			if matches {
+				s = underlineStyle.Render(s)
+			} else {
+				s = style.Render(s)
+			}
+			out.WriteString(s)
+			group.Reset()
+		}
+	}
+
+	return out.String()
 }
