@@ -432,7 +432,8 @@ type Item struct {
 func main() {
 	debug := flag.Bool("debug", false, "Enable debug logging to file")
 	example := flag.Bool("example", false, "Run with example data")
-	jsonOut := flag.Bool("json-out", false, "Output JSON")
+	jsonIn := flag.Bool("json-in", false, "JSON array in")
+	jsonOut := flag.Bool("json-out", false, "JSON out")
 	flag.Parse()
 
 	if *debug {
@@ -447,7 +448,7 @@ func main() {
 	}
 
 	if *example {
-		exampleStrings := []string{
+		allTargets = []string{
 			"20 Weather\nHello",
 			"Afternoon tea",
 			"Bitter melon",
@@ -497,14 +498,18 @@ func main() {
 			"Warm light",
 			"Watercolor paints",
 		}
-		allItems = Map(exampleStrings, func(s string, i int) Item {
-			return Item{Index: i, Value: s}
-		})
+	} else if *jsonIn {
+		decoder := json.NewDecoder(os.Stdin)
+		err := decoder.Decode(&allTargets)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error decoding JSON input: %v", err)
+			os.Exit(1)
+		}
 	} else {
 		scanner := bufio.NewScanner(os.Stdin)
 		i := 0
 		for scanner.Scan() {
-			allItems = append(allItems, Item{Index: i, Value: scanner.Text()})
+			allTargets = append(allTargets, scanner.Text())
 			i++
 		}
 		if err := scanner.Err(); err != nil {
@@ -513,13 +518,14 @@ func main() {
 		}
 	}
 
+	allItems = Map(allTargets, func(s string, i int) Item {
+		return Item{Index: i, Value: s}
+	})
+
 	allItemsAsFilteredItems = Map(allItems, func(item Item, i int) filteredItem {
 		return filteredItem{
 			item: item,
 		}
-	})
-	allTargets = Map(allItems, func(item Item, i int) string {
-		return item.Value
 	})
 
 	filterTextInput := textinput.New()

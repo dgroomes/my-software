@@ -51,9 +51,19 @@ Follow these instructions to build, run and install my software.
     * ```nushell
       ls | get name | str join (char newline) | go run my-software/pkg/my-fuzzy-finder
       ```
-    * Next, try a similar thing but with JSON output.
+    * The output will be the selected filename.
+    * Next, try a similar thing but with the JSON API. This takes a JSON array in and sends JSON out. The advantage of
+      using a JSON array for input is that the items can have multiple lines, whereas in the typical newline-delimited
+      input, your items can only be exactly one line.
     * ```nushell
-      ls | get name | str join (char newline) | go run my-software/pkg/my-fuzzy-finder --json-out | from json
+      ["Hello, world!" "Dear reader,
+      Hello.
+      Sincerely, writer"] | to json | go run my-software/pkg/my-fuzzy-finder --json-in --json-out
+      ```
+    * It will output the selected filename but also the index of that item in the input list. It will look something
+      like the following.
+    * ```json
+      {"index": 1, "item": "Dear reader,\nHello.\nSincerely, writer"}
       ```
     * Finally, try the program and enable debugging. The logs are printed to a local `my-fuzzy-finder.log` file.
     * ```nushell
@@ -100,3 +110,4 @@ General clean-ups, TODOs and things I wish to implement for this project
 * [x] DONE Support multi-line
 * [ ] Support special (longer unicode?) characters like `°` in the underline highlighting.
 * [ ] Defect: Cursor is not blinking at start.
+* [x] DONE Support JSON array input

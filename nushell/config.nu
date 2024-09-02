@@ -470,8 +470,7 @@ export def --wrapped gw [...args] : nothing {
 }
 
 # 'fz' is a Nushell command and wrapper over the 'my-fuzzy-finder' program. I called it 'fz' because it's in the spirit
-# of 'fzf' but is distinct from it and short. I tried out 'mfzf' for a while but 'mfzf' takes both hands to type and the
-# 'z' is already hard.
+# of 'fzf' but is distinct from it, and I like how short the 'fz' name is.
 #
 # 'fz' adds the Nushell experience to 'my-fuzzy-finder' by supporting structured input and output and commandline
 # completions.
@@ -524,17 +523,17 @@ export def fz [--filter-column (-f): string] [list<string> -> string, table -> r
         error make --unspanned { msg: "Unsupported input type." }
     }
 
-    let lines = match $in_type {
+    let item_strings = match $in_type {
         "table" => {
             let _filter_column = if ($filter_column | is-not-empty) { $filter_column } else { $_in | columns | first }
-            $_in | get $_filter_column | str join (char newline)
+            $_in | get $_filter_column
         }
         "list" => {
-            $_in | str join (char newline)
+            $_in
         }
     }
 
-    let result = $lines | my-fuzzy-finder --json-out | complete
+    let result = $item_strings | to json | my-fuzzy-finder --json-in --json-out | complete
 
     match $result.exit_code {
         0 => {
