@@ -25,8 +25,8 @@ binary + JSON manifest" as a Java program launcher.
 
 ## `my-fuzzy-finder`
 
-`my-fuzzy-finder` is a commandline fuzzy finder that has a JSON API. It's designed to have a similar user experience to
-`fzf` but supports input/output expressed in JSON instead of newline-delimited strings.
+`my-fuzzy-finder` is a commandline fuzzy finder with a JSON API, and it supports multi-line strings. It's designed to
+have a similar user experience to `fzf`.
 
 I think `fzf` really got the UX right, and it's been replicated in many tools. The main feature I'm missing from `fzf`
 is the ability to have structured output. I use [Nushell](https://www.nushell.sh/) which is a shell that uses
@@ -104,10 +104,14 @@ General clean-ups, TODOs and things I wish to implement for this project
     * DONE Pare down item interface stuff
     * (partially done) Pare down (inline) styles
 * [x] DONE Re-use the `textinput` Bubbles component and in general compress the code 
-* [ ] Re-size defect. When resizing and then moving the cursor, the program panics.
+* [x] DONE (fixed/obsoleted by other refactoring) Re-size defect. When resizing and then moving the cursor, the program panics.
 * [ ] Consider ranking "exact matches" before fuzzy matches? If I type "rea" I want to see "README.md" appear before
   "gradlew.bat".
 * [x] DONE Support multi-line
 * [ ] Support special (longer unicode?) characters like `°` in the underline highlighting.
-* [ ] Defect: Cursor is not blinking at start.
+* [x] DONE Defect: Get cursor blinking working again.
 * [x] DONE Support JSON array input
+* [X] DONE (Big restructuring but great result) Defect: beginning content is cut off. I think it's cutting off by as many additional lines there are per item
+  beyond the first line. So a 2-line item will because 1 line to be cut off. The 'Filter: ' text input is missing, for
+  example.
+* [ ] Need to handle items that exceed the full height? Need to handle items that exceed the full width?
