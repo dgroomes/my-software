@@ -22,9 +22,10 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/muesli/termenv"
-	"github.com/sahilm/fuzzy"
 	"io"
 	"log"
+	"my-software/pkg/my-fuzzy-finder/algo"
+	"my-software/pkg/my-fuzzy-finder/util"
 	"os"
 	"sort"
 	"strings"
@@ -62,11 +63,16 @@ type model struct {
 	cursor                 cursor.Model
 	height                 int
 	item                   int
-	matches                []fuzzy.Match
-	pages                  [][]fuzzy.Match
+	matches                []Match
+	pages                  [][]Match
 	page                   int
 	pageItem               int
 	completedWithSelection bool
+}
+
+type Match struct {
+	Index     int
+	Positions []int
 }
 
 func (m model) Init() tea.Cmd {
@@ -151,13 +157,28 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					log.Println("No input. Skip fuzzy matching.")
 					m.matches = nil
 				} else {
-					// Use the "fuzzy" library (https://github.com/sahilm/fuzzy) to filter through the list.
-					// This is a "dirty programming pattern" because this is a relatively slow operation, and we're
-					// doing it on the UI thread. But in practice, it's exactly what I want.
-					matches := fuzzy.Find(m.input.Value(), allItems)
-					sort.SliceStable(matches, func(i, j int) bool {
-						return matches[i].Index < matches[j].Index
-					})
+					// Use "fzf" (https://github.com/junegunn/fzf) to filter through the list.
+					//
+					//"fzf" is not available as a library (https://github.com/junegunn/fzf/pull/1053#issuecomment-330024275),
+					// which is totally fine. While there are other Go-based fuzzy finders, I want the power and API of
+					// "fzf". To make it work, I copied (should I say "vendored"?) the code I needed from the "fzf"
+					// codebase into this codebase.
+					//
+					// From a TUI perspective, this is a "dirty programming pattern" because this is a relatively slow
+					// operation, and we're doing it on the UI thread. You are "supposed" to use a Go routine and
+					//message passing. But in practice, it's exactly what I want.
+					pattern := []rune(m.input.Value())
+					matches := make([]Match, 0, len(allItems))
+					for i, item := range allItems {
+						chars := util.ToChars([]byte(item))
+						res, pos := algo.FuzzyMatchV2(false, true, true, &chars, pattern, true, nil)
+						if res.Start != -1 {
+							matches = append(matches, Match{
+								Index:     i,
+								Positions: *pos,
+							})
+						}
+					}
 					m.matches = matches
 				}
 				return pageReflow(m), tea.Batch(cmds...)
@@ -196,11 +217,11 @@ func (m model) FilterValue() string {
 //
 // This function also re-calculates the selected item and the page/page-item cursors.
 func pageReflow(m model) model {
-	var matches []fuzzy.Match
+	var matches []Match
 	if m.input.Value() == "" {
 		log.Println("No input. Create fake matches for all items so that the pages can get created.")
-		matches = Map(allItems, func(item string, i int) fuzzy.Match {
-			return fuzzy.Match{Index: i}
+		matches = Map(allItems, func(item string, i int) Match {
+			return Match{Index: i}
 		})
 	} else {
 		if len(m.matches) == 0 {
@@ -222,8 +243,8 @@ func pageReflow(m model) model {
 	availHeight -= titleHeight
 	log.Printf("[pageReflow] titleHeight=%d availHeight=%d\n", titleHeight, availHeight)
 
-	pages := make([][]fuzzy.Match, 0)
-	page := make([]fuzzy.Match, 0)
+	pages := make([][]Match, 0)
+	page := make([]Match, 0)
 	heightBudget := availHeight
 
 	prevItem := m.item
@@ -234,7 +255,7 @@ func pageReflow(m model) model {
 		if itemHeight > heightBudget {
 			// We need to spill over to a new page. Complete the page we were working on.
 			pages = append(pages, page)
-			page = make([]fuzzy.Match, 0)
+			page = make([]Match, 0)
 			heightBudget = availHeight // TODO handle when an item is larger than a whole page.
 		}
 
@@ -284,7 +305,7 @@ func (m model) populatedView() string {
 			blockStyle = styleNormalTitleBox
 		}
 
-		item = underlineMatches(item, match.MatchedIndexes, style)
+		item = underlineMatches(item, match.Positions, style)
 		item = blockStyle.Render(item)
 
 		if i != len(matches)-1 {
@@ -300,6 +321,21 @@ func (m model) populatedView() string {
 type Item struct {
 	Index int    `json:"index"`
 	Value string `json:"value"`
+}
+
+func main2() {
+	algo.Init("default")
+	chars := util.ToChars([]byte("Hi there!"))
+	res, pos := algo.FuzzyMatchV2(false, true, false, &chars, []rune("hie"), true, nil)
+	if pos != nil {
+		sort.Ints(*pos)
+		// This prints
+		//
+		// Matching positions: [0 1 5]
+		fmt.Println("Matching positions:", *pos)
+	} else {
+		fmt.Printf("No position data returned. Result: %+v\n", res)
+	}
 }
 
 func main() {
@@ -377,6 +413,7 @@ func main() {
 	}
 	defer tty.Close()
 
+	algo.Init("default")
 	p := tea.NewProgram(model{
 		input: input,
 	}, tea.WithAltScreen(), tea.WithOutput(tty))
@@ -427,12 +464,12 @@ func Map[E, T any](items []E, f func(E, int) T) []T {
 }
 
 // Similar to lipgloss.StyleRunes but adapted to work for multi-line text.
-func underlineMatches(str string, indices []int, style lipgloss.Style) string {
+func underlineMatches(str string, matchedPositions []int, style lipgloss.Style) string {
 	underlineStyle := lipgloss.NewStyle().Underline(true).Inherit(style)
 
-	// Convert slice of indices to a map for easier lookups
+	// Convert slice of matched positions to a map for easier lookups
 	m := make(map[int]struct{})
-	for _, i := range indices {
+	for _, i := range matchedPositions {
 		m[i] = struct{}{}
 	}
 
