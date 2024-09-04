@@ -25,12 +25,18 @@ binary + JSON manifest" as a Java program launcher.
 
 ## `my-fuzzy-finder`
 
-`my-fuzzy-finder` is a commandline fuzzy finder with a JSON API, and it supports multi-line strings. It's designed to
-have a similar user experience to `fzf`.
+`my-fuzzy-finder` is a commandline fuzzy finder with a JSON API. It's designed to have a similar user experience to
+`fzf`.
 
 I think `fzf` really got the UX right, and it's been replicated in many tools. The main feature I'm missing from `fzf`
-is the ability to have structured output. I use [Nushell](https://www.nushell.sh/) which is a shell that uses
+is the ability to have structured input and output. I use [Nushell](https://www.nushell.sh/) which is a shell that uses
 structured data, and the more that my tools can support structured data, the better.
+
+When it comes to matching on [multi-line items in `fzf`, you can do it](https://junegunn.github.io/fzf/tips/processing-multi-line-items/),
+but you have to ditch the familiar newline-delimited model and instead use a `NUL`-delimited model. Some tools support
+this out-of-the-box, like `find`, which has the `-print0` option. But for many other tools, you have to retrofit their
+output with some scripting. For me, I can afford to shape my tools to use structured data instead of injecting this
+structure in an ad-hoc way. I want to avoid particularly gnarly stringly-typed programming.
 
 `my-fuzzy-finder` is a TUI (text user interface) program built using these excellent projects:
 
@@ -115,3 +121,6 @@ General clean-ups, TODOs and things I wish to implement for this project
   beyond the first line. So a 2-line item will because 1 line to be cut off. The 'Filter: ' text input is missing, for
   example.
 * [ ] Need to handle items that exceed the full height? Need to handle items that exceed the full width?
+* [x] DONE Support 'fzf' search syntax.
+* [ ] Pare down 'fzf' code. Thankfully I was able to get fzf integration without many (half?) of the original source
+  code. But still, I should be able to trim it down much more (and learn it).

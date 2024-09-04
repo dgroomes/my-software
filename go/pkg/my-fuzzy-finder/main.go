@@ -27,7 +27,6 @@ import (
 	"my-software/pkg/my-fuzzy-finder/algo"
 	"my-software/pkg/my-fuzzy-finder/util"
 	"os"
-	"sort"
 	"strings"
 )
 
@@ -167,18 +166,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					// From a TUI perspective, this is a "dirty programming pattern" because this is a relatively slow
 					// operation, and we're doing it on the UI thread. You are "supposed" to use a Go routine and
 					//message passing. But in practice, it's exactly what I want.
-					pattern := []rune(m.input.Value())
-					matches := make([]Match, 0, len(allItems))
-					for i, item := range allItems {
-						chars := util.ToChars([]byte(item))
-						res, pos := algo.FuzzyMatchV2(false, true, true, &chars, pattern, true, nil)
-						if res.Start != -1 {
-							matches = append(matches, Match{
-								Index:     i,
-								Positions: *pos,
-							})
-						}
-					}
+					matches := fuzzyMatch(m.input.Value(), allItems)
 					m.matches = matches
 				}
 				return pageReflow(m), tea.Batch(cmds...)
@@ -318,24 +306,9 @@ func (m model) populatedView() string {
 	return b.String()
 }
 
-type Item struct {
+type MyItem struct {
 	Index int    `json:"index"`
 	Value string `json:"value"`
-}
-
-func main2() {
-	algo.Init("default")
-	chars := util.ToChars([]byte("Hi there!"))
-	res, pos := algo.FuzzyMatchV2(false, true, false, &chars, []rune("hie"), true, nil)
-	if pos != nil {
-		sort.Ints(*pos)
-		// This prints
-		//
-		// Matching positions: [0 1 5]
-		fmt.Println("Matching positions:", *pos)
-	} else {
-		fmt.Printf("No position data returned. Result: %+v\n", res)
-	}
 }
 
 func main() {
@@ -439,7 +412,7 @@ func main() {
 		os.Exit(NoMatchExitCode)
 	}
 
-	selectedItem := Item{
+	selectedItem := MyItem{
 		Index: finalM.item,
 		Value: allItems[finalM.item],
 	}
@@ -505,4 +478,40 @@ func underlineMatches(str string, matchedPositions []int, style lipgloss.Style) 
 	}
 
 	return out.String()
+}
+
+func fuzzyMatch(query string, items []string) []Match {
+	patternBuilder := func(runes []rune) *Pattern {
+		return BuildPattern(
+			NewChunkCache(), // You might want to reuse this cache across calls
+			make(map[string]*Pattern),
+			true, // fuzzy
+			algo.FuzzyMatchV2,
+			true, // extended
+			CaseSmart,
+			true,  // normalize
+			true,  // forward
+			false, // withPos
+			false, // cacheKey (FIXME: you might want to cache patterns)
+			nil,   // nth
+			Delimiter{},
+			runes,
+		)
+	}
+
+	pattern := patternBuilder([]rune(query))
+	slab := util.MakeSlab(slab16Size, slab32Size)
+	matches := make([]Match, 0, len(items))
+
+	for i, item := range items {
+		chars := util.ToChars([]byte(item))
+		result, _, positions := pattern.MatchItem(&Item{text: chars}, true, slab)
+		if result != nil {
+			matches = append(matches, Match{
+				Index:     i,
+				Positions: *positions,
+			})
+		}
+	}
+	return matches
 }
