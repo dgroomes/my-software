@@ -83,7 +83,7 @@ Scoring criteria
 import (
 	"bytes"
 	"fmt"
-	"my-software/pkg/my-fuzzy-finder/util"
+	"my-software/pkg/my-fuzzy-finder-lib/util"
 	"os"
 	"strings"
 	"unicode"
@@ -227,22 +227,6 @@ func posArray(withPos bool, len int) *[]int {
 	return nil
 }
 
-func alloc16(offset int, slab *util.Slab, size int) (int, []int16) {
-	if slab != nil && cap(slab.I16) > offset+size {
-		slice := slab.I16[offset : offset+size]
-		return offset + size, slice
-	}
-	return offset, make([]int16, size)
-}
-
-func alloc32(offset int, slab *util.Slab, size int) (int, []int32) {
-	if slab != nil && cap(slab.I32) > offset+size {
-		slice := slab.I32[offset : offset+size]
-		return offset + size, slice
-	}
-	return offset, make([]int32, size)
-}
-
 func charClassOfNonAscii(char rune) charClass {
 	if unicode.IsLower(char) {
 		return charLower
@@ -319,7 +303,7 @@ func normalizeRune(r rune) rune {
 // Algo functions make two assumptions
 // 1. "pattern" is given in lowercase if "caseSensitive" is false
 // 2. "pattern" is already normalized if "normalize" is true
-type Algo func(caseSensitive bool, normalize bool, forward bool, input *util.Chars, pattern []rune, withPos bool, slab *util.Slab) (Result, *[]int)
+type Algo func(caseSensitive bool, normalize bool, input *util.Chars, pattern []rune, withPos bool) (Result, *[]int)
 
 func trySkip(input *util.Chars, caseSensitive bool, b byte, from int) int {
 	byteArray := input.Bytes()[from:]
@@ -431,7 +415,7 @@ func debugV2(T []rune, pattern []rune, F []int32, lastIdx int, H []int16, C []in
 	}
 }
 
-func FuzzyMatchV2(caseSensitive bool, normalize bool, forward bool, input *util.Chars, pattern []rune, withPos bool, slab *util.Slab) (Result, *[]int) {
+func FuzzyMatchV2(caseSensitive bool, normalize bool, input *util.Chars, pattern []rune, withPos bool) (Result, *[]int) {
 	// Assume that pattern is given in lowercase if case-insensitive.
 	// First check if there's a match and calculate bonus for each position.
 	// If the input string is too long, consider finding the matching chars in
@@ -445,12 +429,6 @@ func FuzzyMatchV2(caseSensitive bool, normalize bool, forward bool, input *util.
 		return Result{-1, -1, 0}, nil
 	}
 
-	// Since O(nm) algorithm can be prohibitively expensive for large input,
-	// we fall back to the greedy algorithm.
-	if slab != nil && N*M > cap(slab.I16) {
-		return FuzzyMatchV1(caseSensitive, normalize, forward, input, pattern, withPos, slab)
-	}
-
 	// Phase 1. Optimized search for ASCII string
 	minIdx, maxIdx := asciiFuzzyIndex(input, pattern, caseSensitive)
 	if minIdx < 0 {
@@ -459,17 +437,11 @@ func FuzzyMatchV2(caseSensitive bool, normalize bool, forward bool, input *util.
 	// fmt.Println(N, maxIdx, idx, maxIdx-idx, input.ToString())
 	N = maxIdx - minIdx
 
-	// Reuse pre-allocated integer slice to avoid unnecessary sweeping of garbages
-	offset16 := 0
-	offset32 := 0
-	offset16, H0 := alloc16(offset16, slab, N)
-	offset16, C0 := alloc16(offset16, slab, N)
-	// Bonus point for each position
-	offset16, B := alloc16(offset16, slab, N)
-	// The first occurrence of each character in the pattern
-	offset32, F := alloc32(offset32, slab, M)
-	// Rune array
-	_, T := alloc32(offset32, slab, N)
+	H0 := make([]int16, N)
+	C0 := make([]int16, N)
+	B := make([]int16, N)
+	F := make([]int32, M)
+	T := make([]int32, N)
 	input.CopyRunes(T, minIdx)
 
 	// Phase 2. Calculate bonus for each point
@@ -512,9 +484,9 @@ func FuzzyMatchV2(caseSensitive bool, normalize bool, forward bool, input *util.
 			score := scoreMatch + bonus*bonusFirstCharMultiplier
 			H0[off] = score
 			C0[off] = 1
-			if M == 1 && (forward && score > maxScore || !forward && score >= maxScore) {
+			if M == 1 && (true && score > maxScore || !true && score >= maxScore) {
 				maxScore, maxScorePos = score, off
-				if forward && bonus >= bonusBoundary {
+				if true && bonus >= bonusBoundary {
 					break
 				}
 			}
@@ -546,11 +518,11 @@ func FuzzyMatchV2(caseSensitive bool, normalize bool, forward bool, input *util.
 	// Unlike the original algorithm, we do not allow omission.
 	f0 := int(F[0])
 	width := lastIdx - f0 + 1
-	offset16, H := alloc16(offset16, slab, width*M)
+	H := make([]int16, width*M)
 	copy(H, H0[f0:lastIdx+1])
 
 	// Possible length of consecutive chunk at each position.
-	_, C := alloc16(offset16, slab, width*M)
+	C := make([]int16, width*M)
 	copy(C, C0[f0:lastIdx+1])
 
 	Fsub := F[1:]
@@ -603,7 +575,7 @@ func FuzzyMatchV2(caseSensitive bool, normalize bool, forward bool, input *util.
 
 			inGap = s1 < s2
 			score := util.Max16(util.Max16(s1, s2), 0)
-			if pidx == M-1 && (forward && score > maxScore || !forward && score >= maxScore) {
+			if pidx == M-1 && (true && score > maxScore || !true && score >= maxScore) {
 				maxScore, maxScorePos = score, col
 			}
 			Hsub[off] = score
@@ -711,85 +683,6 @@ func calculateScore(caseSensitive bool, normalize bool, text *util.Chars, patter
 	return score, pos
 }
 
-// FuzzyMatchV1 performs fuzzy-match
-func FuzzyMatchV1(caseSensitive bool, normalize bool, forward bool, text *util.Chars, pattern []rune, withPos bool, slab *util.Slab) (Result, *[]int) {
-	if len(pattern) == 0 {
-		return Result{0, 0, 0}, nil
-	}
-	idx, _ := asciiFuzzyIndex(text, pattern, caseSensitive)
-	if idx < 0 {
-		return Result{-1, -1, 0}, nil
-	}
-
-	pidx := 0
-	sidx := -1
-	eidx := -1
-
-	lenRunes := text.Length()
-	lenPattern := len(pattern)
-
-	for index := 0; index < lenRunes; index++ {
-		char := text.Get(indexAt(index, lenRunes, forward))
-		// This is considerably faster than blindly applying strings.ToLower to the
-		// whole string
-		if !caseSensitive {
-			// Partially inlining `unicode.ToLower`. Ugly, but makes a noticeable
-			// difference in CPU cost. (Measured on Go 1.4.1. Also note that the Go
-			// compiler as of now does not inline non-leaf functions.)
-			if char >= 'A' && char <= 'Z' {
-				char += 32
-			} else if char > unicode.MaxASCII {
-				char = unicode.To(unicode.LowerCase, char)
-			}
-		}
-		if normalize {
-			char = normalizeRune(char)
-		}
-		pchar := pattern[indexAt(pidx, lenPattern, forward)]
-		if char == pchar {
-			if sidx < 0 {
-				sidx = index
-			}
-			if pidx++; pidx == lenPattern {
-				eidx = index + 1
-				break
-			}
-		}
-	}
-
-	if sidx >= 0 && eidx >= 0 {
-		pidx--
-		for index := eidx - 1; index >= sidx; index-- {
-			tidx := indexAt(index, lenRunes, forward)
-			char := text.Get(tidx)
-			if !caseSensitive {
-				if char >= 'A' && char <= 'Z' {
-					char += 32
-				} else if char > unicode.MaxASCII {
-					char = unicode.To(unicode.LowerCase, char)
-				}
-			}
-
-			pidx_ := indexAt(pidx, lenPattern, forward)
-			pchar := pattern[pidx_]
-			if char == pchar {
-				if pidx--; pidx < 0 {
-					sidx = index
-					break
-				}
-			}
-		}
-
-		if !forward {
-			sidx, eidx = lenRunes-eidx, lenRunes-sidx
-		}
-
-		score, pos := calculateScore(caseSensitive, normalize, text, pattern, sidx, eidx, withPos)
-		return Result{sidx, eidx, score}, pos
-	}
-	return Result{-1, -1, 0}, nil
-}
-
 // ExactMatchNaive is a basic string searching algorithm that handles case
 // sensitivity. Although naive, it still performs better than the combination
 // of strings.ToLower + strings.Index for typical fzf use cases where input
@@ -799,15 +692,15 @@ func FuzzyMatchV1(caseSensitive bool, normalize bool, forward bool, text *util.C
 // bonus point, instead of stopping immediately after finding the first match.
 // The solution is much cheaper since there is only one possible alignment of
 // the pattern.
-func ExactMatchNaive(caseSensitive bool, normalize bool, forward bool, text *util.Chars, pattern []rune, withPos bool, slab *util.Slab) (Result, *[]int) {
-	return exactMatchNaive(caseSensitive, normalize, forward, false, text, pattern, withPos, slab)
+func ExactMatchNaive(caseSensitive bool, normalize bool, text *util.Chars, pattern []rune, withPos bool) (Result, *[]int) {
+	return exactMatchNaive(caseSensitive, normalize, false, text, pattern, withPos)
 }
 
-func ExactMatchBoundary(caseSensitive bool, normalize bool, forward bool, text *util.Chars, pattern []rune, withPos bool, slab *util.Slab) (Result, *[]int) {
-	return exactMatchNaive(caseSensitive, normalize, forward, true, text, pattern, withPos, slab)
+func ExactMatchBoundary(caseSensitive bool, normalize bool, text *util.Chars, pattern []rune, withPos bool) (Result, *[]int) {
+	return exactMatchNaive(caseSensitive, normalize, true, text, pattern, withPos)
 }
 
-func exactMatchNaive(caseSensitive bool, normalize bool, forward bool, boundaryCheck bool, text *util.Chars, pattern []rune, withPos bool, slab *util.Slab) (Result, *[]int) {
+func exactMatchNaive(caseSensitive bool, normalize bool, boundaryCheck bool, text *util.Chars, pattern []rune, withPos bool) (Result, *[]int) {
 	if len(pattern) == 0 {
 		return Result{0, 0, 0}, nil
 	}
@@ -828,7 +721,7 @@ func exactMatchNaive(caseSensitive bool, normalize bool, forward bool, boundaryC
 	pidx := 0
 	bestPos, bonus, bestBonus := -1, int16(0), int16(-1)
 	for index := 0; index < lenRunes; index++ {
-		index_ := indexAt(index, lenRunes, forward)
+		index_ := indexAt(index, lenRunes, true)
 		char := text.Get(index_)
 		if !caseSensitive {
 			if char >= 'A' && char <= 'Z' {
@@ -840,7 +733,7 @@ func exactMatchNaive(caseSensitive bool, normalize bool, forward bool, boundaryC
 		if normalize {
 			char = normalizeRune(char)
 		}
-		pidx_ := indexAt(pidx, lenPattern, forward)
+		pidx_ := indexAt(pidx, lenPattern, true)
 		pchar := pattern[pidx_]
 		ok := pchar == char
 		if ok {
@@ -876,7 +769,7 @@ func exactMatchNaive(caseSensitive bool, normalize bool, forward bool, boundaryC
 	}
 	if bestPos >= 0 {
 		var sidx, eidx int
-		if forward {
+		if true {
 			sidx = bestPos - lenPattern + 1
 			eidx = bestPos + 1
 		} else {
@@ -906,7 +799,7 @@ func exactMatchNaive(caseSensitive bool, normalize bool, forward bool, boundaryC
 }
 
 // PrefixMatch performs prefix-match
-func PrefixMatch(caseSensitive bool, normalize bool, forward bool, text *util.Chars, pattern []rune, withPos bool, slab *util.Slab) (Result, *[]int) {
+func PrefixMatch(caseSensitive bool, normalize bool, text *util.Chars, pattern []rune, withPos bool) (Result, *[]int) {
 	if len(pattern) == 0 {
 		return Result{0, 0, 0}, nil
 	}
@@ -938,7 +831,7 @@ func PrefixMatch(caseSensitive bool, normalize bool, forward bool, text *util.Ch
 }
 
 // SuffixMatch performs suffix-match
-func SuffixMatch(caseSensitive bool, normalize bool, forward bool, text *util.Chars, pattern []rune, withPos bool, slab *util.Slab) (Result, *[]int) {
+func SuffixMatch(caseSensitive bool, normalize bool, text *util.Chars, pattern []rune, withPos bool) (Result, *[]int) {
 	lenRunes := text.Length()
 	trimmedLen := lenRunes
 	if len(pattern) == 0 || !unicode.IsSpace(pattern[len(pattern)-1]) {
@@ -972,7 +865,7 @@ func SuffixMatch(caseSensitive bool, normalize bool, forward bool, text *util.Ch
 }
 
 // EqualMatch performs equal-match
-func EqualMatch(caseSensitive bool, normalize bool, forward bool, text *util.Chars, pattern []rune, withPos bool, slab *util.Slab) (Result, *[]int) {
+func EqualMatch(caseSensitive bool, normalize bool, text *util.Chars, pattern []rune, withPos bool) (Result, *[]int) {
 	lenPattern := len(pattern)
 	if lenPattern == 0 {
 		return Result{-1, -1, 0}, nil

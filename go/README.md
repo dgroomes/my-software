@@ -49,7 +49,11 @@ structure in an ad-hoc way. I want to avoid particularly gnarly stringly-typed p
 
 Follow these instructions to build, run and install my software.
 
-1. Build and run the `my-fuzzy-finder` program with the example data:
+1. Build and test the `my-fuzzy-finder-lib` library:
+    * ```shell
+      go test './...'
+      ```
+2. Build and run the `my-fuzzy-finder` program with the example data:
     * ```shell
       go run my-software/pkg/my-fuzzy-finder --example
       ```
@@ -75,14 +79,14 @@ Follow these instructions to build, run and install my software.
     * ```nushell
       go run my-software/pkg/my-fuzzy-finder --example --debug
       ```
-2. Build all executables:
+3. Build all executables:
     * ```nushell
       mkdir bin; go build -o bin  './...'
       ```
     * The executables (i.e. `my-launcher`, `my-fuzzy-finder`) will be in the `bin/` directory. Try them out as needed to
       do validation and exploration. If you are satisfied, then you can install the executables globally with the next
       step.
-3. Build and install the executables to your `GOBIN`:
+4. Build and install the executables to your `GOBIN`:
     * ```shell
       go install './...'
       ```
@@ -122,5 +126,12 @@ General clean-ups, TODOs and things I wish to implement for this project
   example.
 * [ ] Need to handle items that exceed the full height? Need to handle items that exceed the full width?
 * [x] DONE Support 'fzf' search syntax.
-* [ ] Pare down 'fzf' code. Thankfully I was able to get fzf integration without many (half?) of the original source
+* [ ] (Update 2: I'm going to pare it down. A hard fork. Update 1: Alternatively, it might best to just do a shallow fork so that I can preserve the diff better. Not sure.) Pare down 'fzf' code. Thankfully I was able to get fzf integration without many (half?) of the original source
   code. But still, I should be able to trim it down much more (and learn it).
+    * DONE Remove caching
+    * DONE consolidate item.go
+    * More ...
+* [x] DONE Case-insensitive
+* [x] DONE Split into `my-fuzzy-finder-lib/` and `my-fuzzy-finder/` packages
+* [x] DONE Tests.
+* [ ] Consider supporting headless mode. But really, `fzf` should be fine for that.

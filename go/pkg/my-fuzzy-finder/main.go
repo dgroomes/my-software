@@ -24,8 +24,8 @@ import (
 	"github.com/muesli/termenv"
 	"io"
 	"log"
-	"my-software/pkg/my-fuzzy-finder/algo"
-	"my-software/pkg/my-fuzzy-finder/util"
+	fz "my-software/pkg/my-fuzzy-finder-lib"
+	"my-software/pkg/my-fuzzy-finder-lib/algo"
 	"os"
 	"strings"
 )
@@ -40,7 +40,8 @@ const NoSelectionExitCode = 130
 // The master list of items
 var allItems []string
 
-var styleDoc = lipgloss.NewStyle().Margin(1, 2)
+var realFrame = lipgloss.NewStyle().Margin(1, 2)
+var noFrame = lipgloss.NewStyle()
 var styleNormalTitle = lipgloss.NewStyle().Foreground(lipgloss.Color("#1a1a1a"))
 var styleNormalTitleBox = lipgloss.NewStyle().Padding(0, 0, 0, 2)
 var styleSelectedTitle = lipgloss.NewStyle().Foreground(lipgloss.Color("#EE6FF8"))
@@ -62,16 +63,12 @@ type model struct {
 	cursor                 cursor.Model
 	height                 int
 	item                   int
-	matches                []Match
-	pages                  [][]Match
+	matches                []fz.Match
+	pages                  [][]fz.Match
 	page                   int
 	pageItem               int
 	completedWithSelection bool
-}
-
-type Match struct {
-	Index     int
-	Positions []int
+	frame                  lipgloss.Style
 }
 
 func (m model) Init() tea.Cmd {
@@ -86,7 +83,15 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
-		hz, v := styleDoc.GetFrameSize()
+		var hz, v int
+		// We want a frame, but only if there is enough space
+		if msg.Height > 10 && msg.Width > 50 {
+			hz, v = realFrame.GetFrameSize()
+			m.frame = realFrame
+		} else {
+			m.frame = noFrame
+		}
+
 		log.Printf("WindowSizeMsg: %+v Frame size: hz=%d, v=%d\n", msg, hz, v)
 		m.height = msg.Height - v
 		m.input.Width = msg.Width - hz - promptLength
@@ -166,7 +171,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					// From a TUI perspective, this is a "dirty programming pattern" because this is a relatively slow
 					// operation, and we're doing it on the UI thread. You are "supposed" to use a Go routine and
 					//message passing. But in practice, it's exactly what I want.
-					matches := fuzzyMatch(m.input.Value(), allItems)
+					matches := fz.MatchAll(m.input.Value(), allItems)
 					m.matches = matches
 				}
 				return pageReflow(m), tea.Batch(cmds...)
@@ -193,7 +198,7 @@ func (m model) View() string {
 
 	content := lipgloss.NewStyle().Height(availHeight).Render(m.populatedView())
 	sections = append(sections, content)
-	return styleDoc.Render(lipgloss.JoinVertical(lipgloss.Left, sections...))
+	return m.frame.Render(lipgloss.JoinVertical(lipgloss.Left, sections...))
 }
 
 func (m model) FilterValue() string {
@@ -205,11 +210,11 @@ func (m model) FilterValue() string {
 //
 // This function also re-calculates the selected item and the page/page-item cursors.
 func pageReflow(m model) model {
-	var matches []Match
+	var matches []fz.Match
 	if m.input.Value() == "" {
 		log.Println("No input. Create fake matches for all items so that the pages can get created.")
-		matches = Map(allItems, func(item string, i int) Match {
-			return Match{Index: i}
+		matches = Map(allItems, func(item string, i int) fz.Match {
+			return fz.Match{Index: i}
 		})
 	} else {
 		if len(m.matches) == 0 {
@@ -231,8 +236,8 @@ func pageReflow(m model) model {
 	availHeight -= titleHeight
 	log.Printf("[pageReflow] titleHeight=%d availHeight=%d\n", titleHeight, availHeight)
 
-	pages := make([][]Match, 0)
-	page := make([]Match, 0)
+	pages := make([][]fz.Match, 0)
+	page := make([]fz.Match, 0)
 	heightBudget := availHeight
 
 	prevItem := m.item
@@ -243,7 +248,7 @@ func pageReflow(m model) model {
 		if itemHeight > heightBudget {
 			// We need to spill over to a new page. Complete the page we were working on.
 			pages = append(pages, page)
-			page = make([]Match, 0)
+			page = make([]fz.Match, 0)
 			heightBudget = availHeight // TODO handle when an item is larger than a whole page.
 		}
 
@@ -306,7 +311,7 @@ func (m model) populatedView() string {
 	return b.String()
 }
 
-type MyItem struct {
+type ReturnItem struct {
 	Index int    `json:"index"`
 	Value string `json:"value"`
 }
@@ -412,7 +417,7 @@ func main() {
 		os.Exit(NoMatchExitCode)
 	}
 
-	selectedItem := MyItem{
+	selectedItem := ReturnItem{
 		Index: finalM.item,
 		Value: allItems[finalM.item],
 	}
@@ -478,40 +483,4 @@ func underlineMatches(str string, matchedPositions []int, style lipgloss.Style) 
 	}
 
 	return out.String()
-}
-
-func fuzzyMatch(query string, items []string) []Match {
-	patternBuilder := func(runes []rune) *Pattern {
-		return BuildPattern(
-			NewChunkCache(), // You might want to reuse this cache across calls
-			make(map[string]*Pattern),
-			true, // fuzzy
-			algo.FuzzyMatchV2,
-			true, // extended
-			CaseSmart,
-			true,  // normalize
-			true,  // forward
-			false, // withPos
-			false, // cacheKey (FIXME: you might want to cache patterns)
-			nil,   // nth
-			Delimiter{},
-			runes,
-		)
-	}
-
-	pattern := patternBuilder([]rune(query))
-	slab := util.MakeSlab(slab16Size, slab32Size)
-	matches := make([]Match, 0, len(items))
-
-	for i, item := range items {
-		chars := util.ToChars([]byte(item))
-		result, _, positions := pattern.MatchItem(&Item{text: chars}, true, slab)
-		if result != nil {
-			matches = append(matches, Match{
-				Index:     i,
-				Positions: *positions,
-			})
-		}
-	}
-	return matches
 }
