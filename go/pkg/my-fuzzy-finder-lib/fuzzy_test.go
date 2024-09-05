@@ -1,13 +1,11 @@
 package my_fuzzy_finder
 
 import (
-	"my-software/pkg/my-fuzzy-finder-lib/algo"
 	"reflect"
 	"testing"
 )
 
 func TestMatchOne(t *testing.T) {
-	algo.Init("default")
 	tests := map[string]struct {
 		query         string
 		item          string

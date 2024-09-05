@@ -25,7 +25,6 @@ import (
 	"io"
 	"log"
 	fz "my-software/pkg/my-fuzzy-finder-lib"
-	"my-software/pkg/my-fuzzy-finder-lib/algo"
 	"os"
 	"strings"
 )
@@ -391,7 +390,6 @@ func main() {
 	}
 	defer tty.Close()
 
-	algo.Init("default")
 	p := tea.NewProgram(model{
 		input: input,
 	}, tea.WithAltScreen(), tea.WithOutput(tty))

@@ -84,7 +84,6 @@ import (
 	"bytes"
 	"fmt"
 	"my-software/pkg/my-fuzzy-finder-lib/util"
-	"os"
 	"strings"
 	"unicode"
 	"unicode/utf8"
@@ -151,9 +150,6 @@ var (
 	// Extra bonus for word boundary after whitespace character or beginning of the string
 	bonusBoundaryWhite int16 = bonusBoundary + 2
 
-	// Extra bonus for word boundary after slash, colon, semi-colon, and comma
-	bonusBoundaryDelimiter int16 = bonusBoundary + 1
-
 	initialCharClass = charWhite
 
 	// A minor optimization that can give 15%+ performance boost
@@ -175,26 +171,7 @@ const (
 	charNumber
 )
 
-func Init(scheme string) bool {
-	switch scheme {
-	case "default":
-		bonusBoundaryWhite = bonusBoundary + 2
-		bonusBoundaryDelimiter = bonusBoundary + 1
-	case "path":
-		bonusBoundaryWhite = bonusBoundary
-		bonusBoundaryDelimiter = bonusBoundary + 1
-		if os.PathSeparator == '/' {
-			delimiterChars = "/"
-		} else {
-			delimiterChars = string([]rune{os.PathSeparator, '/'})
-		}
-		initialCharClass = charDelimiter
-	case "history":
-		bonusBoundaryWhite = bonusBoundary
-		bonusBoundaryDelimiter = bonusBoundary
-	default:
-		return false
-	}
+func init() {
 	for i := 0; i <= unicode.MaxASCII; i++ {
 		char := rune(i)
 		c := charNonWord
@@ -211,12 +188,6 @@ func Init(scheme string) bool {
 		}
 		asciiCharClasses[i] = c
 	}
-	for i := 0; i <= int(charNumber); i++ {
-		for j := 0; j <= int(charNumber); j++ {
-			bonusMatrix[i][j] = bonusFor(charClass(i), charClass(j))
-		}
-	}
-	return true
 }
 
 func posArray(withPos bool, len int) *[]int {
@@ -249,36 +220,6 @@ func charClassOf(char rune) charClass {
 		return asciiCharClasses[char]
 	}
 	return charClassOfNonAscii(char)
-}
-
-func bonusFor(prevClass charClass, class charClass) int16 {
-	if class > charNonWord {
-		switch prevClass {
-		case charWhite:
-			// Word boundary after whitespace
-			return bonusBoundaryWhite
-		case charDelimiter:
-			// Word boundary after a delimiter character
-			return bonusBoundaryDelimiter
-		case charNonWord:
-			// Word boundary
-			return bonusBoundary
-		}
-	}
-
-	if prevClass == charLower && class == charUpper ||
-		prevClass != charNumber && class == charNumber {
-		// camelCase letter123
-		return bonusCamel123
-	}
-
-	switch class {
-	case charNonWord, charDelimiter:
-		return bonusNonWord
-	case charWhite:
-		return bonusBoundaryWhite
-	}
-	return 0
 }
 
 func bonusAt(input *util.Chars, idx int) int16 {
