@@ -49,12 +49,12 @@ structure in an ad-hoc way. I want to avoid particularly gnarly stringly-typed p
 
 Follow these instructions to build, run and install my software.
 
-1. Build and test the `my-fuzzy-finder-lib` library:
-    * ```shell
+1. Build and test the code:
+    * ```nushell
       go test './...'
       ```
 2. Build and run the `my-fuzzy-finder` program with the example data:
-    * ```shell
+    * ```nushell
       go run my-software/pkg/my-fuzzy-finder --example
       ```
     * Next, try fuzzy finding among the filenames in the current directory.
@@ -87,7 +87,7 @@ Follow these instructions to build, run and install my software.
       do validation and exploration. If you are satisfied, then you can install the executables globally with the next
       step.
 4. Build and install the executables to your `GOBIN`:
-    * ```shell
+    * ```nushell
       go install './...'
       ```
     * Now you can run the executables, like `my-launcher`, from anywhere on your system.

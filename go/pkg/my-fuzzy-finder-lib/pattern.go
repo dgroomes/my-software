@@ -32,30 +32,35 @@ const (
 	termEqual
 )
 
+var termsToAlgo = map[termType]algo.Algo{
+	termFuzzy:         algo.FuzzyMatch,
+	termEqual:         algo.EqualMatch,
+	termExact:         algo.ExactMatchNaive,
+	termExactBoundary: algo.ExactMatchBoundary,
+	termPrefix:        algo.PrefixMatch,
+	termSuffix:        algo.SuffixMatch,
+}
+
 type term struct {
-	typ           termType
-	inv           bool
-	text          []rune
-	caseSensitive bool
-	normalize     bool
+	typ  termType
+	inv  bool
+	text []rune
 }
 
 // String returns the string representation of a term.
 func (t term) String() string {
-	return fmt.Sprintf("term{typ: %d, inv: %v, text: []rune(%q), caseSensitive: %v}", t.typ, t.inv, string(t.text), t.caseSensitive)
+	return fmt.Sprintf("term{typ: %d, inv: %v, text: []rune(%q)}", t.typ, t.inv, string(t.text))
 }
 
 type termSet []term
 
 // Pattern represents search pattern
 type Pattern struct {
-	fuzzy     bool
-	normalize bool
-	text      []rune
-	termSets  []termSet
-	sortable  bool
-	nth       []Range
-	procFun   map[termType]algo.Algo
+	fuzzy    bool
+	text     []rune
+	termSets []termSet
+	sortable bool
+	nth      []Range
 }
 
 var _splitRegex *regexp.Regexp
@@ -65,21 +70,15 @@ func init() {
 }
 
 // BuildPattern builds Pattern object from the given arguments
-func BuildPattern(patternCache map[string]*Pattern, runes []rune) *Pattern {
+func BuildPattern(query string) *Pattern {
+	runes := []rune(query)
 	asString := strings.TrimLeft(string(runes), " ")
 	for strings.HasSuffix(asString, " ") && !strings.HasSuffix(asString, "\\ ") {
 		asString = asString[:len(asString)-1]
 	}
 
-	// We can uniquely identify the pattern for a given string since
-	// search mode and caseMode do not change while the program is running
-	cached, found := patternCache[asString]
-	if found {
-		return cached
-	}
-
 	sortable := true
-	termSets := []termSet{}
+	var termSets []termSet
 
 	termSets = parseTerms(asString)
 	// We should not sort the result if there are only inverse search terms
@@ -101,35 +100,21 @@ Loop:
 		fuzzy:    true,
 		text:     []rune(asString),
 		termSets: termSets,
-		sortable: sortable,
-		procFun:  make(map[termType]algo.Algo)}
+		sortable: sortable}
 
-	ptr.procFun[termFuzzy] = algo.FuzzyMatchV2
-	ptr.procFun[termEqual] = algo.EqualMatch
-	ptr.procFun[termExact] = algo.ExactMatchNaive
-	ptr.procFun[termExactBoundary] = algo.ExactMatchBoundary
-	ptr.procFun[termPrefix] = algo.PrefixMatch
-	ptr.procFun[termSuffix] = algo.SuffixMatch
-
-	patternCache[asString] = ptr
 	return ptr
 }
 
 func parseTerms(str string) []termSet {
 	str = strings.ReplaceAll(str, "\\ ", "\t")
 	tokens := _splitRegex.Split(str, -1)
-	sets := []termSet{}
+	var sets []termSet
 	set := termSet{}
 	switchSet := false
 	afterBar := false
 	for _, token := range tokens {
 		typ, inv, text := termFuzzy, false, strings.ReplaceAll(token, "\t", " ")
-		lowerText := strings.ToLower(text)
-		caseSensitive := text != lowerText
-		normalizeTerm := lowerText == string(algo.NormalizeRunes([]rune(lowerText)))
-		if !caseSensitive {
-			text = lowerText
-		}
+		text = strings.ToLower(text)
 
 		if len(set) > 0 && !afterBar && text == "|" {
 			switchSet = false
@@ -175,15 +160,10 @@ func parseTerms(str string) []termSet {
 				set = termSet{}
 			}
 			textRunes := []rune(text)
-			if normalizeTerm {
-				textRunes = algo.NormalizeRunes(textRunes)
-			}
 			set = append(set, term{
-				typ:           typ,
-				inv:           inv,
-				text:          textRunes,
-				caseSensitive: caseSensitive,
-				normalize:     normalizeTerm})
+				typ:  typ,
+				inv:  inv,
+				text: textRunes})
 			switchSet = true
 		}
 	}
@@ -204,8 +184,8 @@ func (p *Pattern) AsString() string {
 }
 
 // MatchItem returns true if the Item is a match
-func (p *Pattern) MatchItem(item *Item, withPos bool) (*Result, []Offset, *[]int) {
-	if offsets, bonus, positions := p.extendedMatch(item, withPos); len(offsets) == len(p.termSets) {
+func (p *Pattern) MatchItem(item *Item) (*Result, []Offset, *[]int) {
+	if offsets, bonus, positions := p.extendedMatch(item); len(offsets) == len(p.termSets) {
 		result := buildResult(item, offsets, bonus)
 		slices.Sort(*positions)
 		return &result, offsets, positions
@@ -213,36 +193,32 @@ func (p *Pattern) MatchItem(item *Item, withPos bool) (*Result, []Offset, *[]int
 	return nil, nil, nil
 }
 
-func (p *Pattern) extendedMatch(item *Item, withPos bool) ([]Offset, int, *[]int) {
+func (p *Pattern) extendedMatch(item *Item) ([]Offset, int, *[]int) {
 	input := []Token{{text: &item.text, prefixLength: 0}}
-	offsets := []Offset{}
+	var offsets []Offset
 	var totalScore int
 	var allPos *[]int
-	if withPos {
-		allPos = &[]int{}
-	}
+	allPos = &[]int{}
 	for _, termSet := range p.termSets {
 		var offset Offset
 		var currentScore int
 		matched := false
 		for _, term := range termSet {
-			pfun := p.procFun[term.typ]
-			off, score, pos := p.iter(pfun, input, term.caseSensitive, term.normalize, term.text, withPos)
+			pfun := termsToAlgo[term.typ]
+			off, pos := p.iter(pfun, input, term.text)
 			if sidx := off[0]; sidx >= 0 {
 				if term.inv {
 					continue
 				}
-				offset, currentScore = off, score
+				offset = off
 				matched = true
-				if withPos {
-					if pos != nil {
+				if pos != nil {
+					//goland:noinspection GoDfaNilDereference
+					*allPos = append(*allPos, *pos...)
+				} else {
+					for idx := off[0]; idx < off[1]; idx++ {
 						//goland:noinspection GoDfaNilDereference
-						*allPos = append(*allPos, *pos...)
-					} else {
-						for idx := off[0]; idx < off[1]; idx++ {
-							//goland:noinspection GoDfaNilDereference
-							*allPos = append(*allPos, int(idx))
-						}
+						*allPos = append(*allPos, int(idx))
 					}
 				}
 				break
@@ -260,9 +236,9 @@ func (p *Pattern) extendedMatch(item *Item, withPos bool) ([]Offset, int, *[]int
 	return offsets, totalScore, allPos
 }
 
-func (p *Pattern) iter(pfun algo.Algo, tokens []Token, caseSensitive bool, normalize bool, pattern []rune, withPos bool) (Offset, int, *[]int) {
+func (p *Pattern) iter(pfun algo.Algo, tokens []Token, pattern []rune) (Offset, *[]int) {
 	for _, part := range tokens {
-		if res, pos := pfun(caseSensitive, normalize, part.text, pattern, withPos); res.Start >= 0 {
+		if res, pos := pfun(part.text, pattern); res.Start >= 0 {
 			sidx := int32(res.Start) + part.prefixLength
 			eidx := int32(res.End) + part.prefixLength
 			if pos != nil {
@@ -270,8 +246,8 @@ func (p *Pattern) iter(pfun algo.Algo, tokens []Token, caseSensitive bool, norma
 					(*pos)[idx] += int(part.prefixLength)
 				}
 			}
-			return Offset{sidx, eidx}, res.Score, pos
+			return Offset{sidx, eidx}, pos
 		}
 	}
-	return Offset{-1, -1}, 0, nil
+	return Offset{-1, -1}, nil
 }

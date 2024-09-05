@@ -10,9 +10,9 @@ type Match struct {
 }
 
 func MatchOne(query string, item string) (bool, []int) {
-	pattern := BuildPattern(make(map[string]*Pattern), []rune(query))
+	pattern := BuildPattern(query)
 	chars := util.ToChars([]byte(item))
-	_, _, positions := pattern.MatchItem(&Item{text: chars}, true)
+	_, _, positions := pattern.MatchItem(&Item{text: chars})
 	if positions == nil {
 		return false, nil
 	}
@@ -21,12 +21,12 @@ func MatchOne(query string, item string) (bool, []int) {
 }
 
 func MatchAll(query string, items []string) []Match {
-	pattern := BuildPattern(make(map[string]*Pattern), []rune(query))
+	pattern := BuildPattern(query)
 	matches := make([]Match, 0, len(items))
 
 	for i, item := range items {
 		chars := util.ToChars([]byte(item))
-		result, _, positions := pattern.MatchItem(&Item{text: chars}, true)
+		result, _, positions := pattern.MatchItem(&Item{text: chars})
 		if result != nil {
 			matches = append(matches, Match{
 				Index:     i,
