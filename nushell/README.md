@@ -45,6 +45,7 @@ General clean-ups, TODOs and things I wish to implement for this project
 * [ ] I think I need to not version control `env.nu`. I need mutable content to some degree among my Nushell config
   system and I think `env.nu` is probably the ticket. For common fixtures that I want evaluated at the `env.nu` eval
   time, I can jam them into a file like `env-common.nu` and source that from `env.nu`.
+* [x] In `run-from-readme`, execute `bash` snippets in Bash.
 
 
 ## Finished Wish List Items

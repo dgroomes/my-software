@@ -404,38 +404,128 @@ def is-git-project-dirty [project_path] {
 # list and then rewrites the commandline with the selected snippet. It does NOT execute the command. You still need to
 # press the enter key, and better yet, you should also review the command before executing it.
 export def run-from-readme [] {
-  let readme_path = "README.md" | path expand
-  if not ($readme_path | path exists) {
-    print "No README.md file"
-    return
-  }
+    let readme_path = "README.md" | path expand
+    if not ($readme_path | path exists) {
+        print "No README.md file"
+        return
+    }
 
-  which markdown-code-fence-reader | if ($in | is-empty) {
-      error make --unspanned { msg: "The 'markdown-code-fence-reader' program is not installed." }
-  }
+    which markdown-code-fence-reader | if ($in | is-empty) {
+        error make --unspanned { msg: "The 'markdown-code-fence-reader' program is not installed." }
+    }
 
-  let result = markdown-code-fence-reader $readme_path | complete
+    let result = markdown-code-fence-reader $readme_path | complete
 
-  if ($result.exit_code != 0) {
-      let msg = "Something unexpected happened while running the 'markdown-code-fence-reader' command." + (char newline) + $result.stderr
-      error make --unspanned { msg: $msg }
-  }
+    if ($result.exit_code != 0) {
+        let msg = "Something unexpected happened while running the 'markdown-code-fence-reader' command." + (char newline) + $result.stderr
+        error make --unspanned { msg: $msg }
+    }
 
-  let shell_snippets = $result.stdout | from json | where { |snippet|
-      [shell nushell bash] | any { |lang| $snippet.language == $lang }
-  }
+    let shell_snippets = $result.stdout | from json | where { |snippet|
+        [shell nushell bash] | any { |lang| $snippet.language == $lang }
+    }
 
-  if ($shell_snippets | is-empty) {
-    print "No shell snippets found."
-    return
-  }
+    if ($shell_snippets | is-empty) {
+        print "No shell snippets found."
+        return
+    }
 
-  $shell_snippets | fz --filter-column content
-    | if ($in | is-empty) {
+    let snippet = $shell_snippets | fz --filter-column content
+    if ($snippet | is-empty) {
         # If the user abandoned the selection, then don't do anything.
         return
-      } else { $in }
-    | get content | commandline edit $in
+    }
+
+    # For 'nushell' command snippets, we write it directly to the commandline. If the user wants to execute the command,
+    # they press enter, and if they want to edit it then they edit it. I personally really like this workflow.
+    if $snippet.language == "nushell" {
+        $snippet.content | commandline edit $in
+        return
+    }
+
+    if $snippet.language != "shell" and $snippet.language != "bash" {
+        error make --unspanned { msg: $"Unexpected snippet language found. ($snippet.language)" }
+    }
+
+    # If the snippet is a Bash command or otherwise a generic shell (likely POSIX) command, then we have some more work
+    # to do. We can't write the command as-is because it will usually not be legal Nu syntax. We can splice it into the
+    # commandline in the "-c" option of the "bash" command. For example, if the command is:
+    #
+    #     wc -l > line-counts.txt
+    #
+    # then, we could write:
+    #
+    #     bash -c 'wc -l > line-counts.txt'
+    #
+    # But the Bash snippet really needs proper treatment to avoid string/escape problems. I think Nushell's "raw strings"
+    # feature will work great here (https://www.nushell.sh/book/working_with_strings.html#raw-strings).
+    # To do it right, we need to find the occurrence of the raw string ending sequence ('#') with the most consecutive
+    # hashtag symbols. Of course it's unlikely that a Bash/shell snippet would ever contain that sequence, we can easily
+    # cover this case. For example, consider this Bash/shell snippet:
+    #
+    #     cat << 'EOF' > README.md
+    #     # "Parser Thinking": What are the grammar rules?
+    #
+    #     Here is some Nushell code:
+    #
+    #     ```nushell
+    #     r###'r##'This is an example of a raw string.'##'###
+    #     ```
+    #     EOF
+    #
+    # First of all, there are lots of different Bash parsing/grammar things happening here. But it's the hash symbols plus
+    # apostrophe that are a real threat. To express this snippet on the Nushell commandline, we need to start a raw string
+    # with a four-length r/hashtag sequence. It would look like this
+    #
+    #     r####'cat << 'EOF' > README.md
+    #     # "Parser Thinking": What are the grammar rules?
+    #
+    #     Here is some Nushell code:
+    #
+    #     ```nushell
+    #     r###'r##'This is an example of a raw string.'##'###
+    #     ```
+    #     EOF'####
+    #
+    # Alternatively, I could just save the snippet to a constant variable and then populate the commandline with something
+    # like:
+    #
+    #    bash -c $RUN_FROM_README_SNIPPET
+    #
+    # And that might be a more sane approach. But it doesn't let you edit the command before executing it, and that
+    # command is not useful in history, and we're left with a constant variable in scope.
+    #
+    # There's another edge case we have to handle (always be wary of string concatenation/injection). A Bash/shell snippet
+    # can start with a '#' character, because that's the comment syntax (and other cases?). What if we just add a newline
+    # to the top and bottom of the snippet, and then trim it before passing it to the 'bash' command? That will make the
+    # snippet more isolated and readable even in the normal case. For example, for the Bash snippet:
+    #
+    #     # This is a comment
+    #
+    # We want to write the commandline as:
+    #
+    #     bash -c (r#'
+    #     # This is a comment
+    #     '# | str substring 1..-2)
+    #
+    # Wow, that's dense! And it's even denser to construct that string from within Nushell code... This might not be
+    # worth doing, but I still like the end result. I would like access to a proper Nu language string escaping function.
+    #
+    let sequences = $snippet.content | parse --regex "'+(#+)"
+    let max_length = if ($sequences | is-empty) {
+        0
+    } else {
+        $sequences | get capture0 | each { $in | str length } | sort | last
+    }
+
+    let repetitive_hashtags = '' | fill --character '#' --width ($max_length + 1)
+
+    let template = r#'bash -c (r%REPETITIVE_HASHTAGS%'
+%SNIPPET_CONTENT%
+'%REPETITIVE_HASHTAGS% | str substring 1..-2)'#
+
+    let command_line = $template | str replace --all "%REPETITIVE_HASHTAGS%" $repetitive_hashtags | str replace "%SNIPPET_CONTENT%" $snippet.content
+    $command_line | commandline edit $in
 }
 
 export alias rfr = run-from-readme
