@@ -36,6 +36,12 @@ func TestMatchOne(t *testing.T) {
 			expectedMatch: true,
 			expectedPos:   []int{0, 1, 2},
 		},
+		"Case does not matter in query": {
+			query:         "aBc",
+			item:          "abc",
+			expectedMatch: true,
+			expectedPos:   []int{0, 1, 2},
+		},
 		"No match": {
 			query:         "xyz",
 			item:          "abc",

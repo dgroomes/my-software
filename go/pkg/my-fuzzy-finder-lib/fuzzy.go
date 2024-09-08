@@ -62,11 +62,10 @@ func FuzzyMatch(input []rune, pattern []rune) (Result, *[]int) {
 
 	pidx := 0
 	pchar := pattern[0]
-	for off, char := range input {
-		char = unicode.ToLower(char)
-		input[off] = char
+	for off, r := range input {
+		input[off] = r
 
-		if char == pchar {
+		if r == pchar {
 			F[pidx] = int32(off)
 			pidx++
 			if pidx == M {
@@ -94,11 +93,10 @@ func ExactMatch(input string, pattern []rune, checkBoundary bool) (Result, *[]in
 		return Result{0, 0}, nil
 	}
 
-	lower := strings.ToLower(input)
-	patternStr := strings.ToLower(string(pattern))
+	patternStr := string(pattern)
 
-	for i := 0; i < len(lower); i++ {
-		if strings.HasPrefix(lower[i:], patternStr) {
+	for i := 0; i < len(input); i++ {
+		if strings.HasPrefix(input[i:], patternStr) {
 			if !checkBoundary || (isWordBoundary(input, i) && isWordBoundary(input, i+len(pattern))) {
 				end := i + len(pattern)
 				positions := make([]int, len(pattern))
@@ -139,10 +137,9 @@ func PrefixMatch(input []rune, pattern []rune) (Result, *[]int) {
 		return Result{-1, -1}, nil
 	}
 
-	for index, r := range pattern {
-		char := input[trimmedLen+index]
-		char = unicode.ToLower(char)
-		if char != r {
+	for index, expected := range pattern {
+		found := input[trimmedLen+index]
+		if found != expected {
 			return Result{-1, -1}, nil
 		}
 	}
@@ -165,10 +162,9 @@ func SuffixMatch(input []rune, pattern []rune) (Result, *[]int) {
 		return Result{-1, -1}, nil
 	}
 
-	for index, r := range pattern {
-		char := input[index+diff]
-		char = unicode.ToLower(char)
-		if char != r {
+	for index, expected := range pattern {
+		actual := input[index+diff]
+		if actual != expected {
 			return Result{-1, -1}, nil
 		}
 	}
@@ -203,7 +199,6 @@ func EqualMatch(input []rune, pattern []rune) (Result, *[]int) {
 	match := true
 
 	runesStr := string(input[trimmedLen : len(input)-trimmedEndLen])
-	runesStr = strings.ToLower(runesStr)
 	match = runesStr == string(pattern)
 
 	if match {
@@ -268,6 +263,7 @@ func init() {
 }
 
 func BuildPattern(query string) Pattern {
+	query = strings.ToLower(query)
 	runes := []rune(query)
 	asString := strings.TrimLeft(string(runes), " ")
 	for strings.HasSuffix(asString, " ") && !strings.HasSuffix(asString, "\\ ") {
@@ -316,7 +312,6 @@ func parseTerms(query string) [][]term {
 	afterBar := false
 	for _, token := range tokens {
 		typ, inv, text := termFuzzy, false, strings.ReplaceAll(token, "\t", " ")
-		text = strings.ToLower(text)
 
 		if len(termSet) > 0 && !afterBar && text == "|" {
 			switchSet = false
@@ -375,6 +370,7 @@ func parseTerms(query string) [][]term {
 }
 
 func (p Pattern) MatchItem(input string) (bool, []int) {
+	input = strings.ToLower(input)
 	var allPos []int
 	inputRunes := []rune(input)
 	for _, termSet := range p {
