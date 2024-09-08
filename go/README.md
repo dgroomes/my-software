@@ -118,13 +118,14 @@ General clean-ups, TODOs and things I wish to implement for this project
 * [ ] Consider ranking "exact matches" before fuzzy matches? If I type "rea" I want to see "README.md" appear before
   "gradlew.bat".
 * [x] DONE Support multi-line
-* [ ] Support special (longer unicode?) characters like `°` in the underline highlighting.
+* [x] OBSOLETE (Somehow resolved on itself. Not sure why) Support special (longer unicode?) characters like `°` in the underline highlighting.
 * [x] DONE Defect: Get cursor blinking working again.
 * [x] DONE Support JSON array input
 * [X] DONE (Big restructuring but great result) Defect: beginning content is cut off. I think it's cutting off by as many additional lines there are per item
   beyond the first line. So a 2-line item will because 1 line to be cut off. The 'Filter: ' text input is missing, for
   example.
-* [ ] Need to handle items that exceed the full height? Need to handle items that exceed the full width?
+* [ ] Need to handle items that exceed the full height?
+* [x] OBSOLETE (Already works, the content is just truncated, that's good) items that exceed the full width
 * [x] DONE Support 'fzf' search syntax.
 * [x] DONE (Update 2: I'm going to pare it down. A hard fork. Update 1: Alternatively, it might best to just do a shallow fork so that I can preserve the diff better. Not sure.) Pare down 'fzf' code. Thankfully I was able to get fzf integration without many (half?) of the original source
   code. But still, I should be able to trim it down much more (and learn it).

@@ -340,14 +340,15 @@ func main() {
 
 	if *example {
 		allItems = []string{
-			"20 Weather\nHello",
 			"Eight hours of sleep",
 			"French press",
+			"Dear Reader,\nHello.",
 			"Kombucha brewing",
 			"Milk crates",
+			"Morning temperature: 72° F",
 			"Pour over coffee",
 			"Shampoo",
-			"Table tennis",
+			"🏓 Table 🏓 tennis 🏓",
 			"Terrycloth",
 		}
 	} else if *jsonIn {
