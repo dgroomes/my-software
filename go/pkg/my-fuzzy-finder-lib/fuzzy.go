@@ -43,18 +43,11 @@ func MatchAll(query string, items []string) []Match {
 
 var delimiterChars = "/,:;|"
 
-const whiteChars = " \t\n\v\f\r\x85\xA0"
-
 // Result contains the results of running a match function.
 type Result struct {
 	Start int
 	End   int
 }
-
-var (
-	// A minor optimization that can give 15%+ performance boost
-	asciiCharClasses [unicode.MaxASCII + 1]charClass
-)
 
 type charClass int
 
@@ -68,26 +61,7 @@ const (
 	charNumber
 )
 
-func init() {
-	for i := 0; i <= unicode.MaxASCII; i++ {
-		char := rune(i)
-		c := charNonWord
-		if char >= 'a' && char <= 'z' {
-			c = charLower
-		} else if char >= 'A' && char <= 'Z' {
-			c = charUpper
-		} else if char >= '0' && char <= '9' {
-			c = charNumber
-		} else if strings.ContainsRune(whiteChars, char) {
-			c = charWhite
-		} else if strings.ContainsRune(delimiterChars, char) {
-			c = charDelimiter
-		}
-		asciiCharClasses[i] = c
-	}
-}
-
-func charClassOfNonAscii(char rune) charClass {
+func charClassOf(char rune) charClass {
 	if unicode.IsLower(char) {
 		return charLower
 	} else if unicode.IsUpper(char) {
@@ -102,13 +76,6 @@ func charClassOfNonAscii(char rune) charClass {
 		return charDelimiter
 	}
 	return charNonWord
-}
-
-func charClassOf(char rune) charClass {
-	if char <= unicode.MaxASCII {
-		return asciiCharClasses[char]
-	}
-	return charClassOfNonAscii(char)
 }
 
 // Algo functions make two assumptions
@@ -175,11 +142,7 @@ func exactMatchNaive(boundaryCheck bool, input Chars, pattern []rune) (Result, *
 		ok := true
 		for pidx < lenPattern && index+pidx < lenInput {
 			char := input.Get(index + pidx)
-			if char >= 'A' && char <= 'Z' {
-				char += 32
-			} else if char > unicode.MaxASCII {
-				char = unicode.To(unicode.LowerCase, char)
-			}
+			char = unicode.To(unicode.LowerCase, char)
 			pchar := pattern[pidx]
 			if pchar != char {
 				ok = false
