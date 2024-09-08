@@ -126,7 +126,7 @@ General clean-ups, TODOs and things I wish to implement for this project
   example.
 * [ ] Need to handle items that exceed the full height? Need to handle items that exceed the full width?
 * [x] DONE Support 'fzf' search syntax.
-* [ ] (Update 2: I'm going to pare it down. A hard fork. Update 1: Alternatively, it might best to just do a shallow fork so that I can preserve the diff better. Not sure.) Pare down 'fzf' code. Thankfully I was able to get fzf integration without many (half?) of the original source
+* [x] DONE (Update 2: I'm going to pare it down. A hard fork. Update 1: Alternatively, it might best to just do a shallow fork so that I can preserve the diff better. Not sure.) Pare down 'fzf' code. Thankfully I was able to get fzf integration without many (half?) of the original source
   code. But still, I should be able to trim it down much more (and learn it).
     * DONE Remove caching
     * DONE consolidate item.go
@@ -135,3 +135,4 @@ General clean-ups, TODOs and things I wish to implement for this project
 * [x] DONE Split into `my-fuzzy-finder-lib/` and `my-fuzzy-finder/` packages
 * [x] DONE Tests.
 * [ ] Consider supporting headless mode. But really, `fzf` should be fine for that.
+* [ ] Support/fix the logical OR operator

@@ -49,24 +49,22 @@ type Result struct {
 }
 
 // Algo functions make two assumptions
-type Algo func(input Chars, pattern []rune) (Result, *[]int)
+type Algo func(input []rune, pattern []rune) (Result, *[]int)
 
-func FuzzyMatch(input Chars, pattern []rune) (Result, *[]int) {
+func FuzzyMatch(input []rune, pattern []rune) (Result, *[]int) {
 	M := len(pattern)
-	N := input.Length()
+	N := len(input)
 	if M > N {
 		return Result{-1, -1}, nil
 	}
 
 	F := make([]int32, M)
-	T := make([]int32, N)
-	input.CopyRunes(T, 0)
 
 	pidx := 0
 	pchar := pattern[0]
-	for off, char := range T {
+	for off, char := range input {
 		char = unicode.ToLower(char)
-		T[off] = char
+		input[off] = char
 
 		if char == pchar {
 			F[pidx] = int32(off)
@@ -91,17 +89,17 @@ func FuzzyMatch(input Chars, pattern []rune) (Result, *[]int) {
 	return result, &pos
 }
 
-func ExactMatch(text string, pattern []rune, checkBoundary bool) (Result, *[]int) {
+func ExactMatch(input string, pattern []rune, checkBoundary bool) (Result, *[]int) {
 	if len(pattern) == 0 {
 		return Result{0, 0}, nil
 	}
 
-	lower := strings.ToLower(text)
+	lower := strings.ToLower(input)
 	patternStr := strings.ToLower(string(pattern))
 
 	for i := 0; i < len(lower); i++ {
 		if strings.HasPrefix(lower[i:], patternStr) {
-			if !checkBoundary || (isWordBoundary(text, i) && isWordBoundary(text, i+len(pattern))) {
+			if !checkBoundary || (isWordBoundary(input, i) && isWordBoundary(input, i+len(pattern))) {
 				end := i + len(pattern)
 				positions := make([]int, len(pattern))
 				for j := range positions {
@@ -127,22 +125,22 @@ func isDelimiter(char rune) bool {
 }
 
 // PrefixMatch performs prefix-match
-func PrefixMatch(text Chars, pattern []rune) (Result, *[]int) {
+func PrefixMatch(input []rune, pattern []rune) (Result, *[]int) {
 	if len(pattern) == 0 {
 		return Result{0, 0}, nil
 	}
 
 	trimmedLen := 0
 	if !unicode.IsSpace(pattern[0]) {
-		trimmedLen = text.LeadingWhitespaces()
+		trimmedLen = LeadingWhitespaces(input)
 	}
 
-	if text.Length()-trimmedLen < len(pattern) {
+	if len(input)-trimmedLen < len(pattern) {
 		return Result{-1, -1}, nil
 	}
 
 	for index, r := range pattern {
-		char := text.Get(trimmedLen + index)
+		char := input[trimmedLen+index]
 		char = unicode.ToLower(char)
 		if char != r {
 			return Result{-1, -1}, nil
@@ -153,11 +151,11 @@ func PrefixMatch(text Chars, pattern []rune) (Result, *[]int) {
 }
 
 // SuffixMatch performs suffix-match
-func SuffixMatch(text Chars, pattern []rune) (Result, *[]int) {
-	lenRunes := text.Length()
+func SuffixMatch(input Chars, pattern []rune) (Result, *[]int) {
+	lenRunes := input.Length()
 	trimmedLen := lenRunes
 	if len(pattern) == 0 || !unicode.IsSpace(pattern[len(pattern)-1]) {
-		trimmedLen -= text.TrailingWhitespaces()
+		trimmedLen -= TrailingWhitespaces(input)
 	}
 	if len(pattern) == 0 {
 		return Result{trimmedLen, trimmedLen}, nil
@@ -168,7 +166,7 @@ func SuffixMatch(text Chars, pattern []rune) (Result, *[]int) {
 	}
 
 	for index, r := range pattern {
-		char := text.Get(index + diff)
+		char := input.Get(index + diff)
 		char = unicode.ToLower(char)
 		if char != r {
 			return Result{-1, -1}, nil
@@ -181,7 +179,7 @@ func SuffixMatch(text Chars, pattern []rune) (Result, *[]int) {
 }
 
 // EqualMatch performs equal-match
-func EqualMatch(text Chars, pattern []rune) (Result, *[]int) {
+func EqualMatch(input []rune, pattern []rune) (Result, *[]int) {
 	lenPattern := len(pattern)
 	if lenPattern == 0 {
 		return Result{-1, -1}, nil
@@ -190,21 +188,21 @@ func EqualMatch(text Chars, pattern []rune) (Result, *[]int) {
 	// Strip leading whitespaces
 	trimmedLen := 0
 	if !unicode.IsSpace(pattern[0]) {
-		trimmedLen = text.LeadingWhitespaces()
+		trimmedLen = LeadingWhitespaces(input)
 	}
 
 	// Strip trailing whitespaces
 	trimmedEndLen := 0
 	if !unicode.IsSpace(pattern[lenPattern-1]) {
-		trimmedEndLen = text.TrailingWhitespaces()
+		trimmedEndLen = TrailingWhitespaces(input)
 	}
 
-	if text.Length()-trimmedLen-trimmedEndLen != lenPattern {
+	if len(input)-trimmedLen-trimmedEndLen != lenPattern {
 		return Result{-1, -1}, nil
 	}
 	match := true
 
-	runesStr := string(text[trimmedLen : len(text)-trimmedEndLen])
+	runesStr := string(input[trimmedLen : len(input)-trimmedEndLen])
 	runesStr = strings.ToLower(runesStr)
 	match = runesStr == string(pattern)
 
@@ -224,10 +222,10 @@ func (chars Chars) Length() int {
 	return len(chars)
 }
 
-func (chars Chars) LeadingWhitespaces() int {
+func LeadingWhitespaces(chars []rune) int {
 	whitespaces := 0
-	for i := 0; i < chars.Length(); i++ {
-		char := chars.Get(i)
+	for i := 0; i < len(chars); i++ {
+		char := chars[i]
 		if !unicode.IsSpace(char) {
 			break
 		}
@@ -236,10 +234,10 @@ func (chars Chars) LeadingWhitespaces() int {
 	return whitespaces
 }
 
-func (chars Chars) TrailingWhitespaces() int {
+func TrailingWhitespaces(input []rune) int {
 	whitespaces := 0
-	for i := chars.Length() - 1; i >= 0; i-- {
-		char := chars.Get(i)
+	for i := len(input) - 1; i >= 0; i-- {
+		char := input[i]
 		if !unicode.IsSpace(char) {
 			break
 		}
@@ -294,26 +292,7 @@ func BuildPattern(query string) Pattern {
 		asString = asString[:len(asString)-1]
 	}
 
-	sortable := true
-	var termSets []termSet
-
-	termSets = parseTerms(asString)
-	// We should not sort the result if there are only inverse search terms
-	sortable = false
-Loop:
-	for _, termSet := range termSets {
-		for _, term := range termSet {
-			if !term.inv {
-				sortable = true
-			}
-			if sortable {
-				// Can't break until we see at least one non-inverse term
-				break Loop
-			}
-		}
-	}
-
-	return termSets
+	return parseTerms(asString)
 }
 
 func parseTerms(str string) []termSet {
@@ -386,8 +365,9 @@ func parseTerms(str string) []termSet {
 
 func (p Pattern) MatchItem(input string) (bool, []int) {
 	var allPos []int
+	inputRunes := []rune(input)
 	for _, termSet := range p {
-		ok, pos := termSet.match(input)
+		ok, pos := termSet.match(inputRunes)
 		if !ok {
 			return false, nil
 		}
@@ -398,7 +378,7 @@ func (p Pattern) MatchItem(input string) (bool, []int) {
 	return true, allPos
 }
 
-func (terms termSet) match(input string) (bool, []int) {
+func (terms termSet) match(input []rune) (bool, []int) {
 	var allPos []int
 	for _, term := range terms {
 		var res Result
@@ -406,17 +386,17 @@ func (terms termSet) match(input string) (bool, []int) {
 
 		switch term.typ {
 		case termFuzzy:
-			res, pos = FuzzyMatch([]rune(input), term.text)
+			res, pos = FuzzyMatch(input, term.text)
 		case termEqual:
-			res, pos = EqualMatch([]rune(input), term.text)
+			res, pos = EqualMatch(input, term.text)
 		case termExact:
-			res, pos = ExactMatch(input, term.text, false)
+			res, pos = ExactMatch(string(input), term.text, false)
 		case termExactBoundary:
-			res, pos = ExactMatch(input, term.text, true)
+			res, pos = ExactMatch(string(input), term.text, true)
 		case termPrefix:
-			res, pos = PrefixMatch([]rune(input), term.text)
+			res, pos = PrefixMatch(input, term.text)
 		case termSuffix:
-			res, pos = SuffixMatch([]rune(input), term.text)
+			res, pos = SuffixMatch(input, term.text)
 		default:
 			panic("Unknown term type: " + term.String())
 		}
