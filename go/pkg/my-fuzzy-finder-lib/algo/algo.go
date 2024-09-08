@@ -170,24 +170,20 @@ func ExactMatchBoundary(text util.Chars, pattern []rune) (Result, *[]int) {
 	return exactMatchNaive(true, text, pattern)
 }
 
-func exactMatchNaive(boundaryCheck bool, text util.Chars, pattern []rune) (Result, *[]int) {
+func exactMatchNaive(boundaryCheck bool, input util.Chars, pattern []rune) (Result, *[]int) {
 	if len(pattern) == 0 {
 		return Result{0, 0}, nil
 	}
 
-	lenRunes := text.Length()
+	lenInput := input.Length()
 	lenPattern := len(pattern)
-
-	if lenRunes < lenPattern {
-		return Result{-1, -1}, nil
-	}
 
 	// For simplicity, only look at the bonus at the first character position
 	pidx := 0
 	bestPos, bonus, bestBonus := -1, int16(0), int16(-1)
-	for index := 0; index < lenRunes; index++ {
-		index_ := indexAt(index, lenRunes, true)
-		char := text.Get(index_)
+	for index := 0; index < lenInput; index++ {
+		index_ := indexAt(index, lenInput, true)
+		char := input.Get(index_)
 		if char >= 'A' && char <= 'Z' {
 			char += 32
 		} else if char > unicode.MaxASCII {
@@ -198,15 +194,15 @@ func exactMatchNaive(boundaryCheck bool, text util.Chars, pattern []rune) (Resul
 		ok := pchar == char
 		if ok {
 			if pidx_ == 0 {
-				bonus = bonusAt(text, index_)
+				bonus = bonusAt(input, index_)
 			}
 			if boundaryCheck {
 				ok = bonus >= bonusBoundary
 				if ok && pidx_ == 0 {
-					ok = index_ == 0 || charClassOf(text.Get(index_-1)) <= charDelimiter
+					ok = index_ == 0 || charClassOf(input.Get(index_-1)) <= charDelimiter
 				}
 				if ok && pidx_ == len(pattern)-1 {
-					ok = index_ == lenRunes-1 || charClassOf(text.Get(index_+1)) <= charDelimiter
+					ok = index_ == lenInput-1 || charClassOf(input.Get(index_+1)) <= charDelimiter
 				}
 			}
 		}
@@ -233,8 +229,8 @@ func exactMatchNaive(boundaryCheck bool, text util.Chars, pattern []rune) (Resul
 			sidx = bestPos - lenPattern + 1
 			eidx = bestPos + 1
 		} else {
-			sidx = lenRunes - (bestPos + 1)
-			eidx = lenRunes - (bestPos - lenPattern + 1)
+			sidx = lenInput - (bestPos + 1)
+			eidx = lenInput - (bestPos - lenPattern + 1)
 		}
 		return Result{sidx, eidx}, nil
 	}
@@ -319,8 +315,7 @@ func EqualMatch(text util.Chars, pattern []rune) (Result, *[]int) {
 	}
 	match := true
 
-	runes := text.ToRunes()
-	runesStr := string(runes[trimmedLen : len(runes)-trimmedEndLen])
+	runesStr := string(text[trimmedLen : len(text)-trimmedEndLen])
 	runesStr = strings.ToLower(runesStr)
 	match = runesStr == string(pattern)
 

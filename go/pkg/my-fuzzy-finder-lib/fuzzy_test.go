@@ -120,6 +120,12 @@ func TestMatchOne(t *testing.T) {
 			expectedMatch: false,
 			expectedPos:   nil,
 		},
+		"Sandwiched prefix suffix match (this is the only combination that invokes EqualMatch?)": {
+			query:         "^abc$",
+			item:          "abc",
+			expectedMatch: true,
+			expectedPos:   []int{0, 1, 2},
+		},
 		"Inverse match": {
 			query:         "!abc",
 			item:          "def",
