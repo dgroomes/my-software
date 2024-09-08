@@ -96,6 +96,18 @@ func TestMatchOne(t *testing.T) {
 			expectedMatch: false,
 			expectedPos:   nil,
 		},
+		"Exact match with quotes and delimiter chars": {
+			query:         "'abc'",
+			item:          "abc|xyz",
+			expectedMatch: true,
+			expectedPos:   []int{0, 1, 2},
+		},
+		"Exact match with quotes and delimiter chars (no match)": {
+			query:         "'abc'",
+			item:          "abcd|xyz",
+			expectedMatch: false,
+			expectedPos:   nil,
+		},
 		"Prefix match": {
 			query:         "^ab",
 			item:          "abc",
@@ -162,6 +174,36 @@ func TestMatchOne(t *testing.T) {
 			}
 			if !reflect.DeepEqual(positions, tt.expectedPos) {
 				t.Errorf("MatchOne() positions = %v, want %v", positions, tt.expectedPos)
+			}
+		})
+	}
+}
+
+func TestMatchAll(t *testing.T) {
+	tests := map[string]struct {
+		query           string
+		items           []string
+		expectedMatches []Match
+	}{
+		"Single exact match": {
+			query: "abc",
+			items: []string{"abc", "def", "ghi"},
+			expectedMatches: []Match{
+				{Index: 0, Positions: []int{0, 1, 2}},
+			},
+		},
+		"No matches": {
+			query:           "xyz",
+			items:           []string{"abc", "def", "ghi"},
+			expectedMatches: nil,
+		},
+	}
+
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			matches := MatchAll(tt.query, tt.items)
+			if !reflect.DeepEqual(matches, tt.expectedMatches) {
+				t.Errorf("MatchAll() = %v, want %v", matches, tt.expectedMatches)
 			}
 		})
 	}

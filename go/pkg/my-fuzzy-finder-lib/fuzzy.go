@@ -151,8 +151,8 @@ func PrefixMatch(input []rune, pattern []rune) (Result, *[]int) {
 }
 
 // SuffixMatch performs suffix-match
-func SuffixMatch(input Chars, pattern []rune) (Result, *[]int) {
-	lenRunes := input.Length()
+func SuffixMatch(input []rune, pattern []rune) (Result, *[]int) {
+	lenRunes := len(input)
 	trimmedLen := lenRunes
 	if len(pattern) == 0 || !unicode.IsSpace(pattern[len(pattern)-1]) {
 		trimmedLen -= TrailingWhitespaces(input)
@@ -166,7 +166,7 @@ func SuffixMatch(input Chars, pattern []rune) (Result, *[]int) {
 	}
 
 	for index, r := range pattern {
-		char := input.Get(index + diff)
+		char := input[index+diff]
 		char = unicode.ToLower(char)
 		if char != r {
 			return Result{-1, -1}, nil
@@ -212,16 +212,6 @@ func EqualMatch(input []rune, pattern []rune) (Result, *[]int) {
 	return Result{-1, -1}, nil
 }
 
-type Chars []rune
-
-func (chars Chars) Get(i int) rune {
-	return []rune(chars)[i]
-}
-
-func (chars Chars) Length() int {
-	return len(chars)
-}
-
 func LeadingWhitespaces(chars []rune) int {
 	whitespaces := 0
 	for i := 0; i < len(chars); i++ {
@@ -244,12 +234,6 @@ func TrailingWhitespaces(input []rune) int {
 		whitespaces++
 	}
 	return whitespaces
-}
-
-func (chars Chars) CopyRunes(dest []rune, from int) {
-	for idx, b := range chars[from:][:len(dest)] {
-		dest[idx] = b
-	}
 }
 
 type termType int
