@@ -45,39 +45,15 @@ var delimiterChars = "/,:;|"
 
 const whiteChars = " \t\n\v\f\r\x85\xA0"
 
-func indexAt(index int, max int, forward bool) int {
-	if forward {
-		return index
-	}
-	return max - index - 1
-}
-
 // Result contains the results of running a match function.
 type Result struct {
 	Start int
 	End   int
 }
 
-const (
-	scoreMatch = 16
-	// We prefer matches at the beginning of a word, but the bonus should not be
-	// too great to prevent the longer acronym matches from always winning over
-	// shorter fuzzy matches. The bonus point here was specifically chosen that
-	// the bonus is cancelled when the gap between the acronyms grows over
-	// 8 characters, which is approximately the average length of the words found
-	// in web2 dictionary and my file system.
-	bonusBoundary = scoreMatch / 2
-)
-
 var (
-	// Extra bonus for word boundary after whitespace character or beginning of the string
-	bonusBoundaryWhite int16 = bonusBoundary + 2
-
 	// A minor optimization that can give 15%+ performance boost
 	asciiCharClasses [unicode.MaxASCII + 1]charClass
-
-	// A minor optimization that can give yet another 5% performance boost
-	bonusMatrix [charNumber + 1][charNumber + 1]int16
 )
 
 type charClass int
@@ -135,13 +111,6 @@ func charClassOf(char rune) charClass {
 	return charClassOfNonAscii(char)
 }
 
-func bonusAt(input Chars, idx int) int16 {
-	if idx == 0 {
-		return bonusBoundaryWhite
-	}
-	return bonusMatrix[charClassOf(input.Get(idx-1))][charClassOf(input.Get(idx))]
-}
-
 // Algo functions make two assumptions
 type Algo func(input Chars, pattern []rune) (Result, *[]int)
 
@@ -185,15 +154,6 @@ func FuzzyMatch(input Chars, pattern []rune) (Result, *[]int) {
 	return result, &pos
 }
 
-// ExactMatchNaive is a basic string searching algorithm that is case
-// / insensitive. Although naive, it still performs better than the combination
-// of strings.ToLower + strings.Index for typical fzf use cases where input
-// strings and patterns are not very long.
-//
-// Since 0.15.0, this function searches for the match with the highest
-// bonus point, instead of stopping immediately after finding the first match.
-// The solution is much cheaper since there is only one possible alignment of
-// the pattern.
 func ExactMatchNaive(text Chars, pattern []rune) (Result, *[]int) {
 	return exactMatchNaive(false, text, pattern)
 }
@@ -210,61 +170,34 @@ func exactMatchNaive(boundaryCheck bool, input Chars, pattern []rune) (Result, *
 	lenInput := input.Length()
 	lenPattern := len(pattern)
 
-	// For simplicity, only look at the bonus at the first character position
-	pidx := 0
-	bestPos, bonus, bestBonus := -1, int16(0), int16(-1)
 	for index := 0; index < lenInput; index++ {
-		index_ := indexAt(index, lenInput, true)
-		char := input.Get(index_)
-		if char >= 'A' && char <= 'Z' {
-			char += 32
-		} else if char > unicode.MaxASCII {
-			char = unicode.To(unicode.LowerCase, char)
-		}
-		pidx_ := indexAt(pidx, lenPattern, true)
-		pchar := pattern[pidx_]
-		ok := pchar == char
-		if ok {
-			if pidx_ == 0 {
-				bonus = bonusAt(input, index_)
+		pidx := 0
+		ok := true
+		for pidx < lenPattern && index+pidx < lenInput {
+			char := input.Get(index + pidx)
+			if char >= 'A' && char <= 'Z' {
+				char += 32
+			} else if char > unicode.MaxASCII {
+				char = unicode.To(unicode.LowerCase, char)
 			}
-			if boundaryCheck {
-				ok = bonus >= bonusBoundary
-				if ok && pidx_ == 0 {
-					ok = index_ == 0 || charClassOf(input.Get(index_-1)) <= charDelimiter
-				}
-				if ok && pidx_ == len(pattern)-1 {
-					ok = index_ == lenInput-1 || charClassOf(input.Get(index_+1)) <= charDelimiter
-				}
+			pchar := pattern[pidx]
+			if pchar != char {
+				ok = false
+				break
 			}
-		}
-		if ok {
 			pidx++
-			if pidx == lenPattern {
-				if bonus > bestBonus {
-					bestPos, bestBonus = index, bonus
+		}
+		if ok && pidx == lenPattern {
+			if boundaryCheck {
+				if index > 0 && charClassOf(input.Get(index-1)) > charDelimiter {
+					continue
 				}
-				if bonus >= bonusBoundary {
-					break
+				if index+lenPattern < lenInput && charClassOf(input.Get(index+lenPattern)) > charDelimiter {
+					continue
 				}
-				index -= pidx - 1
-				pidx, bonus = 0, 0
 			}
-		} else {
-			index -= pidx
-			pidx, bonus = 0, 0
+			return Result{index, index + lenPattern}, nil
 		}
-	}
-	if bestPos >= 0 {
-		var sidx, eidx int
-		if true {
-			sidx = bestPos - lenPattern + 1
-			eidx = bestPos + 1
-		} else {
-			sidx = lenInput - (bestPos + 1)
-			eidx = lenInput - (bestPos - lenPattern + 1)
-		}
-		return Result{sidx, eidx}, nil
 	}
 	return Result{-1, -1}, nil
 }
