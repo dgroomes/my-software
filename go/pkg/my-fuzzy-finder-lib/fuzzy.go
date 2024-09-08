@@ -250,18 +250,16 @@ const (
 type term struct {
 	typ  termType
 	inv  bool
-	text []rune
+	text string
 }
 
 // String returns the string representation of a term.
 func (t term) String() string {
-	return fmt.Sprintf("term{typ: %d, inv: %v, text: []rune(%q)}", t.typ, t.inv, string(t.text))
+	return fmt.Sprintf("term{typ: %d, inv: %v, text: []rune(%q)}", t.typ, t.inv, t.text)
 }
 
-type termSet []term
-
 // Pattern represents search pattern
-type Pattern []termSet
+type Pattern [][]term
 
 var _splitRegex *regexp.Regexp
 
@@ -279,18 +277,48 @@ func BuildPattern(query string) Pattern {
 	return parseTerms(asString)
 }
 
-func parseTerms(str string) []termSet {
-	str = strings.ReplaceAll(str, "\\ ", "\t")
-	tokens := _splitRegex.Split(str, -1)
-	var sets []termSet
-	set := termSet{}
+// Parse term sets from the query
+//
+// For example, given the query:
+//
+// >	aaa 'bbb ^ccc ddd$ !eee !'fff !^ggg !hhh$ | ^iii$ ^xxx | 'yyy | zzz$ | !ZZZ
+//
+// The parsed term sets would be:
+//
+// >    - Set 1:
+// >        - Term 1: Fuzzy match "aaa"
+// >    - Set 2:
+// >        - Term 1: Match "bbb"
+// >    - Set 3:
+// >        - Term 1: Prefix match "ccc"
+// >    - Set 4:
+// >        - Term 1: Suffix match "ddd"
+// >    - Set 5:
+// >        - Term 1: Inverted match "eee"
+// >    - Set 6:
+// >        - Term 1: Inverted fuzzy match "fff"
+// >    - Set 7:
+// >        - Term 1: Inverted prefix match "ggg"
+// >    - Set 8:
+// >        - Term 1: Inverted suffix match "hhh"
+// >        - Term 2: Equal (?) match "iii" (I still struggle with this one)
+// >    - Set 9:
+// >        - Term 1: Prefix match "xxx"
+// >        - Term 2: Match "yyy"
+// >        - Term 3: Suffix match "zzz"
+// >        - Term 4: Inverted match "ZZZ"
+func parseTerms(query string) [][]term {
+	query = strings.ReplaceAll(query, "\\ ", "\t")
+	tokens := _splitRegex.Split(query, -1)
+	var termSets [][]term
+	var termSet []term
 	switchSet := false
 	afterBar := false
 	for _, token := range tokens {
 		typ, inv, text := termFuzzy, false, strings.ReplaceAll(token, "\t", " ")
 		text = strings.ToLower(text)
 
-		if len(set) > 0 && !afterBar && text == "|" {
+		if len(termSet) > 0 && !afterBar && text == "|" {
 			switchSet = false
 			afterBar = true
 			continue
@@ -330,28 +358,27 @@ func parseTerms(str string) []termSet {
 
 		if len(text) > 0 {
 			if switchSet {
-				sets = append(sets, set)
-				set = termSet{}
+				termSets = append(termSets, termSet)
+				termSet = []term{}
 			}
-			textRunes := []rune(text)
-			set = append(set, term{
+			termSet = append(termSet, term{
 				typ:  typ,
 				inv:  inv,
-				text: textRunes})
+				text: text})
 			switchSet = true
 		}
 	}
-	if len(set) > 0 {
-		sets = append(sets, set)
+	if len(termSet) > 0 {
+		termSets = append(termSets, termSet)
 	}
-	return sets
+	return termSets
 }
 
 func (p Pattern) MatchItem(input string) (bool, []int) {
 	var allPos []int
 	inputRunes := []rune(input)
 	for _, termSet := range p {
-		ok, pos := termSet.match(inputRunes)
+		ok, pos := match(termSet, inputRunes)
 		if !ok {
 			return false, nil
 		}
@@ -362,25 +389,25 @@ func (p Pattern) MatchItem(input string) (bool, []int) {
 	return true, allPos
 }
 
-func (terms termSet) match(input []rune) (bool, []int) {
+func match(termSet []term, input []rune) (bool, []int) {
 	var allPos []int
-	for _, term := range terms {
+	for _, term := range termSet {
 		var res Result
 		var pos *[]int
 
 		switch term.typ {
 		case termFuzzy:
-			res, pos = FuzzyMatch(input, term.text)
+			res, pos = FuzzyMatch(input, []rune(term.text))
 		case termEqual:
-			res, pos = EqualMatch(input, term.text)
+			res, pos = EqualMatch(input, []rune(term.text))
 		case termExact:
-			res, pos = ExactMatch(string(input), term.text, false)
+			res, pos = ExactMatch(string(input), []rune(term.text), false)
 		case termExactBoundary:
-			res, pos = ExactMatch(string(input), term.text, true)
+			res, pos = ExactMatch(string(input), []rune(term.text), true)
 		case termPrefix:
-			res, pos = PrefixMatch(input, term.text)
+			res, pos = PrefixMatch(input, []rune(term.text))
 		case termSuffix:
-			res, pos = SuffixMatch(input, term.text)
+			res, pos = SuffixMatch(input, []rune(term.text))
 		default:
 			panic("Unknown term type: " + term.String())
 		}
