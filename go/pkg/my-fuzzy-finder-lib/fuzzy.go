@@ -9,7 +9,6 @@ import (
 	"slices"
 	"strings"
 	"unicode"
-	"unicode/utf8"
 )
 
 type Match struct {
@@ -47,35 +46,6 @@ var delimiterChars = "/,:;|"
 type Result struct {
 	Start int
 	End   int
-}
-
-type charClass int
-
-const (
-	charWhite charClass = iota
-	charNonWord
-	charDelimiter
-	charLower
-	charUpper
-	charLetter
-	charNumber
-)
-
-func charClassOf(char rune) charClass {
-	if unicode.IsLower(char) {
-		return charLower
-	} else if unicode.IsUpper(char) {
-		return charUpper
-	} else if unicode.IsNumber(char) {
-		return charNumber
-	} else if unicode.IsLetter(char) {
-		return charLetter
-	} else if unicode.IsSpace(char) {
-		return charWhite
-	} else if strings.ContainsRune(delimiterChars, char) {
-		return charDelimiter
-	}
-	return charNonWord
 }
 
 // Algo functions make two assumptions
@@ -121,48 +91,39 @@ func FuzzyMatch(input Chars, pattern []rune) (Result, *[]int) {
 	return result, &pos
 }
 
-func ExactMatchNaive(text Chars, pattern []rune) (Result, *[]int) {
-	return exactMatchNaive(false, text, pattern)
-}
-
-func ExactMatchBoundary(text Chars, pattern []rune) (Result, *[]int) {
-	return exactMatchNaive(true, text, pattern)
-}
-
-func exactMatchNaive(boundaryCheck bool, input Chars, pattern []rune) (Result, *[]int) {
+func ExactMatch(text string, pattern []rune, checkBoundary bool) (Result, *[]int) {
 	if len(pattern) == 0 {
 		return Result{0, 0}, nil
 	}
 
-	lenInput := input.Length()
-	lenPattern := len(pattern)
+	lower := strings.ToLower(text)
+	patternStr := strings.ToLower(string(pattern))
 
-	for index := 0; index < lenInput; index++ {
-		pidx := 0
-		ok := true
-		for pidx < lenPattern && index+pidx < lenInput {
-			char := input.Get(index + pidx)
-			char = unicode.To(unicode.LowerCase, char)
-			pchar := pattern[pidx]
-			if pchar != char {
-				ok = false
-				break
-			}
-			pidx++
-		}
-		if ok && pidx == lenPattern {
-			if boundaryCheck {
-				if index > 0 && charClassOf(input.Get(index-1)) > charDelimiter {
-					continue
+	for i := 0; i < len(lower); i++ {
+		if strings.HasPrefix(lower[i:], patternStr) {
+			if !checkBoundary || (isWordBoundary(text, i) && isWordBoundary(text, i+len(pattern))) {
+				end := i + len(pattern)
+				positions := make([]int, len(pattern))
+				for j := range positions {
+					positions[j] = i + j
 				}
-				if index+lenPattern < lenInput && charClassOf(input.Get(index+lenPattern)) > charDelimiter {
-					continue
-				}
+				return Result{i, end}, &positions
 			}
-			return Result{index, index + lenPattern}, nil
 		}
 	}
+
 	return Result{-1, -1}, nil
+}
+
+func isWordBoundary(text string, index int) bool {
+	if index == 0 || index == len(text) {
+		return true
+	}
+	return isDelimiter(rune(text[index-1])) || isDelimiter(rune(text[index]))
+}
+
+func isDelimiter(char rune) bool {
+	return strings.ContainsRune(delimiterChars, char) || unicode.IsSpace(char)
 }
 
 // PrefixMatch performs prefix-match
@@ -254,17 +215,6 @@ func EqualMatch(text Chars, pattern []rune) (Result, *[]int) {
 }
 
 type Chars []rune
-
-// toChars converts byte array into rune array
-func toChars(bytes []byte) Chars {
-	var runes []rune
-	for i := 0; i < len(bytes); {
-		r, sz := utf8.DecodeRune(bytes[i:])
-		i += sz
-		runes = append(runes, r)
-	}
-	return runes
-}
 
 func (chars Chars) Get(i int) rune {
 	return []rune(chars)[i]
@@ -434,8 +384,7 @@ func parseTerms(str string) []termSet {
 	return sets
 }
 
-func (p Pattern) MatchItem(item string) (bool, []int) {
-	input := toChars([]byte(item))
+func (p Pattern) MatchItem(input string) (bool, []int) {
 	var allPos []int
 	for _, termSet := range p {
 		ok, pos := termSet.match(input)
@@ -449,7 +398,7 @@ func (p Pattern) MatchItem(item string) (bool, []int) {
 	return true, allPos
 }
 
-func (terms termSet) match(input Chars) (bool, []int) {
+func (terms termSet) match(input string) (bool, []int) {
 	var allPos []int
 	for _, term := range terms {
 		var res Result
@@ -457,17 +406,17 @@ func (terms termSet) match(input Chars) (bool, []int) {
 
 		switch term.typ {
 		case termFuzzy:
-			res, pos = FuzzyMatch(input, term.text)
+			res, pos = FuzzyMatch([]rune(input), term.text)
 		case termEqual:
-			res, pos = EqualMatch(input, term.text)
+			res, pos = EqualMatch([]rune(input), term.text)
 		case termExact:
-			res, pos = ExactMatchNaive(input, term.text)
+			res, pos = ExactMatch(input, term.text, false)
 		case termExactBoundary:
-			res, pos = ExactMatchBoundary(input, term.text)
+			res, pos = ExactMatch(input, term.text, true)
 		case termPrefix:
-			res, pos = PrefixMatch(input, term.text)
+			res, pos = PrefixMatch([]rune(input), term.text)
 		case termSuffix:
-			res, pos = SuffixMatch(input, term.text)
+			res, pos = SuffixMatch([]rune(input), term.text)
 		default:
 			panic("Unknown term type: " + term.String())
 		}
