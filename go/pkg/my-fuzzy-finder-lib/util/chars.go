@@ -133,36 +133,6 @@ func (chars *Chars) String() string {
 	return fmt.Sprintf("Chars{slice: []byte(%q), inBytes: %v, trimLengthKnown: %v, trimLength: %d, Index: %d}", chars.slice, chars.inBytes, chars.trimLengthKnown, chars.trimLength, chars.Index)
 }
 
-// TrimLength returns the length after trimming leading and trailing whitespaces
-func (chars *Chars) TrimLength() uint16 {
-	if chars.trimLengthKnown {
-		return chars.trimLength
-	}
-	chars.trimLengthKnown = true
-	var i int
-	len := chars.Length()
-	for i = len - 1; i >= 0; i-- {
-		char := chars.Get(i)
-		if !unicode.IsSpace(char) {
-			break
-		}
-	}
-	// Completely empty
-	if i < 0 {
-		return 0
-	}
-
-	var j int
-	for j = 0; j < len; j++ {
-		char := chars.Get(j)
-		if !unicode.IsSpace(char) {
-			break
-		}
-	}
-	chars.trimLength = AsUint16(i - j + 1)
-	return chars.trimLength
-}
-
 func (chars *Chars) LeadingWhitespaces() int {
 	whitespaces := 0
 	for i := 0; i < chars.Length(); i++ {
@@ -187,18 +157,6 @@ func (chars *Chars) TrailingWhitespaces() int {
 	return whitespaces
 }
 
-func (chars *Chars) TrimTrailingWhitespaces() {
-	whitespaces := chars.TrailingWhitespaces()
-	chars.slice = chars.slice[0 : len(chars.slice)-whitespaces]
-}
-
-func (chars *Chars) ToString() string {
-	if runes := chars.optionalRunes(); runes != nil {
-		return string(runes)
-	}
-	return unsafe.String(unsafe.SliceData(chars.slice), len(chars.slice))
-}
-
 func (chars *Chars) ToRunes() []rune {
 	if runes := chars.optionalRunes(); runes != nil {
 		return runes
@@ -219,95 +177,4 @@ func (chars *Chars) CopyRunes(dest []rune, from int) {
 	for idx, b := range chars.slice[from:][:len(dest)] {
 		dest[idx] = rune(b)
 	}
-}
-
-func (chars *Chars) Prepend(prefix string) {
-	if runes := chars.optionalRunes(); runes != nil {
-		runes = append([]rune(prefix), runes...)
-		chars.slice = *(*[]byte)(unsafe.Pointer(&runes))
-	} else {
-		chars.slice = append([]byte(prefix), chars.slice...)
-	}
-}
-
-func (chars *Chars) Lines(multiLine bool, maxLines int, wrapCols int, wrapSignWidth int, tabstop int) ([][]rune, bool) {
-	text := make([]rune, chars.Length())
-	copy(text, chars.ToRunes())
-
-	lines := [][]rune{}
-	overflow := false
-	if !multiLine {
-		lines = append(lines, text)
-	} else {
-		from := 0
-		for off := 0; off < len(text); off++ {
-			if text[off] == '\n' {
-				lines = append(lines, text[from:off+1]) // Include '\n'
-				from = off + 1
-				if len(lines) >= maxLines {
-					break
-				}
-			}
-		}
-
-		var lastLine []rune
-		if from < len(text) {
-			lastLine = text[from:]
-		}
-
-		overflow = false
-		if len(lines) >= maxLines {
-			overflow = true
-		} else {
-			lines = append(lines, lastLine)
-		}
-	}
-
-	// If wrapping is disabled, we're done
-	if wrapCols == 0 {
-		return lines, overflow
-	}
-
-	wrapped := [][]rune{}
-	for _, line := range lines {
-		// Remove trailing '\n' and remember if it was there
-		newline := len(line) > 0 && line[len(line)-1] == '\n'
-		if newline {
-			line = line[:len(line)-1]
-		}
-
-		for {
-			cols := wrapCols
-			if len(wrapped) > 0 {
-				cols -= wrapSignWidth
-			}
-			_, overflowIdx := RunesWidth(line, 0, tabstop, cols)
-			if overflowIdx >= 0 {
-				// Might be a wide character
-				if overflowIdx == 0 {
-					overflowIdx = 1
-				}
-				if len(wrapped) >= maxLines {
-					return wrapped, true
-				}
-				wrapped = append(wrapped, line[:overflowIdx])
-				line = line[overflowIdx:]
-				continue
-			}
-
-			// Restore trailing '\n'
-			if newline {
-				line = append(line, '\n')
-			}
-
-			if len(wrapped) >= maxLines {
-				return wrapped, true
-			}
-
-			wrapped = append(wrapped, line)
-			break
-		}
-	}
-
-	return wrapped, false
 }

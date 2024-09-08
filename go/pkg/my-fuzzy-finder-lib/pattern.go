@@ -174,7 +174,7 @@ func (p *Pattern) AsString() string {
 	return string(p.text)
 }
 
-// MatchItem returns true if the Item is a match
+// MatchItem returns true if the item is a match
 func (p *Pattern) MatchItem(item string) (bool, []int) {
 	input := util.ToChars([]byte(item))
 	var allPos []int
