@@ -18,6 +18,12 @@ func TestMatchOne(t *testing.T) {
 			expectedMatch: true,
 			expectedPos:   []int{0, 1, 2},
 		},
+		"Non-ASCII characters": {
+			query:         "📚",
+			item:          "Learning 📚 is fun",
+			expectedMatch: true,
+			expectedPos:   []int{9},
+		},
 		"Fuzzy match": {
 			query:         "abc",
 			item:          "a_b_c",

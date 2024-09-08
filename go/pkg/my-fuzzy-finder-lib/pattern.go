@@ -47,12 +47,7 @@ func (t term) String() string {
 type termSet []term
 
 // Pattern represents search pattern
-type Pattern struct {
-	fuzzy    bool
-	text     []rune
-	termSets []termSet
-	sortable bool
-}
+type Pattern []termSet
 
 var _splitRegex *regexp.Regexp
 
@@ -60,8 +55,7 @@ func init() {
 	_splitRegex = regexp.MustCompile(" +")
 }
 
-// BuildPattern builds Pattern object from the given arguments
-func BuildPattern(query string) *Pattern {
+func BuildPattern(query string) Pattern {
 	runes := []rune(query)
 	asString := strings.TrimLeft(string(runes), " ")
 	for strings.HasSuffix(asString, " ") && !strings.HasSuffix(asString, "\\ ") {
@@ -87,13 +81,7 @@ Loop:
 		}
 	}
 
-	ptr := &Pattern{
-		fuzzy:    true,
-		text:     []rune(asString),
-		termSets: termSets,
-		sortable: sortable}
-
-	return ptr
+	return termSets
 }
 
 func parseTerms(str string) []termSet {
@@ -164,26 +152,15 @@ func parseTerms(str string) []termSet {
 	return sets
 }
 
-// IsEmpty returns true if the pattern is effectively empty
-func (p *Pattern) IsEmpty() bool {
-	return len(p.termSets) == 0
-}
-
-// AsString returns the search query in string type
-func (p *Pattern) AsString() string {
-	return string(p.text)
-}
-
-// MatchItem returns true if the item is a match
-func (p *Pattern) MatchItem(item string) (bool, []int) {
+func (p Pattern) MatchItem(item string) (bool, []int) {
 	input := util.ToChars([]byte(item))
 	var allPos []int
-	for _, termSet := range p.termSets {
-		ok, positions := termSet.match(input)
+	for _, termSet := range p {
+		ok, pos := termSet.match(input)
 		if !ok {
 			return false, nil
 		}
-		allPos = append(allPos, positions...)
+		allPos = append(allPos, pos...)
 	}
 
 	slices.Sort(allPos)

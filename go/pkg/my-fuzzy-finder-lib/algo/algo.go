@@ -79,11 +79,6 @@ func init() {
 	}
 }
 
-func posArray(len int) *[]int {
-	pos := make([]int, 0, len)
-	return &pos
-}
-
 func charClassOfNonAscii(char rune) charClass {
 	if unicode.IsLower(char) {
 		return charLower
@@ -120,9 +115,6 @@ type Algo func(input util.Chars, pattern []rune) (Result, *[]int)
 
 func FuzzyMatch(input util.Chars, pattern []rune) (Result, *[]int) {
 	M := len(pattern)
-	if M == 0 {
-		return Result{0, 0}, posArray(M)
-	}
 	N := input.Length()
 	if M > N {
 		return Result{-1, -1}, nil
