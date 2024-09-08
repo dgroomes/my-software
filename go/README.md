@@ -134,5 +134,5 @@ General clean-ups, TODOs and things I wish to implement for this project
 * [x] DONE Case-insensitive
 * [x] DONE Split into `my-fuzzy-finder-lib/` and `my-fuzzy-finder/` packages
 * [x] DONE Tests.
-* [ ] Consider supporting headless mode. But really, `fzf` should be fine for that.
-* [ ] Support/fix the logical OR operator
+* [ ] (Yeah I think I'd like this, just to be able to test, especially for more complex expressions) Consider supporting headless mode. But really, `fzf` should be fine for that.
+* [x] DONE Support/fix the logical OR operator

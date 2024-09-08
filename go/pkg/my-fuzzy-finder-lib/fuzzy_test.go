@@ -156,14 +156,18 @@ func TestMatchOne(t *testing.T) {
 			expectedMatch: true,
 			expectedPos:   []int{0, 1, 2, 2, 4, 9, 10},
 		},
-
-		// Implement/fix OR
-		//"OR operator match": {
-		//	query:         "ello ^a | ^h",
-		//	item:          "hello",
-		//	expectedMatch: true,
-		//	expectedPos:   []int{0, 1, 2, 3, 4},
-		//},
+		"OR operator": {
+			query:         "ello ^a | ^h",
+			item:          "hello",
+			expectedMatch: true,
+			expectedPos:   []int{0, 1, 2, 3, 4},
+		},
+		"Multiple ORs": {
+			query:         "a | b c | d",
+			item:          "ad",
+			expectedMatch: true,
+			expectedPos:   []int{0, 1},
+		},
 	}
 
 	for name, tt := range tests {

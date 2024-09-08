@@ -391,6 +391,7 @@ func (p Pattern) MatchItem(input string) (bool, []int) {
 
 func match(termSet []term, input []rune) (bool, []int) {
 	var allPos []int
+	setMatched := false
 	for _, term := range termSet {
 		var res Result
 		var pos *[]int
@@ -412,11 +413,9 @@ func match(termSet []term, input []rune) (bool, []int) {
 			panic("Unknown term type: " + term.String())
 		}
 
-		matched := res.Start >= 0
-		if matched {
-			if term.inv {
-				return false, nil
-			}
+		termMatched := res.Start >= 0
+		if (termMatched && !term.inv) || (!termMatched && term.inv) {
+			setMatched = true
 			if pos != nil {
 				allPos = append(allPos, *pos...)
 			} else {
@@ -424,13 +423,9 @@ func match(termSet []term, input []rune) (bool, []int) {
 					allPos = append(allPos, idx)
 				}
 			}
-			continue
-		}
-
-		if !term.inv {
-			return false, nil
+			break
 		}
 	}
 
-	return true, allPos
+	return setMatched, allPos
 }
