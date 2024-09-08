@@ -40,7 +40,7 @@ func TestMatchOne(t *testing.T) {
 			query:         "",
 			item:          "abc",
 			expectedMatch: true,
-			expectedPos:   []int{},
+			expectedPos:   nil,
 		},
 		"Empty item": {
 			query:         "abc",
@@ -118,7 +118,7 @@ func TestMatchOne(t *testing.T) {
 			query:         "!abc",
 			item:          "def",
 			expectedMatch: true,
-			expectedPos:   []int{},
+			expectedPos:   nil,
 		},
 		"Inverse match (no match)": {
 			query:         "!abc",

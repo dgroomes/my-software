@@ -5,6 +5,7 @@ package my_fuzzy_finder
 
 import (
 	"fmt"
+	"my-software/pkg/my-fuzzy-finder-lib/util"
 	"regexp"
 	"slices"
 	"strings"
@@ -32,15 +33,6 @@ const (
 	termEqual
 )
 
-var termsToAlgo = map[termType]algo.Algo{
-	termFuzzy:         algo.FuzzyMatch,
-	termEqual:         algo.EqualMatch,
-	termExact:         algo.ExactMatchNaive,
-	termExactBoundary: algo.ExactMatchBoundary,
-	termPrefix:        algo.PrefixMatch,
-	termSuffix:        algo.SuffixMatch,
-}
-
 type term struct {
 	typ  termType
 	inv  bool
@@ -60,7 +52,6 @@ type Pattern struct {
 	text     []rune
 	termSets []termSet
 	sortable bool
-	nth      []Range
 }
 
 var _splitRegex *regexp.Regexp
@@ -184,70 +175,63 @@ func (p *Pattern) AsString() string {
 }
 
 // MatchItem returns true if the Item is a match
-func (p *Pattern) MatchItem(item *Item) (*Result, []Offset, *[]int) {
-	if offsets, bonus, positions := p.extendedMatch(item); len(offsets) == len(p.termSets) {
-		result := buildResult(item, offsets, bonus)
-		slices.Sort(*positions)
-		return &result, offsets, positions
-	}
-	return nil, nil, nil
-}
-
-func (p *Pattern) extendedMatch(item *Item) ([]Offset, int, *[]int) {
-	input := []Token{{text: &item.text, prefixLength: 0}}
-	var offsets []Offset
-	var totalScore int
-	var allPos *[]int
-	allPos = &[]int{}
+func (p *Pattern) MatchItem(item string) (bool, []int) {
+	input := util.ToChars([]byte(item))
+	var allPos []int
 	for _, termSet := range p.termSets {
-		var offset Offset
-		var currentScore int
-		matched := false
-		for _, term := range termSet {
-			pfun := termsToAlgo[term.typ]
-			off, pos := p.iter(pfun, input, term.text)
-			if sidx := off[0]; sidx >= 0 {
-				if term.inv {
-					continue
-				}
-				offset = off
-				matched = true
-				if pos != nil {
-					//goland:noinspection GoDfaNilDereference
-					*allPos = append(*allPos, *pos...)
-				} else {
-					for idx := off[0]; idx < off[1]; idx++ {
-						//goland:noinspection GoDfaNilDereference
-						*allPos = append(*allPos, int(idx))
-					}
-				}
-				break
-			} else if term.inv {
-				offset, currentScore = Offset{0, 0}, 0
-				matched = true
-				continue
-			}
+		ok, positions := termSet.match(input)
+		if !ok {
+			return false, nil
 		}
-		if matched {
-			offsets = append(offsets, offset)
-			totalScore += currentScore
-		}
+		allPos = append(allPos, positions...)
 	}
-	return offsets, totalScore, allPos
+
+	slices.Sort(allPos)
+	return true, allPos
 }
 
-func (p *Pattern) iter(pfun algo.Algo, tokens []Token, pattern []rune) (Offset, *[]int) {
-	for _, part := range tokens {
-		if res, pos := pfun(part.text, pattern); res.Start >= 0 {
-			sidx := int32(res.Start) + part.prefixLength
-			eidx := int32(res.End) + part.prefixLength
+func (terms termSet) match(input util.Chars) (bool, []int) {
+	var allPos []int
+	for _, term := range terms {
+		var res algo.Result
+		var pos *[]int
+
+		switch term.typ {
+		case termFuzzy:
+			res, pos = algo.FuzzyMatch(input, term.text)
+		case termEqual:
+			res, pos = algo.EqualMatch(input, term.text)
+		case termExact:
+			res, pos = algo.ExactMatchNaive(input, term.text)
+		case termExactBoundary:
+			res, pos = algo.ExactMatchBoundary(input, term.text)
+		case termPrefix:
+			res, pos = algo.PrefixMatch(input, term.text)
+		case termSuffix:
+			res, pos = algo.SuffixMatch(input, term.text)
+		default:
+			panic("Unknown term type: " + term.String())
+		}
+
+		matched := res.Start >= 0
+		if matched {
+			if term.inv {
+				return false, nil
+			}
 			if pos != nil {
-				for idx := range *pos {
-					(*pos)[idx] += int(part.prefixLength)
+				allPos = append(allPos, *pos...)
+			} else {
+				for idx := res.Start; idx < res.End; idx++ {
+					allPos = append(allPos, idx)
 				}
 			}
-			return Offset{sidx, eidx}, pos
+			continue
+		}
+
+		if !term.inv {
+			return false, nil
 		}
 	}
-	return Offset{-1, -1}, nil
+
+	return true, allPos
 }

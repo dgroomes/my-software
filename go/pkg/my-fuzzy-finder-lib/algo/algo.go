@@ -108,7 +108,7 @@ func charClassOf(char rune) charClass {
 	return charClassOfNonAscii(char)
 }
 
-func bonusAt(input *util.Chars, idx int) int16 {
+func bonusAt(input util.Chars, idx int) int16 {
 	if idx == 0 {
 		return bonusBoundaryWhite
 	}
@@ -116,9 +116,9 @@ func bonusAt(input *util.Chars, idx int) int16 {
 }
 
 // Algo functions make two assumptions
-type Algo func(input *util.Chars, pattern []rune) (Result, *[]int)
+type Algo func(input util.Chars, pattern []rune) (Result, *[]int)
 
-func FuzzyMatch(input *util.Chars, pattern []rune) (Result, *[]int) {
+func FuzzyMatch(input util.Chars, pattern []rune) (Result, *[]int) {
 	M := len(pattern)
 	if M == 0 {
 		return Result{0, 0}, posArray(M)
@@ -170,15 +170,15 @@ func FuzzyMatch(input *util.Chars, pattern []rune) (Result, *[]int) {
 // bonus point, instead of stopping immediately after finding the first match.
 // The solution is much cheaper since there is only one possible alignment of
 // the pattern.
-func ExactMatchNaive(text *util.Chars, pattern []rune) (Result, *[]int) {
+func ExactMatchNaive(text util.Chars, pattern []rune) (Result, *[]int) {
 	return exactMatchNaive(false, text, pattern)
 }
 
-func ExactMatchBoundary(text *util.Chars, pattern []rune) (Result, *[]int) {
+func ExactMatchBoundary(text util.Chars, pattern []rune) (Result, *[]int) {
 	return exactMatchNaive(true, text, pattern)
 }
 
-func exactMatchNaive(boundaryCheck bool, text *util.Chars, pattern []rune) (Result, *[]int) {
+func exactMatchNaive(boundaryCheck bool, text util.Chars, pattern []rune) (Result, *[]int) {
 	if len(pattern) == 0 {
 		return Result{0, 0}, nil
 	}
@@ -250,7 +250,7 @@ func exactMatchNaive(boundaryCheck bool, text *util.Chars, pattern []rune) (Resu
 }
 
 // PrefixMatch performs prefix-match
-func PrefixMatch(text *util.Chars, pattern []rune) (Result, *[]int) {
+func PrefixMatch(text util.Chars, pattern []rune) (Result, *[]int) {
 	if len(pattern) == 0 {
 		return Result{0, 0}, nil
 	}
@@ -276,7 +276,7 @@ func PrefixMatch(text *util.Chars, pattern []rune) (Result, *[]int) {
 }
 
 // SuffixMatch performs suffix-match
-func SuffixMatch(text *util.Chars, pattern []rune) (Result, *[]int) {
+func SuffixMatch(text util.Chars, pattern []rune) (Result, *[]int) {
 	lenRunes := text.Length()
 	trimmedLen := lenRunes
 	if len(pattern) == 0 || !unicode.IsSpace(pattern[len(pattern)-1]) {
@@ -304,7 +304,7 @@ func SuffixMatch(text *util.Chars, pattern []rune) (Result, *[]int) {
 }
 
 // EqualMatch performs equal-match
-func EqualMatch(text *util.Chars, pattern []rune) (Result, *[]int) {
+func EqualMatch(text util.Chars, pattern []rune) (Result, *[]int) {
 	lenPattern := len(pattern)
 	if lenPattern == 0 {
 		return Result{-1, -1}, nil
