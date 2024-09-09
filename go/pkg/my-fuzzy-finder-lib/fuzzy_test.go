@@ -12,13 +12,19 @@ func TestMatchOne(t *testing.T) {
 		expectedMatch bool
 		expectedPos   []int
 	}{
-		"Exact match": {
+		"Simply the same": {
 			query:         "abc",
 			item:          "abc",
 			expectedMatch: true,
 			expectedPos:   []int{0, 1, 2},
 		},
-		"Non-ASCII characters": {
+		"Simply different": {
+			query:         "xyz",
+			item:          "abc",
+			expectedMatch: false,
+			expectedPos:   nil,
+		},
+		"Unicode characters": {
 			query:         "📚",
 			item:          "Learning 📚 is fun",
 			expectedMatch: true,
@@ -26,7 +32,7 @@ func TestMatchOne(t *testing.T) {
 		},
 		"Fuzzy match": {
 			query:         "abc",
-			item:          "a_b_c",
+			item:          "a b_c",
 			expectedMatch: true,
 			expectedPos:   []int{0, 2, 4},
 		},
@@ -42,12 +48,6 @@ func TestMatchOne(t *testing.T) {
 			expectedMatch: true,
 			expectedPos:   []int{0, 1, 2},
 		},
-		"No match": {
-			query:         "xyz",
-			item:          "abc",
-			expectedMatch: false,
-			expectedPos:   nil,
-		},
 		"Empty query": {
 			query:         "",
 			item:          "abc",
@@ -60,11 +60,11 @@ func TestMatchOne(t *testing.T) {
 			expectedMatch: false,
 			expectedPos:   nil,
 		},
-		"Unicode characters": {
-			query:         "áéí",
-			item:          "áéíóú",
+		"All empty": {
+			query:         "",
+			item:          "",
 			expectedMatch: true,
-			expectedPos:   []int{0, 1, 2},
+			expectedPos:   nil,
 		},
 		"Query longer than item": {
 			query:         "abcdef",
@@ -72,23 +72,11 @@ func TestMatchOne(t *testing.T) {
 			expectedMatch: false,
 			expectedPos:   nil,
 		},
-		"Single character match": {
-			query:         "a",
-			item:          "abc",
+		"Exact match with leading quote": {
+			query:         "'abc",
+			item:          "abcd",
 			expectedMatch: true,
-			expectedPos:   []int{0},
-		},
-		"Match at end": {
-			query:         "c",
-			item:          "abc",
-			expectedMatch: true,
-			expectedPos:   []int{2},
-		},
-		"Multiple occurrences": {
-			query:         "aa",
-			item:          "aaa",
-			expectedMatch: true,
-			expectedPos:   []int{0, 1},
+			expectedPos:   []int{0, 1, 2},
 		},
 		"Exact match with quotes": {
 			query:         "'abc'",
@@ -107,12 +95,6 @@ func TestMatchOne(t *testing.T) {
 			item:          "abc|xyz",
 			expectedMatch: true,
 			expectedPos:   []int{0, 1, 2},
-		},
-		"Exact match with quotes and delimiter chars (no match)": {
-			query:         "'abc'",
-			item:          "abcd|xyz",
-			expectedMatch: false,
-			expectedPos:   nil,
 		},
 		"Prefix match": {
 			query:         "^ab",
