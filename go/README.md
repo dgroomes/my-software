@@ -138,5 +138,5 @@ General clean-ups, TODOs and things I wish to implement for this project
 * [ ] (Yeah I think I'd like this, just to be able to test, especially for more complex expressions) Consider supporting headless mode. But really, `fzf` should be fine for that.
 * [x] DONE Support/fix the logical OR operator
 * [x] DONE Can the algo be agnostic of case sensitivity?
-* [ ] What's up with whitespace handling?
+* [x] DONE What's up with whitespace handling?
 * [x] DONE Less pre-slicing

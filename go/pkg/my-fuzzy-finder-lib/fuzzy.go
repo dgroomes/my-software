@@ -75,113 +75,28 @@ func isDelimiter(char rune) bool {
 	return strings.ContainsRune(delimiterChars, char) || unicode.IsSpace(char)
 }
 
-// PrefixMatch performs prefix-match
-func PrefixMatch(input []rune, pattern []rune) (bool, []int) {
-	if len(pattern) == 0 {
-		return true, nil
+func PrefixMatch(input string, pattern string) (bool, []int) {
+	if strings.HasPrefix(input, pattern) {
+		return true, offsetsToPositions(0, len(pattern))
 	}
 
-	trimmedLen := 0
-	if !unicode.IsSpace(pattern[0]) {
-		trimmedLen = LeadingWhitespaces(input)
-	}
-
-	if len(input)-trimmedLen < len(pattern) {
-		return false, nil
-	}
-
-	for index, expected := range pattern {
-		found := input[trimmedLen+index]
-		if found != expected {
-			return false, nil
-		}
-	}
-	lenPattern := len(pattern)
-	positions := offsetsToPositions(trimmedLen, trimmedLen+lenPattern)
-	return true, positions
-}
-
-// SuffixMatch performs suffix-match
-func SuffixMatch(input []rune, pattern []rune) (bool, []int) {
-	lenRunes := len(input)
-	trimmedLen := lenRunes
-	if len(pattern) == 0 || !unicode.IsSpace(pattern[len(pattern)-1]) {
-		trimmedLen -= TrailingWhitespaces(input)
-	}
-	diff := trimmedLen - len(pattern)
-	if diff < 0 {
-		return false, nil
-	}
-
-	for index, expected := range pattern {
-		actual := input[index+diff]
-		if actual != expected {
-			return false, nil
-		}
-	}
-	lenPattern := len(pattern)
-	sidx := trimmedLen - lenPattern
-	eidx := trimmedLen
-	positions := offsetsToPositions(sidx, eidx)
-	return true, positions
-}
-
-// EqualMatch performs equal-match
-func EqualMatch(input []rune, pattern []rune) (bool, []int) {
-	lenPattern := len(pattern)
-	if lenPattern == 0 {
-		return false, nil
-	}
-
-	// Strip leading whitespaces
-	trimmedLen := 0
-	if !unicode.IsSpace(pattern[0]) {
-		trimmedLen = LeadingWhitespaces(input)
-	}
-
-	// Strip trailing whitespaces
-	trimmedEndLen := 0
-	if !unicode.IsSpace(pattern[lenPattern-1]) {
-		trimmedEndLen = TrailingWhitespaces(input)
-	}
-
-	if len(input)-trimmedLen-trimmedEndLen != lenPattern {
-		return false, nil
-	}
-	match := true
-
-	runesStr := string(input[trimmedLen : len(input)-trimmedEndLen])
-	match = runesStr == string(pattern)
-
-	if match {
-		positions := offsetsToPositions(trimmedLen, trimmedLen+lenPattern)
-		return true, positions
-	}
 	return false, nil
 }
 
-func LeadingWhitespaces(chars []rune) int {
-	whitespaces := 0
-	for i := 0; i < len(chars); i++ {
-		char := chars[i]
-		if !unicode.IsSpace(char) {
-			break
-		}
-		whitespaces++
+func SuffixMatch(input string, pattern string) (bool, []int) {
+	if strings.HasSuffix(input, pattern) {
+		start := len(input) - len(pattern)
+		return true, offsetsToPositions(start, len(input))
 	}
-	return whitespaces
+
+	return false, nil
 }
 
-func TrailingWhitespaces(input []rune) int {
-	whitespaces := 0
-	for i := len(input) - 1; i >= 0; i-- {
-		char := input[i]
-		if !unicode.IsSpace(char) {
-			break
-		}
-		whitespaces++
+func EqualMatch(input string, pattern string) (bool, []int) {
+	if input == pattern {
+		return true, offsetsToPositions(0, len(input))
 	}
-	return whitespaces
+	return false, nil
 }
 
 type termType int
@@ -348,15 +263,15 @@ func match(termSet []term, input string) (bool, []int) {
 		case termFuzzy:
 			matched, pos = FuzzyMatch([]rune(input), []rune(term.text))
 		case termEqual:
-			matched, pos = EqualMatch([]rune(input), []rune(term.text))
+			matched, pos = EqualMatch(input, term.text)
 		case termExact:
 			matched, pos = ExactMatch(input, []rune(term.text), false)
 		case termExactBoundary:
 			matched, pos = ExactMatch(input, []rune(term.text), true)
 		case termPrefix:
-			matched, pos = PrefixMatch([]rune(input), []rune(term.text))
+			matched, pos = PrefixMatch(input, term.text)
 		case termSuffix:
-			matched, pos = SuffixMatch([]rune(input), []rune(term.text))
+			matched, pos = SuffixMatch(input, term.text)
 		default:
 			panic("Unknown term type: " + term.String())
 		}
@@ -372,10 +287,9 @@ func match(termSet []term, input string) (bool, []int) {
 }
 
 func offsetsToPositions(start, end int) []int {
-	length := end - start
-	positions := make([]int, length)
-	for i := 0; i < length; i++ {
-		positions[i-0] = start + i
+	positions := make([]int, end-start)
+	for i := range positions {
+		positions[i] = start + i
 	}
 	return positions
 }
