@@ -62,8 +62,8 @@ type model struct {
 	cursor                 cursor.Model
 	height                 int
 	item                   int
-	matches                []fz.Match
-	pages                  [][]fz.Match
+	matches                []Match
+	pages                  [][]Match
 	page                   int
 	pageItem               int
 	completedWithSelection bool
@@ -170,7 +170,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					// From a TUI perspective, this is a "dirty programming pattern" because this is a relatively slow
 					// operation, and we're doing it on the UI thread. You are "supposed" to use a Go routine and
 					//message passing. But in practice, it's exactly what I want.
-					matches := fz.MatchAll(m.input.Value(), allItems)
+					matches := MatchAll(m.input.Value(), allItems)
 					m.matches = matches
 				}
 				return pageReflow(m), tea.Batch(cmds...)
@@ -209,11 +209,11 @@ func (m model) FilterValue() string {
 //
 // This function also re-calculates the selected item and the page/page-item cursors.
 func pageReflow(m model) model {
-	var matches []fz.Match
+	var matches []Match
 	if m.input.Value() == "" {
 		log.Println("No input. Create fake matches for all items so that the pages can get created.")
-		matches = Map(allItems, func(item string, i int) fz.Match {
-			return fz.Match{Index: i}
+		matches = Map(allItems, func(item string, i int) Match {
+			return Match{Index: i}
 		})
 	} else {
 		if len(m.matches) == 0 {
@@ -235,8 +235,8 @@ func pageReflow(m model) model {
 	availHeight -= titleHeight
 	log.Printf("[pageReflow] titleHeight=%d availHeight=%d\n", titleHeight, availHeight)
 
-	pages := make([][]fz.Match, 0)
-	page := make([]fz.Match, 0)
+	pages := make([][]Match, 0)
+	page := make([]Match, 0)
 	heightBudget := availHeight
 
 	prevItem := m.item
@@ -247,7 +247,7 @@ func pageReflow(m model) model {
 		if itemHeight > heightBudget {
 			// We need to spill over to a new page. Complete the page we were working on.
 			pages = append(pages, page)
-			page = make([]fz.Match, 0)
+			page = make([]Match, 0)
 			heightBudget = availHeight // TODO handle when an item is larger than a whole page.
 		}
 
@@ -482,4 +482,24 @@ func underlineMatches(str string, matchedPositions []int, style lipgloss.Style) 
 	}
 
 	return out.String()
+}
+
+func MatchAll(query string, items []string) []Match {
+	pattern := fz.BuildPattern(query)
+	var matches []Match
+
+	for i, item := range items {
+		if ok, positions := pattern.MatchItem(item); ok {
+			matches = append(matches, Match{
+				Index:     i,
+				Positions: positions,
+			})
+		}
+	}
+	return matches
+}
+
+type Match struct {
+	Index     int
+	Positions []int
 }

@@ -178,42 +178,12 @@ func TestMatchOne(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			matched, positions := MatchOne(tt.query, tt.item)
+			matched, positions := Match(tt.query, tt.item)
 			if matched != tt.expectedMatch {
-				t.Errorf("MatchOne() matched = %v, want %v", matched, tt.expectedMatch)
+				t.Errorf("Match() matched = %v, want %v", matched, tt.expectedMatch)
 			}
 			if !reflect.DeepEqual(positions, tt.expectedPos) {
-				t.Errorf("MatchOne() positions = %v, want %v", positions, tt.expectedPos)
-			}
-		})
-	}
-}
-
-func TestMatchAll(t *testing.T) {
-	tests := map[string]struct {
-		query           string
-		items           []string
-		expectedMatches []Match
-	}{
-		"Single exact match": {
-			query: "abc",
-			items: []string{"abc", "def", "ghi"},
-			expectedMatches: []Match{
-				{Index: 0, Positions: []int{0, 1, 2}},
-			},
-		},
-		"No matches": {
-			query:           "xyz",
-			items:           []string{"abc", "def", "ghi"},
-			expectedMatches: nil,
-		},
-	}
-
-	for name, tt := range tests {
-		t.Run(name, func(t *testing.T) {
-			matches := MatchAll(tt.query, tt.items)
-			if !reflect.DeepEqual(matches, tt.expectedMatches) {
-				t.Errorf("MatchAll() = %v, want %v", matches, tt.expectedMatches)
+				t.Errorf("Match() positions = %v, want %v", positions, tt.expectedPos)
 			}
 		})
 	}

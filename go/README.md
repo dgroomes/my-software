@@ -139,4 +139,4 @@ General clean-ups, TODOs and things I wish to implement for this project
 * [x] DONE Support/fix the logical OR operator
 * [x] DONE Can the algo be agnostic of case sensitivity?
 * [ ] What's up with whitespace handling?
-* [ ] Less pre-slicing
+* [x] DONE Less pre-slicing
