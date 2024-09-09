@@ -135,7 +135,7 @@ General clean-ups, TODOs and things I wish to implement for this project
 * [x] DONE Case-insensitive
 * [x] DONE Split into `my-fuzzy-finder-lib/` and `my-fuzzy-finder/` packages
 * [x] DONE Tests.
-* [ ] (Yeah I think I'd like this, just to be able to test, especially for more complex expressions) Consider supporting headless mode. But really, `fzf` should be fine for that.
+* [x] SKIP (Update: well I don't want to deal with multiple outputs) Yeah I think I'd like this, just to be able to test, especially for more complex expressions) Consider supporting headless mode. But really, `fzf` should be fine for that.
 * [x] DONE Support/fix the logical OR operator
 * [x] DONE Can the algo be agnostic of case sensitivity?
 * [x] DONE What's up with whitespace handling?

@@ -81,13 +81,6 @@ func ContainsMatch(input string, pattern string) (bool, []int) {
 	return true, offsetsToPositions(start, start+len(pattern))
 }
 
-func isWordBoundary(text string, index int) bool {
-	if index == 0 || index == len(text) {
-		return true
-	}
-	return isDelimiter(rune(text[index-1])) || isDelimiter(rune(text[index]))
-}
-
 func isDelimiter(char rune) bool {
 	return strings.ContainsRune("/,:;|", char) || unicode.IsSpace(char)
 }
