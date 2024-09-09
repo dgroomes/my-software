@@ -72,41 +72,8 @@ func WordMatch(input string, pattern string) (bool, []int) {
 	return true, offsetsToPositions(m, end)
 }
 
-func ContainsMatch(input string, pattern string) (bool, []int) {
-	start := strings.Index(input, pattern)
-	if start == -1 {
-		return false, nil
-	}
-
-	return true, offsetsToPositions(start, start+len(pattern))
-}
-
 func isDelimiter(char rune) bool {
 	return strings.ContainsRune("/,:;|", char) || unicode.IsSpace(char)
-}
-
-func PrefixMatch(input string, pattern string) (bool, []int) {
-	if strings.HasPrefix(input, pattern) {
-		return true, offsetsToPositions(0, len(pattern))
-	}
-
-	return false, nil
-}
-
-func SuffixMatch(input string, pattern string) (bool, []int) {
-	if strings.HasSuffix(input, pattern) {
-		start := len(input) - len(pattern)
-		return true, offsetsToPositions(start, len(input))
-	}
-
-	return false, nil
-}
-
-func SameMatch(input string, pattern string) (bool, []int) {
-	if input == pattern {
-		return true, offsetsToPositions(0, len(input))
-	}
-	return false, nil
 }
 
 type termType int
@@ -129,12 +96,6 @@ type term struct {
 // String returns the string representation of a term.
 func (t term) String() string {
 	return fmt.Sprintf("term{typ: %d, inv: %v, text: []rune(%q)}", t.typ, t.inv, t.text)
-}
-
-var _splitRegex *regexp.Regexp
-
-func init() {
-	_splitRegex = regexp.MustCompile(" +")
 }
 
 // Parse term sets from the query
@@ -169,7 +130,7 @@ func init() {
 // >        - Term 4: Inverted match "ZZZ"
 func parseTerms(query string) [][]term {
 	query = strings.ReplaceAll(query, "\\ ", "\t")
-	tokens := _splitRegex.Split(query, -1)
+	tokens := regexp.MustCompile(" +").Split(query, -1)
 	var termSets [][]term
 	var termSet []term
 	switchSet := false
@@ -259,15 +220,29 @@ func match(termSet []term, input string) (bool, []int) {
 		case termFuzzy:
 			matched, pos = FuzzyMatch([]rune(input), []rune(term.text))
 		case termSame:
-			matched, pos = SameMatch(input, term.text)
+			if input == term.text {
+				matched = true
+				pos = offsetsToPositions(0, len(input))
+			}
 		case termContains:
-			matched, pos = ContainsMatch(input, term.text)
+			start := strings.Index(input, term.text)
+			if start >= 0 {
+				matched = true
+				pos = offsetsToPositions(start, start+len(term.text))
+			}
 		case termWord:
 			matched, pos = WordMatch(input, term.text)
 		case termPrefix:
-			matched, pos = PrefixMatch(input, term.text)
+			if strings.HasPrefix(input, term.text) {
+				matched = true
+				pos = offsetsToPositions(0, len(term.text))
+			}
 		case termSuffix:
-			matched, pos = SuffixMatch(input, term.text)
+			if strings.HasSuffix(input, term.text) {
+				matched = true
+				start := len(input) - len(term.text)
+				pos = offsetsToPositions(start, len(input))
+			}
 		default:
 			panic("Unknown term type: " + term.String())
 		}

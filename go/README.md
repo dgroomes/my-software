@@ -115,7 +115,7 @@ General clean-ups, TODOs and things I wish to implement for this project
     * (partially done) Pare down (inline) styles
 * [x] DONE Re-use the `textinput` Bubbles component and in general compress the code 
 * [x] DONE (fixed/obsoleted by other refactoring) Re-size defect. When resizing and then moving the cursor, the program panics.
-* [ ] Consider ranking "exact matches" before fuzzy matches? If I type "rea" I want to see "README.md" appear before
+* [ ] SKIP (no, I'm not doing any scoring/bonus at all) Consider ranking "exact matches" before fuzzy matches? If I type "rea" I want to see "README.md" appear before
   "gradlew.bat".
 * [x] DONE Support multi-line
 * [x] OBSOLETE (Somehow resolved on itself. Not sure why) Support special (longer unicode?) characters like `°` in the underline highlighting.
