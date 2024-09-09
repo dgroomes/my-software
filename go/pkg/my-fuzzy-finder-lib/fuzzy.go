@@ -11,6 +11,20 @@ import (
 	"unicode"
 )
 
+// Pattern represents search pattern
+type Pattern [][]term
+
+func BuildPattern(query string) Pattern {
+	query = strings.ToLower(query)
+	runes := []rune(query)
+	asString := strings.TrimLeft(string(runes), " ")
+	for strings.HasSuffix(asString, " ") && !strings.HasSuffix(asString, "\\ ") {
+		asString = asString[:len(asString)-1]
+	}
+
+	return parseTerms(asString)
+}
+
 func Match(query string, item string) (bool, []int) {
 	pattern := BuildPattern(query)
 	if ok, positions := pattern.MatchItem(item); ok {
@@ -19,8 +33,6 @@ func Match(query string, item string) (bool, []int) {
 
 	return false, nil
 }
-
-var delimiterChars = "/,:;|"
 
 func FuzzyMatch(input []rune, pattern []rune) (bool, []int) {
 	var found []int
@@ -44,24 +56,29 @@ func FuzzyMatch(input []rune, pattern []rune) (bool, []int) {
 	return true, found
 }
 
-func ExactMatch(input string, pattern []rune, checkBoundary bool) (bool, []int) {
-	if len(pattern) == 0 {
-		return true, nil
+func WordMatch(input string, pattern string) (bool, []int) {
+	m := strings.Index(input, pattern)
+	if m == -1 {
+		return false, nil
 	}
 
-	patternStr := string(pattern)
+	inputRunes := []rune(input)
 
-	for i := 0; i < len(input); i++ {
-		if strings.HasPrefix(input[i:], patternStr) {
-			if !checkBoundary || (isWordBoundary(input, i) && isWordBoundary(input, i+len(pattern))) {
-				end := i + len(pattern)
-				positions := offsetsToPositions(i, end)
-				return true, positions
-			}
-		}
+	end := m + len(pattern)
+	if (m > 0 && !isDelimiter(inputRunes[m])) || (end < len(input) && !isDelimiter(inputRunes[end])) {
+		return false, nil
 	}
 
-	return false, nil
+	return true, offsetsToPositions(m, end)
+}
+
+func ContainsMatch(input string, pattern string) (bool, []int) {
+	start := strings.Index(input, pattern)
+	if start == -1 {
+		return false, nil
+	}
+
+	return true, offsetsToPositions(start, start+len(pattern))
 }
 
 func isWordBoundary(text string, index int) bool {
@@ -72,7 +89,7 @@ func isWordBoundary(text string, index int) bool {
 }
 
 func isDelimiter(char rune) bool {
-	return strings.ContainsRune(delimiterChars, char) || unicode.IsSpace(char)
+	return strings.ContainsRune("/,:;|", char) || unicode.IsSpace(char)
 }
 
 func PrefixMatch(input string, pattern string) (bool, []int) {
@@ -92,7 +109,7 @@ func SuffixMatch(input string, pattern string) (bool, []int) {
 	return false, nil
 }
 
-func EqualMatch(input string, pattern string) (bool, []int) {
+func SameMatch(input string, pattern string) (bool, []int) {
 	if input == pattern {
 		return true, offsetsToPositions(0, len(input))
 	}
@@ -103,11 +120,11 @@ type termType int
 
 const (
 	termFuzzy termType = iota
-	termExact
-	termExactBoundary
+	termContains
+	termWord
 	termPrefix
 	termSuffix
-	termEqual
+	termSame
 )
 
 type term struct {
@@ -121,24 +138,10 @@ func (t term) String() string {
 	return fmt.Sprintf("term{typ: %d, inv: %v, text: []rune(%q)}", t.typ, t.inv, t.text)
 }
 
-// Pattern represents search pattern
-type Pattern [][]term
-
 var _splitRegex *regexp.Regexp
 
 func init() {
 	_splitRegex = regexp.MustCompile(" +")
-}
-
-func BuildPattern(query string) Pattern {
-	query = strings.ToLower(query)
-	runes := []rune(query)
-	asString := strings.TrimLeft(string(runes), " ")
-	for strings.HasSuffix(asString, " ") && !strings.HasSuffix(asString, "\\ ") {
-		asString = asString[:len(asString)-1]
-	}
-
-	return parseTerms(asString)
 }
 
 // Parse term sets from the query
@@ -190,7 +193,7 @@ func parseTerms(query string) [][]term {
 
 		if strings.HasPrefix(text, "!") {
 			inv = true
-			typ = termExact
+			typ = termContains
 			text = text[1:]
 		}
 
@@ -200,19 +203,19 @@ func parseTerms(query string) [][]term {
 		}
 
 		if len(text) > 2 && strings.HasPrefix(text, "'") && strings.HasSuffix(text, "'") {
-			typ = termExactBoundary
+			typ = termWord
 			text = text[1 : len(text)-1]
 		} else if strings.HasPrefix(text, "'") {
 			// Flip exactness
 			if !inv {
-				typ = termExact
+				typ = termContains
 			} else {
 				typ = termFuzzy
 			}
 			text = text[1:]
 		} else if strings.HasPrefix(text, "^") {
 			if typ == termSuffix {
-				typ = termEqual
+				typ = termSame
 			} else {
 				typ = termPrefix
 			}
@@ -262,12 +265,12 @@ func match(termSet []term, input string) (bool, []int) {
 		switch term.typ {
 		case termFuzzy:
 			matched, pos = FuzzyMatch([]rune(input), []rune(term.text))
-		case termEqual:
-			matched, pos = EqualMatch(input, term.text)
-		case termExact:
-			matched, pos = ExactMatch(input, []rune(term.text), false)
-		case termExactBoundary:
-			matched, pos = ExactMatch(input, []rune(term.text), true)
+		case termSame:
+			matched, pos = SameMatch(input, term.text)
+		case termContains:
+			matched, pos = ContainsMatch(input, term.text)
+		case termWord:
+			matched, pos = WordMatch(input, term.text)
 		case termPrefix:
 			matched, pos = PrefixMatch(input, term.text)
 		case termSuffix:

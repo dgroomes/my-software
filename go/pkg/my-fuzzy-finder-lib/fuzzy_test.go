@@ -120,7 +120,7 @@ func TestMatchOne(t *testing.T) {
 			expectedMatch: false,
 			expectedPos:   nil,
 		},
-		"Sandwiched prefix suffix match (this is the only combination that invokes EqualMatch?)": {
+		"Full same": {
 			query:         "^abc$",
 			item:          "abc",
 			expectedMatch: true,
