@@ -140,3 +140,5 @@ General clean-ups, TODOs and things I wish to implement for this project
 * [x] DONE Can the algo be agnostic of case sensitivity?
 * [x] DONE What's up with whitespace handling?
 * [x] DONE Less pre-slicing
+* [ ] idea: posix-nushell-compatibility-checker. For prototypical commands (command plus string args) I don't want the
+  noise of the Nu raw string. Just allow the original command to exist. 
