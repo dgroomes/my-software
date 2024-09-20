@@ -4,6 +4,7 @@
 source ([$nu.default-config-dir core.nu] | path join)
 
 source ([$nu.default-config-dir atuin.nu] | path join)
+source ([$nu.default-config-dir misc.nu] | path join)
 source ([$nu.default-config-dir node.nu] | path join)
 source ([$nu.default-config-dir nu-scripts-sourcer.nu] | path join)
 source ([$nu.default-config-dir open-jdk.nu] | path join)
@@ -44,7 +45,7 @@ export alias cdr = cd-repo
 
 # Copy the last command to the clipboard
 export def cp-last-cmd [] {
-    history | last | get command | pbcopy
+    history | last 2 | first | get command | pbcopy
 }
 
 # Switch to the default branch and pull.
@@ -756,7 +757,7 @@ export def is-text-file [file_name?: string --print] [string -> bool, nothing ->
 }
 
 
-# Upgrade the Gradle wrapper in the given directory and its subdirectories.
+# Upgrade the Gradle wrapper in the current directory and subdirectories.
 #
 # This function searches for Gradle projects in the current directory and subdirectories. It upgrades the Gradle wrapper
 # in each project to the specified version.
@@ -764,7 +765,7 @@ export def upgrade-gradle-wrapper [gradle_version: string = "8.10"  --depth: int
     let gradle_wrapper_files = glob --depth $depth **/gradlew
 
     if ($gradle_wrapper_files | is-empty) {
-        print $"No Gradle projects found in '($directory)' or subdirectories at a depth of ($depth)."
+        print $"No Gradle projects found here or in subdirectories at a depth of ($depth)."
         return
     }
 
