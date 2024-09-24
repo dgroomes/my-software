@@ -745,7 +745,10 @@ export def is-text-file [file_name?: string --print] [string -> bool, nothing ->
     # that's an always growing list of stuff.
 
     try {
-        open --raw $_file_name | str stats
+        # Around the time I upgraded to Nushell 0.98.0, the 'str stats' result started printing in the shell. This is odd
+        # because the overall 'is-text-file' command returns either false or true. A command should only cause something
+        # to render in the shell if its printed or its the return/output of the command, right? So I'm using 'ignore' now.
+        open --raw $_file_name | str stats | ignore
     } catch {
         if $print {
             print $"'($_file_name)' is not a text file."

@@ -451,25 +451,7 @@ General clean-ups, TODOs and things I wish to implement for this project
 * [ ] Consider restoring (at `b3154dde` and before) my Postgres-related Bash functions. These were hard fought and useful. Maybe reimplement in
   Nushell. Alternatively, I often use Postgres in Docker. But still. (Same is true of the Mongo functions but not sure
   how much I'll ever use Mongo again.)
-* [ ] (SKIP: virtual environments satisfy Python version switching) Python SDK management. Don't bother with custom formula. Just use the core ones, which already include
-  3.9, 3.10, 3.11 and 3.12. That's perfect. UPDATE: I think Python switching is not as necessary as Java or Node.js
-  switching because we often use virtual environments. So, in a Python project, you typically activate its virtual env
-  and that's your way of switching Python versions. And for one-off scripts, would I just be using the latest Python
-  anyway? I'm going to skip this for now.
-* [x] DONE Node.js SDK management (I think this should be totally feasible since I figured this out with OpenJDK and am happy
-  with that).
 * [ ] Why isn't `enter_accept = true` working for Atuin? It has no effect.
-* [x] DONE Make a "Java program launcher" in Go. In any interpreted program, (Java, Python, Ruby, JavaScript), the program
-  needs to be run with an interpreter (JVM, `python`, `ruby`, `node`, etc.). This is totally fine, but distributing
-  these programs is often a challenge because the user needs to have the interpreter installed, and it needs to be a
-  compatible version, and it needs to be discoverable when launching the program. In Java, we have things like the `JAVA_HOME`
-  environment variable to help with that. But that doesn't help with version compatibility. By contrast, programs that
-  compile to an executable binary (e.g. Go, C) are easy to distribute. They are "all-in-one". (To be fair, the same
-  distribution headache is true for Go and Co programs if they link to shared libraries). I have a Java program in `java/markdown-code-fence-reader`
-  that works as long as my `JAVA_HOME` is a Java 21 JDK, but my shell environment differs per project. I want to solve
-  this scenario.
-    * DONE Go side
-    * DONE Gradle side
 
 
 ## Finished Wish List Items
@@ -482,3 +464,21 @@ General clean-ups, TODOs and things I wish to implement for this project
     * DONE Scaffold out a Perl script
 * [ ] SKIP Add more external documentation to `bb` (the internal documentation in the '--help' is already extremely thorough)
 * [ ] SKIP (bb is complete) Implement the fifo/domain-socket -based benchmarking described in `bb`
+* [ ] (SKIP: virtual environments satisfy Python version switching) Python SDK management. Don't bother with custom formula. Just use the core ones, which already include
+  3.9, 3.10, 3.11 and 3.12. That's perfect. UPDATE: I think Python switching is not as necessary as Java or Node.js
+  switching because we often use virtual environments. So, in a Python project, you typically activate its virtual env
+  and that's your way of switching Python versions. And for one-off scripts, would I just be using the latest Python
+  anyway? I'm going to skip this for now.
+* [x] DONE Node.js SDK management (I think this should be totally feasible since I figured this out with OpenJDK and am happy
+  with that).
+* [x] DONE Make a "Java program launcher" in Go. In any interpreted program, (Java, Python, Ruby, JavaScript), the program
+  needs to be run with an interpreter (JVM, `python`, `ruby`, `node`, etc.). This is totally fine, but distributing
+  these programs is often a challenge because the user needs to have the interpreter installed, and it needs to be a
+  compatible version, and it needs to be discoverable when launching the program. In Java, we have things like the `JAVA_HOME`
+  environment variable to help with that. But that doesn't help with version compatibility. By contrast, programs that
+  compile to an executable binary (e.g. Go, C) are easy to distribute. They are "all-in-one". (To be fair, the same
+  distribution headache is true for Go and Co programs if they link to shared libraries). I have a Java program in `java/markdown-code-fence-reader`
+  that works as long as my `JAVA_HOME` is a Java 21 JDK, but my shell environment differs per project. I want to solve
+  this scenario.
+    * DONE Go side
+    * DONE Gradle side
