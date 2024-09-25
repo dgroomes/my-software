@@ -172,6 +172,8 @@ export alias dcd = docker-compose down --remove-orphans
 # Miscellaneous aliases
 export alias psql_local = psql --username postgres --host localhost
 
+# Define an external completer (https://www.nushell.sh/cookbook/external_completers.html) based on Bash and the
+# 'bash-completion' library (https://github.com/scop/bash-completion).
 let bash_completer =  { |spans|
     let bash_path = which bash | if ($in | is-empty) {
         # Note: you won't see this message when the closure is invoked by Nushell's external completers machinery.
@@ -197,11 +199,26 @@ let bash_completer =  { |spans|
     # We set up a controlled environment so we have a better chance to debug completion problems. In particular, we are
     # exercising control over the "search order" that 'bash-completion' uses to find completion definitions. For more
     # context, see this section of the 'bash-completion' README: https://github.com/scop/bash-completion/blob/07605cb3e0a3aca8963401c8f7a8e7ee42dbc399/README.md?plain=1#L333
-    let env_vars = {
+    mut env_vars = {
         BASH_COMPLETION_INSTALLATION_DIR: /opt/homebrew/opt/bash-completion@2
         BASH_COMPLETION_USER_DIR: ([$env.HOME .local/share/bash-completion] | path join)
         BASH_COMPLETION_COMPAT_DIR: /disable-legacy-bash-completions-by-pointing-to-a-dir-that-does-not-exist
         XDG_DATA_DIRS: /opt/homebrew/share
+    }
+
+    # In its completion lookup logic, 'bash-completion' considers the full path of the command being completed.
+    # For example, if the command is 'pipx', then 'bash-completion' tries to resolve ' pipx' to a location on the PATH
+    # by issuing a 'type -P -- pipx' command (https://github.com/scop/bash-completion/blob/07605cb3e0a3aca8963401c8f7a8e7ee42dbc399/bash_completion#L3158).
+    # It's rare that this is needed to make completions work, but I found it was needed for 'pipx', at least. Do the
+    # 'pipx' completions definitions code to an absolute path? Seems like a strange implementation. I'd be curious to
+    # learn more.
+    #
+    # So, we can't isolate the PATH entirely from the one-shot Bash completion script. Let's create a PATH that just
+    # contains the directory of the command being completed.
+    if ($spans | is-not-empty) {
+        $spans | first | which $in | get path | path dirname | if ($in | is-not-empty) {
+            $env_vars.PATH = $in.0
+        }
     }
 
     # Turn the environment variables into "KEY=VALUE" strings in preparation for the 'env' command.
@@ -254,7 +271,7 @@ let bash_completer =  { |spans|
 }
 
 # This function is meant for debugging the external completer closure. See the related note inside the closure.
-export def bash-complete [spans] {
+export def bash-complete [spans: list<string>] {
     do $bash_completer $spans
 }
 

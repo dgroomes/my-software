@@ -452,6 +452,9 @@ General clean-ups, TODOs and things I wish to implement for this project
   Nushell. Alternatively, I often use Postgres in Docker. But still. (Same is true of the Mongo functions but not sure
   how much I'll ever use Mongo again.)
 * [ ] Why isn't `enter_accept = true` working for Atuin? It has no effect.
+* [x] DONE `pipx` shell completion is broken. It's working in bash. Not sure why not working in Nushell. Strange, even
+  `BASH_COMPLETION_INSTALLATION_DIR=/opt/homebrew/opt/bash-completion@2 ./one-shot-bash-completion.bash "pipx "` works.
+* [ ] `brew` completion doesn't work.
 
 
 ## Finished Wish List Items
