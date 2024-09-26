@@ -206,6 +206,19 @@ let bash_completer =  { |spans|
         XDG_DATA_DIRS: /opt/homebrew/share
     }
 
+    mut env_vars_path = []
+
+    # Homebrew's 'brew' command comes with an odd implementation of its completion scripts. It relies on the
+    # "HOMEBREW_" environment variables that are set up in the 'brew shellenv' command. See https://github.com/Homebrew/brew/blob/e2b2582151d451d078e9df35a23eef00f4d308b3/completions/bash/brew#L111
+    # And it relies on grep.
+    #
+    # So, let's pass the 'HOMEBREW_REPOSITORY' environment variable through and let's make sure 'grep' is on the PATH.
+    if ($env.HOMEBREW_REPOSITORY? | is-not-empty) {
+        $env_vars = $env_vars | insert HOMEBREW_REPOSITORY $env.HOMEBREW_REPOSITORY
+    }
+
+    $env_vars_path = ($env_vars_path | append (which grep | $in.0?.path | path dirname))
+
     # In its completion lookup logic, 'bash-completion' considers the full path of the command being completed.
     # For example, if the command is 'pipx', then 'bash-completion' tries to resolve ' pipx' to a location on the PATH
     # by issuing a 'type -P -- pipx' command (https://github.com/scop/bash-completion/blob/07605cb3e0a3aca8963401c8f7a8e7ee42dbc399/bash_completion#L3158).
@@ -215,14 +228,13 @@ let bash_completer =  { |spans|
     #
     # So, we can't isolate the PATH entirely from the one-shot Bash completion script. Let's create a PATH that just
     # contains the directory of the command being completed.
-    if ($spans | is-not-empty) {
-        $spans | first | which $in | get path | path dirname | if ($in | is-not-empty) {
-            $env_vars.PATH = $in.0
-        }
-    }
+    $env_vars_path = ($env_vars_path | append ($spans.0? | which $in | get path | path dirname))
+
+    let path = ($env_vars_path | str join ":")
+    $env_vars = ($env_vars | insert PATH $path)
 
     # Turn the environment variables into "KEY=VALUE" strings in preparation for the 'env' command.
-    let env_var_args = $env_vars | items { |key, value| [$key "=" $value] | str join }
+    mut env_var_args = $env_vars | items { |key, value| [$key "=" $value] | str join }
 
     # Note: we are using "$bash_path" which is the absolute path to the Bash executable of the Bash that's installed
     # via Homebrew. If we were to instead use "bash", then it would resolve to the "bash" that's installed by macOS

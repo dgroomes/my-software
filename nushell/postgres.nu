@@ -1,4 +1,4 @@
-# Activate a specific version of Postgres that's already installed as a HomeBrew keg.
+# Activate a specific version of Postgres that's already installed as a Homebrew keg.
 #
 # By "activate", we need to adapt the PATH to include the directory containing all the Postgres executables like
 # "pg_ctl", "psql", "pg_dump", etc. And, we need to set the environment variable "PGDATA" to the convention data

@@ -9,7 +9,7 @@ To develop the Go code in this directory, I open this directory in the GoLand ID
 to develop Go. I've found, for example, that developing Python in Intellij is troublesome and I prefer to use PyCharm.
 Same story for Android development, just use Android Studio.
 
-Note: I might consider building and publishing binaries using GitHub Actions, and then installing them via HomeBrew, but
+Note: I might consider building and publishing binaries using GitHub Actions, and then installing them via Homebrew, but
 for now, `go install` should work fine for me.
 
 
