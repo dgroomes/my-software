@@ -44,6 +44,18 @@ structure in an ad-hoc way. I want to avoid particularly gnarly stringly-typed p
 - The [Bubbles](https://github.com/charmbracelet/bubbles) TUI component library
 - The "fuzzy" library <https://github.com/sahilm/fuzzy>.
 
+## `go-body-omitter/`
+
+NOT YET IMPLEMENTED
+
+`go-body-omitter` is a Go program that strips function bodies from Go source code. It's designed to help you jam Go
+software into an LLM, where you would otherwise not be able to fit the original program into the context window because
+it's too many tokens.
+
+I'm interested, in general, in "explain a codebase to me and help me explore it tools", like Sourcegraph + Cody. I've
+explored those. Right now, I'm getting big leverage out of direct AI Chat and I can use AI Chat to build a small program
+that can help me read larger programs that can help me build larger programs.
+
 
 ## Instructions
 
@@ -79,14 +91,36 @@ Follow these instructions to build, run and install my software.
     * ```nushell
       go run my-software/pkg/my-fuzzy-finder --example --debug
       ```
-3. Build all executables:
+3. Build and run `go-body-omitter`:
+    * ```nushell
+      """
+      package main
+      
+      import "fmt"
+      
+      func main() {
+        fmt.Println("hello")
+      }
+      """ | go run pkg/go-body-omitter/main.go
+      ```
+    * The output should look like the following.
+    * ```text
+      package main
+      
+      import "fmt"
+      
+      func main() {
+          // OMITTED      
+      }
+      ```
+4. Build all executables:
     * ```nushell
       mkdir bin; go build -o bin  './...'
       ```
     * The executables (i.e. `my-launcher`, `my-fuzzy-finder`) will be in the `bin/` directory. Try them out as needed to
       do validation and exploration. If you are satisfied, then you can install the executables globally with the next
       step.
-4. Build and install the executables to your `GOBIN`:
+5. Build and install the executables to your `GOBIN`:
     * ```nushell
       go install './...'
       ```
@@ -142,3 +176,4 @@ General clean-ups, TODOs and things I wish to implement for this project
 * [x] DONE Less pre-slicing
 * [ ] idea: posix-nushell-compatibility-checker. For prototypical commands (command plus string args) I don't want the
   noise of the Nu raw string. Just allow the original command to exist. 
+* [ ] IN PROGRESS `go-body-omitter`
