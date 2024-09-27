@@ -93,7 +93,7 @@ Follow these instructions to build, run and install my software.
       ```
 3. Build and run `go-body-omitter`:
     * ```nushell
-      """
+      r#'
       package main
       
       import "fmt"
@@ -101,7 +101,7 @@ Follow these instructions to build, run and install my software.
       func main() {
         fmt.Println("hello")
       }
-      """ | go run pkg/go-body-omitter/main.go
+      '# | go run my-software/pkg/go-body-omitter
       ```
     * The output should look like the following.
     * ```text
@@ -113,6 +113,20 @@ Follow these instructions to build, run and install my software.
           // OMITTED      
       }
       ```
+    * Try other incantations, like the following. This one shows the effect of the shrink.
+    * ```nushell
+      fd --extension go | wrap file |
+        insert tokens { |row| open --raw $row.file | token-count | into int } |
+        insert tokens-after-omission { |row| open --raw $row.file | go run my-software/pkg/go-body-omitter | token-count | into int } |
+        sort-by --reverse tokens
+      ```
+    * It outputs the following:
+    * | file                                  | tokens | tokens-after-omission |
+      |---------------------------------------|--------|-----------------------|
+      | pkg/my-fuzzy-finder/main.go           | 3977   | 1427                  |
+      | pkg/my-fuzzy-finder-lib/fuzzy.go      | 1797   | 667                   |
+      | pkg/my-fuzzy-finder-lib/fuzzy_test.go | 1246   | 33                    |
+      | pkg/go-body-omitter/main.go           | 326    | 111                   |
 4. Build all executables:
     * ```nushell
       mkdir bin; go build -o bin  './...'
@@ -177,3 +191,5 @@ General clean-ups, TODOs and things I wish to implement for this project
 * [ ] idea: posix-nushell-compatibility-checker. For prototypical commands (command plus string args) I don't want the
   noise of the Nu raw string. Just allow the original command to exist. 
 * [ ] IN PROGRESS `go-body-omitter`
+   * DONE generate a first pass (o1-preview did a great job)
+   * Study the generated code. Consider changes/comments/restructuring. Should we omit in a more nuanced way?
