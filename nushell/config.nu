@@ -10,6 +10,7 @@ source ([$nu.default-config-dir nu-scripts-sourcer.nu] | path join)
 source ([$nu.default-config-dir open-jdk.nu] | path join)
 source ([$nu.default-config-dir postgres.nu] | path join)
 source ([$nu.default-config-dir starship.nu] | path join)
+source ([$nu.default-config-dir zoxide.nu] | path join)
 
 # I don't really understand the essential coverage, or purpose, of the directories added to the PATH by the macOS
 # "/usr/libexec/path_helper" tool. But, at the least, I know it adds "/usr/local/bin" to the PATH and I need that.

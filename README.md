@@ -421,9 +421,9 @@ These are the instructions I follow when I get a new Mac or after I re-install m
      * ```shell
        cargo install eza
        ```
-     * `jless` is a CLI tool for helping you view JSON. Install it with the following command.
-     * ```shell
-       cargo install --git https://github.com/PaulJuliusMartinez/jless
+     * [`zoxide`](https://github.com/ajeetdsouza/zoxide) is "a smarter `cd` command". Install it with the following command.
+     * ```nushell
+       cargo install zoxide --locked
        ```
 31. Install the AWS CLI
      * Follow the [installation instructions in the AWS doc site](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html).

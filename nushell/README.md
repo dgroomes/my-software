@@ -17,11 +17,14 @@ and make HTTP requests without any external dependencies.
 
 Miscellaneous notes:
 
-* ```text
-  use install.nu *
+* ```nushell
+  use do.nu *
   ```
-* ```text
-  install nu_scripts_sourcer ~/repos/opensource/nu_scripts
+* ```nushell
+  do install nu_scripts_sourcer ~/repos/opensource/nu_scripts
+  ```
+* ```nushell
+  do backup standard; do install standard
   ```
 
 We want to version control quite a bit. There is a tendency of tools like Nushell itself, Atuin and Starship to generate

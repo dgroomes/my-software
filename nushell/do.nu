@@ -46,13 +46,18 @@ const config_registry = {
         filename: "nu-scripts-sourcer.nu"
         backup_success_msg: "'nushell/nu_scripts' sourcer file backed up."
     }
+    zoxide: {
+        filename: "zoxide.nu"
+        backup_success_msg: "zoxide configuration file backed up."
+        install_success_msg: "zoxide configuration file installed."
+    }
 }
 
 def config_names [] {
     $config_registry | transpose key | get key
 }
 
-export def backup [name: string@config_names] {
+export def "do backup" [name: string@config_names] {
     let config = $config_registry | get $name
     let installed_file_path = [$nu.default-config-dir $config.filename] | path join
     if (not ($installed_file_path | path exists)) { return }
@@ -62,24 +67,18 @@ export def backup [name: string@config_names] {
     print $config.backup_success_msg
 }
 
-# Back up a Nushell configuration file like the standard configuration file ('config.nu') or one of the other
-# configuration files I manage ('atuin.nu').
-export def backup_all [] {
-    $config_registry | transpose key | each { backup $in.key }
-}
-
 # Install a configuration file.
-export def main [name: string@config_names, nu_scripts_dir?: string] {
+export def "do install" [name: string@config_names, nu_scripts_dir?: string] {
     let config = $config_registry | get $name
     let installed_file_path = [$nu.default-config-dir $config.filename] | path join
     if ($installed_file_path | path exists) {
-        error make {
+        error make --unspanned {
           msg: $"A configuration file is already installed at '($installed_file_path)'. You must back it up first.",
         }
     }
 
     if ($name == "nu_scripts_sourcer") {
-        install_nu_scripts_sourcer $installed_file_path $nu_scripts_dir
+        install-nu-scripts-sourcer $installed_file_path $nu_scripts_dir
         return
     }
 
@@ -94,7 +93,7 @@ export def main [name: string@config_names, nu_scripts_dir?: string] {
     print $config.install_success_msg
 }
 
-export def install_all [] {
+export def "do install-all" [] {
     $config_registry | transpose key | each { main $in.key }
 }
 
@@ -108,7 +107,7 @@ def bak_name_now [filename] {
 # There are many custom completion scripts and other neat scripts in the official "nu_scripts" repository: https://github.com/nushell/nu_scripts/tree/4eab7ea772f0a288c99a79947dd332efc1884315
 # We need to generate a script that hardcodes the file paths to a local clone of that repository. This script will source
 # the scripts from the local clone. The script is named "nu-scripts-sourcer.nu".
-def install_nu_scripts_sourcer [installed_file_path nu_scripts_dir?] {
+def install-nu-scripts-sourcer [installed_file_path nu_scripts_dir?] {
     if ($nu_scripts_dir == null) {
         # There's nothing to source. In this case, you may have a fresh install of Nu and you haven't cloned the
         # 'nu_scripts' repository yet.
@@ -158,7 +157,7 @@ def install_nu_scripts_sourcer [installed_file_path nu_scripts_dir?] {
 # Install the one-shot Bash completion script. I'm not bothering supporting the "backup" flow for this script because
 # I don't have a reason to edit it. If I need to add features or implement bug fixes I would do that in the version
 # controlled file.
-export def install_one_shot_bash_completion [] {
+export def "do install-one-shot-bash-completion" [] {
     let script_name = "one-shot-bash-completion.bash"
     let vcs_file_path = [(pwd) $script_name] | path join
     let installed_file_path = [$nu.default-config-dir $script_name] | path join
