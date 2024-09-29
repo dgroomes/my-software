@@ -455,6 +455,7 @@ General clean-ups, TODOs and things I wish to implement for this project
 * [x] DONE `pipx` shell completion is broken. It's working in bash. Not sure why not working in Nushell. Strange, even
   `BASH_COMPLETION_INSTALLATION_DIR=/opt/homebrew/opt/bash-completion@2 ./one-shot-bash-completion.bash "pipx "` works.
 * [x] DONE `brew` completion doesn't work.
+* [ ] IN PROGRESS Create a `java-body-omitter` program that works just like the `go-body-omitter` program but for Java.
 
 
 ## Finished Wish List Items

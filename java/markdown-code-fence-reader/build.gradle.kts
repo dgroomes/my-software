@@ -26,23 +26,14 @@ But let's consolidate down to:
 sourceSets {
     main {
         java.srcDirs("src")
+        kotlin.srcDirs("src")
         resources.srcDirs("resources")
     }
 
     test {
         java.srcDirs("testSrc")
+        kotlin.srcDirs("testSrc")
         resources.srcDirs("testResources")
-    }
-}
-
-kotlin {
-    sourceSets {
-        main {
-            kotlin.srcDirs("src")
-        }
-        test {
-            kotlin.srcDirs("testSrc")
-        }
     }
 }
 

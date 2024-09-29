@@ -2,6 +2,7 @@
 assertj = "3.26.3" # AssertJ releases: https://github.com/assertj/assertj-core/tags
 intellij-platform-gradle-plugin = "2.0.1" # IntelliJ Platform Gradle Plugin releases: https://github.com/JetBrains/intellij-platform-gradle-plugin/releases
 jackson = "2.17.2" # Jackson releases: https://github.com/FasterXML/jackson/wiki/Jackson-Releases
+javaparser = "3.26.2" # JavaParser releases: https://github.com/javaparser/javaparser/releases
 jetbrains-markdown = "0.7.3" # JetBrains Maven releases: https://central.sonatype.com/artifact/org.jetbrains/markdown?smo=true
 junit-jupiter = "5.10.3" # JUnit releases: https://junit.org/junit5/docs/current/release-notes/index.html
 slf4j = "2.0.16" # SLF4J releases: http://www.slf4j.org/news.html
@@ -11,6 +12,7 @@ slf4j = "2.0.16" # SLF4J releases: http://www.slf4j.org/news.html
 assertj = { module = "org.assertj:assertj-core", version.ref = "assertj" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
 jackson-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson" }
+javaparser-core = { module = "com.github.javaparser:javaparser-core", version.ref = "javaparser" }
 jetbrains-markdown = { module = "org.jetbrains:markdown", version.ref = "jetbrains-markdown" }
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit-jupiter" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit-jupiter" }
