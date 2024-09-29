@@ -22,6 +22,11 @@ const config_registry = {
         backup_success_msg: "Core configuration file backed up."
         install_success_msg: "Core configuration file installed."
     }
+    lib: {
+        filename: "lib.nu"
+        backup_success_msg: "Library file backed up."
+        install_success_msg: "Library file installed."
+    }
     node: {
         filename: "node.nu"
         backup_success_msg: "Node.js configuration file backed up."
@@ -58,7 +63,7 @@ def config_names [] {
 }
 
 export def "backup" [name: string@config_names] {
-    cd $env.DO_MODULE_DIR
+    cd $env.DO_DIR
 
     let config = $config_registry | get $name
     let installed_file_path = [$nu.default-config-dir $config.filename] | path join
@@ -71,7 +76,7 @@ export def "backup" [name: string@config_names] {
 
 # Install a configuration file.
 export def "install" [name: string@config_names, nu_scripts_dir?: string] {
-    cd $env.DO_MODULE_DIR
+    cd $env.DO_DIR
 
     let config = $config_registry | get $name
     let installed_file_path = [$nu.default-config-dir $config.filename] | path join
@@ -108,7 +113,7 @@ def bak_name_now [filename] {
 # We need to generate a script that hardcodes the file paths to a local clone of that repository. This script will source
 # the scripts from the local clone. The script is named "nu-scripts-sourcer.nu".
 def install-nu-scripts-sourcer [installed_file_path nu_scripts_dir?] {
-    cd $env.DO_MODULE_DIR
+    cd $env.DO_DIR
 
     if ($nu_scripts_dir == null) {
         # There's nothing to source. In this case, you may have a fresh install of Nu and you haven't cloned the
@@ -160,7 +165,7 @@ def install-nu-scripts-sourcer [installed_file_path nu_scripts_dir?] {
 # I don't have a reason to edit it. If I need to add features or implement bug fixes I would do that in the version
 # controlled file.
 export def "install-one-shot-bash-completion" [] {
-    cd $env.DO_MODULE_DIR
+    cd $env.DO_DIR
 
     let script_name = "one-shot-bash-completion.bash"
     let vcs_file_path = [(pwd) $script_name] | path join

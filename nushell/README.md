@@ -49,6 +49,13 @@ General clean-ups, TODOs and things I wish to implement for this project
   system and I think `env.nu` is probably the ticket. For common fixtures that I want evaluated at the `env.nu` eval
   time, I can jam them into a file like `env-common.nu` and source that from `env.nu`.
 * [x] In `run-from-readme`, execute `bash` snippets in Bash.
+* [ ] IN PROGRESS Split up `config.nu`. It's huge. How much can I use `use` instead of `source`? I'm trying to remember why this
+  even matters.
+* [ ] If a 'do' module is already active, we want to completely unload all commands and symbols it defines before
+  loading another 'do.nu' script (it could be the same one, an edited version of the same one, or a totally diff one).
+  `overlay hide do` should totally work, and that command seems to work as designed when I use it from the REPL, but I
+  wasn't having good luck when calling it from the hook function. Try again? Try making two hooks? Maybe that will work.
+  Why does this matter? It's really annoying to crowd the command/autocomplete list as I rapidly iterate on a 'do.nu' script.
 
 
 ## Finished Wish List Items
@@ -100,7 +107,7 @@ General clean-ups, TODOs and things I wish to implement for this project
 * [x] DONE Improve robustness of the 'one-shot-bash-completion.bash' script. Better error handling, more notes,
   use `_comp_load` instead of `_comp_complete_load` because its more direct and the exit code can be keyed off of. I
   think maybe there was a change in 'bash-completion', but either way, these changes are good.
-* [ ] IN PROGRESS `do-activate` and `do-deactivate` commands to help me with a conventional workflow of `do.nu` files, using Nushell overlays. 
+* [x] DONE (pretty good; I skipped do-deactivate) `do-activate` and `do-deactivate` commands to help me with a conventional workflow of `do.nu` files, using Nushell overlays. 
 
 
 ## Reference

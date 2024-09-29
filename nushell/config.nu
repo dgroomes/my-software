@@ -1,16 +1,15 @@
 # I'm still zeroing in on the ideal sourcing strategy. I would prefer the "sourcing from a directory" approach, but this
 # is not possible. The Nushell docs point this out: https://www.nushell.sh/book/modules.html#dumping-files-into-directory
-# Let's let 'core.nu' go first. The rest let's organize alphabetically.
-source ([$nu.default-config-dir core.nu] | path join)
-
-source ([$nu.default-config-dir atuin.nu] | path join)
-source ([$nu.default-config-dir misc.nu] | path join)
-source ([$nu.default-config-dir node.nu] | path join)
-source ([$nu.default-config-dir nu-scripts-sourcer.nu] | path join)
-source ([$nu.default-config-dir open-jdk.nu] | path join)
-source ([$nu.default-config-dir postgres.nu] | path join)
-source ([$nu.default-config-dir starship.nu] | path join)
-source ([$nu.default-config-dir zoxide.nu] | path join)
+source core.nu
+source atuin.nu
+source misc.nu
+source node.nu
+source nu-scripts-sourcer.nu
+source open-jdk.nu
+source postgres.nu
+source starship.nu
+source zoxide.nu
+use lib.nu *
 
 # I don't really understand the essential coverage, or purpose, of the directories added to the PATH by the macOS
 # "/usr/libexec/path_helper" tool. But, at the least, I know it adds "/usr/local/bin" to the PATH and I need that.
@@ -20,15 +19,6 @@ $env.PATH = ($env.PATH | append "/usr/local/bin")
 
 $env.config.buffer_editor = "subl"
 
-def repos [] {
-    glob --depth 2 ~/repos/*/* | each { |it|
-
-        # The description is the category directory and the repository directory.
-        # For example, 'personal/my-software' or 'opensource/nushell'
-        let description = $it | path split | last 2 | path join
-        { description: $description full_path: $it }
-    }
-}
 
 # Change to one of my repositories. By convention, my repositories are in categorized subfolders in '~/repos'. For
 # example:

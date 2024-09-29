@@ -17,7 +17,7 @@ This is the Java equivalent of the `go-body-omitter` program. Study that subproj
       ```
 3. Build the program distributions
     * ```nushell
-      do install
+      do build
       ```
 4. Try it out
     * ```nushell
