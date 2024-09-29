@@ -817,9 +817,7 @@ export def upgrade-gradle-wrapper [gradle_version: string = "8.10"  --depth: int
 
 # By convention, I put 'do.nu' scripts in projects and this lets me compress and automate my workflow. This command
 # activates the 'do.nu' script as a module using Nushell's *overlays*. Because of Nushell's parse-evaluate model, this
-# actually pretty difficult to do, so we can abuse Nushell hooks to do this.
-#
-# A feature of 'do-activate' is that the 'do.nu' script will be continually reloaded between commands in the shell.
+# is actually pretty difficult to do, so we can abuse Nushell hooks to do this.
 export def --env "do activate" [] {
     if not ("do.nu" | path exists) {
         error make --unspanned { msg: "No 'do.nu' script found." }
