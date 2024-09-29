@@ -57,7 +57,7 @@ def config_names [] {
     $config_registry | transpose key | get key
 }
 
-export def "do backup" [name: string@config_names] {
+export def "backup" [name: string@config_names] {
     let config = $config_registry | get $name
     let installed_file_path = [$nu.default-config-dir $config.filename] | path join
     if (not ($installed_file_path | path exists)) { return }
@@ -68,7 +68,7 @@ export def "do backup" [name: string@config_names] {
 }
 
 # Install a configuration file.
-export def "do install" [name: string@config_names, nu_scripts_dir?: string] {
+export def "install" [name: string@config_names, nu_scripts_dir?: string] {
     let config = $config_registry | get $name
     let installed_file_path = [$nu.default-config-dir $config.filename] | path join
     if ($installed_file_path | path exists) {
@@ -157,7 +157,7 @@ def install-nu-scripts-sourcer [installed_file_path nu_scripts_dir?] {
 # Install the one-shot Bash completion script. I'm not bothering supporting the "backup" flow for this script because
 # I don't have a reason to edit it. If I need to add features or implement bug fixes I would do that in the version
 # controlled file.
-export def "do install-one-shot-bash-completion" [] {
+export def "install-one-shot-bash-completion" [] {
     let script_name = "one-shot-bash-completion.bash"
     let vcs_file_path = [(pwd) $script_name] | path join
     let installed_file_path = [$nu.default-config-dir $script_name] | path join

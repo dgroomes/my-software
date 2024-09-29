@@ -814,3 +814,40 @@ export def upgrade-gradle-wrapper [gradle_version: string = "8.10"  --depth: int
         cd -
     }
 }
+
+# By convention, I put 'do.nu' scripts in projects and this lets me compress and automate my workflow. This command
+# activates the 'do.nu' script as a module using Nushell's *overlays*. Because of Nushell's parse-evaluate model, this
+# actually pretty difficult to do, so we can abuse Nushell hooks to do this.
+#
+# A feature of 'do-activate' is that the 'do.nu' script will be continually reloaded between commands in the shell.
+export def --env "do activate" [] {
+    if not ("do.nu" | path exists) {
+        error make --unspanned { msg: "No 'do.nu' script found." }
+    }
+
+    if "DO_MODULE_DIR" in $env {
+        error make --unspanned { msg: "Detected the 'DO_MODULE_DIR' environment variable. A 'do.nu' script was previously activated." }
+    }
+
+    # The DO_MODULE_DIR trick is necessary because Nushell doesn't support the special `$env.FILE_PWD` environment
+    # variable in modules (see <https://github.com/nushell/nushell/issues/9776>). So, we've invented a convention of
+    # using a DO_MODULE_DIR environment variable to represent the project directory. The 'do.nu' script can use this
+    # to fix commands and file references to the right path.
+    $env.DO_MODULE_DIR = (pwd)
+
+    # Here is the tricky part. Register a pre_prompt hook that will load the 'do.nu' script and then the hook will
+    # erase itself. I have details about this pattern in my nushell-playground repository: https://github.com/dgroomes/nushell-playground/blob/b505270046fd2c774927749333e67707073ad62d/hooks.nu#L72
+    const SNIPPET = r#'
+# ERASE ME
+overlay use --prefix do.nu
+let hooks = $env.config.hooks.pre_prompt
+let filtered = $hooks | where ($it | describe) != "string" or $it !~ "# ERASE ME"
+$env.config.hooks.pre_prompt = $filtered
+'#
+
+    $env.config = ($env.config | upsert hooks.pre_prompt {
+        default [] | append $SNIPPET
+    })
+}
+
+export alias da = do activate

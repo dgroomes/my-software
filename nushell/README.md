@@ -18,7 +18,7 @@ and make HTTP requests without any external dependencies.
 Miscellaneous notes:
 
 * ```nushell
-  use do.nu *
+  overlay use --prefix do.nu
   ```
 * ```nushell
   do install nu_scripts_sourcer ~/repos/opensource/nu_scripts
@@ -100,6 +100,7 @@ General clean-ups, TODOs and things I wish to implement for this project
 * [x] DONE Improve robustness of the 'one-shot-bash-completion.bash' script. Better error handling, more notes,
   use `_comp_load` instead of `_comp_complete_load` because its more direct and the exit code can be keyed off of. I
   think maybe there was a change in 'bash-completion', but either way, these changes are good.
+* [ ] IN PROGRESS `do-activate` and `do-deactivate` commands to help me with a conventional workflow of `do.nu` files, using Nushell overlays. 
 
 
 ## Reference
