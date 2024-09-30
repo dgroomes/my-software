@@ -1,15 +1,17 @@
 # I'm still zeroing in on the ideal sourcing strategy. I would prefer the "sourcing from a directory" approach, but this
 # is not possible. The Nushell docs point this out: https://www.nushell.sh/book/modules.html#dumping-files-into-directory
-source core.nu
-source atuin.nu
-source misc.nu
-source node.nu
-source nu-scripts-sourcer.nu
-source open-jdk.nu
-source postgres.nu
-source starship.nu
-source zoxide.nu
-use lib.nu *
+source setup/atuin.nu
+source setup/core.nu
+source setup/misc.nu
+source setup/nu-scripts-sourcer.nu
+source setup/starship.nu
+source setup/zoxide.nu
+
+use lib/zdu.nu *
+use lib/lib.nu *
+use lib/node.nu *
+use lib/open-jdk.nu *
+use lib/postgres.nu *
 
 # I don't really understand the essential coverage, or purpose, of the directories added to the PATH by the macOS
 # "/usr/libexec/path_helper" tool. But, at the least, I know it adds "/usr/local/bin" to the PATH and I need that.

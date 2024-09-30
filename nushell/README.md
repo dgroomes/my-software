@@ -56,6 +56,13 @@ General clean-ups, TODOs and things I wish to implement for this project
   `overlay hide do` should totally work, and that command seems to work as designed when I use it from the REPL, but I
   wasn't having good luck when calling it from the hook function. Try again? Try making two hooks? Maybe that will work.
   Why does this matter? It's really annoying to crowd the command/autocomplete list as I rapidly iterate on a 'do.nu' script.
+* [ ] Use git instead of the `.bak` backup strategy. In general, I've been holding this strategy in my back packet. Seems like a
+  good use.
+* [ ] Keep experiment with `itrash` and `irm`. In general I want a compressed workflow for interactively deleting things.
+  And a compressed workflow for deletes is counterintuitive. You don't want minimum key presses. You want minimum think
+  time. When deleting with `rm ...` you should think deeply and slowly so you don't make a big mistake. With an
+  interactive delete workflow, you initiate the command, and then ostensibly you're presented with a summary like "3 files, 123Kb"
+  or something, and you can quickly know that you're safe to delete it. Refer back to this code: <https://github.com/dgroomes/my-software/blob/64224b151e64db01f068d3d806875a9eeaa9aac1/nushell/scratch.nu#L77>.
 
 
 ## Finished Wish List Items

@@ -13,48 +13,53 @@ const config_registry = {
         install_success_msg: "Standard configuration file installed."
     }
     atuin: {
-        filename: "atuin.nu"
+        filename: "setup/atuin.nu"
         backup_success_msg: "Atuin configuration file backed up."
         install_success_msg: "Atuin configuration file installed."
     }
     core: {
-        filename: "core.nu"
+        filename: "setup/core.nu"
         backup_success_msg: "Core configuration file backed up."
         install_success_msg: "Core configuration file installed."
     }
     lib: {
-        filename: "lib.nu"
+        filename: "lib/lib.nu"
         backup_success_msg: "Library file backed up."
         install_success_msg: "Library file installed."
     }
     node: {
-        filename: "node.nu"
-        backup_success_msg: "Node.js configuration file backed up."
-        install_success_msg: "Node.js configuration file installed."
+        filename: "lib/node.nu"
+        backup_success_msg: "Node.js library file backed up."
+        install_success_msg: "Node.js library file installed."
     }
     open_jdk: {
-        filename: "open-jdk.nu"
-        backup_success_msg: "OpenJDK configuration file backed up."
-        install_success_msg: "OpenJDK configuration file installed."
+        filename: "lib/open-jdk.nu"
+        backup_success_msg: "OpenJDK library file backed up."
+        install_success_msg: "OpenJDK library file installed."
     }
     postgres: {
-        filename: "postgres.nu"
-        backup_success_msg: "Postgres configuration file backed up."
-        install_success_msg: "Postgres configuration file installed."
+        filename: "lib/postgres.nu"
+        backup_success_msg: "Postgres lib file backed up."
+        install_success_msg: "Postgres lib file installed."
     }
     starship: {
-        filename: "starship.nu",
+        filename: "setup/starship.nu",
         backup_success_msg: "Starship configuration file backed up."
         install_success_msg: "Starship configuration file installed."
     }
     nu_scripts_sourcer: {
-        filename: "nu-scripts-sourcer.nu"
+        filename: "setup/nu-scripts-sourcer.nu"
         backup_success_msg: "'nushell/nu_scripts' sourcer file backed up."
     }
     zoxide: {
-        filename: "zoxide.nu"
+        filename: "setup/zoxide.nu"
         backup_success_msg: "zoxide configuration file backed up."
         install_success_msg: "zoxide configuration file installed."
+    }
+    zdu: {
+        filename: "lib/zdu.nu"
+        backup_success_msg: "Zero-deps-utility lib file backed up."
+        install_success_msg: "Zero-deps-utility lib file installed."
     }
 }
 
@@ -98,6 +103,8 @@ export def "install" [name: string@config_names, nu_scripts_dir?: string] {
         }
     }
 
+    # Create the containing directory if it doesn't exist. For example, accommodate the 'setup/' directory.
+    mkdir ($installed_file_path | path dirname)
     cp $vcs_file_path $installed_file_path
     print $config.install_success_msg
 }

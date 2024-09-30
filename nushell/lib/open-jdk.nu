@@ -10,7 +10,7 @@
 # it's pretty easy to just dynamically modify the PATH to include the "bin" directory of the keg. In Nushell, this
 # is especially painless because the PATH environment variable is a list (structured data) instead of a colon-delimited
 # string like it is in most shells.
-def --env activate-my-open-jdk [version: int@my-open-jdk-keg-versions] {
+export def --env activate-my-open-jdk [version: int@my-open-jdk-keg-versions] {
     let jdk_info = assert-my-open-jdk $version
 
     # Remove any previously active OpenJDKs from the PATH
@@ -88,7 +88,7 @@ def assert-my-open-jdk [version: int] -> record {
 # Should we just read the keg directories? It's either that, or cache it (which creates its own problems), or just
 # hand-type "activate-my-open-jdk 21". I think the last option is the best. The command will be in my history at all
 # times so it's really not a problem. It's not like I'm frequently shopping between many installed versions of OpenJDK.
-def my-open-jdk-kegs [] {
+export def my-open-jdk-kegs [] {
    let result = brew list --formula | complete
    if ($result.exit_code != 0) {
        error make --unspanned {
