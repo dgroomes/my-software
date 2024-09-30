@@ -2,6 +2,8 @@
 # zoxide are released, consider re-initializing this file with `zoxide init nushell`, studying the diff, and making a
 # decision about which existing customizations to keep and which new zoxide features to adopt.
 
+use ../lib/lib.nu *
+
 # =============================================================================
 #
 # Hook configuration for zoxide.

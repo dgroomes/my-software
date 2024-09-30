@@ -1,3 +1,9 @@
+export def test [] {
+    cd $env.DO_DIR
+
+    gw test
+}
+
 export def build [] {
     cd $env.DO_DIR
 

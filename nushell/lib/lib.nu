@@ -417,7 +417,7 @@ export def fz [--filter-column (-f): string] [list<string> -> string, table -> r
 # Warning: In general, shadowing or overwriting well-known and highly-depended
 # upon APIs is a severe mistake. In your own shell, I can be convinced that it's ok. I'm still not really sure. But I'm
 # going to try it out.
-def --wrapped fd [...args] {
+export def --wrapped fd [...args] {
     ^fd ...$args | split row (char newline)
 }
 

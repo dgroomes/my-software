@@ -15,11 +15,15 @@ This is the Java equivalent of the `go-body-omitter` program. Study that subproj
     * ```nushell
       do activate
       ```
-3. Build the program distributions
+3. Run the tests
+    * ```nushell
+      do test
+      ```
+4. Build the program distributions
     * ```nushell
       do build
       ```
-4. Try it out
+5. Try it out
     * ```nushell
       r#'
       public class Main {
@@ -45,7 +49,7 @@ This is the Java equivalent of the `go-body-omitter` program. Study that subproj
           }
       }
       ```
-5. Install the program distribution with a symlink
+6. Install the program distribution with a symlink
     * ```nushell
       do install
       ```
@@ -61,5 +65,5 @@ General clean-ups, TODOs and things I wish to implement for this project
 * [ ] Consider a Kotlin body omitter. Would this just be a superset of java-body-omitter because a Kotlin parsing
   library must already tolerate Java right? I guess most libraries are Java, so I might not do this. But if it's easy I
   want to do it.
-* [ ] Test cases. This will help me a go little faster because I especially want to run with breakpoints and just
+* [x] DONE Test cases. This will help me a go little faster because I especially want to run with breakpoints and just
   discover the javaparser API. 
