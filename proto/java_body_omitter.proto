@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+message Error {
+  string error_message = 1;
+}
+
+message Success {
+  string java_code = 1;
+}
+
+message Response {
+  oneof response {
+    Error error = 1;
+    Success success = 2;
+  }
+}

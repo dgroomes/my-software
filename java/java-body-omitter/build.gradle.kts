@@ -24,6 +24,7 @@ repositories {
 
 dependencies {
     implementation(libs.javaparser.core)
+    implementation(libs.protobuf.java)
 
     testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.assertj)

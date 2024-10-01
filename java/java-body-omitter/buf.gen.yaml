@@ -1,0 +1,11 @@
+version: v2
+managed:
+  enabled: true
+  override:
+    - file_option: java_package
+      value: dgroomes.java_body_omitter.proto
+plugins:
+  - remote: buf.build/protocolbuffers/java
+    out: src
+inputs:
+  - directory: ../../proto

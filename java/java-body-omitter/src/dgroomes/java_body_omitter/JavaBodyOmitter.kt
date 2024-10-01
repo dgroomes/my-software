@@ -11,21 +11,26 @@ import com.github.javaparser.ast.visitor.ModifierVisitor
 import com.github.javaparser.ast.visitor.Visitable
 import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinter
 
+sealed class StripResult {
+    data class Success(val strippedCode: String) : StripResult()
+    data class Error(val errorMessage: String) : StripResult()
+}
+
 class JavaBodyOmitter {
 
     private val parser = JavaParser(StaticJavaParser.getParserConfiguration())
     private val methodBodyOmitter = MethodBodyOmitter()
 
-    fun strip(code: String): String {
+    fun strip(code: String): StripResult {
         val r = parser.parse(code)
         if (!r.isSuccessful) {
-            throw IllegalArgumentException("Failed to parse the code. $r")
+            return StripResult.Error("Failed to parse the code. $r")
         }
 
         val compUnit = r.result.get()
         LexicalPreservingPrinter.setup(compUnit)
         compUnit.accept(methodBodyOmitter, null)
-        return LexicalPreservingPrinter.print(compUnit)
+        return StripResult.Success(LexicalPreservingPrinter.print(compUnit))
     }
 }
 
