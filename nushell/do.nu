@@ -22,6 +22,11 @@ const config_registry = {
         backup_success_msg: "Core configuration file backed up."
         install_success_msg: "Core configuration file installed."
     }
+    file_set: {
+        filename: "lib/file-set.nu"
+        backup_success_msg: "'file-set' library file backed up."
+        install_success_msg: "'file-set' library file installed."
+    }
     lib: {
         filename: "lib/lib.nu"
         backup_success_msg: "Library file backed up."
