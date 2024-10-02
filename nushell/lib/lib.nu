@@ -398,7 +398,6 @@ export def fz [--filter-column (-f): string] [list<string> -> string, table -> r
         130 => {
             # This is a normal case. When the user abandons the selection, 'my-fuzzy-finder' exits with a 130 status
             # code. This is the same behavior as 'fzf'.
-            print "(fz) No selection"
             return
         }
         _ => {

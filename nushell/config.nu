@@ -1,11 +1,11 @@
 # I'm still zeroing in on the ideal sourcing strategy. I would prefer the "sourcing from a directory" approach, but this
 # is not possible. The Nushell docs point this out: https://www.nushell.sh/book/modules.html#dumping-files-into-directory
-source setup/atuin.nu
 source setup/core.nu
 source setup/misc.nu
 source setup/nu-scripts-sourcer.nu
 source setup/starship.nu
 source setup/zoxide.nu
+source setup/atuin.nu
 
 use lib/zdu.nu *
 use lib/lib.nu *

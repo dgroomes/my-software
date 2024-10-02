@@ -63,6 +63,11 @@ General clean-ups, TODOs and things I wish to implement for this project
   time. When deleting with `rm ...` you should think deeply and slowly so you don't make a big mistake. With an
   interactive delete workflow, you initiate the command, and then ostensibly you're presented with a summary like "3 files, 123Kb"
   or something, and you can quickly know that you're safe to delete it. Refer back to this code: <https://github.com/dgroomes/my-software/blob/64224b151e64db01f068d3d806875a9eeaa9aac1/nushell/scratch.nu#L77>.
+* [ ] Clean up sourcing code (env, core, etc.). I had to source Atuin last because ostensibly I'm overwriting hooks in
+  the env/core config. Just re-consider this flow.
+* [ ] IN PROGRESS Interactive file selection for context building. I love bundling full projects to pass to the LLM but often they
+  are too big and I can't whittle it down. I need to go from the reverse direction. Start with nothing and layer in
+  files/dirs. I think I can identify big chunks quickly enough. Interactive flow.
 
 
 ## Finished Wish List Items
