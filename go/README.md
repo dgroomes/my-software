@@ -61,17 +61,21 @@ that can help me read larger programs that can help me build larger programs.
 
 Follow these instructions to build, run and install my software.
 
-1. Build and test the code:
+1. Activate the Nushell `do` module
     * ```nushell
-      go test './...'
+      do activate
       ```
-2. Build and run the `my-fuzzy-finder` program with the example data:
+2. Build and test the code:
     * ```nushell
-      go run my-software/pkg/my-fuzzy-finder --example
+      do test
+      ```
+3. Build and run the `my-fuzzy-finder` program with the example data:
+    * ```nushell
+      do run my-fuzzy-finder --example
       ```
     * Next, try fuzzy finding among the filenames in the current directory.
     * ```nushell
-      ls | get name | str join (char newline) | go run my-software/pkg/my-fuzzy-finder
+      ls | get name | str join (char newline) | do run my-fuzzy-finder
       ```
     * The output will be the selected filename.
     * Next, try a similar thing but with the JSON API. This takes a JSON array in and sends JSON out. The advantage of
@@ -80,7 +84,7 @@ Follow these instructions to build, run and install my software.
     * ```nushell
       ["Hello, world!" "Dear reader,
       Hello.
-      Sincerely, writer"] | to json | go run my-software/pkg/my-fuzzy-finder --json-in --json-out
+      Sincerely, writer"] | to json | do run my-fuzzy-finder --json-in --json-out
       ```
     * It will output the selected filename but also the index of that item in the input list. It will look something
       like the following.
@@ -89,9 +93,9 @@ Follow these instructions to build, run and install my software.
       ```
     * Finally, try the program and enable debugging. The logs are printed to a local `my-fuzzy-finder.log` file.
     * ```nushell
-      go run my-software/pkg/my-fuzzy-finder --example --debug
+      do run my-fuzzy-finder --example --debug
       ```
-3. Build and run `go-body-omitter`:
+4. Build and run `go-body-omitter`:
     * ```nushell
       r#'
       package main
@@ -101,7 +105,7 @@ Follow these instructions to build, run and install my software.
       func main() {
         fmt.Println("hello")
       }
-      '# | go run my-software/pkg/go-body-omitter
+      '# | do run go-body-omitter
       ```
     * The output should look like the following.
     * ```text
@@ -117,7 +121,7 @@ Follow these instructions to build, run and install my software.
     * ```nushell
       fd --extension go | wrap file |
         insert tokens { |row| open --raw $row.file | token-count | into int } |
-        insert tokens-after-omission { |row| open --raw $row.file | go run my-software/pkg/go-body-omitter | token-count | into int } |
+        insert tokens-after-omission { |row| open --raw $row.file | do run go-body-omitter | token-count | into int } |
         sort-by --reverse tokens
       ```
     * It outputs the following:

@@ -7,11 +7,12 @@ source setup/starship.nu
 source setup/zoxide.nu
 source setup/atuin.nu
 
-use lib/zdu.nu *
+use lib/file-set.nu *
 use lib/lib.nu *
 use lib/node.nu *
 use lib/open-jdk.nu *
 use lib/postgres.nu *
+use lib/zdu.nu *
 
 # I don't really understand the essential coverage, or purpose, of the directories added to the PATH by the macOS
 # "/usr/libexec/path_helper" tool. But, at the least, I know it adds "/usr/local/bin" to the PATH and I need that.
