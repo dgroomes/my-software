@@ -46,8 +46,6 @@ structure in an ad-hoc way. I want to avoid particularly gnarly stringly-typed p
 
 ## `go-body-omitter/`
 
-NOT YET IMPLEMENTED
-
 `go-body-omitter` is a Go program that strips function bodies from Go source code. It's designed to help you jam Go
 software into an LLM, where you would otherwise not be able to fit the original program into the context window because
 it's too many tokens.
@@ -131,16 +129,20 @@ Follow these instructions to build, run and install my software.
       | pkg/my-fuzzy-finder-lib/fuzzy.go      | 1797   | 667                   |
       | pkg/my-fuzzy-finder-lib/fuzzy_test.go | 1246   | 33                    |
       | pkg/go-body-omitter/main.go           | 326    | 111                   |
-4. Build all executables:
+5. Try `posix-nushell-compatibility-checker`:
     * ```nushell
-      mkdir bin; go build -o bin  './...'
+      'echo "hello world"' | do run posix-nushell-compatibility-checker
+      ```
+6. Build all executables:
+    * ```nushell
+      do build
       ```
     * The executables (i.e. `my-launcher`, `my-fuzzy-finder`) will be in the `bin/` directory. Try them out as needed to
       do validation and exploration. If you are satisfied, then you can install the executables globally with the next
       step.
-5. Build and install the executables to your `GOBIN`:
+6. Build and install the executables to your `GOBIN`:
     * ```nushell
-      go install './...'
+      do install
       ```
     * Now you can run the executables, like `my-launcher`, from anywhere on your system.
 
@@ -192,8 +194,18 @@ General clean-ups, TODOs and things I wish to implement for this project
 * [x] DONE Can the algo be agnostic of case sensitivity?
 * [x] DONE What's up with whitespace handling?
 * [x] DONE Less pre-slicing
-* [ ] idea: posix-nushell-compatibility-checker. For prototypical commands (command plus string args) I don't want the
+* [ ] IN PROGRESS posix-nushell-compatibility-checker. For prototypical commands (command plus string args) I don't want the
   noise of the Nu raw string. Just allow the original command to exist. 
-* [ ] IN PROGRESS `go-body-omitter`
+   * DONE Scaffold.
+   * DONE (Idk I think they are just there and that's fine) What are the top-level `*syntax.File` and `syntax.Stmt` types? Are those just always there?
+   * I really need to parse Nushell as well. Because what looks like a string literal in shell could be interpolation
+     in Nushell for example. I need to parse the expression for both langs (shell/Nu) and assert that they are both
+     "boring cmd + string args". I don't need to support any more cases. This is better than 80/20, this is like 95/5.
+   * IN PROGRESS Scaffold a Rust program that uses the Nu parser.
+   * Call the Rust program from the Go program (extern).
+   * Parse the output of the Rust program.
+   * Match the expressions (shell/Nu) for compatibility. This should be driven by tests, because it's subtle and maybe
+     wide.
+* [x] DONE `go-body-omitter`
    * DONE generate a first pass (o1-preview did a great job)
-   * Study the generated code. Consider changes/comments/restructuring. Should we omit in a more nuanced way?
+   * SKIP (fine enough for now) Study the generated code. Consider changes/comments/restructuring. Should we omit in a more nuanced way?
