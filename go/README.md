@@ -140,7 +140,7 @@ Follow these instructions to build, run and install my software.
     * The executables (i.e. `my-launcher`, `my-fuzzy-finder`) will be in the `bin/` directory. Try them out as needed to
       do validation and exploration. If you are satisfied, then you can install the executables globally with the next
       step.
-6. Build and install the executables to your `GOBIN`:
+7. Build and install the executables to your `GOBIN`:
     * ```nushell
       do install
       ```
@@ -201,8 +201,8 @@ General clean-ups, TODOs and things I wish to implement for this project
    * I really need to parse Nushell as well. Because what looks like a string literal in shell could be interpolation
      in Nushell for example. I need to parse the expression for both langs (shell/Nu) and assert that they are both
      "boring cmd + string args". I don't need to support any more cases. This is better than 80/20, this is like 95/5.
-   * IN PROGRESS Scaffold a Rust program that uses the Nu parser.
-   * Call the Rust program from the Go program (extern).
+   * DONE Scaffold a Rust program that uses the Nu parser.
+   * Call the Rust program from the Go program (extern or just exec?).
    * Parse the output of the Rust program.
    * Match the expressions (shell/Nu) for compatibility. This should be driven by tests, because it's subtle and maybe
      wide.

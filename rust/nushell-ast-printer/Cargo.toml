@@ -1,0 +1,8 @@
+[package]
+name = "nushell-ast-printer"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+nu-parser = "0.98.0"
+nu-protocol = "0.98.0"
