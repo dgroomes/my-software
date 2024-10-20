@@ -1,6 +1,6 @@
 # python
 
-My Python personal software.
+Python code that supports my personal workflows.
 
 
 ## Instructions

@@ -1,6 +1,6 @@
 # nushell
 
-Nushell configuration, scripts, and notes.
+Nushell code and config that supports my personal workflows.
 
 
 ## Overview

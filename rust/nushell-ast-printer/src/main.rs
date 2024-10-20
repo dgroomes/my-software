@@ -1,12 +1,12 @@
+use std::error::Error;
 use nu_parser::parse;
-use nu_protocol::engine::EngineState;
 use nu_protocol::{
     ast::{Block, Expr, Expression, Pipeline, PipelineElement},
-    engine::StateWorkingSet
+    engine::{EngineState, StateWorkingSet},
 };
 use std::io::{self, Read};
 
-fn main() -> io::Result<()> {
+fn main() -> Result<(), Box<dyn Error>> {
     let mut input = String::new();
     io::stdin().read_to_string(&mut input)?;
 

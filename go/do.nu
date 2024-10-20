@@ -4,7 +4,7 @@ export def test [] {
 }
 
 export def --wrapped "run my-fuzzy-finder" [...args] {
-    # For some reason, the 'cd' screws things so we can capture 'in' into another variable. Is 'in' considered a stream
+    # For some reason, the 'cd' screws things up so we can capture 'in' into another variable. Is 'in' considered a stream
     # data type at this point or are we just reading all of stdin and saving as a string?
     let _in = $in
     cd $env.DO_DIR

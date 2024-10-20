@@ -1,6 +1,6 @@
 # javascript
 
-My JavaScript code.
+JavaScript code that supports my personal workflows.
 
 
 ## Instructions
