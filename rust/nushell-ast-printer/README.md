@@ -15,6 +15,10 @@ Follow these instructions to build and run the code.
    * ```nushell
      'echo "hello there" world' | do run
      ```
+3. Install the program
+   * ```nushell
+     do install
+     ```
 
 
 ## Wish List

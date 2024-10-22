@@ -7,3 +7,8 @@ export def --wrapped run [...args] {
         $_in | (cargo run ...$args)
     }
 }
+
+export def install [] {
+    cd $env.DO_DIR
+    cargo install --path .
+}

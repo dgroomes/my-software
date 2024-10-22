@@ -131,7 +131,7 @@ Follow these instructions to build, run and install my software.
       | pkg/go-body-omitter/main.go           | 326    | 111                   |
 5. Try `posix-nushell-compatibility-checker`:
     * ```nushell
-      'echo "hello world"' | do run posix-nushell-compatibility-checker
+      'echo "hello there" world' | do run posix-nushell-compatibility-checker
       ```
 6. Build all executables:
     * ```nushell
@@ -202,8 +202,8 @@ General clean-ups, TODOs and things I wish to implement for this project
      in Nushell for example. I need to parse the expression for both langs (shell/Nu) and assert that they are both
      "boring cmd + string args". I don't need to support any more cases. This is better than 80/20, this is like 95/5.
    * DONE Scaffold a Rust program that uses the Nu parser.
-   * Call the Rust program from the Go program (extern or just exec?).
-   * Parse the output of the Rust program.
+   * DONE Call the Rust program from the Go program.
+   * Parse the output of the Rust program (just JSON into a map)
    * Match the expressions (shell/Nu) for compatibility. This should be driven by tests, because it's subtle and maybe
      wide.
 * [x] DONE `go-body-omitter`

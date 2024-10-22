@@ -1,23 +1,32 @@
 package main
 
 import (
+	"bytes"
+	"errors"
 	"fmt"
+	"io"
 	"os"
+	"os/exec"
 	"strings"
 
 	"mvdan.cc/sh/v3/syntax"
 )
 
 func main() {
-	parser := syntax.NewParser()
-
-	file, err := parser.Parse(os.Stdin, "")
+	inBytes, err := io.ReadAll(os.Stdin)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error parsing input: %v\n", err)
-		os.Exit(1)
+		fatal(fmt.Sprintf("Error reading from standard input: %v\n", err))
+	}
+	expression := string(inBytes)
+	parser := syntax.NewParser()
+	file, err := parser.Parse(strings.NewReader(expression), "")
+	if err != nil {
+		fatal(fmt.Sprintf("Error parsing input: %v\n", err))
 	}
 
 	printNode(file, 0)
+
+	fmt.Println(nushellAst(expression))
 }
 
 func printNode(node syntax.Node, indent int) {
@@ -78,4 +87,39 @@ func printNode(node syntax.Node, indent int) {
 
 func indentation(level int) string {
 	return strings.Repeat("  ", level)
+}
+
+// Call the 'nushell-ast-printer' external command to get a JSON representation of the AST for the given Nushell snippet.
+func nushellAst(snippet string) string {
+	cmd := exec.Command("nushell-ast-printer")
+	cmd.Stdin = bytes.NewBufferString(snippet)
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+
+	err := cmd.Run()
+	if err != nil {
+		if stderr.Len() > 0 {
+			fmt.Fprintln(os.Stderr, stderr.String())
+		}
+
+		var execErr *exec.Error
+		if errors.As(err, &execErr) && errors.Is(execErr.Err, exec.ErrNotFound) {
+			fatal(fmt.Sprintf("The 'nushell-ast-printer' command was not found"))
+		}
+		if (err.(*exec.ExitError)).ExitCode() == 1 {
+			fatal(fmt.Sprintf("Error running 'nushell-ast-printer': %v", err))
+		}
+	}
+
+	return stdout.String()
+}
+
+//go:noreturn
+func fatal(msg string) {
+	//goland:noinspection GoUnhandledErrorResult
+	fmt.Fprintln(os.Stderr, msg)
+	os.Exit(1)
 }
