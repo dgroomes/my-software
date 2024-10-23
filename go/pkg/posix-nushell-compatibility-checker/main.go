@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -15,18 +16,39 @@ import (
 func main() {
 	inBytes, err := io.ReadAll(os.Stdin)
 	if err != nil {
-		fatal(fmt.Sprintf("Error reading from standard input: %v\n", err))
+		fmt.Fprintf(os.Stderr, "Error reading from standard input: %v\n", err)
+		os.Exit(1)
 	}
-	expression := string(inBytes)
-	parser := syntax.NewParser()
-	file, err := parser.Parse(strings.NewReader(expression), "")
+	snippet := string(inBytes)
+	ok, err := CompatibleSnippet(snippet)
 	if err != nil {
-		fatal(fmt.Sprintf("Error parsing input: %v\n", err))
+		fmt.Fprintf(os.Stderr, "Something went wrong: %v\n", err)
+		os.Exit(1)
+	} else if ok {
+		os.Exit(0)
+	} else {
+		os.Exit(1)
+	}
+}
+
+func CompatibleSnippet(snippet string) (bool, error) {
+	node, err := ParsePosixShell(snippet)
+	if err != nil {
+		return false, err
+	}
+	ast, err := ParseNu(snippet)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error parsing input: %v\n", err)
+		return false, err
 	}
 
-	printNode(file, 0)
+	printNode(node, 0)
+	fmt.Println(ast)
+	return CompatibleAsts(node, ast), nil
+}
 
-	fmt.Println(nushellAst(expression))
+func CompatibleAsts(posixShellNode syntax.Node, nuAst map[string]interface{}) bool {
+	return true
 }
 
 func printNode(node syntax.Node, indent int) {
@@ -89,8 +111,13 @@ func indentation(level int) string {
 	return strings.Repeat("  ", level)
 }
 
-// Call the 'nushell-ast-printer' external command to get a JSON representation of the AST for the given Nushell snippet.
-func nushellAst(snippet string) string {
+func ParsePosixShell(snippet string) (syntax.Node, error) {
+	parser := syntax.NewParser()
+	return parser.Parse(strings.NewReader(snippet), "")
+}
+
+// ParseNu calls the 'nushell-ast-printer' external command to get a JSON representation of the AST for the given Nushell snippet.
+func ParseNu(snippet string) (map[string]interface{}, error) {
 	cmd := exec.Command("nushell-ast-printer")
 	cmd.Stdin = bytes.NewBufferString(snippet)
 
@@ -107,19 +134,17 @@ func nushellAst(snippet string) string {
 
 		var execErr *exec.Error
 		if errors.As(err, &execErr) && errors.Is(execErr.Err, exec.ErrNotFound) {
-			fatal(fmt.Sprintf("The 'nushell-ast-printer' command was not found"))
+			return nil, fmt.Errorf("the 'nushell-ast-printer' command was not found")
 		}
 		if (err.(*exec.ExitError)).ExitCode() == 1 {
-			fatal(fmt.Sprintf("Error running 'nushell-ast-printer': %v", err))
+			return nil, fmt.Errorf("error running 'nushell-ast-printer': %v\n", err)
 		}
 	}
 
-	return stdout.String()
-}
+	var astMap map[string]interface{}
+	if err := json.Unmarshal(stdout.Bytes(), &astMap); err != nil {
+		return nil, fmt.Errorf("error unmarshalling JSON: %v\n", err)
+	}
 
-//go:noreturn
-func fatal(msg string) {
-	//goland:noinspection GoUnhandledErrorResult
-	fmt.Fprintln(os.Stderr, msg)
-	os.Exit(1)
+	return astMap, nil
 }

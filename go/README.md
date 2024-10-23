@@ -203,8 +203,8 @@ General clean-ups, TODOs and things I wish to implement for this project
      "boring cmd + string args". I don't need to support any more cases. This is better than 80/20, this is like 95/5.
    * DONE Scaffold a Rust program that uses the Nu parser.
    * DONE Call the Rust program from the Go program.
-   * Parse the output of the Rust program (just JSON into a map)
-   * Match the expressions (shell/Nu) for compatibility. This should be driven by tests, because it's subtle and maybe
+   * DONE Parse the output of the Rust program (just JSON into a map)
+   * IN PROGRESS Match the expressions (shell/Nu) for compatibility. This should be driven by tests, because it's subtle and maybe
      wide.
 * [x] DONE `go-body-omitter`
    * DONE generate a first pass (o1-preview did a great job)
