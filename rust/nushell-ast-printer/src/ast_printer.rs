@@ -1,26 +1,45 @@
 use new_nu_parser::{
     compiler::Compiler,
-    parser::{AstNode, NodeId},
+    parser::{AstNode, BlockId, NodeId},
 };
-use new_nu_parser::parser::BlockId;
 use serde::Serialize;
+
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "PascalCase")]
+pub enum NodeType {
+    Integer,
+    Float,
+    String,
+    Name,
+    Variable,
+    Boolean,
+    Let,
+    MutableLet,
+    Definition,
+    BinaryOp,
+    List,
+    Block,
+    If,
+    Call,
+    Unknown,
+}
 
 #[derive(Debug, Serialize)]
 pub struct AstOutput {
     #[serde(rename = "type")]
-    node_type: String,
+    node_type: NodeType,
     #[serde(skip_serializing_if = "Option::is_none")]
     name: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     value: Option<String>,
-    #[serde(skip_serializing_if = "Vec::is_empty")]
+    #[serde(skip_serializing_if = "Vec::is_empty", default)]
     children: Vec<AstOutput>,
 }
 
 impl AstOutput {
-    pub fn new(node_type: &str) -> Self {
+    pub fn new(node_type: NodeType) -> Self {
         Self {
-            node_type: node_type.to_string(),
+            node_type,
             name: None,
             value: None,
             children: Vec::new(),
@@ -52,8 +71,7 @@ impl<'a> AstPrinter<'a> {
         Self { compiler }
     }
 
-    pub fn process_node(&self, node_idx: usize) -> AstOutput {
-        let node_id = NodeId(node_idx);
+    pub fn process_node(&self, node_id: NodeId) -> AstOutput {
         match self.compiler.get_node(node_id) {
             AstNode::Int | AstNode::Float | AstNode::String | AstNode::Name | AstNode::Variable => {
                 self.process_literal_node(node_id)
@@ -64,85 +82,92 @@ impl<'a> AstPrinter<'a> {
                 ty,
                 initializer,
                 is_mutable,
-            } => self.process_let_node(node_id, *variable_name, ty, *initializer, *is_mutable),
+            } => self.process_let_node(*variable_name, ty, *initializer, *is_mutable),
             AstNode::Def {
                 name,
                 params,
                 return_ty,
                 block,
-            } => self.process_def_node(node_id, *name, *params, *return_ty, *block),
-            AstNode::BinaryOp { lhs, op, rhs } => self.process_binary_op(node_id, *lhs, *op, *rhs),
-            AstNode::List(items) => self.process_list_node(node_id, items),
-            AstNode::Block(block_id) => self.process_block_node(node_id, *block_id),
+            } => self.process_def_node(*name, *params, *return_ty, *block),
+            AstNode::BinaryOp { lhs, op, rhs } => self.process_binary_op(*lhs, *op, *rhs),
+            AstNode::List(items) => self.process_list_node(items),
+            AstNode::Block(block_id) => self.process_block_node(*block_id),
             AstNode::If {
                 condition,
                 then_block,
                 else_block,
-            } => self.process_if_node(node_id, *condition, *then_block, *else_block),
-            AstNode::Call { parts } => self.process_call_node(node_id, parts),
-            other => AstOutput::new("Unknown").with_name(format!("{:?}", other)),
+            } => self.process_if_node(*condition, *then_block, *else_block),
+            AstNode::Call { parts } => self.process_call_node(parts),
+            other => AstOutput::new(NodeType::Unknown).with_name(format!("{:?}", other)),
         }
     }
 
-    fn process_literal_node(&self, node_id: NodeId) -> AstOutput {
+    fn get_node_value(&self, node_id: NodeId) -> String {
         let span = self.compiler.get_span(node_id);
-        let value = String::from_utf8_lossy(&self.compiler.source[span.start..span.end]);
+        String::from_utf8_lossy(&self.compiler.source[span.start..span.end]).into_owned()
+    }
+
+    fn process_literal_node(&self, node_id: NodeId) -> AstOutput {
+        let value = self.get_node_value(node_id);
 
         let node_type = match self.compiler.get_node(node_id) {
-            AstNode::Int => "Integer",
-            AstNode::Float => "Float",
-            AstNode::String => "String",
-            AstNode::Name => "Name",
-            AstNode::Variable => "Variable",
+            AstNode::Int => NodeType::Integer,
+            AstNode::Float => NodeType::Float,
+            AstNode::String => NodeType::String,
+            AstNode::Name => NodeType::Name,
+            AstNode::Variable => NodeType::Variable,
             _ => unreachable!(),
         };
 
-        AstOutput::new(node_type).with_value(value.into_owned())
+        AstOutput::new(node_type).with_value(value)
     }
 
     fn process_boolean_node(&self, node_id: NodeId) -> AstOutput {
-        let span = self.compiler.get_span(node_id);
-        let value = String::from_utf8_lossy(&self.compiler.source[span.start..span.end]);
-        AstOutput::new("Boolean").with_value(value.into_owned())
+        let value = self.get_node_value(node_id);
+        AstOutput::new(NodeType::Boolean).with_value(value)
     }
 
     fn process_let_node(
         &self,
-        _node_id: NodeId,
         variable_name: NodeId,
         ty: &Option<NodeId>,
         initializer: NodeId,
         is_mutable: bool,
     ) -> AstOutput {
-        let mut children = vec![self.process_node(variable_name.0)];
+        let mut children = vec![self.process_node(variable_name)];
 
         if let Some(type_node) = ty {
-            children.push(self.process_node(type_node.0));
+            children.push(self.process_node(*type_node));
         }
-        children.push(self.process_node(initializer.0));
+        children.push(self.process_node(initializer));
 
-        AstOutput::new(if is_mutable { "MutableLet" } else { "Let" }).with_children(children)
+        let node_type = if is_mutable {
+            NodeType::MutableLet
+        } else {
+            NodeType::Let
+        };
+
+        AstOutput::new(node_type).with_children(children)
     }
 
     fn process_def_node(
         &self,
-        _node_id: NodeId,
         name: NodeId,
         params: NodeId,
         return_ty: Option<NodeId>,
         block: NodeId,
     ) -> AstOutput {
-        let mut children = vec![self.process_node(name.0), self.process_node(params.0)];
+        let mut children = vec![self.process_node(name), self.process_node(params)];
 
         if let Some(ret_ty) = return_ty {
-            children.push(self.process_node(ret_ty.0));
+            children.push(self.process_node(ret_ty));
         }
-        children.push(self.process_node(block.0));
+        children.push(self.process_node(block));
 
-        AstOutput::new("Definition").with_children(children)
+        AstOutput::new(NodeType::Definition).with_children(children)
     }
 
-    fn process_binary_op(&self, _node_id: NodeId, lhs: NodeId, op: NodeId, rhs: NodeId) -> AstOutput {
+    fn process_binary_op(&self, lhs: NodeId, op: NodeId, rhs: NodeId) -> AstOutput {
         let op_name = match self.compiler.get_node(op) {
             AstNode::Plus => "Add",
             AstNode::Minus => "Subtract",
@@ -157,39 +182,39 @@ impl<'a> AstPrinter<'a> {
             _ => "UnknownOp",
         };
 
-        AstOutput::new("BinaryOp")
+        AstOutput::new(NodeType::BinaryOp)
             .with_name(op_name)
-            .with_children(vec![self.process_node(lhs.0), self.process_node(rhs.0)])
+            .with_children(vec![self.process_node(lhs), self.process_node(rhs)])
     }
 
-    fn process_list_node(&self, _node_id: NodeId, items: &[NodeId]) -> AstOutput {
-        AstOutput::new("List").with_children(items.iter().map(|id| self.process_node(id.0)).collect())
+    fn process_list_node(&self, items: &[NodeId]) -> AstOutput {
+        AstOutput::new(NodeType::List)
+            .with_children(items.iter().map(|&id| self.process_node(id)).collect())
     }
 
-    fn process_block_node(&self, _node_id: NodeId, block_id: BlockId) -> AstOutput {
+    fn process_block_node(&self, block_id: BlockId) -> AstOutput {
         let block = &self.compiler.blocks[block_id.0];
-        AstOutput::new("Block")
-            .with_children(block.nodes.iter().map(|id| self.process_node(id.0)).collect())
+        AstOutput::new(NodeType::Block)
+            .with_children(block.nodes.iter().map(|&id| self.process_node(id)).collect())
     }
 
     fn process_if_node(
         &self,
-        _node_id: NodeId,
         condition: NodeId,
         then_block: NodeId,
         else_block: Option<NodeId>,
     ) -> AstOutput {
-        let mut children = vec![self.process_node(condition.0), self.process_node(then_block.0)];
+        let mut children = vec![self.process_node(condition), self.process_node(then_block)];
 
         if let Some(else_node) = else_block {
-            children.push(self.process_node(else_node.0));
+            children.push(self.process_node(else_node));
         }
 
-        AstOutput::new("If").with_children(children)
+        AstOutput::new(NodeType::If).with_children(children)
     }
 
-    fn process_call_node(&self, _node_id: NodeId, parts: &[NodeId]) -> AstOutput {
-        AstOutput::new("Call")
-            .with_children(parts.iter().map(|id| self.process_node(id.0)).collect())
+    fn process_call_node(&self, parts: &[NodeId]) -> AstOutput {
+        AstOutput::new(NodeType::Call)
+            .with_children(parts.iter().map(|&id| self.process_node(id)).collect())
     }
 }

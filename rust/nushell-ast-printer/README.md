@@ -52,11 +52,11 @@ General clean-ups, TODOs and things I wish to implement for this project
 
 * [x] DONE output JSON
 * [ ] SKIP (I think I got what I needed? The heavy lifting logic has to go in the Go program) tests
-* [ ] IN PROGRESS Use the "new-nu-parser" which is not yet fully developed but should be much easier to use. The regular Nu parser
+* [x] DONE Use the "new-nu-parser" which is not yet fully developed but should be much easier to use. The regular Nu parser
   co-mingles scanning/parsing/binding/IR and I'm struggling to just get a simple AST.
    * "new-nu-parser" is not released on crates.io yet so we can do a relative path dependency in the Cargo.toml.
    * DONE (The vast majority is done, thanks Claude) Implement
-   * IN PROGRESS Clean up
+   * DONE (Ok enough) Clean up
 
 
 ## Reference

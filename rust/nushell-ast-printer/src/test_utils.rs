@@ -16,12 +16,11 @@ pub mod tests {
                 map.retain(|_, v| !v.is_null() && v != &Value::Array(vec![]));
 
                 // Recursively simplify children
-                if let Some(Value::Array(children)) = map.get("children") {
-                    let simplified_children: Vec<Value> = children
+                if let Some(Value::Array(children)) = map.get_mut("children") {
+                    *children = children
                         .iter()
                         .map(|child| simplify_json(child.clone()))
                         .collect();
-                    map.insert("children".to_string(), Value::Array(simplified_children));
                 }
 
                 Value::Object(map)
@@ -101,144 +100,165 @@ pub mod tests {
     fn test_binary_operation() {
         let json = parse_to_json("1 + 2").unwrap();
         let simplified = simplify_json(json);
-        std::assert_eq!(simplified, serde_json::json!({
-            "type": "Block",
-            "children": [{
-                "type": "BinaryOp",
-                "name": "Add",
-                "children": [
-                    {
-                        "type": "Integer",
-                        "value": "1"
-                    },
-                    {
-                        "type": "Integer",
-                        "value": "2"
-                    }
-                ]
-            }]
-        }));
+        assert_eq!(
+            simplified,
+            serde_json::json!({
+                "type": "Block",
+                "children": [{
+                    "type": "BinaryOp",
+                    "name": "Add",
+                    "children": [
+                        {
+                            "type": "Integer",
+                            "value": "1"
+                        },
+                        {
+                            "type": "Integer",
+                            "value": "2"
+                        }
+                    ]
+                }]
+            })
+        );
     }
 
     #[test]
     fn test_simple_command() {
         let json = parse_to_json("echo hello world").unwrap();
         let simplified = simplify_json(json);
-        std::assert_eq!(simplified, serde_json::json!({
-            "type": "Block",
-            "children": [{
-                "type": "Call",
-                "children": [
-                    {
-                        "type": "Name",
-                        "value": "echo"
-                    },
-                    {
-                        "type": "Name",
-                        "value": "hello"
-                    },
-                    {
-                        "type": "Name",
-                        "value": "world"
-                    }
-                ]
-            }]
-        }));
+        assert_eq!(
+            simplified,
+            serde_json::json!({
+                "type": "Block",
+                "children": [{
+                    "type": "Call",
+                    "children": [
+                        {
+                            "type": "Name",
+                            "value": "echo"
+                        },
+                        {
+                            "type": "Name",
+                            "value": "hello"
+                        },
+                        {
+                            "type": "Name",
+                            "value": "world"
+                        }
+                    ]
+                }]
+            })
+        );
     }
 
     #[test]
     fn test_if_statement() {
         let json = parse_to_json("if true { 42 }").unwrap();
         let simplified = simplify_json(json);
-        std::assert_eq!(simplified, serde_json::json!({
-            "type": "Block",
-            "children": [{
-                "type": "If",
-                "children": [
-                    {
-                        "type": "Boolean",
-                        "value": "true"
-                    },
-                    {
-                        "type": "Block",
-                        "children": [{
-                            "type": "Integer",
-                            "value": "42"
-                        }]
-                    }
-                ]
-            }]
-        }));
+        assert_eq!(
+            simplified,
+            serde_json::json!({
+                "type": "Block",
+                "children": [{
+                    "type": "If",
+                    "children": [
+                        {
+                            "type": "Boolean",
+                            "value": "true"
+                        },
+                        {
+                            "type": "Block",
+                            "children": [{
+                                "type": "Integer",
+                                "value": "42"
+                            }]
+                        }
+                    ]
+                }]
+            })
+        );
     }
 
     #[test]
     fn test_if_else() {
         let json = parse_to_json("if false { 0 } else { 1 }").unwrap();
         let simplified = simplify_json(json);
-        std::assert_eq!(simplified, serde_json::json!({
-            "type": "Block",
-            "children": [{
-                "type": "If",
-                "children": [
-                    {
-                        "type": "Boolean",
-                        "value": "false"
-                    },
-                    {
-                        "type": "Block",
-                        "children": [{
-                            "type": "Integer",
-                            "value": "0"
-                        }]
-                    },
-                    {
-                        "type": "Block",
-                        "children": [{
-                            "type": "Integer",
-                            "value": "1"
-                        }]
-                    }
-                ]
-            }]
-        }));
+        assert_eq!(
+            simplified,
+            serde_json::json!({
+                "type": "Block",
+                "children": [{
+                    "type": "If",
+                    "children": [
+                        {
+                            "type": "Boolean",
+                            "value": "false"
+                        },
+                        {
+                            "type": "Block",
+                            "children": [{
+                                "type": "Integer",
+                                "value": "0"
+                            }]
+                        },
+                        {
+                            "type": "Block",
+                            "children": [{
+                                "type": "Integer",
+                                "value": "1"
+                            }]
+                        }
+                    ]
+                }]
+            })
+        );
     }
 
     #[test]
     fn test_list() {
         let json = parse_to_json("[1, 2, 3]").unwrap();
         let simplified = simplify_json(json);
-        std::assert_eq!(simplified, serde_json::json!({
-            "type": "Block",
-            "children": [{
-                "type": "List",
-                "children": [
-                    {
-                        "type": "Integer",
-                        "value": "1"
-                    },
-                    {
-                        "type": "Integer",
-                        "value": "2"
-                    },
-                    {
-                        "type": "Integer",
-                        "value": "3"
-                    }
-                ]
-            }]
-        }));
+        assert_eq!(
+            simplified,
+            serde_json::json!({
+                "type": "Block",
+                "children": [{
+                    "type": "List",
+                    "children": [
+                        {
+                            "type": "Integer",
+                            "value": "1"
+                        },
+                        {
+                            "type": "Integer",
+                            "value": "2"
+                        },
+                        {
+                            "type": "Integer",
+                            "value": "3"
+                        }
+                    ]
+                }]
+            })
+        );
     }
 
     #[test]
     fn test_parse_error() {
         let result = parse_to_json("let = 42"); // Missing variable name
-        assert!(matches!(result, Err(AstPrinterError::ParserError(_))),
-                "Expected ParserError but got {:?}", result);
+        assert!(
+            matches!(result, Err(AstPrinterError::ParserError(_))),
+            "Expected ParserError but got {:?}",
+            result
+        );
 
         if let Err(AstPrinterError::ParserError(error_msg)) = result {
             // Verify the error message contains expected keywords
-            assert!(error_msg.contains("variable"),
-                    "Error should mention missing variable, got: {}", error_msg);
+            assert!(
+                error_msg.contains("variable"),
+                "Error should mention missing variable, got: {}",
+                error_msg
+            );
         }
     }
 }

@@ -2,7 +2,7 @@ use thiserror::Error;
 
 #[derive(Debug, Error)]
 pub enum AstPrinterError {
-    #[error("Parser error: {0}")]
+    #[error("Parser error(s): {0}")]
     ParserError(String),
 
     #[error("Invalid AST node: {0}")]
@@ -13,4 +13,10 @@ pub enum AstPrinterError {
 
     #[error("JSON serialization error: {0}")]
     JsonError(#[from] serde_json::Error),
+}
+
+impl From<Vec<String>> for AstPrinterError {
+    fn from(errors: Vec<String>) -> Self {
+        AstPrinterError::ParserError(errors.join("\n"))
+    }
 }
