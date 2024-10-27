@@ -56,7 +56,7 @@ General clean-ups, TODOs and things I wish to implement for this project
   co-mingles scanning/parsing/binding/IR and I'm struggling to just get a simple AST.
    * "new-nu-parser" is not released on crates.io yet so we can do a relative path dependency in the Cargo.toml.
    * DONE (The vast majority is done, thanks Claude) Implement
-   * Clean up
+   * IN PROGRESS Clean up
 
 
 ## Reference
