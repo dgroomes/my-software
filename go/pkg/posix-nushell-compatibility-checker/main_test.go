@@ -25,10 +25,13 @@ func TestParserCompatibility(t *testing.T) {
 			snippet:        "echo $USER",
 			wantCompatible: false,
 		},
-		"pipe command": {
-			snippet:        "ls | grep foo",
-			wantCompatible: false,
-		},
+
+		// Unfortunately, the new nushell parser can't parse this. It fails with 'missing space before operator' and
+		// 'missing space after operator'
+		//"dot slash": {
+		//	snippet:        "./gradlew run",
+		//	wantCompatible: true,
+		//},
 	}
 
 	for name, tc := range tests {

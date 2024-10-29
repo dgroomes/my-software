@@ -133,6 +133,7 @@ Follow these instructions to build, run and install my software.
     * ```nushell
       'echo "hello there" world' | do run posix-nushell-compatibility-checker
       ```
+    * The exit code should be 0, indicating that the `echo ...` command is interpreted the same between POSIX and Nushell.
 6. Build all executables:
     * ```nushell
       do build
