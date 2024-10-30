@@ -40,7 +40,7 @@ pub mod tests {
                 "type": "Block",
                 "children": [{
                     "type": "String",
-                    "value": "\"hello world\""
+                    "value": "hello world"
                 }]
             })
         );

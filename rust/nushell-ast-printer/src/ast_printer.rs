@@ -108,7 +108,7 @@ impl<'a> AstPrinter<'a> {
     }
 
     fn process_literal_node(&self, node_id: NodeId) -> AstOutput {
-        let value = self.get_node_value(node_id);
+        let mut value = self.get_node_value(node_id);
 
         let node_type = match self.compiler.get_node(node_id) {
             AstNode::Int => NodeType::Integer,
@@ -118,6 +118,13 @@ impl<'a> AstPrinter<'a> {
             AstNode::Variable => NodeType::Variable,
             _ => unreachable!(),
         };
+
+        // If node is String, strip the quotes
+        if let NodeType::String = node_type {
+            if (value.starts_with('"') && value.ends_with('"')) || (value.starts_with('\'') && value.ends_with('\'')) {
+                value = value[1..value.len() - 1].to_string();
+            }
+        }
 
         AstOutput::new(node_type).with_value(value)
     }
