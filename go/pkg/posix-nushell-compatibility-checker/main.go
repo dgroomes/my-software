@@ -38,22 +38,22 @@ func main() {
 
 func CompatibleSnippet(snippet string) (bool, error) {
 	fmt.Fprintf(os.Stderr, "\n=== Parsing POSIX Shell ===\n")
-	node, err := ParsePosixShell(snippet)
+	posixNode, err := ParsePosixShell(snippet)
 	if err != nil {
 		return false, fmt.Errorf("POSIX parse error: %v", err)
 	}
-	printNode(node, 0)
+	printNode(posixNode, 0)
 
 	fmt.Fprintf(os.Stderr, "\n=== Parsing Nushell ===\n")
-	ast, err := ParseNu(snippet)
+	nuAst, err := ParseNu(snippet)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error parsing input: %v\n", err)
 		return false, err
 	}
-	prettyJson, _ := json.MarshalIndent(ast, "", "  ")
+	prettyJson, _ := json.MarshalIndent(nuAst, "", "  ")
 	fmt.Fprintf(os.Stderr, "Nushell AST:\n%s\n", prettyJson)
 
-	return CompatibleAsts(node, ast), nil
+	return CompatibleAsts(posixNode, nuAst), nil
 }
 
 func CompatibleAsts(posixShellNode syntax.Node, nuAst map[string]interface{}) bool {
@@ -73,9 +73,9 @@ func CompatibleAsts(posixShellNode syntax.Node, nuAst map[string]interface{}) bo
 		return false
 	}
 
-	fmt.Fprintf(os.Stderr, "3. Checking if commands match...\n")
-	match := commandsMatch(posixShellNode, nuAst)
-	fmt.Fprintf(os.Stderr, "   Commands match: %v\n", match)
+	fmt.Fprintf(os.Stderr, "3. Comparing command structures...\n")
+	match := compareCommandStructures(posixShellNode, nuAst)
+	fmt.Fprintf(os.Stderr, "   Command structures match: %v\n", match)
 	return match
 }
 
@@ -130,8 +130,7 @@ func isSimplePosixCommand(node syntax.Node) bool {
 }
 
 func isSimpleWord(word *syntax.Word) bool {
-	wordLit := wordToString(word)
-	fmt.Fprintf(os.Stderr, "   Examining word with %d parts: %q\n", len(word.Parts), wordLit)
+	fmt.Fprintf(os.Stderr, "   Examining word with %d parts\n", len(word.Parts))
 	if len(word.Parts) != 1 {
 		fmt.Fprintf(os.Stderr, "   ❌ Word has multiple parts\n")
 		return false
@@ -145,17 +144,17 @@ func isSimpleWord(word *syntax.Word) bool {
 		return true
 	case *syntax.DblQuoted:
 		fmt.Fprintf(os.Stderr, "   Examining double-quoted word\n")
-		if len(part.Parts) != 1 {
-			fmt.Fprintf(os.Stderr, "   ❌ DblQuoted has multiple parts\n")
-			return false
+		for _, dqPart := range part.Parts {
+			switch dqInner := dqPart.(type) {
+			case *syntax.Lit:
+				// Accept simple literals inside double quotes
+			default:
+				fmt.Fprintf(os.Stderr, "   ❌ DblQuoted part is not a simple literal: %T\n", dqInner)
+				return false
+			}
 		}
-		if lit, isLit := part.Parts[0].(*syntax.Lit); isLit {
-			fmt.Fprintf(os.Stderr, "   ✅ Simple double-quoted literal: %q\n", lit.Value)
-			return true
-		} else {
-			fmt.Fprintf(os.Stderr, "   ❌ DblQuoted part is not a literal\n")
-			return false
-		}
+		fmt.Fprintf(os.Stderr, "   ✅ Simple double-quoted literal\n")
+		return true
 	default:
 		fmt.Fprintf(os.Stderr, "   ❌ Part is not a simple literal\n")
 		return false
@@ -182,35 +181,203 @@ func isSimpleNushellCommand(ast map[string]interface{}) bool {
 		return false
 	}
 
-	callChildren, ok := call["children"].([]interface{})
-	if !ok {
-		fmt.Fprintf(os.Stderr, "   ❌ Call has no children\n")
+	fmt.Fprintf(os.Stderr, "   ✅ Nushell command is simple\n")
+	return true
+}
+
+func compareCommandStructures(posixNode syntax.Node, nuAst map[string]interface{}) bool {
+	fmt.Fprintf(os.Stderr, "=== Comparing Command Structures ===\n")
+
+	// Extract POSIX command components
+	posixCmdName, posixArgs, err := extractPosixCommandComponents(posixNode)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to extract POSIX command components: %v\n", err)
 		return false
 	}
 
-	fmt.Fprintf(os.Stderr, "   Examining Call node with %d children\n", len(callChildren))
-	for i, child := range callChildren {
-		childMap, ok := child.(map[string]interface{})
-		if !ok {
-			fmt.Fprintf(os.Stderr, "   ❌ Child %d is not a valid node\n", i)
-			return false
-		}
-		childType, ok := childMap["type"].(string)
-		if !ok {
-			fmt.Fprintf(os.Stderr, "   ❌ Child %d has no type\n", i)
-			return false
-		}
-		switch childType {
-		case "Name", "String":
-			fmt.Fprintf(os.Stderr, "   ✅ Child %d is valid: %s = %v\n", i, childType, childMap["value"])
-		default:
-			fmt.Fprintf(os.Stderr, "   ❌ Child %d is not a Name or String (got %s)\n", i, childType)
+	// Extract Nushell command components
+	nuCmdName, nuArgs, err := extractNuCommandComponents(nuAst)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to extract Nushell command components: %v\n", err)
+		return false
+	}
+
+	// Compare command names
+	if posixCmdName != nuCmdName {
+		fmt.Fprintf(os.Stderr, "❌ Command names do not match: %q vs %q\n", posixCmdName, nuCmdName)
+		return false
+	}
+
+	// Compare argument counts
+	if len(posixArgs) != len(nuArgs) {
+		fmt.Fprintf(os.Stderr, "❌ Argument counts do not match: %d vs %d\n", len(posixArgs), len(nuArgs))
+		return false
+	}
+
+	// Compare each argument
+	for i := 0; i < len(posixArgs); i++ {
+		if !compareArguments(posixArgs[i], nuArgs[i]) {
+			fmt.Fprintf(os.Stderr, "❌ Arguments at position %d do not match\n", i)
 			return false
 		}
 	}
 
-	fmt.Fprintf(os.Stderr, "   ✅ Nushell command is simple\n")
+	fmt.Fprintf(os.Stderr, "✅ Command structures match completely\n")
 	return true
+}
+
+func extractPosixCommandComponents(node syntax.Node) (string, []*syntax.Word, error) {
+	switch x := node.(type) {
+	case *syntax.File:
+		if len(x.Stmts) != 1 {
+			return "", nil, fmt.Errorf("expected 1 statement, got %d", len(x.Stmts))
+		}
+		return extractPosixCommandComponents(x.Stmts[0])
+	case *syntax.Stmt:
+		if x.Cmd == nil {
+			return "", nil, fmt.Errorf("statement has no command")
+		}
+		return extractPosixCommandComponents(x.Cmd)
+	case *syntax.CallExpr:
+		if len(x.Args) == 0 {
+			return "", nil, fmt.Errorf("call expression has no arguments")
+		}
+		cmdName := wordToString(x.Args[0])
+		args := x.Args[1:]
+		return cmdName, args, nil
+	default:
+		return "", nil, fmt.Errorf("unexpected node type: %T", x)
+	}
+}
+
+func extractNuCommandComponents(ast map[string]interface{}) (string, []interface{}, error) {
+	children, ok := ast["children"].([]interface{})
+	if !ok || len(children) == 0 {
+		return "", nil, fmt.Errorf("no children in block")
+	}
+
+	call, ok := children[0].(map[string]interface{})
+	if !ok || call["type"] != "Call" {
+		return "", nil, fmt.Errorf("first child is not a Call")
+	}
+
+	callChildren, ok := call["children"].([]interface{})
+	if !ok || len(callChildren) == 0 {
+		return "", nil, fmt.Errorf("no children in Call")
+	}
+
+	cmdNode, ok := callChildren[0].(map[string]interface{})
+	if !ok {
+		return "", nil, fmt.Errorf("invalid command node")
+	}
+
+	cmdType, ok := cmdNode["type"].(string)
+	if !ok {
+		return "", nil, fmt.Errorf("command node has no type")
+	}
+
+	if cmdType != "Name" {
+		return "", nil, fmt.Errorf("command node is not a Name type")
+	}
+
+	cmdName, ok := cmdNode["value"].(string)
+	if !ok {
+		return "", nil, fmt.Errorf("command node has no value")
+	}
+
+	args := callChildren[1:]
+
+	return cmdName, args, nil
+}
+
+func compareArguments(posixArg *syntax.Word, nuArg interface{}) bool {
+	nuArgMap, ok := nuArg.(map[string]interface{})
+	if !ok {
+		fmt.Fprintf(os.Stderr, "   ❌ Nushell argument is not a valid node\n")
+		return false
+	}
+
+	nuArgType, ok := nuArgMap["type"].(string)
+	if !ok {
+		fmt.Fprintf(os.Stderr, "   ❌ Nushell argument has no type\n")
+		return false
+	}
+
+	nuArgValue, ok := nuArgMap["value"].(string)
+	if !ok {
+		fmt.Fprintf(os.Stderr, "   ❌ Nushell argument has no value\n")
+		return false
+	}
+
+	// Compare types
+	posixArgType := getPosixArgType(posixArg)
+	if !posixArgTypeMatchesNuArgType(posixArgType, nuArgType) {
+		fmt.Fprintf(os.Stderr, "   ❌ Argument types do not match: POSIX %s vs Nushell %s\n", posixArgType, nuArgType)
+		return false
+	}
+
+	// Compare values
+	posixArgValue := wordToString(posixArg)
+	if posixArgValue != nuArgValue {
+		fmt.Fprintf(os.Stderr, "   ❌ Argument values do not match: %q vs %q\n", posixArgValue, nuArgValue)
+		return false
+	}
+
+	fmt.Fprintf(os.Stderr, "   ✅ Arguments match: %q\n", posixArgValue)
+	return true
+}
+
+func getPosixArgType(word *syntax.Word) string {
+	if len(word.Parts) != 1 {
+		return "ComplexWord"
+	}
+	switch part := word.Parts[0].(type) {
+	case *syntax.Lit:
+		return "Name"
+	case *syntax.SglQuoted:
+		return "String"
+	case *syntax.DblQuoted:
+		if len(part.Parts) == 1 {
+			if _, ok := part.Parts[0].(*syntax.Lit); ok {
+				return "String"
+			}
+		}
+		return "ComplexDblQuoted"
+	default:
+		return "Unknown"
+	}
+}
+
+func posixArgTypeMatchesNuArgType(posixType, nuType string) bool {
+	// Map POSIX argument types to Nushell types for comparison
+	switch posixType {
+	case "Name":
+		return nuType == "Name"
+	case "String":
+		return nuType == "String"
+	default:
+		return false
+	}
+}
+
+func wordToString(word *syntax.Word) string {
+	var sb strings.Builder
+	for _, part := range word.Parts {
+		switch x := part.(type) {
+		case *syntax.Lit:
+			sb.WriteString(x.Value)
+		case *syntax.SglQuoted:
+			sb.WriteString(x.Value)
+		case *syntax.DblQuoted:
+			for _, dqPart := range x.Parts {
+				switch y := dqPart.(type) {
+				case *syntax.Lit:
+					sb.WriteString(y.Value)
+				}
+			}
+		}
+	}
+	return sb.String()
 }
 
 func printNode(node syntax.Node, indent int) {
@@ -279,26 +446,6 @@ func printNode(node syntax.Node, indent int) {
 	}
 }
 
-func wordToString(word *syntax.Word) string {
-	var sb strings.Builder
-	for _, part := range word.Parts {
-		switch x := part.(type) {
-		case *syntax.Lit:
-			sb.WriteString(x.Value)
-		case *syntax.SglQuoted:
-			sb.WriteString(x.Value)
-		case *syntax.DblQuoted:
-			for _, dqPart := range x.Parts {
-				switch y := dqPart.(type) {
-				case *syntax.Lit:
-					sb.WriteString(y.Value)
-				}
-			}
-		}
-	}
-	return sb.String()
-}
-
 func ParsePosixShell(snippet string) (syntax.Node, error) {
 	parser := syntax.NewParser()
 	return parser.Parse(strings.NewReader(snippet), "")
@@ -342,144 +489,4 @@ func ParseNu(snippet string) (map[string]interface{}, error) {
 
 	fmt.Fprintf(os.Stderr, "Successfully parsed Nushell AST\n")
 	return astMap, nil
-}
-
-func cleanShellArg(arg string) string {
-	arg = strings.TrimSpace(arg)
-	if len(arg) >= 2 && ((arg[0] == '"' && arg[len(arg)-1] == '"') ||
-		(arg[0] == '\'' && arg[len(arg)-1] == '\'')) {
-		arg = arg[1 : len(arg)-1]
-	}
-	return arg
-}
-
-func cleanNuArg(argNode map[string]interface{}) (string, error) {
-	value, ok := argNode["value"].(string)
-	if !ok {
-		return "", fmt.Errorf("argument node has no 'value' field")
-	}
-
-	return strings.TrimSpace(value), nil
-}
-
-func commandsMatch(posixNode syntax.Node, nuAst map[string]interface{}) bool {
-	fmt.Fprintf(os.Stderr, "=== Comparing Commands ===\n")
-
-	var shellCmd string
-	var shellArgs []string
-
-	if err := extractShellCommand(posixNode, &shellCmd, &shellArgs); err != nil {
-		fmt.Fprintf(os.Stderr, "Failed to extract shell command: %v\n", err)
-		return false
-	}
-
-	fmt.Fprintf(os.Stderr, "Shell command: %q\n", shellCmd)
-	fmt.Fprintf(os.Stderr, "Shell args: %#v\n", shellArgs)
-
-	nuCmd, nuArgs, err := extractNuCommand(nuAst)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Failed to extract Nushell command: %v\n", err)
-		return false
-	}
-
-	fmt.Fprintf(os.Stderr, "Nushell command: %q\n", nuCmd)
-	fmt.Fprintf(os.Stderr, "Nushell args: %#v\n", nuArgs)
-
-	if cleanShellArg(shellCmd) != cleanShellArg(nuCmd) {
-		fmt.Fprintf(os.Stderr, "❌ Commands don't match after cleaning: %q vs %q\n",
-			cleanShellArg(shellCmd), cleanShellArg(nuCmd))
-		return false
-	}
-
-	if len(shellArgs) != len(nuArgs) {
-		fmt.Fprintf(os.Stderr, "❌ Different number of arguments: shell=%d nu=%d\n",
-			len(shellArgs), len(nuArgs))
-		return false
-	}
-
-	for i := range shellArgs {
-		shellArg := cleanShellArg(shellArgs[i])
-		nuArg := cleanShellArg(nuArgs[i])
-
-		fmt.Fprintf(os.Stderr, "Comparing arg %d:\n", i)
-		fmt.Fprintf(os.Stderr, "  Shell: %q -> %q\n", shellArgs[i], shellArg)
-		fmt.Fprintf(os.Stderr, "  Nu   : %q -> %q\n", nuArgs[i], nuArg)
-
-		if shellArg != nuArg {
-			fmt.Fprintf(os.Stderr, "❌ Arguments don't match at position %d\n", i)
-			return false
-		}
-	}
-
-	fmt.Fprintf(os.Stderr, "✅ Commands match completely\n")
-	return true
-}
-
-func extractShellCommand(node syntax.Node, cmd *string, args *[]string) error {
-	switch x := node.(type) {
-	case *syntax.File:
-		if len(x.Stmts) != 1 {
-			return fmt.Errorf("expected 1 statement, got %d", len(x.Stmts))
-		}
-		return extractShellCommand(x.Stmts[0], cmd, args)
-	case *syntax.Stmt:
-		if x.Cmd == nil {
-			return fmt.Errorf("statement has no command")
-		}
-		return extractShellCommand(x.Cmd, cmd, args)
-	case *syntax.CallExpr:
-		if len(x.Args) == 0 {
-			return fmt.Errorf("call expression has no arguments")
-		}
-		*cmd = wordToString(x.Args[0])
-		for _, arg := range x.Args[1:] {
-			*args = append(*args, wordToString(arg))
-		}
-		return nil
-	default:
-		return fmt.Errorf("unexpected node type: %T", x)
-	}
-}
-
-func extractNuCommand(ast map[string]interface{}) (string, []string, error) {
-	children, ok := ast["children"].([]interface{})
-	if !ok || len(children) == 0 {
-		return "", nil, fmt.Errorf("no children in block")
-	}
-
-	call, ok := children[0].(map[string]interface{})
-	if !ok || call["type"] != "Call" {
-		return "", nil, fmt.Errorf("first child is not a Call")
-	}
-
-	callChildren, ok := call["children"].([]interface{})
-	if !ok || len(callChildren) == 0 {
-		return "", nil, fmt.Errorf("no children in Call")
-	}
-
-	cmdNode, ok := callChildren[0].(map[string]interface{})
-	if !ok {
-		return "", nil, fmt.Errorf("invalid command node")
-	}
-
-	cmd, ok := cmdNode["value"].(string)
-	if !ok {
-		return "", nil, fmt.Errorf("command node has no value")
-	}
-
-	var args []string
-	for _, arg := range callChildren[1:] {
-		argNode, ok := arg.(map[string]interface{})
-		if !ok {
-			return "", nil, fmt.Errorf("invalid argument node")
-		}
-
-		cleanArg, err := cleanNuArg(argNode)
-		if err != nil {
-			return "", nil, fmt.Errorf("failed to clean argument: %v", err)
-		}
-		args = append(args, cleanArg)
-	}
-
-	return cmd, args, nil
 }
