@@ -333,7 +333,7 @@ func getPosixArgType(word *syntax.Word) string {
 	}
 	switch part := word.Parts[0].(type) {
 	case *syntax.Lit:
-		return "Name"
+		return "String"
 	case *syntax.SglQuoted:
 		return "String"
 	case *syntax.DblQuoted:
@@ -351,10 +351,8 @@ func getPosixArgType(word *syntax.Word) string {
 func posixArgTypeMatchesNuArgType(posixType, nuType string) bool {
 	// Map POSIX argument types to Nushell types for comparison
 	switch posixType {
-	case "Name":
-		return nuType == "Name"
-	case "String":
-		return nuType == "String"
+	case "Name", "String":
+		return nuType == "Name" || nuType == "String"
 	default:
 		return false
 	}

@@ -208,6 +208,18 @@ export def run-from-readme [] {
         error make --unspanned { msg: $"Unexpected snippet language found. ($snippet.language)" }
     }
 
+    # NOTE: This is commented out, because sadly, the "new" Nushell parser is missing a critical mass of features so I can't do this check
+    #
+    # For shell/bash commands, check if they are simple enough to use directly in Nushell
+    # without escaping into bash -c
+    # let compatibility_result = $snippet.content | posix-nushell-compatibility-checker | complete
+#
+    # if $compatibility_result.exit_code == 0 {
+    #     # Command is compatible with Nushell, use it directly
+    #     $snippet.content | commandline edit $in
+    #     return
+    # }
+
     # If the snippet is a Bash command or otherwise a generic shell (likely POSIX) command, then we have some more work
     # to do. We can't write the command as-is because it will usually not be legal Nu syntax. We can splice it into the
     # commandline in the "-c" option of the "bash" command. For example, if the command is:

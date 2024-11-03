@@ -17,6 +17,10 @@ func TestParserCompatibility(t *testing.T) {
 			snippet:        "echo hi",
 			wantCompatible: true,
 		},
+		"command and multiple word args": {
+			snippet:        "echo hi there",
+			wantCompatible: true,
+		},
 		"command and quoted arg": {
 			snippet:        "echo 'hi there'",
 			wantCompatible: true,
@@ -25,6 +29,14 @@ func TestParserCompatibility(t *testing.T) {
 			snippet:        "echo $USER",
 			wantCompatible: false,
 		},
+		"combination of quoted and unquoted args": {
+			snippet:        "echo 'hello' there",
+			wantCompatible: true,
+		},
+		//"flag": {
+		//	snippet:        "brew list --versions kafka",
+		//	wantCompatible: true,
+		//},
 
 		// Unfortunately, the new nushell parser can't parse this. It fails with 'missing space before operator' and
 		// 'missing space after operator'

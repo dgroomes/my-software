@@ -152,6 +152,42 @@ pub mod tests {
     }
 
     #[test]
+    fn test_command_with_flag() {
+        let result = parse_to_json("echo -e world");
+        match result {
+            Ok(json) => {
+                let simplified = simplify_json(json);
+                assert_eq!(
+                    simplified,
+                    serde_json::json!({
+                    "type": "Block",
+                    "children": [{
+                        "type": "Call",
+                        "children": [
+                            {
+                                "type": "Name",
+                                "value": "echo"
+                            },
+                            {
+                                "type": "Name",
+                                "value": "-e"
+                            },
+                            {
+                                "type": "Name",
+                                "value": "world"
+                            }
+                        ]
+                    }]
+                })
+                );
+            }
+            Err(e) => {
+                panic!("Failed to parse command: {}", e);
+            }
+        }
+    }
+
+    #[test]
     fn test_if_statement() {
         let json = parse_to_json("if true { 42 }").unwrap();
         let simplified = simplify_json(json);

@@ -195,7 +195,7 @@ General clean-ups, TODOs and things I wish to implement for this project
 * [x] DONE Can the algo be agnostic of case sensitivity?
 * [x] DONE What's up with whitespace handling?
 * [x] DONE Less pre-slicing
-* [ ] IN PROGRESS posix-nushell-compatibility-checker. For prototypical commands (command plus string args) I don't want the
+* [x] PARTIAL (Unfortunately the new Nushell parser is missing a critical mass of cases) posix-nushell-compatibility-checker. For prototypical commands (command plus string args) I don't want the
   noise of the Nu raw string. Just allow the original command to exist. 
    * DONE Scaffold.
    * DONE (Idk I think they are just there and that's fine) What are the top-level `*syntax.File` and `syntax.Stmt` types? Are those just always there?
@@ -205,8 +205,9 @@ General clean-ups, TODOs and things I wish to implement for this project
    * DONE Scaffold a Rust program that uses the Nu parser.
    * DONE Call the Rust program from the Go program.
    * DONE Parse the output of the Rust program (just JSON into a map)
-   * IN PROGRESS Match the expressions (shell/Nu) for compatibility. This should be driven by tests, because it's subtle and maybe
+   * DONE Match the expressions (shell/Nu) for compatibility. This should be driven by tests, because it's subtle and maybe
      wide.
+* [ ] Workaround `./` parsing gap of the new Nushell parser.
 * [x] DONE `go-body-omitter`
    * DONE generate a first pass (o1-preview did a great job)
    * SKIP (fine enough for now) Study the generated code. Consider changes/comments/restructuring. Should we omit in a more nuanced way?
