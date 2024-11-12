@@ -151,34 +151,16 @@ These are the instructions I follow when I get a new Mac or after I re-install m
       echo $BASH_VERSION
       ```
 9. Configure my custom Bash setup
-   * Install [bash/bashrc-bundler.pl](bash/bashrc-bundler.pl), known as `bb`, using the following commands.
-   * ```shell
-     sudo mkdir /usr/local/bin
-     sudo ln -s "$PWD/bash/bashrc-bundler.pl" /usr/local/bin/bb
-     ```
    * Copy over the `.bash_profile` to the home directory with the following command.
    * ```shell
      cp bash/.bash_profile ~
      ```
-   * Copy over some base Bash scripts that are designed to be incorporated into your Bash environment via sourcing or via `bb`. Use the following commands.
-   * ```shell
-     mkdir -p ~/.config/bash
-     cp bash/bash-env-early.bash ~/.config/bash
-     cp bash/bash-completion.bash ~/.config/bash
-     ```
-   * Generate a `.bashrc` file with `bb` using the following command.
-   * ```shell
-     bb
-     ```
-   * Open a new Bash session and enjoy the customizations of aliases, functions, etc. You will be using `bb` over time to re-generate 
-     the `.bashrc` file to accommodate new tooling and your own customizations.
+   * Open a new Bash session and enjoy the custom environment variables, etc.
 10. Install 'bash-completion'.
      * ```shell
        brew install bash-completion@2
        ```
      * See additional information in `bash/BASH_COMPLETION.md`.
-     * Run the `bash/sync-homebrew-managed-bash-completions.pl` script whenever you install a Homebrew package that comes with completion
-       scripts. For more information, read the notes in that script.
 11. Install [Atuin](https://github.com/atuinsh/atuin)
      * Install Atuin with the following command.
      * ```shell
@@ -456,6 +438,9 @@ General clean-ups, TODOs and things I wish to implement for this project
   `BASH_COMPLETION_INSTALLATION_DIR=/opt/homebrew/opt/bash-completion@2 ./one-shot-bash-completion.bash "pipx "` works.
 * [x] DONE `brew` completion doesn't work.
 * [x] DONE Create a `java-body-omitter` program that works just like the `go-body-omitter` program but for Java.
+* [x] DONE Can I get rid of `bb`? I no longer have a need for the speed-up of bb and also my spread of bash files is tiny
+  now because I'm on Nushell. The catalyst is that `brew shellenv` is misbehaving now because it overwrites the PATH
+  with some hardcoded stuff... not going to bother figuring that out.
 
 
 ## Finished Wish List Items

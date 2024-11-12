@@ -16,20 +16,6 @@ Notice how the `bash-completion` project name is stylized with a hyphen and lowe
 convention to disambiguate it from the Bash feature.
 
 
-## bash-completion v1
-
-The `bash-completion` project has been around for many years and lived as a 'v1' for a long time. While, you should
-mostly only need to use 'v2' in the year 2024, you can benefit from knowing about both versions. It's especially important
-that you can learn to identify if information you see online about `bash-completion` is referring to 'v1' or 'v2'. It
-won't be obvious, and if you can't tell the difference then you might get yourself more confused (I find myself in a
-perpetually confused state with the ecosystem of shell completion).
-
-Related:
-
-* [bash-completion v1 Homebrew formula](https://formulae.brew.sh/formula/bash-completion)
-* [Discussion about the tension and conflict between bash-completion v1 and v2 in HomeBew](https://discourse.brew.sh/t/bash-completion-2-vs-brews-auto-installed-bash-completions/2391/2)
-
-
 ## bash-completion v2
 
 <https://formulae.brew.sh/formula/bash-completion@2>
