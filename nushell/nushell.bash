@@ -8,7 +8,9 @@
 # Homebrew-installed Bash. Alternatively, I could script out some checks with useful error messaging, but then that
 # would be Bash > Bash > Nushell which is getting silly.
 
-. "$HOME/.bashrc"
+if [ -f "$HOME/.bash_profile" ]; then
+  . "$HOME"/.bash_profile
+fi
 
 if which nu &> /dev/null; then
   exec nu

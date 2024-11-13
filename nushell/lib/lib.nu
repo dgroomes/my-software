@@ -64,7 +64,7 @@ export def git-switch-default-pull [] {
 export def --env activate-defaults [] {
     let default_java = 21
     let default_node = "20"
-    let default_postgres = "16"
+    let default_postgres = "17"
 
     let split_path = $env.PATH | split row ":"
     $env.PATH = $split_path

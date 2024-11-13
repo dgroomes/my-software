@@ -17,6 +17,8 @@ export PATH="$PATH:/Applications/Sublime Text.app/Contents/SharedSupport/bin"
 # Rust toolchain
 export PATH="$PATH:$HOME/.cargo/bin"
 
+# Docker
+export PATH="$PATH:$HOME/.docker/bin/"
 # Disable the "Use 'docker scan'" message on every Docker build. For reference, see this GitHub issue discussion: https://github.com/docker/scan-cli-plugin/issues/149#issuecomment-823969364
 export DOCKER_SCAN_SUGGEST=false
 

@@ -91,7 +91,20 @@ These are the instructions I follow when I get a new Mac or after I re-install m
     * `System Settings > General > AirDrop & Handoff` and turn `AirPlay Receiver` off because [it uses port 500](https://developer.apple.com/forums/thread/682332).
 2. Install Xcode from the app store
     * Agree to the license (try to execute `git` in the terminal and it will prompt you to read the license and agree to it)
-3. Install Rectangle <https://github.com/rxhanson/Rectangle> for fast and easy window resizing
+    * Run the Command Line Tools (CLT) because this is at least needed for HomeBrew and imagine other stuff. Run the following command.
+    * `xcode-select --install`
+3. Install Raycast <https://www.raycast.com> and configure it.
+    * During the getting started flow, enable the window management extension.
+    * Enable [Cmd + Space to launch Raycast](https://manual.raycast.com/hotkey) instead of the Spotlight launcher by following the next steps.
+    * `System Settings > Keyboard > Keyboard Shortcuts... > Spotlight` and uncheck `Show Spotlight search` and `Show Finder search window`
+    * Open Raycast settings, click `Raycast Hotkey`, and press `Cmd + Space` 
+    * Configure window management keyboard shortcuts by following the next steps.
+    * Open Raycast settings, go to `Extensions`
+    * Type "Window Management" and disable the extension. We only want to enable a select few commands. 
+    * Type "Left Half", click "Record Hotkey", and press `Ctrl + [`
+    * Type "Right Half", click "Record Hotkey", and press `Ctrl + ]`
+    * Type "Maximize", click "Record Hotkey", and press `Ctrl + \`
+    * Alternatively to Raycast's window management, install Rectangle <https://github.com/rxhanson/Rectangle>
     * Uncheck all keyboard shortcuts. Configure the following:
         * "Left Half": `Ctrl + [`
         * "Right Half": `Ctrl + ]`
@@ -103,14 +116,13 @@ These are the instructions I follow when I get a new Mac or after I re-install m
 5. Install iTerm2 <https://iterm2.com/downloads.html>. Configure it with my configuration:
     * Create the iTerm config directory with  `mkdir -p ~/.config/iterm2`
     * Copy the plist file with `cp iterm2/com.googlecode.iterm2.plist ~/.config/iterm2/com.googlecode.iterm2.plist`
-    * Open iTerm and navigate to `Preferences > General > Preferences`. Check `Load preferences from a custom folder or URL` and set it
+    * Open iTerm and navigate to `Preferences > General > Settings`. Check `Load preferences from a custom folder or URL` and set it
       to `~/.config/iterm2`.
     * A prompt will come up to save the current settings. Do *not* save the current settings.
-    * Check `Save changes to folder when iTerm2 quits`.
+    * In `General > Settings`, set the `Save changes` dropdown to `Automatically`
     * Restart iTerm
 6. Install Homebrew <https://brew.sh/>
-    * Make sure to install Homebrew in the Apple Silicon configuration. I won't repeat the details here, but basically,
-      it should be installed at `/opt/homebrew` and not `/usr/local`.
+    * Download and install it using the `.pkg` installer.
 7. Install my own formulas
     * This is an experiment. I'm trying out maintaining my own Homebrew formulas.
     * ```shell
@@ -161,16 +173,52 @@ These are the instructions I follow when I get a new Mac or after I re-install m
        brew install bash-completion@2
        ```
      * See additional information in `bash/BASH_COMPLETION.md`.
-11. Install [Atuin](https://github.com/atuinsh/atuin)
+11. Install Nushell, configure it and make it the default shell
+     * WARNING: There is a bootstrapping problem. You need to skip ahead and install Rust and Rust-based tools. I don't
+       want to re-arrange that right now because the change is getting unwieldy due to other updates. 
+     * ```shell
+       sudo cp nushell/nushell.bash /usr/local/bin
+       ```
+     * ```shell
+       sudo chmod +x /usr/local/bin/nushell.bash
+       ```
+     * ```shell
+       sudo bash -c 'echo /usr/local/bin/nushell.bash >> /etc/shells'
+       ```
+     * ```shell
+       chsh -s /usr/local/bin/nushell.bash
+       ```
+     * Start a new shell session: welcome to Nushell. Use the following commands to setup all the Nushell config.
+     * ```nushell
+       cd nushell
+       ```
+     * ```nushell
+       $env.DO_DIR = (pwd)
+       ```
+     * ```nushell
+       overlay use --prefix do.nu
+       ```
+     * Create an empty `misc.do` file in the `setup/` directory.
+     * ```nushell
+       touch (($nu.config-path | path dirname) | [($in) setup misc.nu] | path join) 
+       ```
+     * Clone the nu_scripts repository.
+     * ```nushell
+       mkdir ~/repos/opensource
+       git clone https://github.com/nushell/nu_scripts.git ~/repos/opensource/nu_scripts
+       ```
+     * Go through and do all the `do install ...` commands.
+     * Start a fresh Nushell session and enjoy the customized environment.
+12. Install [Atuin](https://github.com/atuinsh/atuin)
      * Install Atuin with the following command.
      * ```shell
        brew install atuin
        ```
-12. Install JetBrains Toolbox <https://www.jetbrains.com/toolbox-app/>
+13. Install JetBrains Toolbox <https://www.jetbrains.com/toolbox-app/>
     * Open Toolbox
     * Log in to your JetBrains account
     * Install Intellij Ultimate
-    * In `my-software`, build my JetBrains preferences file (`settings.zip`). See instructions in the root `README.md`
+    * In `my-software`, build my JetBrains preferences file (`settings.zip`). See instructions in `jetbrains/README.md`
     * Open this project in Intellij from the command line with the following command.
     * ```shell
       idea .
@@ -180,16 +228,16 @@ These are the instructions I follow when I get a new Mac or after I re-install m
     * Install desired plugins (which ones do I like? JetBrains is pretty great about bundling and supporting tons already
       that I don't need many third-party ones).
     * In macOS settings, disable the "Cmd + Shift + A" system keyboard shortcut so it does not conflict with the
-      "Find Action" Intellij keyboard shorcut. See instructions at <https://intellij-support.jetbrains.com/hc/en-us/articles/360005137400-Cmd-Shift-A-hotkey-opens-Terminal-with-apropos-search-instead-of-the-Find-Action-dialog>
-13. Install `jq`
+      "Find Action" Intellij keyboard shortcut. See instructions at <https://intellij-support.jetbrains.com/hc/en-us/articles/360005137400-Cmd-Shift-A-hotkey-opens-Terminal-with-apropos-search-instead-of-the-Find-Action-dialog>
+14. Install `jq`
      * ```shell
        brew install jq
        ```
-14. Install `kcat`
+15. Install `kcat`
      * ```shell
        brew install kcat
        ```
-15. Install Python core components
+16. Install Python core components
      * There are multiple ways to install Python. Using the official installer is a perfectly valid approach. I'm already
        invested in Homebrew, and it's a good choice for me. Use the following command.
      * ```shell
@@ -204,7 +252,14 @@ These are the instructions I follow when I get a new Mac or after I re-install m
      * ```shell
        brew install pipx
        ```
-16. Install Starship <https://github.com/starship/starship>
+     * Install `pipx` shell completion and [argcomplete](https://github.com/kislyuk/argcomplete) because it's a dependency.
+     * ```nushell
+       pipx install argcomplete
+       ```
+     * ```nushell
+       mkdir ~/.local/share/bash-completion/completions/ ; register-python-argcomplete pipx | save ~/.local/share/bash-completion/completions/pipx
+       ```
+17. Install Starship <https://github.com/starship/starship>
      * > The minimal, blazing-fast, and infinitely customizable prompt for any shell!
      * ```shell
        brew install starship
@@ -233,14 +288,14 @@ These are the instructions I follow when I get a new Mac or after I re-install m
      * ```shell
        mkdir -p ~/.config && cp starship/starship.toml ~/.config
        ```
-17. Add `~/.inputrc`
+18. Add `~/.inputrc`
      * `cp .inputrc ~`
-18. Install Bash completions for `pip`
+19. Install Bash completions for `pip`
      * ```shell
        pip3 completion --bash > ~/.local/share/bash-completion/completions/pip3
        ```
      * Note: I haven't vetted this in 2023.
-19. Install latest `git` and configure it
+20. Install latest `git` and configure it
      * ```shell
        brew install git
        ```
@@ -268,12 +323,6 @@ These are the instructions I follow when I get a new Mac or after I re-install m
            git config --global alias.st "status --short --branch"
            ```
          * ```shell
-           git config --global core.editor "subl -n -w"
-           ```
-             * Use Sublime Text as the editor instead of Vim. This is for things like git rebase and amend operations.
-               See [this nice GitHub doc](https://docs.github.com/en/get-started/getting-started-with-git/associating-text-editors-with-git)
-               about configuring external editors.
-         * ```shell
            git config --global push.autoSetupRemote true
            ```
              * This makes it so that your first `git push` will work, and you don't need `git push --set-upstream ...`.
@@ -290,24 +339,18 @@ These are the instructions I follow when I get a new Mac or after I re-install m
            When the PAT expires, I'm not 100% sure what the UX is. I think it just prompts for the username/password again
            and doesn't give an error message.
      * Create and configure a global [gitignore file](https://git-scm.com/docs/gitignore)
-         * ```bash
-           cat << EOF > "$HOME/.gitignore_global"
-           .DS_Store
-           EOF
-           git config --global core.excludesfile "$HOME/.gitignore_global"
+         * ```nushell
+           ".DS_Store" | save ~/.gitignore_global
+           git config --global core.excludesfile ~/.gitignore_global
            ``` 
          * The exclusions described by a global gitignore file should be sparing for two reasons. 1) If a project is
            shared, it's convenient for everyone else if the exclusions are version-controlled in the project-specific
            gitignore file. 2) Projects are diverse and unpredictable. There might be a project that wants to version-control
            the `build/` or `out/` directories, and for good reason. For me, the `.DS_Store` exclusion is a very safe bet. 
-20. Install Docker Desktop <https://docs.docker.com/desktop/install/mac-install/>
-     * Then, install Bash completion for `docker` and `docker-compose` by following [the docs](https://docs.docker.com/desktop/faqs/macfaqs/#how-do-i-install-shell-completion). It boils down to:
-       ```bash
-       ln -s /Applications/Docker.app/Contents/Resources/etc/docker.bash-completion ~/.local/share/bash-completion/completions/docker
-       ln -s /Applications/Docker.app/Contents/Resources/etc/docker-compose.bash-completion ~/.local/share/bash-completion/completions/docker-compose
-       ```
+21. Install Docker Desktop <https://docs.docker.com/desktop/install/mac-install/>
+     * Disable phone-home telemetry
      * Configure Docker to use fewer resources. Consider only 2-3 cores and 6GB (but it depends on the need and constraints).
-21. Install Karabiner-Elements <https://github.com/pqrs-org/Karabiner-Elements> from source (or Homebrew) and configure it with.
+22. Install Karabiner-Elements <https://github.com/pqrs-org/Karabiner-Elements> from source (or Homebrew) and configure it with.
      1. First, we must configure Xcode command line tools correctly. Follow these instructions <https://stackoverflow.com/a/61725799>
      2. Then, install `xcodegen` from source <https://github.com/yonaskolb/XcodeGen>:
         ```shell
@@ -329,96 +372,48 @@ These are the instructions I follow when I get a new Mac or after I re-install m
         ``` 
      5. Install from the `.dmg` file that was just created in the root of the project. E.g. `Karabiner-Elements-14.12.1.dmg`.
      6. Then, configure it with my custom settings
-        ```shell
-        mkdir -p ~/.config/karabiner/assets/complex_modifications
+        ```nushell
+        mkdir ~/.config/karabiner/assets/complex_modifications
         cp karabiner/karabiner.json ~/.config/karabiner
         cp karabiner/assets/complex_modifications/* ~/.config/karabiner/assets/complex_modifications
         ```
-22. Install Insomnia <https://insomnia.rest/download/>
 23. Install Go <https://golang.org/dl/>
      * Note: Consider installing manually or using something like Homebrew. There are pros and cons to each approach.
        To install using Homebrew, use the following command.
      * ```shell
        brew install go
        ```
-24. Install Bash completion for Gradle
-     * `curl https://raw.githubusercontent.com/gradle/gradle-completion/7b084bd68c79be27b8200c7a25e6d00c9c65f9a9/gradle-completion.bash -o /usr/local/etc/bash_completion.d/gradle-completion.bash`
-     * Apply the Bash completion to the `gw` alias (the alias was defined in the `bash-aliases.sh` script) with the
-       following command.
-     * ```bash
-       cat << EOF > "$BASH_COMPLETION_COMPAT_DIR/gw"
-           # This is a neat trick to apply Bash completion to an aliased version of a command.
-           # You need to know the location of the Bash completion script and the exact 'complete ...' command that's
-           # used to apply it. See https://unix.stackexchange.com/a/685829/215204
-           source "$BASH_COMPLETION_COMPAT_DIR/gradle-completion.bash"
-           complete -F _gradle gw
-       EOF
+24. Install Postgres
+     * ```nushell
+       brew install postgresql@17
        ```
-25. Install `libpq` so we can get `psql`
-     * Follow directions at <https://blog.timescale.com/tutorials/how-to-install-psql-on-mac-ubuntu-debian-windows/>
-     * `brew install libpq`
-     * `brew link --force libpq`
-26. Build and install Apache JMeter, a load testing and performance measurement tool
-     1. `git clone https://github.com/apache/jmeter`
-     2. Build it with `./gradlew createDist`
-     3. Add the `bin/` directory to the path.
-         * For example, append something like `export PATH="$PATH:~/repos/opensource/jmeter/bin"` to your `.bashrc`
-27. Install `gh` https://github.com/cli/cli
+25. Install `gh` https://github.com/cli/cli
      1. ```shell
         brew install gh
         ```
      2. Use it for the first time and log in.
-     3. Generate a 'bash-completion' completion file and save it to a file. Use the following command.
-     4. ```shell
-        gh completion --shell bash > "$HOME/.local/share/bash-completion/completions/gh"
-        ``` 
-28. Install MongoDB *Community Server*
-     1. Download from <https://www.mongodb.com/try/download/community>.
-     2. Extract and put somewhere on the PATH.
-         * e.g. symlink it to `~/dev/mongodb` and then add to `.bashrc` the following: `export PATH="$PATH:~/dev/mongodb/bin"`
-     3. Create a base directory that we will use by convention for the MongoDB data files and logs:
-         * `sudo mkdir /usr/local/mongodb`
-     4. Assign ownership to the normal user so that our convenience scripts defined in `bash/bash-functions.sh` will work
-        without sudo.
-         * `sudo chown -R $(whoami) /usr/local/mongodb`
-     5. Also, download and install the [*The MongoDB Database Tools*](https://docs.mongodb.com/database-tools/installation/installation-macos/)
-         * e.g. symlink it to `~/dev/mongodb-database-tools` and then add to `.bashrc` the following: `export PATH="$PATH:~/dev/mongodb-database-tools/bin"`
-     6. Also, consider downloading and installing the beta (but pretty feature-ful and cool) *new* Mongo shell called `mongosh`
-         * Download from the [GitHub Releases page for the project](https://github.com/mongodb-js/mongosh/releases)
-         * e.g. symlink it to `~/dev/mongosh` and then add to `.bashrc` the following: `export PATH="$PATH:~/dev/mongosh/bin"`
-29. Install Rust
+26. Install Rust
      1. Install `rustup` using the instructions in the official [rust-lang site](https://www.rust-lang.org/tools/install)
      and **do not** allow it to modify the `PATH`.
-     2. Install `rustup` and `cargo` Bash completions with the following commands.
-     3. ```shell
-        rustup completions bash > "$HOME/.local/share/bash-completion/completions/rustup"
-        rustup completions bash cargo >> "$HOME/.local/share/bash-completion/completions/cargo"
-        ```
-30. Rust-based tools
+27. Rust-based tools
      * There is a nascent but rich ecosystem of Rust-based command-line tools. Many of them are substitutes for traditional
        commands like `ls`, `du`, and `cat` but they bring a bevy of extra features. Best of all, they are fast. Keep track
        of this "re-implemented in Rust" trend and follow this great article [*Rewritten in Rust: Modern Alternatives of Command-Line Tools*](https://zaiste.net/posts/shell-commands-rust/)
        on <https://zaiste.net/>.
-     * `eza` might be my favorite. Install it with the following command.
-     * ```shell
-       cargo install eza
-       ```
      * [`zoxide`](https://github.com/ajeetdsouza/zoxide) is "a smarter `cd` command". Install it with the following command.
      * ```nushell
        cargo install zoxide --locked
        ```
-31. Install the AWS CLI
-     * Follow the [installation instructions in the AWS doc site](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html).
-       I followed the GUI instructions.
-32. Install [CleanShot](https://cleanshot.com/)
+28. Install [CleanShot](https://cleanshot.com/)
     * Enter the license key
     * Go through the configuration steps in the prompt.
-33. Install Rosetta
-    * ```shell
-      softwareupdate --install-rosetta
-      ```
-    * I don't love that I have to do this (to support some rare binaries like Java gRPC codegen) because sometimes I might
-      forget that I'm running a binary that is not native to the M1 chip. But, I'm doing it anyway.
+29. Install Sublime text
+    * Set `"color_scheme": "auto"` in the settings JSON file.
+30. Configure Safari settings
+    * Follow this [StackExchange answer](https://apple.stackexchange.com/a/214748) to change the behavior of `Cmd + W`
+      so that it doesn't close the whole window when only pinned tabs are left.
+    * `System Settings > Keyboard > Keyboard Shortcuts... > App Shortcuts`
+    * Add a shortcut for "Safari", for menu item "Close Tab", shortcut `Cmd + W`.
 
 
 ## Wish List
@@ -429,7 +424,7 @@ General clean-ups, TODOs and things I wish to implement for this project
   up using `navi`.
 * [ ] Consider restoring (at `b3154dde` and before) my usage of markdownlint. I still like it, but I just never got used to using it.
   learn them better. I think I should pare down the larger one-liners.
-* [ ] Properly add Nushell steps to instructions. Bootstrapping is important.
+* [x] DONE Properly add Nushell steps to instructions. Bootstrapping is important.
 * [ ] Consider restoring (at `b3154dde` and before) my Postgres-related Bash functions. These were hard fought and useful. Maybe reimplement in
   Nushell. Alternatively, I often use Postgres in Docker. But still. (Same is true of the Mongo functions but not sure
   how much I'll ever use Mongo again.)
@@ -441,6 +436,7 @@ General clean-ups, TODOs and things I wish to implement for this project
 * [x] DONE Can I get rid of `bb`? I no longer have a need for the speed-up of bb and also my spread of bash files is tiny
   now because I'm on Nushell. The catalyst is that `brew shellenv` is misbehaving now because it overwrites the PATH
   with some hardcoded stuff... not going to bother figuring that out.
+* [ ] Split out instructions into own directory. It's worked well but now this repo is `my-software`, much more broad.
 
 
 ## Finished Wish List Items
