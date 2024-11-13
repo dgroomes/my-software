@@ -1,7 +1,7 @@
-# Bash Completion
+# bash
 
-Bash completion is a general feature of Bash, but is also conflated with a third-party project of the same name:
-<https://github.com/scop/bash-completion>.
+My notes about Bash, but specifically `bash-completion`. Bash completion is a general feature of Bash, but is also
+conflated with a third-party project of the same name: <https://github.com/scop/bash-completion>.
 
 Bash completion is more formally known as its "programmable completion" feature. See 
 <http://tldp.org/LDP/abs/html/tabexpansion.html>.
