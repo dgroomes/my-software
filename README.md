@@ -96,6 +96,8 @@ General clean-ups, TODOs and things I wish to implement for this project
   Nushell. Alternatively, I often use Postgres in Docker. But still. (Same is true of the Mongo functions but not sure
   how much I'll ever use Mongo again.)
 * [ ] Why isn't `enter_accept = true` working for Atuin? It has no effect.
+* [ ] Poetry completion isn't working... I've been here before
+* [ ] Completion isn't working for brew...
 
 
 ## Finished Wish List Items

@@ -190,6 +190,10 @@ to a working Nushell environment, but it's great enough.
      * ```nushell
        mkdir ~/.local/share/bash-completion/completions/ ; register-python-argcomplete pipx | save ~/.local/share/bash-completion/completions/pipx
        ```
+     * Install [Poetry](https://python-poetry.org)
+     * ```nushell
+       pipx install poetry
+       ```
 17. Install Starship <https://github.com/starship/starship>
      * > The minimal, blazing-fast, and infinitely customizable prompt for any shell!
      * ```shell
@@ -347,3 +351,4 @@ to a working Nushell environment, but it's great enough.
     * Add a shortcut for "Safari", for menu item "Close Tab", shortcut `Cmd + W`.
 31. Install Go-based tools in `go/`
 32. Install Java-based tools in `java/`
+33. Install Python-based tools in `python/`
