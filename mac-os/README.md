@@ -357,3 +357,16 @@ to a working Nushell environment, but it's great enough.
 31. Install Go-based tools in `go/`
 32. Install Java-based tools in `java/`
 33. Install Python-based tools in `python/`
+34. Clone all my repos
+    * Clone my `dgroomes/dgroomes` repository and use the Python script to get a JSON representation of all my repos.
+      Then, use a command like the following to clone all of them.
+    * ```nushell
+      do {
+        cd ~/repos/personal
+        open ~/repos/personal/dgroomes/repos.json | where ($it.archived == false and not ($it.name | path exists)) | each { |repo| git clone $repo.clone_url }
+      }
+      ```
+35. Install [dust](https://github.com/bootandy/dust)
+    * ```nushell
+      brew install dust
+      ```
