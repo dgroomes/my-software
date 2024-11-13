@@ -3,16 +3,12 @@
 My personal instructions for configuring macOS the way I like it and installing the tools I use.
 
 
-## Overview
+## Instructions
 
 This a long list, but it's just one list, it's detailed, and I tread it often enough (every year or two) that it's
 accurate and useful. Not all items need to be expressed in an order, but many of them do and so the "it's just a list"
-top-down approach is a good thing. 
-
-
-## Instructions
-
-These are the instructions I follow when I get a new Mac or after I re-install macOS.
+top-down approach is a good thing. It's not perfect. Some of the order is wrong expecially with regard to bootstrapping
+to a working Nushell environment, but it's great enough.
 
 1. Configure macOS system settings
     * `System Settings > Keyboard > Keyboard Shortcuts... > Modifier Keys` and configure "Caps Lock key" to perform "Control"
@@ -349,3 +345,5 @@ These are the instructions I follow when I get a new Mac or after I re-install m
       so that it doesn't close the whole window when only pinned tabs are left.
     * `System Settings > Keyboard > Keyboard Shortcuts... > App Shortcuts`
     * Add a shortcut for "Safari", for menu item "Close Tab", shortcut `Cmd + W`.
+31. Install Go-based tools in `go/`
+32. Install Java-based tools in `java/`
