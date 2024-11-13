@@ -97,7 +97,7 @@ General clean-ups, TODOs and things I wish to implement for this project
   how much I'll ever use Mongo again.)
 * [ ] Why isn't `enter_accept = true` working for Atuin? It has no effect.
 * [ ] Poetry completion isn't working... I've been here before
-* [ ] Completion isn't working for brew...
+* [x] DONE Completion isn't working for brew... We've [been here before](https://github.com/dgroomes/my-software/commit/15339d8e51b7649807669d508679b525feb9e7e5)
 
 
 ## Finished Wish List Items

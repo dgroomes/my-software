@@ -22,7 +22,7 @@ to a working Nushell environment, but it's great enough.
     * `System Settings > General > AirDrop & Handoff` and turn `AirPlay Receiver` off because [it uses port 500](https://developer.apple.com/forums/thread/682332).
 2. Install Xcode from the app store
     * Agree to the license (try to execute `git` in the terminal and it will prompt you to read the license and agree to it)
-    * Run the Command Line Tools (CLT) because this is at least needed for HomeBrew and imagine other stuff. Run the following command.
+    * Run the Command Line Tools (CLT) because this is at least needed for Homebrew and imagine other stuff. Run the following command.
     * `xcode-select --install`
 3. Install Raycast <https://www.raycast.com> and configure it.
     * During the getting started flow, enable the window management extension.
@@ -54,6 +54,11 @@ to a working Nushell environment, but it's great enough.
     * Restart iTerm
 6. Install Homebrew <https://brew.sh/>
     * Download and install it using the `.pkg` installer.
+    * Install the shell completion into the right place. `bash-completion` has so much auto-discovery, and Homebrew is
+      so all-in on Bash that you think you wouldn't need to do this, but you do. Use the following command.
+    * ```shell
+      mkdir -p ~/.local/share/bash-completion/completions && ln -s /opt/homebrew/completions/bash/brew ~/.local/share/bash-completion/completions/brew
+      ```
 7. Install my own formulas
     * This is an experiment. I'm trying out maintaining my own Homebrew formulas.
     * ```shell
