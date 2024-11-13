@@ -25,6 +25,8 @@ JavaScript code that supports my personal workflows.
 
 General clean-ups, TODOs and things I wish to implement for this project
 
+* [ ] Bring back the markdown linter code/config I had and make a JS launcher. This means extending my Go-based
+  launcher.
 * [x] DONE Scaffold.
 * [ ] Create "json-validator" program (its own distributable?) that communicates via clients on Unix domain socket.
 * [ ] Consider splitting into independent subprojects. npm workspaces aren't quite there and I want to isolate the

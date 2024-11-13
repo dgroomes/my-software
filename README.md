@@ -92,19 +92,10 @@ General clean-ups, TODOs and things I wish to implement for this project
   up using `navi`.
 * [ ] Consider restoring (at `b3154dde` and before) my usage of markdownlint. I still like it, but I just never got used to using it.
   learn them better. I think I should pare down the larger one-liners.
-* [x] DONE Properly add Nushell steps to instructions. Bootstrapping is important.
 * [ ] Consider restoring (at `b3154dde` and before) my Postgres-related Bash functions. These were hard fought and useful. Maybe reimplement in
   Nushell. Alternatively, I often use Postgres in Docker. But still. (Same is true of the Mongo functions but not sure
   how much I'll ever use Mongo again.)
 * [ ] Why isn't `enter_accept = true` working for Atuin? It has no effect.
-* [x] DONE `pipx` shell completion is broken. It's working in bash. Not sure why not working in Nushell. Strange, even
-  `BASH_COMPLETION_INSTALLATION_DIR=/opt/homebrew/opt/bash-completion@2 ./one-shot-bash-completion.bash "pipx "` works.
-* [x] DONE `brew` completion doesn't work.
-* [x] DONE Create a `java-body-omitter` program that works just like the `go-body-omitter` program but for Java.
-* [x] DONE Can I get rid of `bb`? I no longer have a need for the speed-up of bb and also my spread of bash files is tiny
-  now because I'm on Nushell. The catalyst is that `brew shellenv` is misbehaving now because it overwrites the PATH
-  with some hardcoded stuff... not going to bother figuring that out.
-* [x] DONE Split out instructions into own directory. It's worked well but now this repo is `my-software`, much more broad.
 
 
 ## Finished Wish List Items
@@ -135,3 +126,12 @@ General clean-ups, TODOs and things I wish to implement for this project
   this scenario.
     * DONE Go side
     * DONE Gradle side
+* [x] DONE Properly add Nushell steps to instructions. Bootstrapping is important.
+* [x] DONE `pipx` shell completion is broken. It's working in bash. Not sure why not working in Nushell. Strange, even
+  `BASH_COMPLETION_INSTALLATION_DIR=/opt/homebrew/opt/bash-completion@2 ./one-shot-bash-completion.bash "pipx "` works.
+* [x] DONE `brew` completion doesn't work.
+* [x] DONE Create a `java-body-omitter` program that works just like the `go-body-omitter` program but for Java.
+* [x] DONE Can I get rid of `bb`? I no longer have a need for the speed-up of bb and also my spread of bash files is tiny
+  now because I'm on Nushell. The catalyst is that `brew shellenv` is misbehaving now because it overwrites the PATH
+  with some hardcoded stuff... not going to bother figuring that out.
+* [x] DONE Split out instructions into own directory. It's worked well but now this repo is `my-software`, much more broad.
