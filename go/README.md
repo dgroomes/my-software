@@ -152,6 +152,13 @@ Follow these instructions to build, run and install my software.
 
 General clean-ups, TODOs and things I wish to implement for this project
 
+* [ ] SKIP (no, I'm not doing any scoring/bonus at all) Consider ranking "exact matches" before fuzzy matches? If I type "rea" I want to see "README.md" appear before
+  "gradlew.bat".
+* [ ] Need to handle items that exceed the full height?
+* [ ] Workaround `./` parsing gap of the new Nushell parser.
+
+## Finished Wish List Items
+
 * [x] DONE Scaffold a "hello world" program
 * [x] DONE Implement `my-launcher`
 * [x] DONE Implement `my-fuzzy-finder`
@@ -170,8 +177,6 @@ General clean-ups, TODOs and things I wish to implement for this project
     * (partially done) Pare down (inline) styles
 * [x] DONE Re-use the `textinput` Bubbles component and in general compress the code 
 * [x] DONE (fixed/obsoleted by other refactoring) Re-size defect. When resizing and then moving the cursor, the program panics.
-* [ ] SKIP (no, I'm not doing any scoring/bonus at all) Consider ranking "exact matches" before fuzzy matches? If I type "rea" I want to see "README.md" appear before
-  "gradlew.bat".
 * [x] DONE Support multi-line
 * [x] OBSOLETE (Somehow resolved on itself. Not sure why) Support special (longer unicode?) characters like `°` in the underline highlighting.
 * [x] DONE Defect: Get cursor blinking working again.
@@ -179,7 +184,6 @@ General clean-ups, TODOs and things I wish to implement for this project
 * [X] DONE (Big restructuring but great result) Defect: beginning content is cut off. I think it's cutting off by as many additional lines there are per item
   beyond the first line. So a 2-line item will because 1 line to be cut off. The 'Filter: ' text input is missing, for
   example.
-* [ ] Need to handle items that exceed the full height?
 * [x] OBSOLETE (Already works, the content is just truncated, that's good) items that exceed the full width
 * [x] DONE Support 'fzf' search syntax.
 * [x] DONE (Update 2: I'm going to pare it down. A hard fork. Update 1: Alternatively, it might best to just do a shallow fork so that I can preserve the diff better. Not sure.) Pare down 'fzf' code. Thankfully I was able to get fzf integration without many (half?) of the original source
@@ -207,7 +211,7 @@ General clean-ups, TODOs and things I wish to implement for this project
    * DONE Parse the output of the Rust program (just JSON into a map)
    * DONE Match the expressions (shell/Nu) for compatibility. This should be driven by tests, because it's subtle and maybe
      wide.
-* [ ] Workaround `./` parsing gap of the new Nushell parser.
 * [x] DONE `go-body-omitter`
    * DONE generate a first pass (o1-preview did a great job)
    * SKIP (fine enough for now) Study the generated code. Consider changes/comments/restructuring. Should we omit in a more nuanced way?
+
