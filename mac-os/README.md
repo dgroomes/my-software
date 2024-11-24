@@ -7,7 +7,7 @@ My personal instructions for configuring macOS the way I like it and installing 
 
 This a long list, but it's just one list, it's detailed, and I tread it often enough (every year or two) that it's
 accurate and useful. Not all items need to be expressed in an order, but many of them do and so the "it's just a list"
-top-down approach is a good thing. It's not perfect. Some of the order is wrong expecially with regard to bootstrapping
+top-down approach is a good thing. It's not perfect. Some of the order is wrong especially with regard to bootstrapping
 to a working Nushell environment, but it's great enough.
 
 1. Configure macOS system settings
@@ -113,16 +113,16 @@ to a working Nushell environment, but it's great enough.
      * WARNING: There is a bootstrapping problem. You need to skip ahead and install Rust and Rust-based tools. I don't
        want to re-arrange that right now because the change is getting unwieldy due to other updates. 
      * ```shell
-       sudo cp nushell/nushell.bash /usr/local/bin
+       sudo cp nushell/shell-launcher.zsh /usr/local/bin
        ```
      * ```shell
-       sudo chmod +x /usr/local/bin/nushell.bash
+       sudo chmod +x /usr/local/bin/shell-launcher.zsh
        ```
      * ```shell
-       sudo bash -c 'echo /usr/local/bin/nushell.bash >> /etc/shells'
+       sudo bash -c 'echo /usr/local/bin/shell-launcher.zsh >> /etc/shells'
        ```
      * ```shell
-       chsh -s /usr/local/bin/nushell.bash
+       chsh -s /usr/local/bin/shell-launcher.zsh
        ```
      * Start a new shell session: welcome to Nushell. Use the following commands to setup all the Nushell config.
      * ```nushell
@@ -369,4 +369,9 @@ to a working Nushell environment, but it's great enough.
 35. Install [dust](https://github.com/bootandy/dust)
     * ```nushell
       brew install dust
+      ```
+36. Configure Gradle's ["custom toolchain locations"](https://docs.gradle.org/current/userguide/toolchains.html#sec:custom_loc)
+    * Create the `~/.gradle/gradle.properties` file and add the following line
+    * ```text
+      org.gradle.java.installations.fromEnv=JAVA_11_HOME,JAVA_17_HOME,JAVA_21_HOME
       ```
