@@ -42,7 +42,7 @@ away from this if feasible and find a faster combination of commands and automat
 
 ## Wish List
 
-General clean-ups, TODOs and things I wish to implement for this project
+General clean-ups, TODOs and things I wish to implement for this project:
 
 * [x] DONE Wire in ~~commonmark-java~~ [jetbrains/markdown](https://github.com/JetBrains/markdown). commonmark-java
   is not parsing code blocks inside lists at all unfortunately and that's the exact use case I have.

@@ -150,10 +150,8 @@ Follow these instructions to build, run and install my software.
 
 ## Wish List
 
-General clean-ups, TODOs and things I wish to implement for this project
+General clean-ups, TODOs and things I wish to implement for this project:
 
-* [ ] SKIP (no, I'm not doing any scoring/bonus at all) Consider ranking "exact matches" before fuzzy matches? If I type "rea" I want to see "README.md" appear before
-  "gradlew.bat".
 * [ ] Need to handle items that exceed the full height?
 * [ ] Workaround `./` parsing gap of the new Nushell parser.
 
@@ -214,4 +212,5 @@ General clean-ups, TODOs and things I wish to implement for this project
 * [x] DONE `go-body-omitter`
    * DONE generate a first pass (o1-preview did a great job)
    * SKIP (fine enough for now) Study the generated code. Consider changes/comments/restructuring. Should we omit in a more nuanced way?
-
+* [ ] SKIP (no, I'm not doing any scoring/bonus at all) Consider ranking "exact matches" before fuzzy matches? If I type "rea" I want to see "README.md" appear before
+  "gradlew.bat".

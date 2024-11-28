@@ -36,7 +36,7 @@ good: <https://www.nushell.sh/book/configuration.html>. Also see <https://www.nu
 
 ## Wish List
 
-General clean-ups, TODOs and things I wish to implement for this project
+General clean-ups, TODOs and things I wish to implement for this project:
 
 * [ ] Nushell support in Intellij? Intellij Ultimate has LSP support now and [Nushell has an LSP](https://github.com/nushell/nushell/tree/main/crates/nu-lsp).
 * [ ] How can I integrate Nushell with Raycast? I don't want go overboard with an integration, but I want to know what's

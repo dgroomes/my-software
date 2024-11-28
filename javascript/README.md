@@ -23,7 +23,7 @@ JavaScript code that supports my personal workflows.
 
 ## Wish List
 
-General clean-ups, TODOs and things I wish to implement for this project
+General clean-ups, TODOs and things I wish to implement for this project:
 
 * [ ] Bring back the markdown linter code/config I had and make a JS launcher. This means extending my Go-based
   launcher.

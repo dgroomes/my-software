@@ -557,3 +557,9 @@ export def upgrade-gradle-wrapper [gradle_version: string = "8.10"  --depth: int
         cd -
     }
 }
+
+# Open a directory or file in Visual Studio Code
+export def code [file_or_dir: string] {
+    let path = $file_or_dir | path expand
+    ^open -a `/Applications/Visual Studio Code.app` $path
+}

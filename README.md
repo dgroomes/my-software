@@ -86,7 +86,7 @@ My config file for Starship.
 
 ## Wish List
 
-General clean-ups, TODOs and things I wish to implement for this project
+General clean-ups, TODOs and things I wish to implement for this project:
 
 * [ ] Consider restoring (at `b3154dde` and before) the shortcuts I had defined for `navi`. There was some good knowledge there, but I never wound
   up using `navi`.

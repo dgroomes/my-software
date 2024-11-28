@@ -1,5 +1,7 @@
 # nushell-ast-printer
 
+DOES NOT REALLY WORK because the new-nu-parser hasn't reached a critical mass of features.
+
 A program that prints the AST of a Nushell snippet as JSON.
 
 
@@ -48,7 +50,7 @@ Follow these instructions to build and run the code.
 
 ## Wish List
 
-General clean-ups, TODOs and things I wish to implement for this project
+General clean-ups, TODOs and things I wish to implement for this project:
 
 * [x] DONE output JSON
 * [ ] SKIP (I think I got what I needed? The heavy lifting logic has to go in the Go program) tests

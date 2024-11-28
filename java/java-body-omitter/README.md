@@ -83,7 +83,7 @@ This is the Java equivalent of the `go-body-omitter` program. Study that subproj
 
 ## Wish List
 
-General clean-ups, TODOs and things I wish to implement for this project
+General clean-ups, TODOs and things I wish to implement for this project:
 
 * [x] DONE Scaffold. Thanks o1-preview (awesome in many ways; fails in surprising ways)
 * [ ] The 'omitted' comment isn't actually included.
