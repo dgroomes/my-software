@@ -42,6 +42,14 @@ export alias dcd = docker-compose down --remove-orphans
 # Miscellaneous aliases
 export alias psql_local = psql --username postgres --host localhost
 
+# bash-completer-log
+#
+# Print debugging is a simple savior.
+def bcl [msg: string] {
+    $msg | save --append ~/.nushell-bash-completer.log
+    (char newline) | save --append ~/.nushell-bash-completer.log
+}
+
 # Define an external completer (https://www.nushell.sh/cookbook/external_completers.html) based on Bash and the
 # 'bash-completion' library (https://github.com/scop/bash-completion).
 let bash_completer =  { |spans|
@@ -89,6 +97,15 @@ let bash_completer =  { |spans|
 
     $env_vars_path = ($env_vars_path | append (which grep | $in.0?.path | path dirname))
 
+    # Homebrew's completion for things like "brew uninstall " will execute 'brew' so that it can list out your installed
+    # packages. 'brew' requires the HOME environment for some reason. If you omit it, you'll get the error message
+    # "$HOME must be set to run brew.".
+    #
+    # Also, and I couldn't debug why, but '/bin' needs to be on the PATH as well. Seems reasonable enough.
+
+    $env_vars = ($env_vars | insert HOME $env.HOME)
+    $env_vars_path = ($env_vars_path | append "/bin")
+
     # In its completion lookup logic, 'bash-completion' considers the full path of the command being completed.
     # For example, if the command is 'pipx', then 'bash-completion' tries to resolve ' pipx' to a location on the PATH
     # by issuing a 'type -P -- pipx' command (https://github.com/scop/bash-completion/blob/07605cb3e0a3aca8963401c8f7a8e7ee42dbc399/bash_completion#L3158).
@@ -106,10 +123,14 @@ let bash_completer =  { |spans|
     # Turn the environment variables into "KEY=VALUE" strings in preparation for the 'env' command.
     mut env_var_args = $env_vars | items { |key, value| [$key "=" $value] | str join }
 
+#    bcl $"env_var_args: ($env_var_args)"
+
     # Note: we are using "$bash_path" which is the absolute path to the Bash executable of the Bash that's installed
     # via Homebrew. If we were to instead use "bash", then it would resolve to the "bash" that's installed by macOS
     # which is too old to work with 'bash-completion'.
     let result = env -i ...$env_var_args $bash_path --noprofile $one_shot_bash_completion_script $line | complete
+
+#    bcl $"result: ($result)"
 
     # The one-shot Bash completion script will exit with a 127 exit code if it found no completion definition for the
     # command. This is a normal case, because of course many commands don't have or need completion definitions. At
