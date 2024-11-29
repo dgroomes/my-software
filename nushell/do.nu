@@ -17,6 +17,11 @@ const config_registry = {
         backup_success_msg: "Atuin configuration file backed up."
         install_success_msg: "Atuin configuration file installed."
     }
+    bash_completer: {
+        filename: "lib/bash-completer.nu"
+        backup_success_msg: "Bash completer library file backed up."
+        install_success_msg: "Bash completer library file installed."
+    }
     core: {
         filename: "setup/core.nu"
         backup_success_msg: "Core configuration file backed up."

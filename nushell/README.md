@@ -53,7 +53,7 @@ General clean-ups, TODOs and things I wish to implement for this project:
   files/dirs. I think I can identify big chunks quickly enough. Interactive flow.
 * [ ] Fix completion for `git`. I think this was a regression when I deleted my "symlinking completion" Perl script
   because there is a weird case for `git` completions because they ship with `git-completion.bash` and `git-prompt.sh.
-* [ ] Move completer into own file
+* [x] DONE Move completer into own file
 
 
 ## Finished Wish List Items
