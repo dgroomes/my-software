@@ -41,21 +41,6 @@ General clean-ups, TODOs and things I wish to implement for this project:
 * [ ] Nushell support in Intellij? Intellij Ultimate has LSP support now and [Nushell has an LSP](https://github.com/nushell/nushell/tree/main/crates/nu-lsp).
 * [ ] How can I integrate Nushell with Raycast? I don't want go overboard with an integration, but I want to know what's
   possible.
-* [ ] OBSOLETE (Time has moved on. Not as good a fit. Don't care) Use the conventional place for putting Nushell scripts designed to be sourced: `$nu.default-config-dir/scripts`.
-  I'm curious to know how entrenched this convention is. How much do I get for free by following it? I do like the
-  convention. The Nushell constraint on not being able to source from a directory is proving to be awkward. My `nu_script_source.nu`
-  is in the style of a known workaround that I've seen others do: <https://discord.com/channels/601130461678272522/615253963645911060/1195458767622516738>.
-* [ ] OBSOLETE (The need for mutable was correct; I'm going with `misc.nu`) I think I need to not version control `env.nu`. I need mutable content to some degree among my Nushell config
-  system and I think `env.nu` is probably the ticket. For common fixtures that I want evaluated at the `env.nu` eval
-  time, I can jam them into a file like `env-common.nu` and source that from `env.nu`.
-* [x] In `run-from-readme`, execute `bash` snippets in Bash.
-* [x] DONE Split up `config.nu`. It's huge. How much can I use `use` instead of `source`? I'm trying to remember why this
-  even matters.
-* [ ] OBSOLETE (Time has moved on. Not as good a fit. Don't care) If a 'do' module is already active, we want to completely unload all commands and symbols it defines before
-  loading another 'do.nu' script (it could be the same one, an edited version of the same one, or a totally diff one).
-  `overlay hide do` should totally work, and that command seems to work as designed when I use it from the REPL, but I
-  wasn't having good luck when calling it from the hook function. Try again? Try making two hooks? Maybe that will work.
-  Why does this matter? It's really annoying to crowd the command/autocomplete list as I rapidly iterate on a 'do.nu' script.
 * [ ] Use git instead of the `.bak` backup strategy. In general, I've been holding this strategy in my back packet. Seems like a
   good use.
 * [ ] Keep experiment with `itrash` and `irm`. In general I want a compressed workflow for interactively deleting things.
@@ -63,12 +48,9 @@ General clean-ups, TODOs and things I wish to implement for this project:
   time. When deleting with `rm ...` you should think deeply and slowly so you don't make a big mistake. With an
   interactive delete workflow, you initiate the command, and then ostensibly you're presented with a summary like "3 files, 123Kb"
   or something, and you can quickly know that you're safe to delete it. Refer back to this code: <https://github.com/dgroomes/my-software/blob/64224b151e64db01f068d3d806875a9eeaa9aac1/nushell/scratch.nu#L77>.
-* [ ] OBSOLETE (Time has moved on. Not as good a fit. Don't care) Clean up sourcing code (env, core, etc.). I had to source Atuin last because ostensibly I'm overwriting hooks in
-  the env/core config. Just re-consider this flow.
 * [ ] Interactive file selection for context building. I love bundling full projects to pass to the LLM but often they
   are too big and I can't whittle it down. I need to go from the reverse direction. Start with nothing and layer in
   files/dirs. I think I can identify big chunks quickly enough. Interactive flow.
-* [x] DONE (kind of tricky, as always) Fix completions for `brew uninstall `. It's not listing installed packages.
 * [ ] Fix completion for `git`. I think this was a regression when I deleted my "symlinking completion" Perl script
   because there is a weird case for `git` completions because they ship with `git-completion.bash` and `git-prompt.sh.
 * [ ] Move completer into own file
@@ -124,6 +106,24 @@ General clean-ups, TODOs and things I wish to implement for this project:
   use `_comp_load` instead of `_comp_complete_load` because its more direct and the exit code can be keyed off of. I
   think maybe there was a change in 'bash-completion', but either way, these changes are good.
 * [x] DONE (pretty good; I skipped do-deactivate) `do-activate` and `do-deactivate` commands to help me with a conventional workflow of `do.nu` files, using Nushell overlays. 
+* [ ] OBSOLETE (Time has moved on. Not as good a fit. Don't care) Use the conventional place for putting Nushell scripts designed to be sourced: `$nu.default-config-dir/scripts`.
+  I'm curious to know how entrenched this convention is. How much do I get for free by following it? I do like the
+  convention. The Nushell constraint on not being able to source from a directory is proving to be awkward. My `nu_script_source.nu`
+  is in the style of a known workaround that I've seen others do: <https://discord.com/channels/601130461678272522/615253963645911060/1195458767622516738>.
+* [ ] OBSOLETE (The need for mutable was correct; I'm going with `misc.nu`) I think I need to not version control `env.nu`. I need mutable content to some degree among my Nushell config
+  system and I think `env.nu` is probably the ticket. For common fixtures that I want evaluated at the `env.nu` eval
+  time, I can jam them into a file like `env-common.nu` and source that from `env.nu`.
+* [x] DONE In `run-from-readme`, execute `bash` snippets in Bash.
+* [x] DONE Split up `config.nu`. It's huge. How much can I use `use` instead of `source`? I'm trying to remember why this
+  even matters.
+* [ ] OBSOLETE (Time has moved on. Not as good a fit. Don't care) If a 'do' module is already active, we want to completely unload all commands and symbols it defines before
+  loading another 'do.nu' script (it could be the same one, an edited version of the same one, or a totally diff one).
+  `overlay hide do` should totally work, and that command seems to work as designed when I use it from the REPL, but I
+  wasn't having good luck when calling it from the hook function. Try again? Try making two hooks? Maybe that will work.
+  Why does this matter? It's really annoying to crowd the command/autocomplete list as I rapidly iterate on a 'do.nu' script.
+* [ ] OBSOLETE (Time has moved on. Not as good a fit. Don't care) Clean up sourcing code (env, core, etc.). I had to source Atuin last because ostensibly I'm overwriting hooks in
+  the env/core config. Just re-consider this flow.
+* [x] DONE (kind of tricky, as always) Fix completions for `brew uninstall `. It's not listing installed packages.
 
 
 ## Reference
