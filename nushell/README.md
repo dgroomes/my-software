@@ -49,7 +49,7 @@ General clean-ups, TODOs and things I wish to implement for this project:
   system and I think `env.nu` is probably the ticket. For common fixtures that I want evaluated at the `env.nu` eval
   time, I can jam them into a file like `env-common.nu` and source that from `env.nu`.
 * [x] In `run-from-readme`, execute `bash` snippets in Bash.
-* [ ] IN PROGRESS Split up `config.nu`. It's huge. How much can I use `use` instead of `source`? I'm trying to remember why this
+* [x] DONE Split up `config.nu`. It's huge. How much can I use `use` instead of `source`? I'm trying to remember why this
   even matters.
 * [ ] If a 'do' module is already active, we want to completely unload all commands and symbols it defines before
   loading another 'do.nu' script (it could be the same one, an edited version of the same one, or a totally diff one).
@@ -65,9 +65,13 @@ General clean-ups, TODOs and things I wish to implement for this project:
   or something, and you can quickly know that you're safe to delete it. Refer back to this code: <https://github.com/dgroomes/my-software/blob/64224b151e64db01f068d3d806875a9eeaa9aac1/nushell/scratch.nu#L77>.
 * [ ] Clean up sourcing code (env, core, etc.). I had to source Atuin last because ostensibly I'm overwriting hooks in
   the env/core config. Just re-consider this flow.
-* [ ] IN PROGRESS Interactive file selection for context building. I love bundling full projects to pass to the LLM but often they
+* [ ] Interactive file selection for context building. I love bundling full projects to pass to the LLM but often they
   are too big and I can't whittle it down. I need to go from the reverse direction. Start with nothing and layer in
   files/dirs. I think I can identify big chunks quickly enough. Interactive flow.
+* [x] DONE (kind of tricky, as always) Fix completions for `brew uninstall `. It's not listing installed packages.
+* [ ] Fix completion for `git`. I think this was a regression when I deleted my "symlinking completion" Perl script
+  because there is a weird case for `git` completions because they ship with `git-completion.bash` and `git-prompt.sh.
+* [ ] Move completer into own file
 
 
 ## Finished Wish List Items
