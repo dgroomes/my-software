@@ -375,3 +375,14 @@ to a working Nushell environment, but it's great enough.
     * ```text
       org.gradle.java.installations.fromEnv=JAVA_11_HOME,JAVA_17_HOME,JAVA_21_HOME
       ```
+37. Install the "symlink-git-completion" launch agent
+    * There is a special case for supporting Bash completion of the `git` command. Annoyingly, git is the only
+      Homebrew-installed package that I use which distributes its Bash completion script in an incompatible naming
+      scheme. It uses the name `git-completion.bash`. It needs to be either `git` (my preference and the norm) or
+      `git.bash` (perfectly fine too). An inexpensive fix for this is to periodically symlink the `git-completion.bash`
+      file to `git` in the conventional "local" Bash completions directory. The 'bash-completion' library will find it
+      there. I've written a launch agent which does this task. Install it with the following commands.
+    * ```nushell
+      cp mac-os/dgroomes.symlink-git-completion.plist ~/Library/LaunchAgents
+      launchctl load ~/Library/LaunchAgents/dgroomes.symlink-git-completion.plist
+      ```

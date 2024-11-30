@@ -51,7 +51,7 @@ General clean-ups, TODOs and things I wish to implement for this project:
 * [ ] Interactive file selection for context building. I love bundling full projects to pass to the LLM but often they
   are too big and I can't whittle it down. I need to go from the reverse direction. Start with nothing and layer in
   files/dirs. I think I can identify big chunks quickly enough. Interactive flow.
-* [ ] Fix completion for `git`. I think this was a regression when I deleted my "symlinking completion" Perl script
+* [x] DONE Fix completion for `git`. I think this was a regression when I deleted my "symlinking completion" Perl script
   because there is a weird case for `git` completions because they ship with `git-completion.bash` and `git-prompt.sh.
 * [x] DONE Move completer into own file
 

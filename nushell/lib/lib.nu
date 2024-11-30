@@ -563,3 +563,9 @@ export def code [file_or_dir: string] {
     let path = $file_or_dir | path expand
     ^open -a `/Applications/Visual Studio Code.app` $path
 }
+
+# Open a directory or file in XCode
+export def xcode [file_or_dir: string] {
+    let path = $file_or_dir | path expand
+    ^open -a /Applications/Xcode.app $path
+}
