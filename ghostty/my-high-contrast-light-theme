@@ -1,0 +1,775 @@
+background = #ffffff
+foreground = #000000
+cursor-color = #000000
+
+selection-background = #c1deff
+selection-foreground = #000000
+
+# #000000 becomes #000000
+palette = 0=#000000
+
+# #c91b00 becomes #C91B00
+palette = 1=#C91B00
+
+# #00c200 becomes #00B000
+palette = 2=#00B000
+
+# #c7c400 becomes #949500
+palette = 3=#949500
+
+# #0225c7 becomes #0225C7
+palette = 4=#0225C7
+
+# #ca30c7 becomes #CA30C7
+palette = 5=#CA30C7
+
+# #00c5c7 becomes #009598
+palette = 6=#009598
+
+# #c7c7c7 becomes #6E6E6E
+palette = 7=#6E6E6E
+
+# #686868 becomes #686868
+palette = 8=#686868
+
+# #ff6e67 becomes #E85A55
+palette = 9=#E85A55
+
+# #5ffa68 becomes #00AD1B
+palette = 10=#00AD1B
+
+# #fffc67 becomes #8E9200
+palette = 11=#8E9200
+
+# #6871ff becomes #6871FF
+palette = 12=#6871FF
+
+# #ff77ff becomes #DF58E0
+palette = 13=#DF58E0
+
+# #60fdff becomes #009699
+palette = 14=#009699
+
+# #ffffff becomes #6E6E6E
+palette = 15=#6E6E6E
+
+# #000000 becomes #000000
+palette = 16=#000000
+
+# #000033 becomes #000033
+palette = 17=#000033
+
+# #000066 becomes #000066
+palette = 18=#000066
+
+# #000099 becomes #000099
+palette = 19=#000099
+
+# #0000cc becomes #0000CC
+palette = 20=#0000CC
+
+# #0000ff becomes #0000FF
+palette = 21=#0000FF
+
+# #003300 becomes #003300
+palette = 22=#003300
+
+# #003333 becomes #003333
+palette = 23=#003333
+
+# #003366 becomes #003366
+palette = 24=#003366
+
+# #003399 becomes #003399
+palette = 25=#003399
+
+# #0033cc becomes #0033CC
+palette = 26=#0033CC
+
+# #0033ff becomes #0033FF
+palette = 27=#0033FF
+
+# #006600 becomes #006600
+palette = 28=#006600
+
+# #006633 becomes #006633
+palette = 29=#006633
+
+# #006666 becomes #006666
+palette = 30=#006666
+
+# #006699 becomes #006699
+palette = 31=#006699
+
+# #0066cc becomes #0066CC
+palette = 32=#0066CC
+
+# #0066ff becomes #0066FF
+palette = 33=#0066FF
+
+# #009900 becomes #009900
+palette = 34=#009900
+
+# #009933 becomes #009933
+palette = 35=#009933
+
+# #009966 becomes #009966
+palette = 36=#009966
+
+# #009999 becomes #009090
+palette = 37=#009090
+
+# #0099cc becomes #0089BB
+palette = 38=#0089BB
+
+# #0099ff becomes #008BEF
+palette = 39=#008BEF
+
+# #00cc00 becomes #00B300
+palette = 40=#00B300
+
+# #00cc33 becomes #00AF0D
+palette = 41=#00AF0D
+
+# #00cc66 becomes #00A744
+palette = 42=#00A744
+
+# #00cc99 becomes #009D6E
+palette = 43=#009D6E
+
+# #00cccc becomes #009697
+palette = 44=#009697
+
+# #00ccff becomes #0090C0
+palette = 45=#0090C0
+
+# #00ff00 becomes #00BD00
+palette = 46=#00BD00
+
+# #00ff33 becomes #00BA00
+palette = 47=#00BA00
+
+# #00ff66 becomes #00B41B
+palette = 48=#00B41B
+
+# #00ff99 becomes #00AB4E
+palette = 49=#00AB4E
+
+# #00ffcc becomes #00A276
+palette = 50=#00A276
+
+# #00ffff becomes #009B9D
+palette = 51=#009B9D
+
+# #330000 becomes #330000
+palette = 52=#330000
+
+# #330033 becomes #330033
+palette = 53=#330033
+
+# #330066 becomes #330066
+palette = 54=#330066
+
+# #330099 becomes #330099
+palette = 55=#330099
+
+# #3300cc becomes #3300CC
+palette = 56=#3300CC
+
+# #3300ff becomes #3300FF
+palette = 57=#3300FF
+
+# #333300 becomes #333300
+palette = 58=#333300
+
+# #333333 becomes #333333
+palette = 59=#333333
+
+# #333366 becomes #333366
+palette = 60=#333366
+
+# #333399 becomes #333399
+palette = 61=#333399
+
+# #3333cc becomes #3333CC
+palette = 62=#3333CC
+
+# #3333ff becomes #3333FF
+palette = 63=#3333FF
+
+# #336600 becomes #336600
+palette = 64=#336600
+
+# #336633 becomes #336633
+palette = 65=#336633
+
+# #336666 becomes #336666
+palette = 66=#336666
+
+# #336699 becomes #336699
+palette = 67=#336699
+
+# #3366cc becomes #3366CC
+palette = 68=#3366CC
+
+# #3366ff becomes #3366FF
+palette = 69=#3366FF
+
+# #339900 becomes #339900
+palette = 70=#339900
+
+# #339933 becomes #339933
+palette = 71=#339933
+
+# #339966 becomes #2F9563
+palette = 72=#2F9563
+
+# #339999 becomes #218C8C
+palette = 73=#218C8C
+
+# #3399cc becomes #0686B8
+palette = 74=#0686B8
+
+# #3399ff becomes #0089ED
+palette = 75=#0089ED
+
+# #33cc00 becomes #00B000
+palette = 76=#00B000
+
+# #33cc33 becomes #00AD07
+palette = 77=#00AD07
+
+# #33cc66 becomes #00A442
+palette = 78=#00A442
+
+# #33cc99 becomes #009B6C
+palette = 79=#009B6C
+
+# #33cccc becomes #009495
+palette = 80=#009495
+
+# #33ccff becomes #008EBE
+palette = 81=#008EBE
+
+# #33ff00 becomes #00BC00
+palette = 82=#00BC00
+
+# #33ff33 becomes #00B900
+palette = 83=#00B900
+
+# #33ff66 becomes #00B218
+palette = 84=#00B218
+
+# #33ff99 becomes #00A94C
+palette = 85=#00A94C
+
+# #33ffcc becomes #00A074
+palette = 86=#00A074
+
+# #33ffff becomes #009A9C
+palette = 87=#009A9C
+
+# #660000 becomes #660000
+palette = 88=#660000
+
+# #660033 becomes #660033
+palette = 89=#660033
+
+# #660066 becomes #660066
+palette = 90=#660066
+
+# #660099 becomes #660099
+palette = 91=#660099
+
+# #6600cc becomes #6600CC
+palette = 92=#6600CC
+
+# #6600ff becomes #6600FF
+palette = 93=#6600FF
+
+# #663300 becomes #663300
+palette = 94=#663300
+
+# #663333 becomes #663333
+palette = 95=#663333
+
+# #663366 becomes #663366
+palette = 96=#663366
+
+# #663399 becomes #663399
+palette = 97=#663399
+
+# #6633cc becomes #6633CC
+palette = 98=#6633CC
+
+# #6633ff becomes #6633FF
+palette = 99=#6633FF
+
+# #666600 becomes #666600
+palette = 100=#666600
+
+# #666633 becomes #666633
+palette = 101=#666633
+
+# #666666 becomes #666666
+palette = 102=#666666
+
+# #666699 becomes #666699
+palette = 103=#666699
+
+# #6666cc becomes #6666CC
+palette = 104=#6666CC
+
+# #6666ff becomes #6666FF
+palette = 105=#6666FF
+
+# #669900 becomes #669900
+palette = 106=#669900
+
+# #669933 becomes #62952F
+palette = 107=#62952F
+
+# #669966 becomes #598B59
+palette = 108=#598B59
+
+# #669999 becomes #4D7F80
+palette = 109=#4D7F80
+
+# #6699cc becomes #487EAF
+palette = 110=#487EAF
+
+# #6699ff becomes #4B84E8
+palette = 111=#4B84E8
+
+# #66cc00 becomes #3FAA00
+palette = 112=#3FAA00
+
+# #66cc33 becomes #3CA600
+palette = 113=#3CA600
+
+# #66cc66 becomes #349E3C
+palette = 114=#349E3C
+
+# #66cc99 becomes #2A9566
+palette = 115=#2A9566
+
+# #66cccc becomes #168D8E
+palette = 116=#168D8E
+
+# #66ccff becomes #0088B7
+palette = 117=#0088B7
+
+# #66ff00 becomes #00B700
+palette = 118=#00B700
+
+# #66ff33 becomes #00B500
+palette = 119=#00B500
+
+# #66ff66 becomes #00AE0F
+palette = 120=#00AE0F
+
+# #66ff99 becomes #00A548
+palette = 121=#00A548
+
+# #66ffcc becomes #009C70
+palette = 122=#009C70
+
+# #66ffff becomes #009697
+palette = 123=#009697
+
+# #990000 becomes #990000
+palette = 124=#990000
+
+# #990033 becomes #990033
+palette = 125=#990033
+
+# #990066 becomes #990066
+palette = 126=#990066
+
+# #990099 becomes #990099
+palette = 127=#990099
+
+# #9900cc becomes #9900CC
+palette = 128=#9900CC
+
+# #9900ff becomes #9900FF
+palette = 129=#9900FF
+
+# #993300 becomes #993300
+palette = 130=#993300
+
+# #993333 becomes #993333
+palette = 131=#993333
+
+# #993366 becomes #993366
+palette = 132=#993366
+
+# #993399 becomes #993399
+palette = 133=#993399
+
+# #9933cc becomes #9933CC
+palette = 134=#9933CC
+
+# #9933ff becomes #9933FF
+palette = 135=#9933FF
+
+# #996600 becomes #996600
+palette = 136=#996600
+
+# #996633 becomes #996633
+palette = 137=#996633
+
+# #996666 becomes #996666
+palette = 138=#996666
+
+# #996699 becomes #996699
+palette = 139=#996699
+
+# #9966cc becomes #9966CC
+palette = 140=#9966CC
+
+# #9966ff becomes #9966FF
+palette = 141=#9966FF
+
+# #999900 becomes #8E8F00
+palette = 142=#8E8F00
+
+# #999933 becomes #888922
+palette = 143=#888922
+
+# #999966 becomes #7B7C4A
+palette = 144=#7B7C4A
+
+# #999999 becomes #6E6E6E
+palette = 145=#6E6E6E
+
+# #9999cc becomes #7475A6
+palette = 146=#7475A6
+
+# #9999ff becomes #797CDE
+palette = 147=#797CDE
+
+# #99cc00 becomes #6CA100
+palette = 148=#6CA100
+
+# #99cc33 becomes #699D00
+palette = 149=#699D00
+
+# #99cc66 becomes #619431
+palette = 150=#619431
+
+# #99cc99 becomes #5A8A5B
+palette = 151=#5A8A5B
+
+# #99cccc becomes #4E7F7F
+palette = 152=#4E7F7F
+
+# #99ccff becomes #477EAD
+palette = 153=#477EAD
+
+# #99ff00 becomes #40B000
+palette = 154=#40B000
+
+# #99ff33 becomes #3EAE00
+palette = 155=#3EAE00
+
+# #99ff66 becomes #3AA700
+palette = 156=#3AA700
+
+# #99ff99 becomes #339D3F
+palette = 157=#339D3F
+
+# #99ffcc becomes #2B9568
+palette = 158=#2B9568
+
+# #99ffff becomes #138D8E
+palette = 159=#138D8E
+
+# #cc0000 becomes #CC0000
+palette = 160=#CC0000
+
+# #cc0033 becomes #CC0033
+palette = 161=#CC0033
+
+# #cc0066 becomes #CC0066
+palette = 162=#CC0066
+
+# #cc0099 becomes #CC0099
+palette = 163=#CC0099
+
+# #cc00cc becomes #CC00CC
+palette = 164=#CC00CC
+
+# #cc00ff becomes #CC00FF
+palette = 165=#CC00FF
+
+# #cc3300 becomes #CC3300
+palette = 166=#CC3300
+
+# #cc3333 becomes #CC3333
+palette = 167=#CC3333
+
+# #cc3366 becomes #CC3366
+palette = 168=#CC3366
+
+# #cc3399 becomes #CC3399
+palette = 169=#CC3399
+
+# #cc33cc becomes #CC33CC
+palette = 170=#CC33CC
+
+# #cc33ff becomes #CC33FF
+palette = 171=#CC33FF
+
+# #cc6600 becomes #CC6600
+palette = 172=#CC6600
+
+# #cc6633 becomes #CC6633
+palette = 173=#CC6633
+
+# #cc6666 becomes #CB6565
+palette = 174=#CB6565
+
+# #cc6699 becomes #C96396
+palette = 175=#C96396
+
+# #cc66cc becomes #C863C9
+palette = 176=#C863C9
+
+# #cc66ff becomes #CB65FE
+palette = 177=#CB65FE
+
+# #cc9900 becomes #B48400
+palette = 178=#B48400
+
+# #cc9933 becomes #AE7F14
+palette = 179=#AE7F14
+
+# #cc9966 becomes #A27442
+palette = 180=#A27442
+
+# #cc9999 becomes #9C6C6D
+palette = 181=#9C6C6D
+
+# #cc99cc becomes #9F6FA0
+palette = 182=#9F6FA0
+
+# #cc99ff becomes #A171D3
+palette = 183=#A171D3
+
+# #cccc00 becomes #929700
+palette = 184=#929700
+
+# #cccc33 becomes #8E9300
+palette = 185=#8E9300
+
+# #cccc66 becomes #868924
+palette = 186=#868924
+
+# #cccc99 becomes #7A7B4C
+palette = 187=#7A7B4C
+
+# #cccccc becomes #6E6E6E
+palette = 188=#6E6E6E
+
+# #ccccff becomes #7375A3
+palette = 189=#7375A3
+
+# #ccff00 becomes #6FA800
+palette = 190=#6FA800
+
+# #ccff33 becomes #6DA500
+palette = 191=#6DA500
+
+# #ccff66 becomes #689D00
+palette = 192=#689D00
+
+# #ccff99 becomes #629334
+palette = 193=#629334
+
+# #ccffcc becomes #5A895C
+palette = 194=#5A895C
+
+# #ccffff becomes #4F7E7F
+palette = 195=#4F7E7F
+
+# #ff0000 becomes #FF0000
+palette = 196=#FF0000
+
+# #ff0033 becomes #FF0033
+palette = 197=#FF0033
+
+# #ff0066 becomes #FF0066
+palette = 198=#FF0066
+
+# #ff0099 becomes #FF0099
+palette = 199=#FF0099
+
+# #ff00cc becomes #FF00CC
+palette = 200=#FF00CC
+
+# #ff00ff becomes #FF00FF
+palette = 201=#FF00FF
+
+# #ff3300 becomes #FF3300
+palette = 202=#FF3300
+
+# #ff3333 becomes #FF3333
+palette = 203=#FF3333
+
+# #ff3366 becomes #FF3366
+palette = 204=#FF3366
+
+# #ff3399 becomes #FF3399
+palette = 205=#FF3399
+
+# #ff33cc becomes #FF33CC
+palette = 206=#FF33CC
+
+# #ff33ff becomes #FF33FF
+palette = 207=#FF33FF
+
+# #ff6600 becomes #FB6300
+palette = 208=#FB6300
+
+# #ff6633 becomes #F55E2C
+palette = 209=#F55E2C
+
+# #ff6666 becomes #EE5759
+palette = 210=#EE5759
+
+# #ff6699 becomes #EA5287
+palette = 211=#EA5287
+
+# #ff66cc becomes #E951B8
+palette = 212=#E951B8
+
+# #ff66ff becomes #EA51EB
+palette = 213=#EA51EB
+
+# #ff9900 becomes #D87900
+palette = 214=#D87900
+
+# #ff9933 becomes #D37500
+palette = 215=#D37500
+
+# #ff9966 becomes #CA6C3C
+palette = 216=#CA6C3C
+
+# #ff9999 becomes #C66769
+palette = 217=#C66769
+
+# #ff99cc becomes #C56497
+palette = 218=#C56497
+
+# #ff99ff becomes #C664C7
+palette = 219=#C664C7
+
+# #ffcc00 becomes #B58D00
+palette = 220=#B58D00
+
+# #ffcc33 becomes #B28900
+palette = 221=#B28900
+
+# #ffcc66 becomes #A97F17
+palette = 222=#A97F17
+
+# #ffcc99 becomes #9F7345
+palette = 223=#9F7345
+
+# #ffcccc becomes #996C6D
+palette = 224=#996C6D
+
+# #ffccff becomes #9D6F9E
+palette = 225=#9D6F9E
+
+# #ffff00 becomes #949E00
+palette = 226=#949E00
+
+# #ffff33 becomes #929B00
+palette = 227=#929B00
+
+# #ffff66 becomes #8C9400
+palette = 228=#8C9400
+
+# #ffff99 becomes #848828
+palette = 229=#848828
+
+# #ffffcc becomes #797A4D
+palette = 230=#797A4D
+
+# #ffffff becomes #6E6E6E
+palette = 231=#6E6E6E
+
+# #080808 becomes #080808
+palette = 232=#080808
+
+# #121212 becomes #121212
+palette = 233=#121212
+
+# #1c1c1c becomes #1C1C1C
+palette = 234=#1C1C1C
+
+# #262626 becomes #262626
+palette = 235=#262626
+
+# #303030 becomes #303030
+palette = 236=#303030
+
+# #3a3a3a becomes #3A3A3A
+palette = 237=#3A3A3A
+
+# #444444 becomes #444444
+palette = 238=#444444
+
+# #4e4e4e becomes #4E4E4E
+palette = 239=#4E4E4E
+
+# #585858 becomes #585858
+palette = 240=#585858
+
+# #626262 becomes #626262
+palette = 241=#626262
+
+# #6c6c6c becomes #6C6C6C
+palette = 242=#6C6C6C
+
+# #767676 becomes #6E6E6E
+palette = 243=#6E6E6E
+
+# #808080 becomes #6E6E6E
+palette = 244=#6E6E6E
+
+# #8a8a8a becomes #6E6E6E
+palette = 245=#6E6E6E
+
+# #949494 becomes #6E6E6E
+palette = 246=#6E6E6E
+
+# #9e9e9e becomes #6E6E6E
+palette = 247=#6E6E6E
+
+# #a8a8a8 becomes #6E6E6E
+palette = 248=#6E6E6E
+
+# #b2b2b2 becomes #6E6E6E
+palette = 249=#6E6E6E
+
+# #bcbcbc becomes #6E6E6E
+palette = 250=#6E6E6E
+
+# #c6c6c6 becomes #6E6E6E
+palette = 251=#6E6E6E
+
+# #d0d0d0 becomes #6E6E6E
+palette = 252=#6E6E6E
+
+# #dadada becomes #6E6E6E
+palette = 253=#6E6E6E
+
+# #e4e4e4 becomes #6E6E6E
+palette = 254=#6E6E6E
+
+# #eeeeee becomes #6E6E6E
+palette = 255=#6E6E6E
+

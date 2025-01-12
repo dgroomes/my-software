@@ -386,3 +386,7 @@ to a working Nushell environment, but it's great enough.
       mkdir ~/.local/share/bash-completion/completions
       ln -sf /opt/homebrew/etc/bash_completion.d/git-completion.bash ~/.local/share/bash-completion/completions/git 
       ```
+38. Install uv
+    * TODO
+39. Ghostty
+    * TODO

@@ -1,0 +1,10 @@
+theme=my-high-contrast-light-theme
+
+# Gray out all panes (splits) besides the focused one. The default config wasn't doing this; it didn't seem to do much
+# contrast at all.
+unfocused-split-fill= #808080
+
+# Disable ligatures
+font-feature=-calt
+font-feature=-liga
+font-feature=-dlig

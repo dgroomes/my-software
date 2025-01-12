@@ -3,3 +3,4 @@ build/
 .idea/
 settings.zip
 settings-fresh-export/
+__pycache__/
