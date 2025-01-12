@@ -41,19 +41,19 @@ var allItems []string
 
 var realFrame = lipgloss.NewStyle().Margin(1, 2)
 var noFrame = lipgloss.NewStyle()
-var styleNormalTitle = lipgloss.NewStyle().Foreground(lipgloss.Color("#1a1a1a"))
+var styleNormalTitle = lipgloss.NewStyle().Foreground(lipgloss.Color("0"))
 var styleNormalTitleBox = lipgloss.NewStyle().Padding(0, 0, 0, 2)
-var styleSelectedTitle = lipgloss.NewStyle().Foreground(lipgloss.Color("#EE6FF8"))
+var styleSelectedTitle = lipgloss.NewStyle().Foreground(lipgloss.Color("170"))
 var styleSelectedTitleBox = lipgloss.NewStyle().
 	Border(lipgloss.NormalBorder(), false, false, false, true).
-	BorderForeground(lipgloss.Color("#F793FF")).
+	BorderForeground(lipgloss.Color("170")).
 	Padding(0, 0, 0, 1)
 var styleFilterPrompt = lipgloss.NewStyle().
-	Foreground(lipgloss.AdaptiveColor{Light: "#04B575", Dark: "#ECFD65"})
+	Foreground(lipgloss.Color("100"))
 var styleFilterCursor = lipgloss.NewStyle().
-	Foreground(lipgloss.AdaptiveColor{Light: "#EE6FF8", Dark: "#EE6FF8"})
+	Foreground(lipgloss.Color("170"))
 var styleNoItems = lipgloss.NewStyle().
-	Foreground(lipgloss.AdaptiveColor{Light: "#909090", Dark: "#626262"})
+	Foreground(lipgloss.Color("245"))
 var prompt = "Filter: "
 var promptLength = len(prompt)
 
