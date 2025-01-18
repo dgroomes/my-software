@@ -76,7 +76,7 @@ invert = true
 
 ## enable or disable showing a preview of the selected command
 ## useful when the command is longer than the terminal width and is cut off
-# show_preview = true
+show_preview = false
 
 ## what to do when the escape key is pressed when searching
 ## possible values: return-original, return-query
@@ -103,10 +103,10 @@ ctrl_n_shortcuts = true
 ## with ^ or end with $, they'll match anywhere in the command.
 ## For details on the supported regular expression syntax, see
 ## https://docs.rs/regex/latest/regex/#syntax
-# history_filter = [
-#   "^secret-cmd",
-#   "^innocuous-cmd .*--secret=.+",
-# ]
+history_filter = [
+  "^ls$",
+  "^z$",
+]
 
 ## prevent commands run with cwd matching any of these regexes from being written
 ## to history. Note that these regular expressions are unanchored, i.e. if they don't
@@ -149,7 +149,7 @@ ctrl_n_shortcuts = true
 # This applies for new installs. Old installs will keep the old behaviour unless configured otherwise.
 #
 # Unfortunately, "enter to accept" has no effect on Nushell. Follow this GitHub issue for updates: https://github.com/atuinsh/atuin/issues/1392
-enter_accept = true
+# enter_accept = true
 
 ## Defaults to "emacs".  This specifies the keymap on the startup of `atuin
 ## search`.  If this is set to "auto", the startup keymap mode in the Atuin
@@ -266,4 +266,4 @@ records = true
 ## The list of enabled filter modes, in order of priority.
 ## The "workspace" mode is skipped when not in a workspace or workspaces = false.
 ## Default filter mode can be overridden with the filter_mode setting.
-filters = [ "session", "workspace", "directory", "global" ]
+filters = [ "session", "global", "workspace", "directory" ]

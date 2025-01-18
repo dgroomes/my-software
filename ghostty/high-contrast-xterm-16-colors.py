@@ -90,84 +90,58 @@ def ensure_min_ciede2000_distance_preserve_hue(r, g, b, min_dist=40.0):
     new_rgb = np.clip(new_rgb, 0.0, 1.0)
     return tuple(new_rgb)
 
-##############################################################################
-# 3) Standard Xterm 256 color palette generation
-##############################################################################
-#
-#   Indices 0..15: system colors (explicit).
-#   Indices 16..231: 6x6x6 color cube (r,g,b each in 0..5).
-#   Indices 232..255: grayscale ramp.
-#
-##############################################################################
-
-def xterm_256_color_hex_list():
+def xterm_system_colors():
     """
-    Returns a list of length 256, where index i is the #RRGGBB
-    representation of the i-th color in the standard Xterm palette.
+    Returns a list of length 16, each element is a tuple:
+      (hex, name, min_contrast)
     """
-
-    # First 16: from XTerm specification (or some distribution).
-    # We'll match typical "modern" definitions as a reference:
-    # (You can substitute your own if you have custom ones.)
-
-    # 0-7 (normal)
+    # Normal colors (indices 0..7)
     system_0_7 = [
-        "#000000",  # 0 black
-        "#c91b00",  # 1 red
-        "#00c200",  # 2 green
-        "#c7c400",  # 3 yellow
-        "#0225c7",  # 4 blue
-        "#ca30c7",  # 5 magenta
-        "#00c5c7",  # 6 cyan
-        "#c7c7c7",  # 7 white (light gray)
+        ("#000000", "black",        40),
+        ("#C91B00", "red",          40),
+        ("#00C200", "green",        40),
+        ("#C7C400", "yellow",       40),
+        ("#0225C7", "blue",         40),
+        ("#CA30C7", "magenta",      40),
+        ("#00C5C7", "cyan",         40),
+        ("#C7C7C7", "light_gray",   40),
     ]
-    # 8-15 (bright)
+
+    # Bright colors (indices 8..15)
     system_8_15 = [
-        "#686868",  # 8  bright black / gray
-        "#ff6e67",  # 9  bright red
-        "#5ffa68",  # 10 bright green
-        "#fffc67",  # 11 bright yellow
-        "#6871ff",  # 12 bright blue
-        "#ff77ff",  # 13 bright magenta
-        "#60fdff",  # 14 bright cyan
-        "#ffffff",  # 15 bright white
+        ("#686868", "bright_black",   30),
+        ("#FF6E67", "bright_red",     30),
+        ("#5FFA68", "bright_green",   30),
+        ("#FFFC67", "bright_yellow",  30),
+        ("#6871FF", "bright_blue",    30),
+        ("#FF77FF", "bright_magenta", 30),
+        ("#60FDFF", "bright_cyan",    30),
+        ("#FFFFFF", "white",           0),
     ]
-    palette = system_0_7 + system_8_15
-
-    # 16..231: 6x6x6 color cube
-    for r in range(6):
-        for g in range(6):
-            for b in range(6):
-                rr = int(round((r / 5.0) * 255))
-                gg = int(round((g / 5.0) * 255))
-                bb = int(round((b / 5.0) * 255))
-                palette.append("#{:02x}{:02x}{:02x}".format(rr, gg, bb))
-
-    # 232..255: grayscale ramp
-    for i in range(24):
-        # Range from 8 to 238 in steps of 10
-        level = 8 + i * 10
-        palette.append("#{:02x}{:02x}{:02x}".format(level, level, level))
-
-    return palette[:256]
+    return system_0_7 + system_8_15
 
 ##############################################################################
 # 4) Main: generate the palette, apply contrast fix, print results
 ##############################################################################
 
 def main():
-    MIN_DIST = 40.0
-    xterm_palette = xterm_256_color_hex_list()
+    xterm_palette = xterm_system_colors()
 
-    for i, hexcolor in enumerate(xterm_palette):
+    for i, (hexcolor, desc, min_contrast) in enumerate(xterm_palette):
+        print(f"# {desc}: min contrast {min_contrast}")
+
         # Convert to float RGB
         (r, g, b) = hex_to_rgb01(hexcolor)
-
-        new_r, new_g, new_b = ensure_min_ciede2000_distance_preserve_hue(r, g, b, MIN_DIST)
+        new_r, new_g, new_b = ensure_min_ciede2000_distance_preserve_hue(r, g, b, min_contrast)
 
         # Convert back to hex
         new_hex = rgb01_to_hex(new_r, new_g, new_b)
-        print(f"# {hexcolor} becomes {new_hex}")
+
+        if hexcolor == new_hex:
+            print(f"# {hexcolor} (no change)")
+        else:
+            print(f"# {hexcolor} becomes {new_hex}")
+
         print(f"palette = {i}={new_hex}\n")
 
 if __name__ == "__main__":

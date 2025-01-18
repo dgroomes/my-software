@@ -95,9 +95,19 @@ General clean-ups, TODOs and things I wish to implement for this project:
 * [ ] Consider restoring (at `b3154dde` and before) my Postgres-related Bash functions. These were hard fought and useful. Maybe reimplement in
   Nushell. Alternatively, I often use Postgres in Docker. But still. (Same is true of the Mongo functions but not sure
   how much I'll ever use Mongo again.)
-* [ ] Why isn't `enter_accept = true` working for Atuin? It has no effect.
+* [x] DONE (It's a known bug in Atuin) Why isn't `enter_accept = true` working for Atuin? It has no effect.
 * [x] DONE Poetry completion isn't working... I've been here before
 * [x] DONE Completion isn't working for brew... We've [been here before](https://github.com/dgroomes/my-software/commit/15339d8e51b7649807669d508679b525feb9e7e5)
+* [x] DONE Revert to a more standard (non high contrast) color theme for Ghostty and instead use a more targeted approach:
+  create higher contrast color themes/settings in specific tools like Nushell and LS_COLORS (already done). I realized
+  that modifying the colors of the 256 ANSI colors (at least beyond the base ones) is kind of a kludgy and imperfect
+  thing to do because it crushes most of those colors, and it doesn't even solve a global contrast problem because CLI
+  tools can just use whatever color (hex) they want (like my own fuzzy finder). So forget it. If there is a CLI/TUI tool
+  that has particularly bad contrast, and codes to the ANSI-256 colors, and doesn't have its own color configuration, then
+  I'll consider "redefining ANSI 256", but overall I think that should be rare and I don't to redefine system things
+  without big thought.
+* [ ] Try out Nushell's new "vendor auto load" configuration feature 
+   
 
 
 ## Finished Wish List Items

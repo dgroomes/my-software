@@ -2,15 +2,10 @@
 # helps to re-install the configuration and backup the current configuration.
 
 const config_registry = {
-    env: {
-        filename: "env.nu"
-        backup_success_msg: "Environment configuration file backed up."
-        install_success_msg: "Environment configuration file installed."
-    }
-    standard: {
+    config: {
         filename: "config.nu"
-        backup_success_msg: "Standard configuration file backed up."
-        install_success_msg: "Standard configuration file installed."
+        backup_success_msg: "Main 'config.nu' configuration file backed up."
+        install_success_msg: "Main 'config.nu' configuration file installed."
     }
     atuin: {
         filename: "setup/atuin.nu"
@@ -21,11 +16,6 @@ const config_registry = {
         filename: "lib/bash-completer.nu"
         backup_success_msg: "Bash completer library file backed up."
         install_success_msg: "Bash completer library file installed."
-    }
-    core: {
-        filename: "setup/core.nu"
-        backup_success_msg: "Core configuration file backed up."
-        install_success_msg: "Core configuration file installed."
     }
     file_set: {
         filename: "lib/file-set.nu"
