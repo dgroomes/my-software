@@ -99,18 +99,6 @@ export def --env "do activate" [] {
 
 export alias da = do activate
 
-# My color preference is to be happy with black on white, and to use high-contrast colors for extra signal. I don't need
-# colors on everything, that's noise and also maintenance.
-let my_green_bold = { fg: '#009900' attr: b }
-let my_green = { fg: '009900' }
-let my_cyan = { fg: '#008487' }
-let my_light_cyan = { fg: '#008488' }
-let my_cyan_bold = { fg: '#008487' attr: b }
-let my_yellow = { fg: '#7D8100' }
-let my_purple = { fg: '#CA30C7' }
-let my_purple_bold = { fg: '#CA30C7' attr: b }
-let my_light_purple = { fg: '#C841CA' }
-
 $env.config.show_banner = false
 
 $env.config.history = {
@@ -122,65 +110,67 @@ $env.config.history = {
 
 $env.config.buffer_editor = "vim" # command that will be used to edit the current line buffer with ctrl+o, if unset fallback to $env.EDITOR and $env.VISUAL
 
+# Consider replacing some of the color config with just the default foreground color (black). I don't need colors on
+# everything, that's noise and also maintenance.
 $env.config.color_config = {
-     separator: white
+     separator: default
      leading_trailing_space_bg: { attr: n }
-     header: $my_green_bold
+     header: green_bold
      empty: blue
-     bool: $my_light_cyan
-     int: white
-     filesize: $my_cyan
-     duration: white
-     date: $my_purple
-     range: white
-     float: white
-     string: white
-     nothing: white
-     binary: white
-     cell-path: white
-     row_index: $my_green_bold
-     record: white
-     list: white
-     closure: $my_green_bold
-     glob:$my_cyan_bold
-     block: white
+     bool: light_cyan
+     int: default
+     filesize: cyan
+     duration: default
+     date: purple
+     range: default
+     float: default
+     string: default
+     nothing: default
+     binary: default
+     cell-path: default
+     row_index: green_bold
+     record: default
+     list: default
+     closure: green_bold
+     glob:cyan_bold
+     block: default
      hints: dark_gray
      search_result: { bg: red fg: white }
-     shape_binary: $my_purple_bold
+     shape_binary: purple_bold
      shape_block: blue_bold
-     shape_bool: $my_light_cyan
-     shape_closure: $my_green_bold
-     shape_custom: $my_green
-     shape_datetime: $my_cyan_bold
-     shape_directory: $my_cyan
-     shape_external: $my_cyan
-     shape_externalarg: $my_green_bold
+     shape_bool: light_cyan
+     shape_closure: green_bold
+     shape_custom: green
+     shape_datetime: cyan_bold
+     shape_directory: cyan
+     shape_external: cyan
+     shape_externalarg: green_bold
      shape_external_resolved: light_yellow_bold
-     shape_filepath: $my_cyan
+     shape_filepath: cyan
      shape_flag: blue_bold
-     shape_float: $my_purple_bold
-     shape_glob_interpolation: $my_cyan_bold
-     shape_globpattern: $my_cyan_bold
-     shape_int: $my_purple_bold
-     shape_internalcall: $my_cyan_bold
-     shape_keyword: $my_cyan_bold
-     shape_list: $my_cyan_bold
+     shape_float: purple_bold
+     shape_glob_interpolation: cyan_bold
+     shape_globpattern: cyan_bold
+     shape_int: purple_bold
+     shape_internalcall: cyan_bold
+     shape_keyword: cyan_bold
+     shape_list: cyan_bold
      shape_literal: blue
-     shape_match_pattern: $my_green
+     shape_match_pattern: green
      shape_matching_brackets: { attr: u }
-     shape_nothing: $my_light_cyan
-     shape_operator: $my_yellow
-     shape_pipe: $my_purple_bold
+     shape_nothing: light_cyan
+     shape_operator: yellow
+     shape_pipe: purple_bold
      shape_range: yellow_bold
-     shape_record: $my_cyan_bold
-     shape_redirection: $my_purple_bold
-     shape_signature: $my_green_bold
-     shape_string: $my_green
-     shape_string_interpolation: $my_cyan_bold
+     shape_record: cyan_bold
+     shape_redirection: purple_bold
+     shape_signature: green_bold
+     shape_string: green
+     shape_string_interpolation: cyan_bold
      shape_table: blue_bold
-     shape_variable: $my_purple
-     shape_vardecl: $my_purple
-     shape_raw_string: $my_light_purple
+     shape_variable: purple
+     shape_vardecl: purple
+     shape_raw_string: light_purple
      shape_garbage: {
          fg: white
          bg: red

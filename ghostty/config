@@ -1,4 +1,4 @@
-theme=my-high-contrast-light-theme
+theme=Builtin Tango Light
 
 # Gray out all panes (splits) besides the focused one. The default config wasn't doing this; it didn't seem to do much
 # contrast at all.

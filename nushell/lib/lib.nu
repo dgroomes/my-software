@@ -314,7 +314,7 @@ export def run-from-readme [] {
 #
 # One downside of this is that shell completion won't work for the 'gradle' command. Although I rarely ever used that
 # because it's very slow and there are tons of commands. But it's still a downside.
-export def --wrapped gw [...args] : nothing {
+export def --wrapped gw [...args] {
     mut dir = (pwd)
     loop {
         let gradlew = $dir | path join "gradlew"
@@ -366,7 +366,7 @@ export def --wrapped gw [...args] : nothing {
 #
 #   $ glob */** | fz
 #
-export def fz [--filter-column (-f): string] [list<string> -> string, table -> record] {
+export def fz [--filter-column (-f): string]: [list<string> -> string, table -> record] {
     which my-fuzzy-finder | if ($in | is-empty) {
         error make --unspanned { msg: "The 'my-fuzzy-finder' program is not installed." }
     }
@@ -473,7 +473,7 @@ Line count: ($line_count)
     } | str join ((char newline) + (char newline))
 }
 
-export def "bundle file-set" [file_set: string --save] -> string {
+export def "bundle file-set" [file_set: string --save] : nothing -> string {
     let name = $file_set | path basename | str replace --regex '\.file-set\.json$' ''
     let fs_obj = (open --raw $file_set | from json)
 
@@ -510,7 +510,7 @@ export def project-details-to-file-set []: [record -> record] {
     { root: $root, files: $files }
 }
 
-export def is-text-file [file_name?: string --print] [string -> bool, nothing -> bool] {
+export def is-text-file [file_name?: string --print]: [string -> bool, nothing -> bool] {
     let _file_name = coalesce $file_name $in
 
     # I don't know a super idiomatic way to do this. But using the 'str stats' command is a neat trick to try to figure
@@ -569,3 +569,60 @@ export def xcode [file_or_dir: string] {
     let path = $file_or_dir | path expand
     ^open -a /Applications/Xcode.app $path
 }
+
+# Showcase the ANSI-16 color palette. This is useful when you're busy customizing colors/themes in the terminal emulator
+# settings.
+#
+# Reference: https://en.wikipedia.org/wiki/ANSI_escape_code#Colors
+#
+# Nushell uses some terms that differ from the standard ANSI color terminology:
+#   - Nushell uses "light" instead of "bright"
+#   - Nushell uses "dark gray" for the color code 90 instead of "bright black"
+#   - Nushell uses "light gray" for the color code 97 instead of "bright white"
+#
+export def color-palette [] {
+    let names = [
+       # Foreground
+       black
+       red
+       green
+       yellow
+       blue
+       magenta
+       cyan
+       white
+
+       # Background
+       black_reverse
+       red_reverse
+       green_reverse
+       yellow_reverse
+       blue_reverse
+       magenta_reverse
+       cyan_reverse
+       white_reverse
+
+       # Foreground bright
+       dark_gray
+       light_red
+       light_green
+       light_yellow
+       light_blue
+       light_magenta
+       light_cyan
+       light_gray
+
+       # Background bright
+       dark_gray_reverse
+       light_red_reverse
+       light_green_reverse
+       light_yellow_reverse
+       light_blue_reverse
+       light_magenta_reverse
+       light_cyan_reverse
+       light_gray_reverse
+    ]
+
+    ansi -l | where name in $names | sort-by code
+}
+
