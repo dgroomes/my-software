@@ -1,9 +1,6 @@
 # TODO explore Nushell's "vendor auto load" feature so that I don't need to hard code these files.
 source setup/misc.nu
 source setup/nu-scripts-sourcer.nu
-source setup/starship.nu
-source setup/zoxide.nu
-source setup/atuin.nu
 
 use lib/bash-completer.nu *
 use lib/file-set.nu *

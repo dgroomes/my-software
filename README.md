@@ -106,7 +106,7 @@ General clean-ups, TODOs and things I wish to implement for this project:
   that has particularly bad contrast, and codes to the ANSI-256 colors, and doesn't have its own color configuration, then
   I'll consider "redefining ANSI 256", but overall I think that should be rare and I don't to redefine system things
   without big thought.
-* [ ] Try out Nushell's new "vendor auto load" configuration feature 
+* [ ] IN PROGRESS Try out Nushell's new "vendor auto load" configuration feature 
    
 
 

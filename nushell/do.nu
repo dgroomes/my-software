@@ -8,7 +8,7 @@ const config_registry = {
         install_success_msg: "Main 'config.nu' configuration file installed."
     }
     atuin: {
-        filename: "setup/atuin.nu"
+        filename: "vendor/autoload/atuin.nu"
         backup_success_msg: "Atuin configuration file backed up."
         install_success_msg: "Atuin configuration file installed."
     }
@@ -43,7 +43,7 @@ const config_registry = {
         install_success_msg: "Postgres lib file installed."
     }
     starship: {
-        filename: "setup/starship.nu",
+        filename: "vendor/autoload/starship.nu",
         backup_success_msg: "Starship configuration file backed up."
         install_success_msg: "Starship configuration file installed."
     }
@@ -52,7 +52,7 @@ const config_registry = {
         backup_success_msg: "'nushell/nu_scripts' sourcer file backed up."
     }
     zoxide: {
-        filename: "setup/zoxide.nu"
+        filename: "vendor/autoload/zoxide.nu"
         backup_success_msg: "zoxide configuration file backed up."
         install_success_msg: "zoxide configuration file installed."
     }
