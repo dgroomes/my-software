@@ -1,26 +1,39 @@
-# Slightly adapted from the 'molokai' theme https://github.com/sharkdp/vivid/blob/master/themes/molokai.yml
-colors:
-  purple: "ae81ff"
-  khaki: "e6db74"
-  pink: "f92672"
-  cyan: "66d9ef"
-  cyan_on_white: "008DA1"
-  green: "a6e22e"
-  green_on_white: "64A300"
-  orange: "fd971f"
-  orange_on_white: "D67700"
+# Adapted from the 'molokai' theme https://github.com/sharkdp/vivid/blob/master/themes/molokai.yml
+#
+# Note: I want LS_COLORS to be congruent with the 16-color palette I'm using in the terminal. Right now, vivid doesn't
+# support referencing colors by name, but there is an open request: https://github.com/sharkdp/vivid/issues/21
+# It's not hard to just re-declare the colors here, especially because I don't plan to change them often. I'm using the
+# 'Builtin Tango Light' theme which.
+#
+# But also, we go above and beyond just a rigid 16-color palette, we use orange, a "spring" green, etc.
 
-  # Others
-  white: "ffffff"
+colors:
+  # From 'my-color-theme'
+  # 3-bit standard
+  near_black: "232322"
+  brick_red: "CC0000"
+  olive_green: "4E9A06"
+  goldenrod: "C4A000"
+  royal_blue: "3465A4"
+  eggplant: "75507B"
+  teal: "06989A"
+  gray: "D3D7CF"
+  # 3-bit bright
+  dark_gray: "555753"
+  cherry_red: "EF2929"
+  lime_green: "8AE234"
+  canary_yellow: "FCE94F"
+  azure_blue: "729FCF"
+  orchid_purple: "AD7FA8"
+  aquamarine: "34E2E2"
+  light_gray: "EEEEEC"
+  # Miscellaneous
+  leafy_emerald: "00AE3F"
+  rust_orange: "D67700"
+  pink_raspberry: "F92672"
+
   black: "000000"
-  red: "ff4a44"
-  gray: "b6b6b6"
-  dimgray: "7a7070"
-  gold: "e2d139"
-  gold_on_white: "9A8F00"
-  springgreen: "00ff87"
-  springgreen_on_white: "00AE3F"
-  darkgray: "333333"
+  white: "FFFFFF"
 
 core:
   normal_text: {}
@@ -28,40 +41,40 @@ core:
   reset_to_normal: {}
 
   directory:
-    foreground: cyan_on_white
+    foreground: teal
 
   symlink:
-    foreground: pink
+    foreground: pink_raspberry
 
   multi_hard_link: {}
 
   fifo:
     foreground: black
-    background: cyan
+    background: aquamarine
 
   socket:
     foreground: black
-    background: pink
+    background: pink_raspberry
 
   door:
     foreground: black
-    background: pink
+    background: pink_raspberry
 
   block_device:
-    foreground: cyan
-    background: darkgray
+    foreground: teal
+    background: near_black
 
   character_device:
-    foreground: pink
-    background: darkgray
+    foreground: pink_raspberry
+    background: near_black
 
   broken_symlink:
     foreground: black
-    background: red
+    background: cherry_red
 
   missing_symlink_target:
     foreground: black
-    background: red
+    background: cherry_red
 
   setuid: {}
 
@@ -76,13 +89,13 @@ core:
   sticky: {}
 
   executable_file:
-    foreground: pink
+    foreground: pink_raspberry
     font-style: bold
 
 text:
   special:
-    foreground: black
-    background: khaki
+    foreground: white
+    background: goldenrod
 
   todo:
     font-style: bold
@@ -91,37 +104,37 @@ text:
     foreground: gray
 
   configuration:
-    foreground: green_on_white
+    foreground: olive_green
 
   other:
-    foreground: gold_on_white
+    foreground: goldenrod
 
 markup:
-  foreground: gold_on_white
+  foreground: goldenrod
 
 programming:
   source:
-    foreground: springgreen_on_white
+    foreground: leafy_emerald
 
   tooling:
-    foreground: green_on_white
+    foreground: olive_green
 
     continuous-integration:
-      foreground: khaki
+      foreground: goldenrod
 
 media:
-  foreground: orange_on_white
+  foreground: rust_orange
 
 office:
-  foreground: khaki
+  foreground: goldenrod
 
 archives:
-  foreground: pink
+  foreground: pink_raspberry
   font-style: underline
 
 executable:
-  foreground: pink
+  foreground: pink_raspberry
   font-style: bold
 
 unimportant:
-  foreground: dimgray
+  foreground: gray
