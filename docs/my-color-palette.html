@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Color Palette</title>
+    <style>
+        .copy-button {
+            border: none;
+            background: #F0F0F0;
+            padding: 2px 8px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-left: 8px;
+        }
+
+        .copy-button:hover {
+            background: #E0E0E0;
+        }
+
+        .copy-button:active {
+            background: #D0D0D0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #FFFFFF;
+        }
+
+        .color-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        .color-row {
+            height: 40px;
+            border-bottom: 1px solid #EEEEEE;
+        }
+
+        .color-row:hover {
+            background: #F5F5F5;
+        }
+
+        .color-sample {
+            width: 100px;
+        }
+
+        .color-cell {
+            padding: 8px;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        .hex-value {
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+        }
+
+        .swatch {
+            width: 80px;
+            height: 24px;
+            border: 1px solid #DDDDDD;
+            border-radius: 3px;
+        }
+
+        h2 {
+            margin: 20px 0;
+            border-bottom: 2px solid #EEEEEE;
+            padding-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<h1>My Color Palette</h1>
+<p style="margin: 20px 0; line-height: 1.5;">
+    My personal reference of colors I've chosen to use when theming tools like my terminal.
+</p>
+
+<h2>3-bit Standard</h2>
+<table class="color-table">
+    <tr>
+        <th class="color-cell">Color</th>
+        <th class="color-cell">Name</th>
+        <th class="color-cell">Hex</th>
+    </tr>
+    <tr class="color-row">
+        <td class="color-cell color-sample">
+            <div class="swatch" style="background: #232322;"></div>
+        </td>
+        <td class="color-cell">Near Black</td>
+        <td class="color-cell hex-value">#232322
+            <button class="copy-button" data-hex="#232322">Copy</button>
+        </td>
+    </tr>
+    <tr class="color-row">
+        <td class="color-cell color-sample">
+            <div class="swatch" style="background: #CC0000;"></div>
+        </td>
+        <td class="color-cell">Brick Red</td>
+        <td class="color-cell hex-value">#CC0000
+            <button class="copy-button" data-hex="#CC0000">Copy</button>
+        </td>
+    </tr>
+    <tr class="color-row">
+        <td class="color-cell color-sample">
+            <div class="swatch" style="background: #4E9A06;"></div>
+        </td>
+        <td class="color-cell">Olive Green</td>
+        <td class="color-cell hex-value">#4E9A06
+            <button class="copy-button" data-hex="#4E9A06">Copy</button>
+        </td>
+    </tr>
+    <tr class="color-row">
+        <td class="color-cell color-sample">
+            <div class="swatch" style="background: #C4A000;"></div>
+        </td>
+        <td class="color-cell">Goldenrod</td>
+        <td class="color-cell hex-value">#C4A000
+            <button class="copy-button" data-hex="#C4A000">Copy</button>
+        </td>
+    </tr>
+    <tr class="color-row">
+        <td class="color-cell color-sample">
+            <div class="swatch" style="background: #3465A4;"></div>
+        </td>
+        <td class="color-cell">Royal Blue</td>
+        <td class="color-cell hex-value">#3465A4
+            <button class="copy-button" data-hex="#3465A4">Copy</button>
+        </td>
+    </tr>
+    <tr class="color-row">
+        <td class="color-cell color-sample">
+            <div class="swatch" style="background: #75507B;"></div>
+        </td>
+        <td class="color-cell">Eggplant</td>
+        <td class="color-cell hex-value">#75507B
+            <button class="copy-button" data-hex="#75507B">Copy</button>
+        </td>
+    </tr>
+    <tr class="color-row">
+        <td class="color-cell color-sample">
+            <div class="swatch" style="background: #06989A;"></div>
+        </td>
+        <td class="color-cell">Teal</td>
+        <td class="color-cell hex-value">#06989A
+            <button class="copy-button" data-hex="#06989A">Copy</button>
+        </td>
+    </tr>
+    <tr class="color-row">
+        <td class="color-cell color-sample">
+            <div class="swatch" style="background: #D3D7CF;"></div>
+        </td>
+        <td class="color-cell">Gray</td>
+        <td class="color-cell hex-value">#D3D7CF
+            <button class="copy-button" data-hex="#D3D7CF">Copy</button>
+        </td>
+    </tr>
+</table>
+
+<h2>3-bit Bright</h2>
+<table class="color-table">
+    <tr>
+        <th class="color-cell">Color</th>
+        <th class="color-cell">Name</th>
+        <th class="color-cell">Hex</th>
+    </tr>
+    <tr class="color-row">
+        <td class="color-cell color-sample">
+            <div class="swatch" style="background: #555753;"></div>
+        </td>
+        <td class="color-cell">Dark Gray</td>
+        <td class="color-cell hex-value">#555753
+            <button class="copy-button" data-hex="#555753">Copy</button>
+        </td>
+    </tr>
+    <tr class="color-row">
+        <td class="color-cell color-sample">
+            <div class="swatch" style="background: #EF2929;"></div>
+        </td>
+        <td class="color-cell">Cherry Red</td>
+        <td class="color-cell hex-value">#EF2929
+            <button class="copy-button" data-hex="#EF2929">Copy</button>
+        </td>
+    </tr>
+    <tr class="color-row">
+        <td class="color-cell color-sample">
+            <div class="swatch" style="background: #8AE234;"></div>
+        </td>
+        <td class="color-cell">Lime Green</td>
+        <td class="color-cell hex-value">#8AE234
+            <button class="copy-button" data-hex="#8AE234">Copy</button>
+        </td>
+    </tr>
+    <tr class="color-row">
+        <td class="color-cell color-sample">
+            <div class="swatch" style="background: #FCE94F;"></div>
+        </td>
+        <td class="color-cell">Canary Yellow</td>
+        <td class="color-cell hex-value">#FCE94F
+            <button class="copy-button" data-hex="#FCE94F">Copy</button>
+        </td>
+    </tr>
+    <tr class="color-row">
+        <td class="color-cell color-sample">
+            <div class="swatch" style="background: #729FCF;"></div>
+        </td>
+        <td class="color-cell">Azure Blue</td>
+        <td class="color-cell hex-value">#729FCF
+            <button class="copy-button" data-hex="#729FCF">Copy</button>
+        </td>
+    </tr>
+    <tr class="color-row">
+        <td class="color-cell color-sample">
+            <div class="swatch" style="background: #AD7FA8;"></div>
+        </td>
+        <td class="color-cell">Orchid Purple</td>
+        <td class="color-cell hex-value">#AD7FA8
+            <button class="copy-button" data-hex="#AD7FA8">Copy</button>
+        </td>
+    </tr>
+    <tr class="color-row">
+        <td class="color-cell color-sample">
+            <div class="swatch" style="background: #34E2E2;"></div>
+        </td>
+        <td class="color-cell">Aquamarine</td>
+        <td class="color-cell hex-value">#34E2E2
+            <button class="copy-button" data-hex="#34E2E2">Copy</button>
+        </td>
+    </tr>
+    <tr class="color-row">
+        <td class="color-cell color-sample">
+            <div class="swatch" style="background: #EEEEEC;"></div>
+        </td>
+        <td class="color-cell">Light Gray</td>
+        <td class="color-cell hex-value">#EEEEEC
+            <button class="copy-button" data-hex="#EEEEEC">Copy</button>
+        </td>
+    </tr>
+</table>
+
+<h2>Miscellaneous</h2>
+<table class="color-table">
+    <tr>
+        <th class="color-cell">Color</th>
+        <th class="color-cell">Name</th>
+        <th class="color-cell">Hex</th>
+    </tr>
+    <tr class="color-row">
+        <td class="color-cell color-sample">
+            <div class="swatch" style="background: #00AE3F;"></div>
+        </td>
+        <td class="color-cell">Leafy Emerald</td>
+        <td class="color-cell hex-value">#00AE3F
+            <button class="copy-button" data-hex="#00AE3F">Copy</button>
+        </td>
+    </tr>
+    <tr class="color-row">
+        <td class="color-cell color-sample">
+            <div class="swatch" style="background: #D67700;"></div>
+        </td>
+        <td class="color-cell">Rust Orange</td>
+        <td class="color-cell hex-value">#D67700
+            <button class="copy-button" data-hex="#D67700">Copy</button>
+        </td>
+    </tr>
+    <tr class="color-row">
+        <td class="color-cell color-sample">
+            <div class="swatch" style="background: #F92672;"></div>
+        </td>
+        <td class="color-cell">Pink Raspberry</td>
+        <td class="color-cell hex-value">#F92672
+            <button class="copy-button" data-hex="#F92672">Copy</button>
+        </td>
+    </tr>
+    <tr class="color-row">
+        <td class="color-cell color-sample">
+            <div class="swatch" style="background: #DA5CE4;"></div>
+        </td>
+        <td class="color-cell">Electric Fuchsia</td>
+        <td class="color-cell hex-value">#DA5CE4
+            <button class="copy-button" data-hex="#DA5CE4">Copy</button>
+        </td>
+    </tr>
+</table>
+
+<script>
+    document.addEventListener('click', async (e) => {
+        if (e.target.matches('.copy-button')) {
+            const hexValue = e.target.dataset.hex;
+            try {
+                await navigator.clipboard.writeText(hexValue);
+                const originalText = e.target.textContent;
+                e.target.textContent = 'Copied!';
+                setTimeout(() => {
+                    e.target.textContent = originalText;
+                }, 1000);
+            } catch (err) {
+                console.error('Failed to copy:', err);
+            }
+        }
+    });
+</script>
+</body>
+</html>
