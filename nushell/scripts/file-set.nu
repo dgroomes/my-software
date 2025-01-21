@@ -31,7 +31,7 @@ export def "file-set init" [ root_dir: string ] {
 #
 # Throws an error or returns the object representation of the file set.
 #
-export def "file-set validate" [file_set] [string -> record] {
+export def "file-set validate" [file_set]: [string -> record] {
     if not ($file_set | path exists) {
         error make --unspanned { msg: $"No file exists at '($file_set)'" }
     }

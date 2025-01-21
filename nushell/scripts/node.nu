@@ -24,7 +24,7 @@ export def --env activate-my-node [version: string@my-node-keg-versions] {
     $env.PATH = ($env.PATH | prepend $bin_dir)
 }
 
-def my-node-keg-versions [] -> list<string> {
+def my-node-keg-versions []: nothing -> list<string> {
     let result = brew list --formula | complete
     if ($result.exit_code != 0) {
         error make --unspanned {

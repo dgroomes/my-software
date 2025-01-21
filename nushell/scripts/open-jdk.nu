@@ -36,7 +36,7 @@ export def --env activate-my-open-jdk [version: int@my-open-jdk-keg-versions] {
 #       jdk_home_dir: "/opt/homebrew/opt/my-open-jdk@17/libexec/Contents/Home"
 #       jdk_bin_dir: "/opt/homebrew/opt/my-open-jdk@17/libexec/Contents/Home/bin"
 #     }
-def assert-my-open-jdk [version: int] -> record {
+def assert-my-open-jdk [version: int]: nothing -> record {
     let my_open_jdk_at = $"my-open-jdk@($version)"
     let result = brew --prefix $my_open_jdk_at | complete
     if ($result.exit_code != 0) {

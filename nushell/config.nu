@@ -1,14 +1,10 @@
-# TODO explore Nushell's "vendor auto load" feature so that I don't need to hard code these files.
-source setup/misc.nu
-source setup/nu-scripts-sourcer.nu
-
-use lib/bash-completer.nu *
-use lib/file-set.nu *
-use lib/lib.nu *
-use lib/node.nu *
-use lib/open-jdk.nu *
-use lib/postgres.nu *
-use lib/zdu.nu *
+use bash-completer.nu *
+use file-set.nu *
+use lib.nu *
+use node.nu *
+use open-jdk.nu *
+use postgres.nu *
+use zdu.nu *
 
 # I don't really understand the essential coverage, or purpose, of the directories added to the PATH by the macOS
 # "/usr/libexec/path_helper" tool. But, at the least, I know it adds "/usr/local/bin" to the PATH and I need that.

@@ -13,32 +13,32 @@ const config_registry = {
         install_success_msg: "Atuin configuration file installed."
     }
     bash_completer: {
-        filename: "lib/bash-completer.nu"
+        filename: "scripts/bash-completer.nu"
         backup_success_msg: "Bash completer library file backed up."
         install_success_msg: "Bash completer library file installed."
     }
     file_set: {
-        filename: "lib/file-set.nu"
+        filename: "scripts/file-set.nu"
         backup_success_msg: "'file-set' library file backed up."
         install_success_msg: "'file-set' library file installed."
     }
     lib: {
-        filename: "lib/lib.nu"
+        filename: "scripts/lib.nu"
         backup_success_msg: "Library file backed up."
         install_success_msg: "Library file installed."
     }
     node: {
-        filename: "lib/node.nu"
+        filename: "scripts/node.nu"
         backup_success_msg: "Node.js library file backed up."
         install_success_msg: "Node.js library file installed."
     }
     open_jdk: {
-        filename: "lib/open-jdk.nu"
+        filename: "scripts/open-jdk.nu"
         backup_success_msg: "OpenJDK library file backed up."
         install_success_msg: "OpenJDK library file installed."
     }
     postgres: {
-        filename: "lib/postgres.nu"
+        filename: "scripts/postgres.nu"
         backup_success_msg: "Postgres lib file backed up."
         install_success_msg: "Postgres lib file installed."
     }
@@ -48,7 +48,7 @@ const config_registry = {
         install_success_msg: "Starship configuration file installed."
     }
     nu_scripts_sourcer: {
-        filename: "setup/nu-scripts-sourcer.nu"
+        filename: "vendor/autoload/nu-scripts-sourcer.nu"
         backup_success_msg: "'nushell/nu_scripts' sourcer file backed up."
     }
     zoxide: {
@@ -57,7 +57,7 @@ const config_registry = {
         install_success_msg: "zoxide configuration file installed."
     }
     zdu: {
-        filename: "lib/zdu.nu"
+        filename: "scripts/zdu.nu"
         backup_success_msg: "Zero-deps-utility lib file backed up."
         install_success_msg: "Zero-deps-utility lib file installed."
     }

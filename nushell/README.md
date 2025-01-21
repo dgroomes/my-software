@@ -5,12 +5,12 @@ Nushell code and config that supports my personal workflows.
 
 ## Overview
 
-I'm making a transition to Nushell, especially since I've had success in learning and using the basics of the shell in
-my [nushell-playground](https://github.com/dgroomes/nushell-playground) repository. The language has proper types, the
-docs are great, and the feature set is huge. I'm enthusiastic about writing fewer Bash scripts. While I think Python is
-compelling for *script-sized programs*, I think Nushell is very compelling for traditional scripting. When you use
-Nushell, there is no struggle with paths, loops, variables, functions, and return values. It still has the *spirit of the
-shell*: the Unix pipeline model and a terse grammar which can sometimes be inscrutable.
+I've made the transition to Nushell. The language has types, the docs are great, and the feature set is huge.
+
+While I think Python is compelling for *script-sized programs*, I think Nushell is compelling for traditional
+scripting. Nushell has the vibe of a full-blown programming langauge because it has variables, loops, data structures,
+and functions, but importantly it still has the *spirit of the shell*: the Unix pipeline model and a terse grammar which
+can sometimes be inscrutable. This is a strong combination.
 
 My favorite feature may be its standard library of commands. I love that I can get the basename of a file, parse JSON,
 and make HTTP requests without any external dependencies.
@@ -24,15 +24,16 @@ Miscellaneous notes:
   do install nu_scripts_sourcer ~/repos/opensource/nu_scripts
   ```
 * ```nushell
-  do backup standard; do install standard
+  do backup config; do install config
   ```
 
 We want to version control quite a bit. There is a tendency of tools like Nushell itself, Atuin and Starship to generate
 a config file that then becomes your own to manage. That's perfectly fine. And the way I manage it is to version control
-it. Because of that, I'm also going to want a modular approach when it comes to my Nu source files. I want this `nushell/`
-directory to have a full grip on my Nushell stuff. I feel a bit lost about `env.nu` but I'll get there. The docs are
-good: <https://www.nushell.sh/book/configuration.html>. Also see <https://www.nushell.sh/book/modules.html#dumping-files-into-directory>.
+it. Our homebase for configuration is `<$nu.config-path>/config.nu`, but thankfully Nushell makes it easy to
+modularize our code across other files:
 
+* `scripts/` for **library code** 
+* `vendor/autoload/` for **configuration code**
 
 ## Wish List
 
@@ -54,6 +55,7 @@ General clean-ups, TODOs and things I wish to implement for this project:
 * [x] DONE Fix completion for `git`. I think this was a regression when I deleted my "symlinking completion" Perl script
   because there is a weird case for `git` completions because they ship with `git-completion.bash` and `git-prompt.sh.
 * [x] DONE Move completer into own file
+* [ ] Replace 'install-nu-scripts-sourcer' with just configuring path to completions? or symlinking? 
 
 
 ## Finished Wish List Items
