@@ -1,3 +1,5 @@
+const DO_DIR = (path self | path dirname)
+
 # This script is designed to bootstrap a fresh installation of Nushell with my personal configuration. Similarly, it
 # helps to re-install the configuration and backup the current configuration.
 
@@ -68,7 +70,7 @@ def config_names [] {
 }
 
 export def "backup" [name: string@config_names] {
-    cd $env.DO_DIR
+    cd $DO_DIR
 
     let config = $config_registry | get $name
     let installed_file_path = [$nu.default-config-dir $config.filename] | path join
@@ -81,7 +83,7 @@ export def "backup" [name: string@config_names] {
 
 # Install a configuration file.
 export def "install" [name: string@config_names, nu_scripts_dir?: string] {
-    cd $env.DO_DIR
+    cd $DO_DIR
 
     let config = $config_registry | get $name
     let installed_file_path = [$nu.default-config-dir $config.filename] | path join
@@ -120,7 +122,7 @@ def bak_name_now [filename] {
 # We need to generate a script that hardcodes the file paths to a local clone of that repository. This script will source
 # the scripts from the local clone. The script is named "nu-scripts-sourcer.nu".
 def install-nu-scripts-sourcer [installed_file_path nu_scripts_dir?] {
-    cd $env.DO_DIR
+    cd $DO_DIR
 
     if ($nu_scripts_dir == null) {
         # There's nothing to source. In this case, you may have a fresh install of Nu and you haven't cloned the
@@ -172,7 +174,7 @@ def install-nu-scripts-sourcer [installed_file_path nu_scripts_dir?] {
 # I don't have a reason to edit it. If I need to add features or implement bug fixes I would do that in the version
 # controlled file.
 export def "install-one-shot-bash-completion" [] {
-    cd $env.DO_DIR
+    cd $DO_DIR
 
     let script_name = "one-shot-bash-completion.bash"
     let vcs_file_path = [(pwd) $script_name] | path join

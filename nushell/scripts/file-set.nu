@@ -1,5 +1,7 @@
 # LLM context bundling. This module helps build the 'file set'. The other "bundle" code is haphazardly scattered.
 
+use lib.nu *
+
 def is-nothing [] {
     ($in | describe) == "nothing"
 }

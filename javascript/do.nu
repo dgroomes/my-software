@@ -1,5 +1,7 @@
+const DO_DIR = (path self | path dirname)
+
 export def install [] {
-    cd $env.DO_DIR
+    cd $DO_DIR
 
     node package-json.mjs
     npm install

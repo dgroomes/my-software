@@ -1,11 +1,13 @@
+const DO_DIR = (path self | path dirname)
+
 export def test [] {
-    cd $env.DO_DIR
+    cd $DO_DIR
 
     gw test
 }
 
 export def gen [] {
-    cd $env.DO_DIR
+    cd $DO_DIR
 
     # I tried '--debug'  and '--verbose' but it doesn't show much. It prints some debugging information about the Go
     # process (the 'buf' CLI is Go) but does not describe anything about the underlying calls to 'protoc'. I really
@@ -14,26 +16,26 @@ export def gen [] {
 }
 
 export def build [] {
-    cd $env.DO_DIR
+    cd $DO_DIR
 
     gw --quiet installDist
 }
 
 export def run [--daemon --protobuf] [string -> string] {
-    cd $env.DO_DIR
+    cd $DO_DIR
 
     let args = [(if $daemon { "--daemon" }) (if ($protobuf) { "--protobuf" })] | compact
     $in | ./build/install/java-body-omitter/bin/java-body-omitter ...$args
 }
 
 export def run-daemon [] {
-    cd $env.DO_DIR
+    cd $DO_DIR
 
     ./build/install/java-body-omitter/bin/java-body-omitter --daemon
 }
 
 export def install [] {
-    cd $env.DO_DIR
+    cd $DO_DIR
 
     ln -sf ('build/install/java-body-omitter/bin/java-body-omitter' | path expand) ~/.local/bin/java-body-omitter
 }

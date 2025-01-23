@@ -1,6 +1,8 @@
+const DO_DIR = (path self | path dirname)
+
 export def --wrapped run [...args] {
     let _in = $in
-    cd $env.DO_DIR
+    cd $DO_DIR
     if ($_in | is-empty) {
         cargo run ...$args
     } else {
@@ -9,6 +11,6 @@ export def --wrapped run [...args] {
 }
 
 export def install [] {
-    cd $env.DO_DIR
+    cd $DO_DIR
     cargo install --path .
 }
