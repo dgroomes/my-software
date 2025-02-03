@@ -1,0 +1,7 @@
+{
+    "workbench.colorTheme": "Default Light Modern",
+    "redhat.telemetry.enabled": false,
+    "editor.rulers": [
+        120
+    ]
+}

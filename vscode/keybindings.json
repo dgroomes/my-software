@@ -1,0 +1,43 @@
+// I think some of these are Cursor redefining some default VS Code keybindings. Cursor adds a
+// ton of keybindings and naturally some conflict with VS Code's default keybindings. I guess
+// Cursor decided to override them with 'keybindings.json', even though they ostensibly could
+// have used a more close-to-the-metal approach. I like it it; keeps things more transparent.
+[
+    {
+        "key": "cmd+r v",
+        "command": "markdown.showPreviewToSide",
+        "when": "!notebookEditorFocused && editorLangId == 'markdown'"
+    },
+    {
+        "key": "cmd+k v",
+        "command": "-markdown.showPreviewToSide",
+        "when": "!notebookEditorFocused && editorLangId == 'markdown'"
+    },
+    {
+        "key": "cmd+r cmd+r",
+        "command": "editor.action.refactor",
+        "when": "editorHasCodeActionsProvider && textInputFocus && !editorReadonly"
+    },
+    {
+        "key": "ctrl+shift+r",
+        "command": "-editor.action.refactor",
+        "when": "editorHasCodeActionsProvider && textInputFocus && !editorReadonly"
+    },
+    // I'm really used to using cmd+backspace to delete the current line. That's an IntelliJ
+    // keybinding.
+    {
+        "key": "cmd+backspace",
+        "command": "-deleteAllLeft",
+        "when": "textInputFocus && !editorReadonly"
+    },
+    {
+        "key": "cmd+backspace",
+        "command": "editor.action.deleteLines",
+        "when": "textInputFocus && !editorReadonly"
+    },
+    {
+        "key": "shift+cmd+k",
+        "command": "-editor.action.deleteLines",
+        "when": "textInputFocus && !editorReadonly"
+    }
+]

@@ -564,6 +564,12 @@ export def code [file_or_dir: string] {
     ^open -a `/Applications/Visual Studio Code.app` $path
 }
 
+# Open a directory or file in Cursor
+export def cursor [file_or_dir: string] {
+    let path = $file_or_dir | path expand
+    ^open -a `/Applications/Cursor.app` $path
+}
+
 # Open a directory or file in XCode
 export def xcode [file_or_dir: string] {
     let path = $file_or_dir | path expand
