@@ -106,8 +106,21 @@ General clean-ups, TODOs and things I wish to implement for this project:
   that has particularly bad contrast, and codes to the ANSI-256 colors, and doesn't have its own color configuration, then
   I'll consider "redefining ANSI 256", but overall I think that should be rare and I don't to redefine system things
   without big thought.
-* [x] DONE Try out Nushell's new "vendor auto load" configuration feature 
-   
+* [x] DONE Try out Nushell's new "vendor auto load" configuration feature
+* [x] DONE (good enough for now; I have to use Obsidian to get more of an opinion) Obsidian + LLM. I want to browse and search my README files in a convenient way (*compressed workflow*). I have a decent corpus
+  of content in the README files of my many playground-style GitHub repositories. I often want to copy specific pieces
+  from them and find snippets of knowledge (sometimes I know I have done something but can't find the right repository).
+  My overarching desire is to be able to have semantic search over my hard-earned writing (I write for "me" as the main
+  audience). While I can (and do) use grep and GitHub search, I think Obsidian plus LLMs (either local or via hosted LLM APIs),
+  is a good approach in 2025. There is a neat Obsidian plugin called [Smart Connections](https://github.com/brianpetro/obsidian-smart-connections)
+  that I want to try. As part of this idea, I need a strategy for locating the markdown files into an Obsidian vault.
+  Obsidian does not like symlinks. So, my thought is that I should prefer a copying mechanism.
+   * DONE Script out some code and notes. It's open ended.
+   * DONE Install "Smart Connections". Do some embeddings and try it out.
+   * Note: I'm also interested in semantic search over the many comments, function names, etc, in my actual code... but
+     there is not an obvious way to do this... Although I'm tempted to parse out the comments (I've parsed out Go and
+     Java with the proper compiler toolchains so, it's totally possible) and embed/index them. But the presentation part
+     is hard
 
 
 ## Finished Wish List Items
