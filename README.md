@@ -5,10 +5,9 @@ My personal software: dot files, utility programs, setup instructions, and more.
 
 ## Overview
 
-The most useful component of this repository is the [My macOS Setup](#my-macos-setup) section below. It provides
-step-by-step instructions I like to follow for setting up a new Mac.
-
-The rest of the repository is organized in the following directories:
+The most impactful component of this repository might be my [macOS Setup](#macos-setup) notes. It provides step-by-step
+instructions I like to follow for setting up a new Mac. In this repository, I've also crammed in a wide range of other
+personal tooling I've developed or am just experimenting with.
 
 
 ### `mac-os/`
@@ -46,6 +45,13 @@ My iTerm2 config.
 Java code that supports my personal workflows.
 
 See the README in [java/](java/).
+
+
+### `javascript/`
+
+JavaScript code that supports my personal workflows.
+
+See the README in [javascript/](javascript/).
 
 
 ### `jetbrains/`
