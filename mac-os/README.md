@@ -63,18 +63,11 @@ to a working Nushell environment, but it's great enough.
     * This is an experiment. I'm trying out maintaining my own Homebrew formulas.
     * ```shell
       brew tap dgroomes/my-software "$PWD"
-      ```
-    * ```shell
       brew install dgroomes/my-software/my-open-jdk@11
-      ```
-    * ```shell
       brew install dgroomes/my-software/my-open-jdk@17
-      ```
-    * ```shell
       brew install dgroomes/my-software/my-open-jdk@21
-      ```
-    * ```shell
       brew install dgroomes/my-software/my-node@20
+      brew install dgroomes/my-software/my-node@23
       ```
 8. Install Bash
     * macOS uses a years old version of Bash and will never update it because of licensing. We'll use Homebrew to install a modern version of Bash.

@@ -3,5 +3,10 @@
     "redhat.telemetry.enabled": false,
     "editor.rulers": [
         120
-    ]
+    ],
+
+    // The default indentation (8 pixels) of files-under-folders, like in the project explorer is quite narrow. I like
+    // the idea of saving space, but I keep misreading the relationship of files to their parent folder, and thinking a
+    // file and its container folder are siblings.
+    "workbench.tree.indent": 16
 }
