@@ -6,7 +6,7 @@
 #   - https://nodejs.org/en/download/prebuilt-binaries
 #   - https://github.com/nodejs/node#verifying-binaries
 #   - https://github.com/nodenv/node-build
-GET https://nodejs.org/dist/v20.17.0/node-v20.17.0-darwin-arm64.tar.gz
+GET https://nodejs.org/dist/v23.7.0/node-v23.7.0-darwin-arm64.tar.gz
 
 ### Checksum
-GET https://nodejs.org/dist/v20.17.0/SHASUMS256.txt
+GET https://nodejs.org/dist/v23.7.0/SHASUMS256.txt
