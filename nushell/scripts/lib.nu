@@ -53,27 +53,6 @@ export def git-switch-default-pull [] {
     git pull
 }
 
-
-
-# Activate a default OpenJDK, Node.js, etc.
-#
-# Oddly, at this point, $env.PATH is the typical colon-delimited value that we are familiar with in most environments.
-# In Nushell, $env.PATH is supposed to be a list but I guess we are too early in the bootstrapping process? Anyway, we
-# have to parse it into a list. Let' take the naive approach (after some quick searching I didn't find a better way)
-# and split on ":" (or are colons not allowed anywhere in paths and files across all systems?).
-export def --env activate-defaults [] {
-    let default_java = 21
-    let default_node = "20"
-    let default_postgres = "17"
-
-    let split_path = $env.PATH | split row ":"
-    $env.PATH = $split_path
-    try { activate-my-open-jdk $default_java } catch { print "(warn) A default OpenJDK was not activated." }
-    try { activate-my-node $default_node } catch { print "(warn) A default Node.js was not activated." }
-    try { activate-postgres $default_postgres } catch { print "(warn) A default Postgres was not activated." }
-}
-
-
 # Find all "dirty" (changes haven't been committed) Git projects recursively underneath some directory.
 #
 # This function is useful to run from time to time because of the "I don't want to lose my precious code" scenario. Days

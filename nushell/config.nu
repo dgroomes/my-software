@@ -42,8 +42,6 @@ $env.config.completions.external = {
 export alias cdr = cd-repo
 export alias rfr = run-from-readme
 
-activate-defaults
-
 # Discover keg installations of OpenJDK and make them available (i.e. "advertise") as version-specific "JAVA_HOME"
 # environment variables.
 #

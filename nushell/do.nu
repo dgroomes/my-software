@@ -19,6 +19,11 @@ const config_registry = {
         backup_success_msg: "Bash completer library file backed up."
         install_success_msg: "Bash completer library file installed."
     }
+    brew_activate: {
+        filename: "vendor/autoload/brew-activate.nu"
+        backup_success_msg: "brew-activate configuration file backed up."
+        install_success_msg: "brew-activate configuration file installed."
+    }
     file_set: {
         filename: "scripts/file-set.nu"
         backup_success_msg: "'file-set' library file backed up."
