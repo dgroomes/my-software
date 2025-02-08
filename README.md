@@ -127,6 +127,7 @@ General clean-ups, TODOs and things I wish to implement for this project:
      there is not an obvious way to do this... Although I'm tempted to parse out the comments (I've parsed out Go and
      Java with the proper compiler toolchains so, it's totally possible) and embed/index them. But the presentation part
      is hard
+* [ ] I really want quick, keyboard-based diff review like I have in Intellij. See <https://github.com/microsoft/vscode/issues/24389>
 
 
 ## Finished Wish List Items

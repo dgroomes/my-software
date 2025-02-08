@@ -39,5 +39,12 @@
         "key": "shift+cmd+k",
         "command": "-editor.action.deleteLines",
         "when": "textInputFocus && !editorReadonly"
+    },
+    // Interestingly, VS Code does not have a default keyboard shortcut to open the file being viewed in a diff view.
+    // This is an important part of my workflow.
+    {
+        "key": "f4",
+        "command": "git.openFile",
+        "when": "inDiffEditor"
     }
 ]
