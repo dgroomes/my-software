@@ -1,0 +1,28 @@
+// Reference: https://www.typescriptlang.org/tsconfig/
+//
+// I always struggle with the TSConfig file. I'm using https://github.com/tsconfig/bases/blob/81a4280801b34ccf16c0f9bb09fdcf7b02d8fdc7/bases/node20.json#L1
+// as a baseline from which I copied its values and made some modifications. As new versions of Obsidian are released on
+// newer versions of Node, Electron and Chromium you should rebase-line the config.
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "lib": ["es2023"],
+    "module": "node16",
+    "target": "es2022",
+
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node16",
+
+    // Because we install only the '.js' file, we want to include the source maps and original source in the '.js' file
+    // instead of having a separate '.js.map' file. Although, maybe we could just copy over the '.js.map' file as well?
+    // Haven't tried it.
+    "inlineSourceMap": true,
+    "inlineSources": true,
+
+    // Obsidian uses tslib (the TypeScript "helper" functions), so we have an option to import these functions instead
+    // of inlining them. Let's take the optimization.
+    "importHelpers": true,
+  },
+}
