@@ -611,3 +611,48 @@ export def color-palette [] {
     ansi -l | where name in $names | sort-by code
 }
 
+# Get a summary view of the largest files in the current directory and subdirectories. For example:
+#
+# ╭────┬──────────────────────────────────────────────────────────────────────────┬───────╮
+# │  # │                                   file                                   │ words │
+# ├────┼──────────────────────────────────────────────────────────────────────────┼───────┤
+# │  0 │ class-relationships/README.md                                            │  1645 │
+# │  1 │ README.md                                                                │   815 │
+# │  2 │ without-jdbc/src/main/java/dgroomes/WithoutJdbcRunner.java               │   710 │
+# │  3 │ csv/src/main/java/dgroomes/CsvRunner.java                                │   709 │
+# │  4 │ csv/README.md                                                            │   679 │
+#
+export def word-counts-of-files [] {
+    fd -t f | where ($it | is-text-file) | each { |it|
+        let words = open --raw $it | str stats | get words
+        { file: $it words: $words }
+    } | sort-by --reverse words
+}
+
+# Save the input to a file with a conventional name based on the current date and time.
+# For example,
+#
+#     get-weather | to json | stash json
+#
+# Would create the file `2025-02-13_10-31-23.json` with the contents of whatever was piped into it
+#
+export def stash [extension]: [string -> nothing] {
+    let date = date now | format date "%Y-%m-%d_%H-%M-%S"
+    let filename = $date + "." + $extension
+    $in | save $filename
+}
+
+# Prompt Google's Gemini LLM via API
+export def --env gemini-generate [prompt] {
+    mut key = $env.GEMINI_API_KEY?
+    if $key == null {
+        print "Set Gemini API key:"
+        $key = (input --suppress-output)
+        $env.GEMINI_API_KEY = $key
+    }
+    let url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" + $key
+    # let url = "https://generativelanguage.googleapis.com/v1alpha/models/gemini-2.0-flash-thinking-exp:generateContent?key=" + $key
+    # let url = "https://generativelanguage.googleapis.com/v1alpha/models/gemini-2.0-pro-exp-02-05:generateContent?key=" + $key
+    let body = { contents: [ { parts: [ { text: $prompt } ] } ] } | to json
+    http post --content-type application/json $url $body
+}
