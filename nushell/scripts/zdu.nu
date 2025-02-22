@@ -50,8 +50,9 @@ export def coalesce [...vals] {
 #     new-subject my-experiment   # Will create the directory '~/subjects/2020-02-09_my-experiment'
 #     new-subject                 # Will create the directory '~/subjects/2020-02-09_18-02-05'
 #
-# Some conventional files are also created: README.md' and 'do.nu'. You are expected to write as much miscellaneous code
-# in the 'do.nu' as you need. These files are just a minimal starting point.
+# Some conventional files are also created: 'PROMPT.md' and 'do.nu'. You are expected to write as much miscellaneous code
+# in the 'do.nu' as you need. These files are just a minimal starting point geared at bundling up the context for pasting
+# into an LLM chat.
 export def --env new-subject [subject?] {
     let today = date now | format date "%Y-%m-%d"
     let descriptor = coalesce $subject (date now | format date "%H-%M-%S")
@@ -73,20 +74,36 @@ export def --env new-subject [subject?] {
     # Create the conventional files
     $"# ($title)
 
-" | save README.md
+" | save PROMPT.md
 
-    r#'
-# Bundle up this subject so that it's ready to be pasted into an AI Chat (LLM).
-#
-# Specifically, concatenate the README.md, and all the file sets described in each of the '.file-set.json' files.
-export def "bundle all" [] {
-    let file_sets = glob *.file-set.json | each { bundle file-set $in } | str join ((char newline) + (char newline))
+    r#'const DIR = path self | path dirname
 
-    $"(open --raw README.md)
+# Bundle up the prompt file and all the context described by the "file sets" into a string ready to be pasted into an
+# LLM chat app.
+export def bundle [] {
+    cd $DIR
+    let prompt = open --raw PROMPT.md
+    let fs_bundles = glob *.file-set.json | each { bundle file-set $in }
+    let bun = [$prompt ...$fs_bundles] | str join $"\n\n"
 
-($file_sets)
-" | save --force bundle.txt
+    $bun | save --force bundle.txt
 }
+
+export def example-fs [] {
+    cd $DIR
+    let root = "~/repos/opensource/example"
+    let fs_name = "example.file-set.json"
+
+    let fs = do {
+        cd $root
+        let files = fd --type file | where (is-text-file)
+        { root: $root files: $files }
+    }
+
+    $fs | save --force $fs_name
+    $fs | file-set summarize | table --index false --expand --theme light
+}
+
 '# | save do.nu
 }
 

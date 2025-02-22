@@ -82,7 +82,7 @@ export def "file-set add" [file_set] {
     }
 }
 
-export def "file-set summarize" [] : record<root: string, files: list<string>> -> string {
+export def "file-set summarize" [] : record<root: string, files: list<string>> -> record {
     let root = $in.root
     let files = $in.files
     cd $root
@@ -98,7 +98,7 @@ export def "file-set summarize" [] : record<root: string, files: list<string>> -
         update words { comma-per-thousand } |
         update tokens { comma-per-thousand }
 
-    { root: $root files: ($files | length | comma-per-thousand) tokens: $tokens largest: $largest } | table --index false --expand
+    { root: $root files: ($files | length | comma-per-thousand) tokens: $tokens largest: $largest }
 }
 
 def word-counted [] {
