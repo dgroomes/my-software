@@ -656,3 +656,14 @@ export def --env gemini-generate [prompt] {
     let body = { contents: [ { parts: [ { text: $prompt } ] } ] } | to json
     http post --content-type application/json $url $body
 }
+
+# Format a number with commas separating the thousand place.
+#
+# Example:
+#   comma-per-thousand 1234567
+#
+#   1,234,567
+#
+export def comma-per-thousand [] : int -> string {
+    printf "%'d" $in
+}

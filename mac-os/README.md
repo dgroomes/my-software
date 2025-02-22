@@ -139,9 +139,12 @@ to a working Nushell environment, but it's great enough.
      * Go through and do all the `do install ...` commands.
      * Start a fresh Nushell session and enjoy the customized environment.
 12. Install [Atuin](https://github.com/atuinsh/atuin)
-     * Install Atuin with the following command.
+     * Install Atuin and copy over my config with the following commands.
      * ```shell
        brew install atuin
+       ```
+     * ```shell
+       cp atuin/config.toml ~/.config/atuin/config.toml
        ```
 13. Install JetBrains Toolbox <https://www.jetbrains.com/toolbox-app/>
     * Open Toolbox

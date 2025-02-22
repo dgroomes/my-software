@@ -264,6 +264,13 @@ records = true
 
 [search]
 ## The list of enabled filter modes, in order of priority.
-## The "workspace" mode is skipped when not in a workspace or workspaces = false.
-## Default filter mode can be overridden with the filter_mode setting.
-filters = [ "session", "global", "workspace", "directory" ]
+##
+## I'm on the fence about the "workspace" mode. I like the idea of it, but in practical use I find that I prefer to
+## keep "seesion" in first place because I like to build up a focused working session with the recent commands I'm
+## running and re-running. The "global" mode is an obvious must and it takes second place. The "directory" mode is
+## used only a small fraction of the time, but it is a heroic savior. The utility of "workspace" is so similar to
+## "directory". The trade-off is that "directory" works in all contexts, but "workspace" only works under a Git
+## repository. I'm in non-Git contexts all the time so I need directory. That leaves "workspace" in fourth place, but
+## that's so far down the list that I'd rather be able to just cycle to first place again, and also not even have to
+## know what "workspace" is.
+filters = [ "session", "global", "directory" ]
