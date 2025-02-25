@@ -2,6 +2,7 @@
 # zoxide are released, consider re-initializing this file with `zoxide init nushell`, studying the diff, and making a
 # decision about which existing customizations to keep and which new zoxide features to adopt.
 
+use zdu.nu err
 use lib.nu *
 
 # =============================================================================
@@ -38,7 +39,7 @@ if (not ($env | default false __zoxide_hooked | get __zoxide_hooked)) {
 def --env z [] {
   let result = zoxide query --list --exclude (pwd) | complete
   if ($result.exit_code != 0) {
-    error make { msg: $"zoxide query failed: ($result.stderr)" }
+    err $"zoxide query failed: ($result.stderr)"
   }
 
   let dir = $result.stdout | lines | fz

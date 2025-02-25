@@ -1,3 +1,5 @@
+use zdu.nu err
+
 # 'bcl' stands for 'bash-completer-log'
 #
 # Print debugging is a simple savior.
@@ -101,9 +103,7 @@ export def bash-complete [spans: list<string>] {
     }
 
     if ($result.exit_code != 0) {
-        error make --unspanned {
-            msg: ("Something unexpected happened while running the one-shot Bash completion." + (char newline) + $result.stderr)
-        }
+        err $"Something unexpected happened while running the one-shot Bash completion.\n ($result.stderr)"
     }
 
     # There are a few data quality problems with the completions produced by the Bash script. It's important to note

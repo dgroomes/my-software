@@ -126,3 +126,11 @@ export def whichx [application: string] {
     let merged = $which_details | merge $path_details
     return $merged
 }
+
+# I'm not sure why Nushell's error creation is so verbose. I like it in general, but I'm really wanting a shorthand like
+# this.
+export def err [msg: string] {
+    error make --unspanned {
+      msg: $msg
+    }
+}

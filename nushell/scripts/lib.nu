@@ -31,23 +31,17 @@ export def git-switch-default-pull [] {
     let result = git remote show origin | complete
     if ($result.exit_code != 0) {
         if ($result.stderr | str contains "fatal: not a git repository") {
-            error make --unspanned {
-              msg: "This is not a Git repository."
-            }
+            err "This is not a Git repository."
             return
         }
-        error make --unspanned {
-          msg: ("Something unexpected went wrong while inspecting the remote." + (char newline) + $result.stderr)
-        }
+        err $"Something unexpected went wrong while inspecting the remote.\n($result.stderr)"
         return
     }
 
     let branch = try {
       $result.stdout | lines | find --regex 'HEAD' | get 0 | split words | get 2
     } catch {
-        error make {
-          msg: "Unexpected problem parsing the default branch from the output of 'git remote show origin'."
-        }
+        err "Unexpected problem parsing the default branch from the output of 'git remote show origin'."
     }
     git switch $branch
     git pull
@@ -124,7 +118,7 @@ def is-git-project-dirty [project_path] {
     let result = git -C $project_path status --porcelain | complete
     if ($result.exit_code != 0) {
         let error_msg = $"Something unexpected happened while running the 'git' command at '($project_path)' (char newline) ($result.stderr)"
-        error make --unspanned { msg: $error_msg }
+        err $error_msg
     }
     $result.stdout | is-not-empty
 }
@@ -151,14 +145,13 @@ export def run-from-readme [] {
     }
 
     which markdown-code-fence-reader | if ($in | is-empty) {
-        error make --unspanned { msg: "The 'markdown-code-fence-reader' program is not installed." }
+        err "The 'markdown-code-fence-reader' program is not installed."
     }
 
     let result = markdown-code-fence-reader $readme_path | complete
 
     if ($result.exit_code != 0) {
-        let msg = "Something unexpected happened while running the 'markdown-code-fence-reader' command." + (char newline) + $result.stderr
-        error make --unspanned { msg: $msg }
+        err "Something unexpected happened while running the 'markdown-code-fence-reader' command." + (char newline) + $result.stderr
     }
 
     let shell_snippets = $result.stdout | from json | where { |snippet|
@@ -184,7 +177,7 @@ export def run-from-readme [] {
     }
 
     if $snippet.language != "shell" and $snippet.language != "bash" {
-        error make --unspanned { msg: $"Unexpected snippet language found. ($snippet.language)" }
+        err $"Unexpected snippet language found. ($snippet.language)"
     }
 
     # NOTE: This is commented out, because sadly, the "new" Nushell parser is missing a critical mass of features so I can't do this check
@@ -304,7 +297,7 @@ export def --wrapped gw [...args] {
 
         let parent = $dir | path dirname
         if ($parent == $dir) { # We've bottomed out at the root directory
-            error make --unspanned { msg: "No 'gradlew' script found." }
+            err "No 'gradlew' script found."
         }
         $dir = $parent
     }
@@ -347,7 +340,7 @@ export def --wrapped gw [...args] {
 #
 export def fz [--filter-column (-f): string]: [list<string> -> string, table -> record] {
     which my-fuzzy-finder | if ($in | is-empty) {
-        error make --unspanned { msg: "The 'my-fuzzy-finder' program is not installed." }
+        err "The 'my-fuzzy-finder' program is not installed."
     }
 
     let _in = $in
@@ -361,7 +354,7 @@ export def fz [--filter-column (-f): string]: [list<string> -> string, table -> 
     } else if ($_in | describe | str starts-with list) {
         "list"
     } else {
-        error make --unspanned { msg: "Unsupported input type." }
+        err "Unsupported input type."
     }
 
     let item_strings = match $in_type {
@@ -392,7 +385,7 @@ export def fz [--filter-column (-f): string]: [list<string> -> string, table -> 
             return
         }
         _ => {
-            error make --unspanned { msg: "Something went wrong. Received an unexpected status code from 'my-fuzzy-finder'." }
+            err "Something went wrong. Received an unexpected status code from 'my-fuzzy-finder'."
         }
     }
 

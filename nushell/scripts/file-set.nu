@@ -1,5 +1,6 @@
 # LLM context bundling. This module helps build the 'file set'. The other "bundle" code is haphazardly scattered.
 
+use zdu.nu err
 use lib.nu *
 
 def is-nothing [] {
@@ -14,12 +15,12 @@ def is-nothing [] {
 #
 export def "file-set init" [ root_dir: string ] {
     if not ($root_dir | path exists) {
-        error make --unspanned { msg: $"Root directory does not exist: '($root_dir)'" }
+        err $"Root directory does not exist: '($root_dir)'"
     }
 
     let fname = [($root_dir | path basename) ".file-set.json"] | str join
     if ($fname | path exists) {
-        error make --unspanned { msg: $"File set already exists at '($fname)'" }
+        err $"File set already exists at '($fname)'"
     }
 
     { root: $root_dir files: [] } | save $fname
@@ -35,23 +36,23 @@ export def "file-set init" [ root_dir: string ] {
 #
 export def "file-set validate" [file_set]: nothing -> record<root: string, files: list<string>> {
     if not ($file_set | path exists) {
-        error make --unspanned { msg: $"No file exists at '($file_set)'" }
+        err $"No file exists at '($file_set)'"
     }
 
     if not ($file_set | str ends-with ".file-set.json") {
-        error make --unspanned { msg: $"File '($file_set)' does not have the conventional '.file-set.json' file extension " }
+        err $"File '($file_set)' does not have the conventional '.file-set.json' file extension "
     }
 
     let fso = open $file_set
 
     let root = $fso | get root?
     if ($root | is-nothing) {
-        error make --unspanned { msg: $"File set '($file_set)' does not have the 'root' field" }
+        err $"File set '($file_set)' does not have the 'root' field"
     }
 
     let files = $fso | get files?
     if ($files | is-nothing) {
-        error make --unspanned { msg: $"File set '($file_set)' does not have the 'files' field" }
+        err $"File set '($file_set)' does not have the 'files' field"
     }
 
     return $fso
@@ -82,7 +83,7 @@ export def "file-set add" [file_set] {
     }
 }
 
-export def "file-set summarize" [] : record<root: string, files: list<string>> -> record {
+export def "file-set summarize" [--limit: int = 10] : record<root: string, files: list<string>> -> record {
     let root = $in.root
     let files = $in.files
     cd $root
@@ -94,7 +95,7 @@ export def "file-set summarize" [] : record<root: string, files: list<string>> -
     # So we resort to word-counting to locate the top N largest files. Word count is a useful proxy for token count.
     # Although, there really ought to be faster token counters out there.
     let tokens = $files | each { |it| open --raw $it } | str join $"\n" | token-count | into int | comma-per-thousand
-    let largest = $files | par-each { word-counted } | sort-by --reverse words | first 10 | par-each { token-counted } |
+    let largest = $files | par-each { word-counted } | sort-by --reverse words | first $limit | par-each { token-counted } |
         update words { comma-per-thousand } |
         update tokens { comma-per-thousand }
 

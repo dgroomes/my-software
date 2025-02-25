@@ -1,3 +1,5 @@
+use zdu.nu err
+
 # Activate a specific version of Postgres that's already installed as a Homebrew keg.
 #
 # By "activate", we need to adapt the PATH to include the directory containing all the Postgres executables like
@@ -9,25 +11,25 @@ export def --env activate-postgres [version: string] {
 
     let result = brew --prefix $at_postgresql | complete
     if ($result.exit_code != 0) {
-        error make --unspanned { msg: ("Something unexpected happened while running the 'brew --prefix' command." + (char newline) + $result.stderr) }
+        err $"Something unexpected happened while running the 'brew --prefix' command.\n($result.stderr)"
     }
 
     let keg_dir = $result.stdout | str trim
     let bin_dir = [$keg_dir "bin"] | path join
     if not ($bin_dir | path exists) {
-        error make --unspanned { msg: ($"Expected to find a 'bin' directory at '($bin_dir)' but that directory does not exist.") }
+        err $"Expected to find a 'bin' directory at '($bin_dir)' but that directory does not exist."
     }
 
     # Now do the same for the data directory (PGDATA)
     let result2 = brew --prefix | complete
     if ($result2.exit_code != 0) {
-        error make --unspanned { msg: ("Something unexpected happened while running the 'brew --prefix' command." + (char newline) + $result.stderr) }
+        err $"Something unexpected happened while running the 'brew --prefix' command.\n($result.stderr)"
     }
 
     let prefix = $result2.stdout | str trim
     let data_dir = [$prefix "var" $at_postgresql] | path join
     if not ($data_dir | path exists) {
-        error make --unspanned { msg: ($"Expected to find a Postgres data directory at the conventional location '($data_dir)' but that directory does not exist.") }
+        err $"Expected to find a Postgres data directory at the conventional location '($data_dir)' but that directory does not exist."
     }
 
     # Deactivate/activate

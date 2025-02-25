@@ -1,3 +1,5 @@
+use zdu.nu err
+
 # Creates (idempotently) an Obsidian vault at ~/vaults/repos-personal by copying all Markdown
 # files from my personal repositories in ~/repos/personal.
 #
@@ -6,7 +8,7 @@ export def create-vault-repos-personal [] {
     let vault_dir = "~/vaults/repos-personal" | path expand
 
     if not ($source_dir | path exists) {
-        error make --unspanned { msg: $"Source directory does not exist: ($source_dir)" }
+        err $"Source directory does not exist: ($source_dir)"
     }
 
     mkdir $vault_dir
@@ -34,4 +36,4 @@ export def create-vault-repos-personal [] {
 
     let count = $md_files | length
     print $"Vault successfully populated with ($count) README.md file\(s) at ($vault_dir)"
-} 
+}

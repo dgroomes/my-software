@@ -1,3 +1,5 @@
+use zdu.nu err
+
 # Activate a specific version of OpenJDK that's already installed as a keg. This also deactivates any other OpenJDKs
 # that are currently active.
 #
@@ -42,21 +44,21 @@ def assert-my-open-jdk [version: int]: nothing -> record {
     if ($result.exit_code != 0) {
         let err_msg = $result.stderr | str trim
         if ($err_msg =~ "No available formula") {
-            error make --unspanned { msg: $err_msg }
+            err $err_msg
         } else {
-            error make --unspanned { msg: ("Something unexpected happened while running the 'brew --prefix' command." + (char newline) + $err_msg) }
+            err $"Something unexpected happened while running the 'brew --prefix' command.\n($err_msg)"
         }
     }
 
     let keg_dir = $result.stdout | str trim
     let jdk_home_dir = [$keg_dir "libexec/Contents/Home"] | path join
     if not ($jdk_home_dir | path exists) {
-        error make --unspanned { msg: ($"Expected to find an OpenJDK home directory at ($jdk_home_dir) but it does not exist.") }
+        err $"Expected to find an OpenJDK home directory at ($jdk_home_dir) but it does not exist."
     }
 
     let jdk_bin_dir = [$keg_dir "bin"] | path join
     if not ($jdk_bin_dir | path exists) {
-        error make --unspanned { msg: ($"Expected to find a 'bin' directory for the OpenJDK tools at ($jdk_bin_dir) but it does not exist.") }
+        err $"Expected to find a 'bin' directory for the OpenJDK tools at ($jdk_bin_dir) but it does not exist."
     }
 
     {
@@ -91,9 +93,7 @@ def assert-my-open-jdk [version: int]: nothing -> record {
 export def my-open-jdk-kegs [] {
    let result = brew list --formula | complete
    if ($result.exit_code != 0) {
-       error make --unspanned {
-           msg: ("Something unexpected happened while running the 'brew list' command." + (char newline) + $result.stderr)
-       }
+       err $"Something unexpected happened while running the 'brew list' command.\n($result.stderr)"
    }
 
    $result.stdout | split row (char newline) | where $it =~ "^my-open-jdk@" | each { |formula|

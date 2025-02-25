@@ -128,6 +128,11 @@ General clean-ups, TODOs and things I wish to implement for this project:
      Java with the proper compiler toolchains so, it's totally possible) and embed/index them. But the presentation part
      is hard
 * [ ] I really want quick, keyboard-based diff review like I have in Intellij. See <https://github.com/microsoft/vscode/issues/24389>
+* [ ] Remove duplicate strings in prompt bundles. This is what I want to use in principle: <https://github.com/google-research/deduplicate-text-datasets>
+  Somewhat ambitious, but I think this has the potential to be as successful and appropriate as my `fzf` port. The
+  source code is relatively small. I'd like to reimplement a toy version of it in Kotlin for short term. After I grok it,
+  I can consider rewriting it Rust but I expect I will never need that performance. My prompt files will only ever be
+  like a couple megabytes max, right?
 
 
 ## Finished Wish List Items

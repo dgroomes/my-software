@@ -71,7 +71,7 @@ $env.config.hooks.pre_prompt = $filtered
 # is actually pretty difficult to do, so we can abuse Nushell hooks to do this.
 export def --env "do activate" [] {
     if not ("do.nu" | path exists) {
-        error make --unspanned { msg: "No 'do.nu' script found." }
+        err "No 'do.nu' script found."
     }
 
     # Here is the tricky part. Register a pre_prompt hook that will load the 'do.nu' script and then the hook will

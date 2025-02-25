@@ -56,6 +56,7 @@ General clean-ups, TODOs and things I wish to implement for this project:
   because there is a weird case for `git` completions because they ship with `git-completion.bash` and `git-prompt.sh.
 * [x] DONE Move completer into own file
 * [ ] Replace 'install-nu-scripts-sourcer' with just configuring path to completions? or symlinking? 
+* [ ] No need use `vendor` sub-directory since later release of Nushell. Just use `autoload/`. 
 
 
 ## Finished Wish List Items
