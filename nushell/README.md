@@ -56,7 +56,8 @@ General clean-ups, TODOs and things I wish to implement for this project:
   because there is a weird case for `git` completions because they ship with `git-completion.bash` and `git-prompt.sh.
 * [x] DONE Move completer into own file
 * [ ] Replace 'install-nu-scripts-sourcer' with just configuring path to completions? or symlinking? 
-* [ ] No need use `vendor` sub-directory since later release of Nushell. Just use `autoload/`. 
+* [x] DONE For user scripts, since Nushell 0.102.0, use `autoload/` instead of `vendor/autoload`. I'll keep
+  Atuin, Zoxide and Starship in `vendor/` even though I customized some of them. 
 
 
 ## Finished Wish List Items

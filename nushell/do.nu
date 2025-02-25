@@ -1,3 +1,5 @@
+# I need to source library code by path because this is a bootstrapping problem. On new installs, nothing will be
+# installed into "$nu.default-config-dir/scripts" yet.
 use scripts/zdu.nu err
 
 const DIR = path self | path dirname
@@ -25,7 +27,7 @@ const config_registry = {
         upstream_success_msg: "Bash completer library file upstreamed."
     }
     brew_activate: {
-        filename: "vendor/autoload/brew-activate.nu"
+        filename: "autoload/brew-activate.nu"
         backup_success_msg: "brew-activate configuration file backed up."
         install_success_msg: "brew-activate configuration file installed."
         upstream_success_msg: "brew-activate configuration file upstreamed."
