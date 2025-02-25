@@ -117,8 +117,7 @@ def is-git-project-dirty [project_path] {
     #
     let result = git -C $project_path status --porcelain | complete
     if ($result.exit_code != 0) {
-        let error_msg = $"Something unexpected happened while running the 'git' command at '($project_path)' (char newline) ($result.stderr)"
-        err $error_msg
+        err $"Something unexpected happened while running the 'git' command at '($project_path)' (char newline) ($result.stderr)"
     }
     $result.stdout | is-not-empty
 }
@@ -151,7 +150,7 @@ export def run-from-readme [] {
     let result = markdown-code-fence-reader $readme_path | complete
 
     if ($result.exit_code != 0) {
-        err "Something unexpected happened while running the 'markdown-code-fence-reader' command." + (char newline) + $result.stderr
+        err $"Something unexpected happened while running the 'markdown-code-fence-reader' command.\n($result.stderr)"
     }
 
     let shell_snippets = $result.stdout | from json | where { |snippet|
