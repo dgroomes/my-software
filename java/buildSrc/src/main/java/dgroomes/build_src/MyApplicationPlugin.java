@@ -26,7 +26,7 @@ import org.gradle.api.tasks.bundling.Jar;
  *     <li>Don't bother supporting JPMS.</li>
  *     <li>Don't bother supporting the zip/tar tasks.</li>
  *     <li>Don't bother supporting system properties and environment variables</li>
- *     <li>Do NOT re-use the {@link org.gradle.api.plugins.JavaApplication} class because it uses conventions which is a deprecated Gradle concept, and I dont' need all the fields.</li>
+ *     <li>Do NOT re-use the {@link org.gradle.api.plugins.JavaApplication} class because it uses conventions which is a deprecated Gradle concept, and I don't need all the fields.</li>
  * </ul>
  */
 public class MyApplicationPlugin implements Plugin<Project> {

@@ -659,3 +659,36 @@ export def --env gemini-generate [prompt] {
 export def comma-per-thousand [] : int -> string {
     printf "%'d" $in
 }
+
+# Change to one of my repositories. By convention, my repositories are in categorized subfolders in '~/repos'. For
+# example:
+#     * ~/repos/opensource/nushell
+#     * ~/repos/personal/nushell-playground
+#     * ~/repos/personal/my-software
+export def --env cd-repo [] {
+    let result = repos | fz
+    if ($result | is-empty) { return }
+
+    $result | get full_path | cd $in
+}
+
+# Deduplicate repeated substrings in a document.
+#
+# The '--length' is the mininum length of the substring to consider for deduplication.
+export def dedupe [--length: int = 100] : string -> string {
+    let input = $in
+
+    which deduplicator | if ($in | is-empty) {
+        err "The 'deduplicator' program is not installed."
+    }
+
+    $env.MIN_CANDIDATE_LENGTH = $length | into string
+
+    let result = $input | deduplicator | complete
+
+    if ($result.exit_code != 0) {
+        err $"Something unexpected happened while running the 'deduplicator' command.\n($result.stderr)"
+    }
+
+    $result.stdout
+}

@@ -4,3 +4,4 @@ build/
 settings.zip
 settings-fresh-export/
 __pycache__/
+test.log

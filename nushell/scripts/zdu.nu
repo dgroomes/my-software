@@ -13,20 +13,6 @@ export def repos [] {
     }
 }
 
-
-# Change to one of my repositories. By convention, my repositories are in categorized subfolders in '~/repos'. For
-# example:
-#     * ~/repos/opensource/nushell
-#     * ~/repos/personal/nushell-playground
-#     * ~/repos/personal/my-software
-export def --env cd-repo [] {
-    let result = repos | fz
-    if ($result | is-empty) { return }
-
-    $result | get full_path | cd $in
-}
-
-
 # Copy the last command to the clipboard
 export def cp-last-cmd [] {
     history | last 2 | first | get command | pbcopy
