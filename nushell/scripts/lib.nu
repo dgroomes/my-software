@@ -675,7 +675,7 @@ export def --env cd-repo [] {
 # Deduplicate repeated substrings in a document.
 #
 # The '--length' is the mininum length of the substring to consider for deduplication.
-export def dedupe [--length: int = 100] : string -> string {
+export def dedupe [--length: int = 200] : string -> string {
     let input = $in
 
     which deduplicator | if ($in | is-empty) {
@@ -692,3 +692,31 @@ export def dedupe [--length: int = 100] : string -> string {
 
     $result.stdout
 }
+
+# Get the plain text content of a Wikipedia page
+#
+# Example:
+#   wikipedia "Python (programming language)"
+#
+export def wikipedia [title: string] {
+    let base_url = 'https://en.wikipedia.org/w/api.php'
+    let params = {
+        action: 'query',
+        format: 'json',
+        titles: $title,
+        prop: 'extracts',
+        explaintext: 'true'
+    }
+    
+    let query_string = $params | url build-query
+    let url = $"($base_url)?($query_string)"
+    
+    let response = http get $url
+    
+    # The pages dict has page IDs as keys, so we need to get the first (and only) value
+    let pages = $response.query.pages
+    let page_id = $pages | columns | first
+    
+    $pages | get $page_id | get extract
+}
+
