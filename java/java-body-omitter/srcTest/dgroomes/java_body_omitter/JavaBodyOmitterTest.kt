@@ -26,14 +26,14 @@ class JavaBodyOmitterTest {
 
         val result = jbo.strip(input)
 
-        assertThat(result).isEqualTo(
+        assertThat(result).isEqualTo(StripResult.Success(
             """
                 class Foo {
                     void hello() {
                     }
                 }
             """.trimIndent()
-        )
+        ))
     }
 
     @Test
@@ -48,14 +48,14 @@ class JavaBodyOmitterTest {
 
         val result = jbo.strip(input)
 
-        assertThat(result).isEqualTo(
+        assertThat(result).isEqualTo(StripResult.Success(
             """
                 class Foo {
                     Foo() {
                     }
                 }
             """.trimIndent()
-        )
+        ))
     }
 
     @Test
@@ -70,13 +70,13 @@ class JavaBodyOmitterTest {
 
         val result = jbo.strip(input)
 
-        assertThat(result).isEqualTo(
+        assertThat(result).isEqualTo(StripResult.Success(
             """
                 class Foo {
                     {
                     }
                 }
             """.trimIndent()
-        )
+        ))
     }
 }

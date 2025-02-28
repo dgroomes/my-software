@@ -5,14 +5,14 @@ plugins {
 
 sourceSets {
     main {
-        java.srcDirs("src")
-        kotlin.srcDirs("src")
+        java.srcDirs("src", "srcGen")
+        kotlin.srcDirs("src", "srcGen")
         resources.srcDirs("resources")
     }
 
     test {
-        java.srcDirs("testSrc")
-        kotlin.srcDirs("testSrc")
+        java.srcDirs("srcTest")
+        kotlin.srcDirs("srcTest")
         resources.srcDirs("testResources")
     }
 }

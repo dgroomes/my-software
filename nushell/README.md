@@ -57,7 +57,11 @@ General clean-ups, TODOs and things I wish to implement for this project:
 * [x] DONE Move completer into own file
 * [ ] Replace 'install-nu-scripts-sourcer' with just configuring path to completions? or symlinking? 
 * [x] DONE For user scripts, since Nushell 0.102.0, use `autoload/` instead of `vendor/autoload`. I'll keep
-  Atuin, Zoxide and Starship in `vendor/` even though I customized some of them. 
+  Atuin, Zoxide and Starship in `vendor/` even though I customized some of them.
+* [ ] Consider retiring the 'do activate' trick. Clever but wouldn't be surprised if it broke. What people seem to be
+  doing for the virtual env use-case is to use key bindings. I'm missing a few things from the overall experience too,
+  like a compressed workflow to deactivate, and also a PS1 indicator. The problem I'm having in practice is activating
+  in one directory, moving to another, and activating again... So I guess consider how to make that better. Auto-deactivate?
 
 
 ## Finished Wish List Items

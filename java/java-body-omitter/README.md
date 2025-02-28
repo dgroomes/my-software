@@ -15,15 +15,21 @@ This is the Java equivalent of the `go-body-omitter` program. Study that subproj
     * ```nushell
       do activate
       ```
-3. Run the tests
+3. As needed, re-generate the Protobuf codegen
+    * This program uses Protobuf to communicate to the caller when running in daemon mode. If you update the `.proto`
+      files, generate them again with the following command.
+    * ```nushell
+      do gen
+      ```
+4. Run the tests
     * ```nushell
       do test
       ```
-4. Build the program distributions
+5. Build the program distributions
     * ```nushell
       do build
       ```
-5. Try it out
+6. Try it out
     * ```nushell
       r#'
       class Foo {
@@ -49,11 +55,11 @@ This is the Java equivalent of the `go-body-omitter` program. Study that subproj
           }
       }
       ```
-6. Install the program distribution with a symlink
+7. Install the program distribution with a symlink
     * ```nushell
       do install
       ```
-7. Now try the daemon mode
+8. Now try the daemon mode
     * ```nushell
       do run --daemon
       ```
@@ -61,12 +67,6 @@ This is the Java equivalent of the `go-body-omitter` program. Study that subproj
       'class Foo { void hello( ) { out.println("Hello"); } }' | do send
       ```
     * It should print the stripped Java code.
-8. As needed, re-generate the Protobuf codegen
-    * This program uses Protobuf to communicate to the caller when running in daemon mode. The Protobuf-generated Java
-      classes are version controlled. If you update the `.proto` files, generate them again with the following command.
-    * ```nushell
-      do gen
-      ```
 9. Try the Protobuf mode
     * ```nushell
       'class Foo { void hello( ) { out.println("Hello"); } }' | do run --protobuf | buf convert ../../proto/java_body_omitter.proto --type Response --from -#format=binpb
