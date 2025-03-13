@@ -139,6 +139,7 @@ _one_shot_bash_completion__run() {
     #   docker    complete -F _docker docker
     #   tar       complete -F _comp_cmd_tar__posix tar
     #   git       complete -o bashdefault -o default -o nospace -F __git_wrap__git_main git
+    #   mc        complete -C '/opt/homebrew/bin/mc' mc
     #
     comp_spec_line=$(complete -p "$command" 2> /dev/null) || {
         >&2 echo "Unexpected. No completion spec found for command '$command' but '_comp_complete' should have already loaded one by this point."
@@ -147,23 +148,62 @@ _one_shot_bash_completion__run() {
 
     _comp_split comp_spec_array "$comp_spec_line" || exit 1
 
-    # Parse the completion function out of the comp spec. The completion function is given by the '-F' flag.
-    for ((i=0; i<((${#comp_spec_array[@]} - 1)); i++)); do
-        if [[ "${comp_spec_array[$i]}" == "-F" ]]; then
-            completion_function="${comp_spec_array[$((i + 1))]}"
+    # Parse the completion shell function or external command out of the comp spec. A completion shell function is given
+    # by the '-F' flag and an external command is given by the '-C' flag.
+    completion_cmd_type=""
+    completion_cmd=""
+    for ((i=0; i<${#comp_spec_array[@]}-1; i++)); do
+        current_element="${comp_spec_array[$i]}"
+        if [[ "$current_element" == "-F" ]]; then
+            completion_cmd_type="function"
+            completion_cmd="${comp_spec_array[$i+1]}"
+            break
+        fi
+        if [[ "$current_element" == "-C" ]]; then
+            completion_cmd_type="external"
+            completion_cmd="${comp_spec_array[$i+1]}"
+
+            # Oddly, comp specs for external commands are quoted, like the 'mc' example listed earlier. This happens
+            # even if you didn't include quotes in the original registration.
+            completion_cmd="${completion_cmd#\'}"  # Remove leading quote
+            completion_cmd="${completion_cmd%\'}"  # Remove trailing quote
+
             break
         fi
     done
 
-    if [[ -z $completion_function ]]; then
-        >&2 echo "Completion function could not be parsed from the comp spec for command '$command'. Comp spec: '$comp_spec_line'. This is unexpected."
+    if [[ -z $completion_cmd ]]; then
+        >&2 echo "Completion command could not be parsed from the comp spec for command '$command'. Comp spec: '$comp_spec_line'. This is unexpected."
         exit 1
     fi
 
     COMP_POINT=${#COMP_LINE}
     COMP_CWORD=$(( ${#COMP_WORDS[@]} - 1 ))
 
-    $completion_function $COMP_WORDS
+    if [[ "$completion_cmd_type" == "function" ]]; then
+        $completion_cmd $COMP_WORDS
+    elif [[ "$completion_cmd_type" == "external" ]]; then
+        # Note: this code is AI sloppy. I haven't pruned it down to pure essentials and/or demystified the hard stuff.
+
+        # Export the environment variables the external command needs
+        export COMP_LINE
+        export COMP_POINT
+        export COMP_CWORD
+        export COMP_WORDS
+        export COMP_TYPE=9  # 9 is the value for normal tab completion
+
+        # For an external completer, extract the current and previous words
+        local current_word="${COMP_WORDS[COMP_CWORD]}"
+        local previous_word=""
+        if [[ $COMP_CWORD -gt 0 ]]; then
+            previous_word="${COMP_WORDS[COMP_CWORD-1]}"
+        fi
+
+        readarray -t COMPREPLY < <("$completion_cmd" "${COMP_WORDS[0]}" "$current_word" "$previous_word")
+    else
+        >&2 echo "Unexpected completion command type: '$completion_cmd_type'. This is unexpected."
+        exit 1
+    fi
 
     for completion in "${COMPREPLY[@]}"; do
         echo "$completion"

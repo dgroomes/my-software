@@ -57,7 +57,10 @@ export def bash-complete [spans: list<string>] {
 
     # Homebrew's completion for things like "brew uninstall " will execute 'brew' so that it can list out your installed
     # packages. 'brew' requires the HOME environment for some reason. If you omit it, you'll get the error message
-    # "$HOME must be set to run brew.".
+    # "$HOME must be set to run brew.". It turns out the completion machinery for the Minio client ('mc') also requires
+    # the HOME environment variable or else I get the error: "<ERROR> Unable to get mcConfigDir. exec: "sh": executable file not found in $PATH."
+    # and this is particularly puzzling because why would setting HOME have any effect on the interaction of PATH? I
+    # think the error message is losing something in translation.
     #
     # Also, and I couldn't debug why, but '/bin' needs to be on the PATH as well. Seems reasonable enough.
 

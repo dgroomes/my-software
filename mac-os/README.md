@@ -101,7 +101,7 @@ to a working Nushell environment, but it's great enough.
      * ```shell
        brew install bash-completion@2
        ```
-     * See additional information in `bash/BASH_COMPLETION.md`.
+     * See additional information in `bash/README.md`.
 11. Install Nushell, configure it and make it the default shell
      * WARNING: There is a bootstrapping problem. You need to skip ahead and install Rust and Rust-based tools. I don't
        want to re-arrange that right now because the change is getting unwieldy due to other updates. 
@@ -386,3 +386,15 @@ to a working Nushell environment, but it's great enough.
     * TODO
 39. Ghostty
     * TODO
+40. Install [`mc`, the Minio CLI](https://github.com/minio/mc)
+    * ```nushell
+      brew install minio/stable/mc
+      ```
+    * `mc`'s shell completion is implemented by <https://github.com/posener/complete> which I think is a fantastic way
+      for shell completion to be implemented. I think there really ought to be a standard interface for CLIs to be
+      interrogated for their completion options. But, oddly, `mc`'s Homebrew installation doesn't distribute with the
+      completions file. This is fine, and there is virtually nothing to it anyway, just a `complete -C ...` command.
+      Let's write it ourselves.
+    * ```nushell
+      "complete -C /opt/homebrew/bin/mc mc" | save ~/.local/share/bash-completion/completions/mc
+      ```
