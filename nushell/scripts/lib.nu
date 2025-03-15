@@ -508,7 +508,7 @@ export def is-text-file [file_name?: string --print]: [string -> bool, nothing -
 #
 # This function searches for Gradle projects in the current directory and subdirectories. It upgrades the Gradle wrapper
 # in each project to the specified version.
-export def upgrade-gradle-wrapper [gradle_version: string = "8.10"  --depth: int = 1] {
+export def upgrade-gradle-wrapper [gradle_version: string = "8.13"  --depth: int = 1] {
     let gradle_wrapper_files = glob --depth $depth **/gradlew
 
     if ($gradle_wrapper_files | is-empty) {
@@ -707,16 +707,16 @@ export def wikipedia [title: string] {
         prop: 'extracts',
         explaintext: 'true'
     }
-    
+
     let query_string = $params | url build-query
     let url = $"($base_url)?($query_string)"
-    
+
     let response = http get $url
-    
+
     # The pages dict has page IDs as keys, so we need to get the first (and only) value
     let pages = $response.query.pages
     let page_id = $pages | columns | first
-    
+
     $pages | get $page_id | get extract
 }
 

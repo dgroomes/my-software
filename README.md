@@ -94,7 +94,7 @@ My config file for Starship.
 
 General clean-ups, TODOs and things I wish to implement for this project:
 
-* [ ] Consider restoring (at `b3154dde` and before) the shortcuts I had defined for `navi`. There was some good knowledge there, but I never wound
+* [ ] Consider restoring (at `b3154dde` and before) the shortcuts I had defined for `navi` (but no need to use `navi`). There was some good knowledge there, but I never wound
   up using `navi`.
 * [ ] Consider restoring (at `b3154dde` and before) my usage of markdownlint. I still like it, but I just never got used to using it.
   learn them better. I think I should pare down the larger one-liners.
@@ -134,6 +134,12 @@ General clean-ups, TODOs and things I wish to implement for this project:
   I can consider rewriting it Rust but I expect I will never need that performance. My prompt files will only ever be
   like a couple megabytes max, right?
    * DONE Incorporate deduplication into bundling code.
+* [ ] I want enhanced (LLM) search over my browser history. Safari somehow clobbers entries in my history, or at least
+  they don't show up. It's almost like it consolidates multiple pages for the same host or something. For example, as I
+  explore a new topic I'll look at official docs which are often scattered across multiple subsets of pages because of marketing
+  reasons and/or the natural sprawl of a volunteer-driven project. Some of these pages are golden, but hard to discover.
+  If I've found them once, then I want to find them again. Maybe I should use bookmarks/read-later more. Whatever it is,
+  consider this story again. Apache Iceberg (and the branching into Hive stuff) is a good example of this.
 
 
 ## Finished Wish List Items

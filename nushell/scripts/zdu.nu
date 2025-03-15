@@ -70,9 +70,12 @@ export def bundle [] {
     cd $DIR
     let prompt = open --raw PROMPT.md
     let fs_bundles = glob *.file-set.json | each { bundle file-set $in }
-    let bun = [$prompt ...$fs_bundles] | str join $"\n\n"
+    let bun = [$prompt ...$fs_bundles "The original request as a refresher:" $prompt] | str join $"\n\n"
 
     $bun | save --force bundle.txt
+    $bun | pbcopy
+    let token_count = ($bun | token-count | into int | comma-per-thousand)
+    print $"Bundle created: ($token_count) tokens and copied to clipboard."
 }
 
 export def example-fs [] {
