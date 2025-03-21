@@ -74,7 +74,7 @@ export def bundle [] {
 
     $bun | save --force bundle.txt
     $bun | pbcopy
-    let token_count = ($bun | token-count | into int | comma-per-thousand)
+    let token_count = $bun | token-count | into int | comma-per-thousand
     print $"Bundle created: ($token_count) tokens and copied to clipboard."
 }
 
