@@ -204,14 +204,12 @@ to a working Nushell environment, but it's great enough.
      * ```shell
        mkdir -p ~/.config && cp starship/starship.toml ~/.config
        ```
-18. Add `~/.inputrc`
-     * `cp .inputrc ~`
-19. Install Bash completions for `pip`
+18. Install Bash completions for `pip`
      * ```shell
        pip3 completion --bash > ~/.local/share/bash-completion/completions/pip3
        ```
      * Note: I haven't vetted this in 2023.
-20. Install latest `git` and configure it
+19. Install latest `git` and configure it
      * ```shell
        brew install git
        ```
@@ -263,10 +261,10 @@ to a working Nushell environment, but it's great enough.
            shared, it's convenient for everyone else if the exclusions are version-controlled in the project-specific
            gitignore file. 2) Projects are diverse and unpredictable. There might be a project that wants to version-control
            the `build/` or `out/` directories, and for good reason. For me, the `.DS_Store` exclusion is a very safe bet. 
-21. Install Docker Desktop <https://docs.docker.com/desktop/install/mac-install/>
+20. Install Docker Desktop <https://docs.docker.com/desktop/install/mac-install/>
      * Disable phone-home telemetry
      * Configure Docker to use fewer resources. Consider only 2-3 cores and 6GB (but it depends on the need and constraints).
-22. Install Karabiner-Elements <https://github.com/pqrs-org/Karabiner-Elements> from source (or Homebrew) and configure it with.
+21. Install Karabiner-Elements <https://github.com/pqrs-org/Karabiner-Elements> from source (or Homebrew) and configure it with.
      1. First, we must configure Xcode command line tools correctly. Follow these instructions <https://stackoverflow.com/a/61725799>
      2. Then, install `xcodegen` from source <https://github.com/yonaskolb/XcodeGen>:
         ```shell
@@ -293,25 +291,25 @@ to a working Nushell environment, but it's great enough.
         cp karabiner/karabiner.json ~/.config/karabiner
         cp karabiner/assets/complex_modifications/* ~/.config/karabiner/assets/complex_modifications
         ```
-23. Install Go <https://golang.org/dl/>
+22. Install Go <https://golang.org/dl/>
      * Note: Consider installing manually or using something like Homebrew. There are pros and cons to each approach.
        To install using Homebrew, use the following command.
      * ```shell
        brew install go
        ```
-24. Install Postgres
+23. Install Postgres
      * ```nushell
        brew install postgresql@17
        ```
-25. Install `gh` https://github.com/cli/cli
+24. Install `gh` https://github.com/cli/cli
      1. ```shell
         brew install gh
         ```
      2. Use it for the first time and log in.
-26. Install Rust
+25. Install Rust
      1. Install `rustup` using the instructions in the official [rust-lang site](https://www.rust-lang.org/tools/install)
      and **do not** allow it to modify the `PATH`.
-27. Rust-based tools
+26. Rust-based tools
      * There is a nascent but rich ecosystem of Rust-based command-line tools. Many of them are substitutes for traditional
        commands like `ls`, `du`, and `cat` but they bring a bevy of extra features. Best of all, they are fast. Keep track
        of this "re-implemented in Rust" trend and follow this great article [*Rewritten in Rust: Modern Alternatives of Command-Line Tools*](https://zaiste.net/posts/shell-commands-rust/)
@@ -320,20 +318,20 @@ to a working Nushell environment, but it's great enough.
      * ```nushell
        cargo install zoxide --locked
        ```
-28. Install [CleanShot](https://cleanshot.com/)
+27. Install [CleanShot](https://cleanshot.com/)
     * Enter the license key
     * Go through the configuration steps in the prompt.
-29. Install Sublime text
+28. Install Sublime text
     * Set `"color_scheme": "auto"` in the settings JSON file.
-30. Configure Safari settings
+29. Configure Safari settings
     * Follow this [StackExchange answer](https://apple.stackexchange.com/a/214748) to change the behavior of `Cmd + W`
       so that it doesn't close the whole window when only pinned tabs are left.
     * `System Settings > Keyboard > Keyboard Shortcuts... > App Shortcuts`
     * Add a shortcut for "Safari", for menu item "Close Tab", shortcut `Cmd + W`.
-31. Install Go-based tools in `go/`
-32. Install Java-based tools in `java/`
-33. Install Python-based tools in `python/`
-34. Clone all my repos
+30. Install Go-based tools in `go/`
+31. Install Java-based tools in `java/`
+32. Install Python-based tools in `python/`
+33. Clone all my repos
     * Clone my `dgroomes/dgroomes` repository and use the Python script to get a JSON representation of all my repos.
       Then, use a command like the following to clone all of them.
     * ```nushell
@@ -342,16 +340,16 @@ to a working Nushell environment, but it's great enough.
         open ~/repos/personal/dgroomes/repos.json | where ($it.archived == false and not ($it.name | path exists)) | each { |repo| git clone $repo.clone_url }
       }
       ```
-35. Install [dust](https://github.com/bootandy/dust)
+34. Install [dust](https://github.com/bootandy/dust)
     * ```nushell
       brew install dust
       ```
-36. Configure Gradle's ["custom toolchain locations"](https://docs.gradle.org/current/userguide/toolchains.html#sec:custom_loc)
+35. Configure Gradle's ["custom toolchain locations"](https://docs.gradle.org/current/userguide/toolchains.html#sec:custom_loc)
     * Create the `~/.gradle/gradle.properties` file and add the following line
     * ```text
       org.gradle.java.installations.fromEnv=JAVA_11_HOME,JAVA_17_HOME,JAVA_21_HOME
       ```
-37. Setup Bash completion for Git
+36. Setup Bash completion for Git
     * There is a special case for supporting Bash completion of the `git` command. Annoyingly, git is the only
       Homebrew-installed package that I use which distributes its Bash completion script in an incompatible naming
       scheme. It uses the name `git-completion.bash`. It needs to be either `git` (my preference and the norm) or
@@ -362,9 +360,9 @@ to a working Nushell environment, but it's great enough.
       mkdir ~/.local/share/bash-completion/completions
       ln -sf /opt/homebrew/etc/bash_completion.d/git-completion.bash ~/.local/share/bash-completion/completions/git 
       ```
-38. Install uv
+37. Install uv
     * TODO
-39. Install [`mc`, the Minio CLI](https://github.com/minio/mc)
+38. Install [`mc`, the Minio CLI](https://github.com/minio/mc)
     * ```nushell
       brew install minio/stable/mc
       ```
