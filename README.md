@@ -31,15 +31,6 @@ A description of my Homebrew strategy.
 See the README in [homebrew/](homebrew/).
 
 
-### `iterm2/`
-
-My iTerm2 config.
-
-> iTerm2 is a terminal emulator for macOS that does amazing things.
-> 
-> -- <cite>https://iterm2.com</cite>
-
-
 ### `java/`
 
 Java code that supports my personal workflows.
@@ -141,6 +132,13 @@ General clean-ups, TODOs and things I wish to implement for this project:
   If I've found them once, then I want to find them again. Maybe I should use bookmarks/read-later more. Whatever it is,
   consider this story again. Apache Iceberg (and the branching into Hive stuff) is a good example of this.
 * [ ] Java 24. Adoptium is publishing this in the next few days. I did an ea version but want the full one.
+* [ ] (aspirational) Finetune an LLM on parsing/extracting my TODO/WishList items. They aren't fully machine readable
+  because of formatting differences and also I use different words sometimes (DONE, SKIP, HOLD, and I might make
+  something up) so they aren't perfectly classifiable by keyword. I think this is a pretty good candidate for a
+  low-parameter model which I can run on my computer. I would just start with few shot learning. The idea is, take the
+  best parts of a task/project manager (Linear) and the low-tech approach of "just ad hoc markdown" (like I've done) and
+  get more mileage out of it.
+* [ ] In the scratch area, explore MCP in JetBrains. Maybe consider running Intellij in a DevContainer. Idk.
 
 
 ## Finished Wish List Items

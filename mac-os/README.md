@@ -44,14 +44,13 @@ to a working Nushell environment, but it's great enough.
     * First make the "repos" directory with `mkdir -p ~/repos/personal`
     * `cd ~/repos/personal && git clone https://github.com/dgroomes/my-software.git`
     * Finally, move to this directory because many of the later setup steps assume you are in this directory because they use relatives paths: `cd my-software`
-5. Install iTerm2 <https://iterm2.com/downloads.html>. Configure it with my configuration:
-    * Create the iTerm config directory with  `mkdir -p ~/.config/iterm2`
-    * Copy the plist file with `cp iterm2/com.googlecode.iterm2.plist ~/.config/iterm2/com.googlecode.iterm2.plist`
-    * Open iTerm and navigate to `Preferences > General > Settings`. Check `Load preferences from a custom folder or URL` and set it
-      to `~/.config/iterm2`.
-    * A prompt will come up to save the current settings. Do *not* save the current settings.
-    * In `General > Settings`, set the `Save changes` dropdown to `Automatically`
-    * Restart iTerm
+5. Install Ghostty <https://ghostty.org>. Configure it with my configuration:
+    * ```shell
+      mkdir -p ~/.config/ghostty/themes/
+
+      cp ghostty/config ~/.config/ghostty/
+      cp ghostty/my-theme ~/.config/ghostty/themes/
+      ```
 6. Install Homebrew <https://brew.sh/>
     * Download and install it using the `.pkg` installer.
     * Install the shell completion into the right place. `bash-completion` has so much auto-discovery, and Homebrew is
@@ -201,25 +200,6 @@ to a working Nushell environment, but it's great enough.
        brew install starship
        ```
      * For more information, read the official instructions in the [Starship README.md](https://github.com/starship/starship#-installation).
-     * Do the fonts installation (Note that this uses [a neat feature of git](https://stackoverflow.com/a/52269934) that
-       only downloads a specific directory of the repo). Choose "Keep Both" every time you are prompted.
-       ```shell
-       git clone \
-         --depth 1  \
-         --filter=blob:none  \
-         --sparse \
-         https://github.com/ryanoasis/nerd-fonts.git ~/repos/opensource/nerd-fonts
-       pushd ~/repos/opensource/nerd-fonts
-       git sparse-checkout set patched-fonts/FiraCode
-       open patched-fonts/FiraCode/Bold/FiraCodeNerdFontMono-Bold.ttf
-       open patched-fonts/FiraCode/Light/FiraCodeNerdFontMono-Light.ttf
-       open patched-fonts/FiraCode/Medium/FiraCodeNerdFontMono-Medium.ttf
-       open patched-fonts/FiraCode/Regular/FiraCodeNerdFontMono-Regular.ttf
-       open patched-fonts/FiraCode/Retina/FiraCodeNerdFontMono-Retina.ttf
-       open patched-fonts/FiraCode/SemiBold/FiraCodeNerdFontMono-SemiBold.ttf
-       popd
-       ```
-     * Restart iTerm2, configure "Use a different font for non-ASCII text" and choose the just installed "FiraCode Nerd Font Mono" font to get the special symbols
      * Copy over the custom Starship config file with the following command.
      * ```shell
        mkdir -p ~/.config && cp starship/starship.toml ~/.config
@@ -384,9 +364,7 @@ to a working Nushell environment, but it's great enough.
       ```
 38. Install uv
     * TODO
-39. Ghostty
-    * TODO
-40. Install [`mc`, the Minio CLI](https://github.com/minio/mc)
+39. Install [`mc`, the Minio CLI](https://github.com/minio/mc)
     * ```nushell
       brew install minio/stable/mc
       ```
