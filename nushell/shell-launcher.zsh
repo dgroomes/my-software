@@ -21,11 +21,19 @@ else
 fi
 
 log() {
-    [[ $LOG_ENABLED == true ]] && print -P "%D{%Y-%m-%d %H:%M:%S} $@" >> "$LOG_FILE"
+    [[ $LOG_ENABLED == true ]] || return
+
+    {
+      print -n -P "%D{%Y-%m-%d %H:%M:%S} "
+      print "$@"
+    } >> "$LOG_FILE"
 }
 
+# Capture the arguments passed to this script. This is important because we need to reference these args in other
+# functions but those functions will shadow '$@' with their own arguments.
 SHELL_ARGS=("$@")
-log "Arguments: ${SHELL_ARGS[@]}"
+
+log "Arguments: " "${SHELL_ARGS[@]}"
 
 # How do I capture the args in a variable here so that I can call them inside other functions?
 
@@ -45,7 +53,7 @@ log "Parent command: $PARENT_CMD"
 
 # We need to do something special to accommodate VSCode/Cursor. Because VSCode can be launched outside of a commandline
 # context, like from Spotlight, it doesn't know about any of the environment variables you have likely set up in your
-# shell conguration files like .bash_profile and .bashrc. VSCode cleverly works around this problem by executing the
+# shell configuration files like .bash_profile and .bashrc. VSCode cleverly works around this problem by executing the
 # login shell, printing out the environment variables, and capturing them. Refer to the docs and code:
 #
 #   - https://github.com/microsoft/vscode/blob/213334eb801247fa2632c9ccf204ecb4f1865db1/src/vs/platform/shell/node/shellEnv.ts#L102
