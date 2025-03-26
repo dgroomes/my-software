@@ -62,6 +62,20 @@ General clean-ups, TODOs and things I wish to implement for this project:
   doing for the virtual env use-case is to use key bindings. I'm missing a few things from the overall experience too,
   like a compressed workflow to deactivate, and also a PS1 indicator. The problem I'm having in practice is activating
   in one directory, moving to another, and activating again... So I guess consider how to make that better. Auto-deactivate?
+* [x] DONE (this was way harder than I thought but happy with the result and very happy with the strategy docs in shell-launcher.zsh) No more launching Nushell from Bash. Make the inversion. Nushell can be the main thing, and we can launch Bash
+  from Nushell to accommodate the VSCode/Cursor initialization stuff. Mainly, I just want to consolidate some of the last
+  config in `.bash_profile` into my Nushell config.
+* [ ] Check out the standard library that was newly released, like the `path add` command.
+* [ ] Flesh out debugging/obervability for my Nushell sourcing/setup. I think I'd like something like, use `env.nu` just
+  to set an env var like "DEBUG = true" and then by convention key off of that manually in every script and print the
+  script name at the top of the script. The common problem I'm running into is understanding what files are being source
+  and in what order.
+* [ ] In the shell launcher, key off of what JetBrains IDEs send so we can keep them in Bash. Nushell doesn't work in
+  the JetBrains IDEs and I'm not exactly sure why. That's ok. I want to be able to click the green button on "shell"
+  snippets in my readmes again.
+* [ ] Rename this directory from `nushell` to `shell` and then locate the last Bash stuff elsewhere into here. That way,
+  I can use this directory to describe my overall shell strategy and also I get a nice shortening from `nushell` to `shell`.
+  As part of this, take the strategy notes in `shell-launcher.zsh` into this README.
 
 
 ## Finished Wish List Items

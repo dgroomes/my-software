@@ -26,12 +26,6 @@ const config_registry = {
         install_success_msg: "Bash completer library file installed."
         upstream_success_msg: "Bash completer library file upstreamed."
     }
-    brew_activate: {
-        filename: "autoload/brew-activate.nu"
-        backup_success_msg: "brew-activate configuration file backed up."
-        install_success_msg: "brew-activate configuration file installed."
-        upstream_success_msg: "brew-activate configuration file upstreamed."
-    }
     file_set: {
         filename: "scripts/file-set.nu"
         backup_success_msg: "'file-set' library file backed up."

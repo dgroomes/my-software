@@ -104,19 +104,6 @@ to a working Nushell environment, but it's great enough.
 11. Install Nushell, configure it and make it the default shell
      * WARNING: There is a bootstrapping problem. You need to skip ahead and install Rust and Rust-based tools. I don't
        want to re-arrange that right now because the change is getting unwieldy due to other updates. 
-     * ```shell
-       sudo cp nushell/shell-launcher.zsh /usr/local/bin
-       ```
-     * ```shell
-       sudo chmod +x /usr/local/bin/shell-launcher.zsh
-       ```
-     * ```shell
-       sudo bash -c 'echo /usr/local/bin/shell-launcher.zsh >> /etc/shells'
-       ```
-     * ```shell
-       chsh -s /usr/local/bin/shell-launcher.zsh
-       ```
-     * Start a new shell session: welcome to Nushell. Use the following commands to setup all the Nushell config.
      * ```nushell
        cd nushell
        ```

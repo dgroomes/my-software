@@ -4,6 +4,17 @@ theme=my-theme
 # contrast at all.
 unfocused-split-fill= #808080
 
+# Use Nushell as the shell. For a while, I had Nushell configured as the login shell. There are advantages to doing
+# that, like being able to omit the "command" configuration here because Ghostty would automatically use the login
+# shell. But there are disadvantages too, like some tooling that makes assumptions and has functionality around specific
+# shells, like what VSCode does to set environment variables: https://github.com/microsoft/vscode/blob/45210d22bf99200859147c92ec0db2ce9afb50ea/src/vs/platform/shell/node/shellEnv.ts#L102
+# I don't want to use Nushell in VSCode or Intellij because they have aggresively implemented interactions in their
+# terminal emulators that usually only work in traditional shells like Bash/Zsh/POSIX.
+#
+# I'm finding that it's wise to use a traditional shell like Bash as the login shell, and then explicitly configuring
+# tools like Ghostty to use Nushell.
+command=/opt/homebrew/bin/nu
+
 # Disable ligatures
 font-feature=-calt
 font-feature=-liga
