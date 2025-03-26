@@ -68,11 +68,8 @@ General clean-ups, TODOs and things I wish to implement for this project:
 * [ ] Check out the standard library that was newly released, like the `path add` command.
 * [ ] Flesh out debugging/obervability for my Nushell sourcing/setup. I think I'd like something like, use `env.nu` just
   to set an env var like "DEBUG = true" and then by convention key off of that manually in every script and print the
-  script name at the top of the script. The common problem I'm running into is understanding what files are being source
+  script name at the top of the script. The common problem I'm running into is understanding what files are being sourced
   and in what order.
-* [ ] In the shell launcher, key off of what JetBrains IDEs send so we can keep them in Bash. Nushell doesn't work in
-  the JetBrains IDEs and I'm not exactly sure why. That's ok. I want to be able to click the green button on "shell"
-  snippets in my readmes again.
 * [ ] Rename this directory from `nushell` to `shell` and then locate the last Bash stuff elsewhere into here. That way,
   I can use this directory to describe my overall shell strategy and also I get a nice shortening from `nushell` to `shell`.
   As part of this, take the strategy notes in `shell-launcher.zsh` into this README.

@@ -1,3 +1,6 @@
+$env.MY_DEBUG = false
+let start = date now | into int
+
 $env.PATH = $env.PATH | prepend ([
     ~/.local/bin
     /opt/homebrew/bin
@@ -201,4 +204,11 @@ do --env {
     try { activate-my-open-jdk $default_java } catch { print "(warn) A default OpenJDK was not activated." }
     try { activate-my-node $default_node } catch { print "(warn) A default Node.js was not activated." }
     try { activate-postgres $default_postgres } catch { print "(warn) A default Postgres was not activated." }
+}
+
+if ($env.MY_DEBUG?) {
+    let end = date now | into int
+    let diff = $end - $start
+    let dur = $diff | into duration
+    print $"'config.nu' took ($dur)"
 }

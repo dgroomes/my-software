@@ -96,7 +96,7 @@ export def my-open-jdk-kegs [] {
        err $"Something unexpected happened while running the 'brew list' command.\n($result.stderr)"
    }
 
-   $result.stdout | split row (char newline) | where $it =~ "^my-open-jdk@" | each { |formula|
+   $result.stdout | split row (char newline) | where $it =~ "^my-open-jdk@" | par-each { |formula|
        let version = $formula | split row "@" | get 1 | into int
        assert-my-open-jdk $version
    }
