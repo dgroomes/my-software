@@ -70,9 +70,11 @@ General clean-ups, TODOs and things I wish to implement for this project:
   to set an env var like "DEBUG = true" and then by convention key off of that manually in every script and print the
   script name at the top of the script. The common problem I'm running into is understanding what files are being sourced
   and in what order.
-* [ ] Rename this directory from `nushell` to `shell` and then locate the last Bash stuff elsewhere into here. That way,
-  I can use this directory to describe my overall shell strategy and also I get a nice shortening from `nushell` to `shell`.
-  As part of this, take the strategy notes in `shell-launcher.zsh` into this README.
+* [ ] Locate the last Bash stuff elsewhere into here and re-document `nushell/` in a more general `shell` way. I want to
+  keep the name as `nushell` so I can zoxide to it quickly and because it's mostly nushell. As part of this, take the
+  strategy notes in `shell-launcher.zsh` into this README.
+* [x] DONE Rewrite the `brew --prefix <formula>` stuff to instead just manually locate that file on the file system using Nushell
+  instead of calling `brew` because brew is way slow (Ruby startup time).
 
 
 ## Finished Wish List Items

@@ -28,7 +28,7 @@ export def --env activate-my-open-jdk [version: int@my-open-jdk-keg-versions] {
 # the installation is returned.
 #
 #     $ assert-my-open-jdk 8
-#     Error:   × Error: No available formula with the name "my-open-jdk@8".
+#     Error:   × Error: Expected to find formula 'my-open-jdk@8' but did not.
 #
 #     $ assert-my-open-jdk 17
 #     {
@@ -40,17 +40,12 @@ export def --env activate-my-open-jdk [version: int@my-open-jdk-keg-versions] {
 #     }
 def assert-my-open-jdk [version: int]: nothing -> record {
     let my_open_jdk_at = $"my-open-jdk@($version)"
-    let result = brew --prefix $my_open_jdk_at | complete
-    if ($result.exit_code != 0) {
-        let err_msg = $result.stderr | str trim
-        if ($err_msg =~ "No available formula") {
-            err $err_msg
-        } else {
-            err $"Something unexpected happened while running the 'brew --prefix' command.\n($err_msg)"
-        }
+    let keg_dir = [$env.HOMEBREW_PREFIX "opt" $my_open_jdk_at] | path join
+
+    if not ($keg_dir | path exists) {
+        err $"Expected to find formula '($my_open_jdk_at)' but did not."
     }
 
-    let keg_dir = $result.stdout | str trim
     let jdk_home_dir = [$keg_dir "libexec/Contents/Home"] | path join
     if not ($jdk_home_dir | path exists) {
         err $"Expected to find an OpenJDK home directory at ($jdk_home_dir) but it does not exist."
@@ -79,27 +74,14 @@ def assert-my-open-jdk [version: int]: nothing -> record {
 # │    1 │ my-open-jdk@21   │ /opt/homebrew/opt/my-open-jdk@21   │             21 │ /opt/homebrew/opt/my-open-jdk@21/libexec/Contents/Home   │ /opt/homebrew/opt/my-open-jdk@21/bin   │
 # ╰──────┴──────────────────┴────────────────────────────────────┴────────────────┴──────────────────────────────────────────────────────────┴────────────────────────────────────────╯
 #
-# Unfortunately, this is very slow because "brew list --formula" is slow. It's like 2 seconds, and the command is
-# seemingly re-executed for every character that you type. Here's an example:
-#   1. I type "activate-my-open-jdk " then tab. 2 second pause.
-#   2. I type "17" but nothing is rendered. There is a 2 second pause.
-#   3. The "1" shows up. There is a 2 second pause.
-#   4. The "7" shows up. There is a 2 second pause (during this time, pressing enter has no effect).
-#   5. I press "enter". Finally, the command is executed.
-#
-# Should we just read the keg directories? It's either that, or cache it (which creates its own problems), or just
-# hand-type "activate-my-open-jdk 21". I think the last option is the best. The command will be in my history at all
-# times so it's really not a problem. It's not like I'm frequently shopping between many installed versions of OpenJDK.
 export def my-open-jdk-kegs [] {
-   let result = brew list --formula | complete
-   if ($result.exit_code != 0) {
-       err $"Something unexpected happened while running the 'brew list' command.\n($result.stderr)"
-   }
+    let opt_dir = [$env.HOMEBREW_PREFIX "opt"] | path join
+    cd $opt_dir
 
-   $result.stdout | split row (char newline) | where $it =~ "^my-open-jdk@" | par-each { |formula|
-       let version = $formula | split row "@" | get 1 | into int
-       assert-my-open-jdk $version
-   }
+    ls my-open-jdk@* | get name | each {
+        let version = $in | split row "@" | get 1 | into int
+        assert-my-open-jdk $version
+    }
 }
 
 def my-open-jdk-keg-versions [] {

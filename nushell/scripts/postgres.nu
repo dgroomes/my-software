@@ -8,26 +8,19 @@ use zdu.nu err
 export def --env activate-postgres [version: string] {
     # Let's expand to, for example, "postgresql@16"
     let at_postgresql = $"postgresql@($version)"
+    let keg_dir = [$env.HOMEBREW_PREFIX "opt" $at_postgresql] | path join
 
-    let result = brew --prefix $at_postgresql | complete
-    if ($result.exit_code != 0) {
-        err $"Something unexpected happened while running the 'brew --prefix' command.\n($result.stderr)"
+    if not ($keg_dir | path exists) {
+        err $"Expected to find formula '($at_postgresql)' but did not."
     }
 
-    let keg_dir = $result.stdout | str trim
     let bin_dir = [$keg_dir "bin"] | path join
     if not ($bin_dir | path exists) {
         err $"Expected to find a 'bin' directory at '($bin_dir)' but that directory does not exist."
     }
 
     # Now do the same for the data directory (PGDATA)
-    let result2 = brew --prefix | complete
-    if ($result2.exit_code != 0) {
-        err $"Something unexpected happened while running the 'brew --prefix' command.\n($result.stderr)"
-    }
-
-    let prefix = $result2.stdout | str trim
-    let data_dir = [$prefix "var" $at_postgresql] | path join
+    let data_dir = [$env.HOMEBREW_PREFIX "var" $at_postgresql] | path join
     if not ($data_dir | path exists) {
         err $"Expected to find a Postgres data directory at the conventional location '($data_dir)' but that directory does not exist."
     }

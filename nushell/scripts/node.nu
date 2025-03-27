@@ -5,12 +5,13 @@ use zdu.nu err
 #
 # This works very similarly to 'open-jdk.nu'. Read that file for more information.
 export def --env activate-my-node [version: string@my-node-keg-versions] {
-    let result = brew --prefix $"my-node@($version)" | complete
-    if ($result.exit_code != 0) {
-        err $"Something unexpected happened while running the 'brew --prefix' command.\n($result.stderr)"
+    let node_formula = $"my-node@($version)"
+    let keg_dir = [$env.HOMEBREW_PREFIX "opt" $node_formula] | path join
+
+    if not ($keg_dir | path exists) {
+        err $"Expected to find formula '($node_formula)' but did not."
     }
 
-    let keg_dir = $result.stdout | str trim
     let bin_dir = [$keg_dir "bin"] | path join
     if not ($bin_dir | path exists) {
         err $"Expected to find a 'bin' directory for Node.js at '($bin_dir)' but it does not exist."
@@ -23,10 +24,10 @@ export def --env activate-my-node [version: string@my-node-keg-versions] {
 }
 
 def my-node-keg-versions []: nothing -> list<string> {
-    let result = brew list --formula | complete
-    if ($result.exit_code != 0) {
-        err $"Something unexpected happened while running the 'brew list' command.\n$result.stderr"
-    }
+    let opt_dir = [$env.HOMEBREW_PREFIX "opt"] | path join
+    cd $opt_dir
 
-    $result.stdout | split row (char newline) | where $it =~ "^my-node@" | each { |it| $it | split row "@" | get 1 }
+    ls my-node@* | get name | each {
+        $in | split row "@" | get 1
+    }
 }
