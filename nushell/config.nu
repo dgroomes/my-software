@@ -85,6 +85,7 @@ def --env advertise-installed-open-jdks [] {
 }
 
 advertise-installed-open-jdks
+advertise-installed-nodes
 
 const ACTIVATE_DO = r#'
 # ERASE ME

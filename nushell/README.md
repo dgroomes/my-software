@@ -66,7 +66,7 @@ General clean-ups, TODOs and things I wish to implement for this project:
   from Nushell to accommodate the VSCode/Cursor initialization stuff. Mainly, I just want to consolidate some of the last
   config in `.bash_profile` into my Nushell config.
 * [ ] Check out the standard library that was newly released, like the `path add` command.
-* [ ] Flesh out debugging/obervability for my Nushell sourcing/setup. I think I'd like something like, use `env.nu` just
+* [ ] Flesh out debugging/observability for my Nushell sourcing/setup. I think I'd like something like, use `env.nu` just
   to set an env var like "DEBUG = true" and then by convention key off of that manually in every script and print the
   script name at the top of the script. The common problem I'm running into is understanding what files are being sourced
   and in what order.
@@ -75,6 +75,10 @@ General clean-ups, TODOs and things I wish to implement for this project:
   strategy notes in `shell-launcher.zsh` into this README.
 * [x] DONE Rewrite the `brew --prefix <formula>` stuff to instead just manually locate that file on the file system using Nushell
   instead of calling `brew` because brew is way slow (Ruby startup time).
+* [x] DONE Advertise Node homes.
+* [ ] Move `LS_COLORS` to `autoload/`. Files in `autoload` are only invoked for interactive scripts I think. Not that this
+  really moves the needle on performance but the `LS_COLORS` is so huge that I need it to not clutter the token count of
+  `config.nu`.
 
 
 ## Finished Wish List Items

@@ -361,3 +361,7 @@ to a working Nushell environment, but it's great enough.
     * ```nushell
       "complete -C /opt/homebrew/bin/mc mc" | save ~/.local/share/bash-completion/completions/mc
       ```
+39. Hide noisy login message when starting a shell session:
+    * ```shell
+      touch ~/.hushlogin
+      ```

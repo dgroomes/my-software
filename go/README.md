@@ -16,10 +16,10 @@ for now, `go install` should work fine for me.
 ## `my-launcher`
 
 `my-launcher` launches Java programs by finding and invoking the correct version `java` installed on the system.
-It depends on a `my-manifest.json` file that describes the minimum version of Java, the classpath, the main class, and
+It depends on a `my-manifest.json` file that describes the exact version of Java, the classpath, the main class, and
 other Java system properties, etc. This is an alternative to the Gradle [`application` plugin](https://docs.gradle.org/current/userguide/application_plugin.html)
 which creates a shell *start script* that encodes all this same info. I use the `application` plugin very frequently,
-but now, I need to eject from Posix shell and get finer control and better interpretability. So I'm going with a "Go
+but now, I need to eject from Posix shell and get finer control and better legibility. So I'm going with a "Go
 binary + JSON manifest" as a Java program launcher.
 
 
@@ -154,6 +154,14 @@ General clean-ups, TODOs and things I wish to implement for this project:
 
 * [ ] Need to handle items that exceed the full height?
 * [ ] Workaround `./` parsing gap of the new Nushell parser.
+* [ ] Make a Node launcher for JavaScript programs. This would be similar to `my-launcher` but for Node.js. If this works
+  nicely, I'll rename `my-launcher` to `my-java-launcher`. I don't see a compelling reason to couple a Node launcher with
+  the Java launcher, especially because of the schema, there would be conflicting possible options like specifying a
+  Java classpath while also specifying a Node version. Those don't go together. In the day and age of quick,
+  context-window-amenable programs tailored for LLM copilot, small/focused is good.
+   * I need to advertise Node homes in an environment variable. What's a conventional name for this? In Java we use
+     `JAVA_HOME`.
+
 
 ## Finished Wish List Items
 
