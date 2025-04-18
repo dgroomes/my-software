@@ -10,14 +10,17 @@
 # MCP server is just a little bit of JSON sent across stdin and stdout. Simple stuff. Let's see it in action.
 
 # Bash trick to get the directory containing the script. See https://stackoverflow.com/a/246128
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 # Log to files relative to the script dir.
-STDIN_LOG="${DIR}/time-in.jsonl"
-STDOUT_LOG="${DIR}/time-out.jsonl"
+in="${dir}/time.in.mcp.jsonl"
+out="${dir}/time.out.mcp.jsonl"
+err="${dir}/time.err.mcp.log"
 
-# Use 'tee' to capture stdin and stdout.
-#
+exec 0< <(tee "$in")
+exec 1> >(tee "$out")
+exec 2> >(tee "$err" >&2)
+
 # Note: I've found I need to specify '--local-timezone' directly otherwise I get a backtrace complaining about 'CDT' not
 # being found.
-tee "$STDIN_LOG" | uvx mcp-server-time@0.6.2 --local-timezone=America/Chicago | tee "$STDOUT_LOG"
+exec uvx mcp-server-time@0.6.2 --local-timezone=America/Chicago

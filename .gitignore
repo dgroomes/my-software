@@ -6,3 +6,5 @@ settings-fresh-export/
 __pycache__/
 test.log
 srcGen/
+*.mcp.jsonl
+*.mcp.log
