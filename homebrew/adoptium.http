@@ -7,7 +7,7 @@
 # You can even deep-link to the releases filtered down to a specific platform like Apple Silicon macOS: https://adoptium.net/temurin/releases/?os=mac&arch=aarch64&package=jdk
 #
 # The API has an upper limit of 20 results per page.
-GET https://api.adoptium.net/v3/info/release_names?page=1&page_size=20&sort_order=DESC&sort_method=DATE
+GET https://api.adoptium.net/v3/info/release_names?page=0&page_size=20&sort_order=DESC&sort_method=DATE
 
 ### Assets
 #

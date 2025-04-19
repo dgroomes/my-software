@@ -131,7 +131,7 @@ General clean-ups, TODOs and things I wish to implement for this project:
   reasons and/or the natural sprawl of a volunteer-driven project. Some of these pages are golden, but hard to discover.
   If I've found them once, then I want to find them again. Maybe I should use bookmarks/read-later more. Whatever it is,
   consider this story again. Apache Iceberg (and the branching into Hive stuff) is a good example of this.
-* [ ] Java 24. Adoptium is publishing this in the next few days. I did an ea version but want the full one.
+* [x] DONE (duh, I need to start on page 0 of the API, not page 1) Java 24. Adoptium is publishing this in the next few days. I did an ea version but want the full one.
 * [ ] (aspirational) Finetune an LLM on parsing/extracting my TODO/WishList items. They aren't fully machine readable
   because of formatting differences and also I use different words sometimes (DONE, SKIP, HOLD, and I might make
   something up) so they aren't perfectly classifiable by keyword. I think this is a pretty good candidate for a

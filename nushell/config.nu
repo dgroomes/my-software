@@ -48,6 +48,15 @@ export alias clc = cp-last-cmd
 export alias ll = ls -l
 export alias la = ls -a
 
+# Copy and Paste.
+#
+# 'pbcopy' and 'pbpaste' are too long to type for frequent use. 'pbpaste' I especially struggle with for some reason.
+# Because this is my own system, I can squat on prime real estate when it comes to aliases and command names. Let's try
+# out the single character aliases 'c' and 'p'. I thought about using 'cc' and 'cv' because it's reminiscent of
+# "Cmd + C" and "Cmd + V" but 'cc' is the clang C/C++/Objective-C compiler.
+export alias c = pbcopy
+export alias p = pbpaste
+
 # Git aliases
 export alias gsdp = git-switch-default-pull
 export alias gs = git status
