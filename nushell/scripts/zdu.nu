@@ -123,3 +123,11 @@ export def err [msg: string] {
       msg: $msg
     }
 }
+
+# This one seems trivial but getting a file's path to my clipboard is something I need so frequently and it takes me too
+# many keystrokes. Usually I'll use `ls README` and the press tab to complete it, but then the output of that is a
+# table so I have to do `ls README.md | first | get name | path expand | pbcopy`. In hindsight, `glob README.md | first | pbcopy`
+# is what I could have been using. But still, this custom command is ideal.
+export def copy-path [file] {
+    $file | path expand | pbcopy
+}
