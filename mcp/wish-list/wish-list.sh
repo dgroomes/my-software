@@ -6,10 +6,10 @@ in="${dir}/wish-list.in.mcp.jsonl"
 out="${dir}/wish-list.out.mcp.jsonl"
 err="${dir}/wish-list.err.mcp.log"
 
-wl="${dir}/wish-list-mcp.nu"
+script="${dir}/wish-list.nu"
 
 while IFS= read -r line; do
   echo "$line" >> "$in"
   # Use 'tee' and redirection to capture stdout and stderr into files without losing them in the pipe.
-  echo "$line" | /opt/homebrew/bin/nu --stdin "$wl" 2> >(tee -a "$err" >&2) | tee -a "$out"
+  echo "$line" | /opt/homebrew/bin/nu --stdin "$script" 2> >(tee -a "$err" >&2) | tee -a "$out"
 done
