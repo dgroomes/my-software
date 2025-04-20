@@ -17,22 +17,21 @@ const INIT = {
         }
     },
     serverInfo: {
-        name: MyMCPServer,
+        name: HelloWorld,
         version: "0.1.0"
     }
 }
 
 const TOOLS = [
     {
-        name: "time",
-        description: "Get the current time in various formats",
+        name: "greet",
+        description: "Give a friendly greeting",
         inputSchema: {
             type: "object",
             properties: {
-                format: {
+                subject: {
                   type: "string",
-                  description: "Format to display the time (defaults to a locale format if omitted)",
-                  enum: ["ISO", "UNIX"]
+                  description: "The name of the subject/person to greet. For example, 'Oscar' or 'neighbor'."
                 }
               },
             required: []
@@ -70,27 +69,20 @@ def handle [] {
 
 def handle_tool [tool args res] {
     match $tool {
-        "time" => { execute_time $args $res }
+        "greet" => { execute_greet $args $res }
         _ => { e $res $METHOD_NOT_FOUND $"Tool not found: ($tool)" }
     }
 }
 
-def execute_time [args res] {
-    let fmt = $args.format? | default "ISO"
-
-    let time_value = if $fmt == "ISO" {
-        date now | format date "%+"
-    } else if $fmt == "UNIX" {
-        date now | format date "%s"
-    } else {
-        date now | format date
-    }
+def execute_greet [args res] {
+    let subject = $args.subject? | default "world"
+    let greeting = $"Hello, ($subject)!"
 
     ok $res {
         content: [
             {
                 type: "text",
-                text: $time_value
+                text: $greeting
             }
         ]
     }

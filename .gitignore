@@ -9,3 +9,4 @@ srcGen/
 *.mcp.jsonl
 *.mcp.log
 mcp/schema.ts
+.vscode/
