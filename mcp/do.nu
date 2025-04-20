@@ -14,6 +14,11 @@ export def my-mcp [] {
     npx $inspector $my_mcp
 }
 
+export def wish-list [] {
+    let wl = [$DIR wish-list-launcher.sh] | path join
+    npx $inspector $wl
+}
+
 # Clear the captured MCP server input/output (.jsonl and .log)
 export def clear [] {
     ls *.mcp.jsonl *.mcp.log | each { |f| "" | save -f $f.name }

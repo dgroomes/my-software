@@ -8,3 +8,4 @@ test.log
 srcGen/
 *.mcp.jsonl
 *.mcp.log
+mcp/schema.ts
