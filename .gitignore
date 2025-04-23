@@ -10,3 +10,4 @@ srcGen/
 *.mcp.log
 mcp/schema.ts
 .vscode/
+.github/copilot-config.json
