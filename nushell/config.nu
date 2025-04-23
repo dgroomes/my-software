@@ -57,6 +57,8 @@ export alias la = ls -a
 export alias c = pbcopy
 export alias p = pbpaste
 
+export alias f = file-name
+
 # Git aliases
 export alias gsdp = git-switch-default-pull
 export alias gs = git status

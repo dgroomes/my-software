@@ -124,10 +124,30 @@ export def err [msg: string] {
     }
 }
 
-# This one seems trivial but getting a file's path to my clipboard is something I need so frequently and it takes me too
-# many keystrokes. Usually I'll use `ls README` and the press tab to complete it, but then the output of that is a
-# table so I have to do `ls README.md | first | get name | path expand | pbcopy`. In hindsight, `glob README.md | first | pbcopy`
-# is what I could have been using. But still, this custom command is ideal.
-export def copy-path [file] {
-    $file | path expand | pbcopy
+# We use file names in everyday shell work and I haven't found an ideally compressed way to do this without this custom
+# command.
+#
+# For example, I might want the file name 'package-lock-.json' in my clipboard because I'm going to paste it into a script
+# I'm writing or something. The slowest and most error prone way to do this is literally type (and typo) the file name.
+#
+# One way you might think to do this is type auto-complete 'package-lock.json' directly but that's no good because
+# Nushell will try to evaluate it and you'll get 'Command `package-lock.json` not found'.
+#
+# Another way to do this is type 'ls p' then press tab, which completes both 'package.json' and 'package-lock.json'.
+# I click enter to select 'package-lock.json' and now I have to type ' | first | get name | pbcopy'. This is way longer
+# than just typing the whole file, although this is actually relatively better for files that are way deep in nested
+# directories.
+#
+# We need a more compressed workflow.
+#
+# A simple solution is just make a do-nothing command that takes one argument. By default, the file completer is used.
+# Return the argument. Easy. That way I can use completions and ultimately express `file-name package-lock.json | pbcopy`
+# to get the job done. Often I want the absolute path, so I would do `file-name package-lock.json | path expand` | pbcopy`.
+# With aliases, this is pretty compressed.
+#
+# Addendum: I feel like you could add behavior to a custom completer to just auto-complete file names when you start
+# with a double quote. Like `"RE` and then press tab. Right now, it just doesn't complete anything. I might look into
+# this.
+export def file-name [file] {
+    $file
 }
