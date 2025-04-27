@@ -113,10 +113,6 @@ to a working Nushell environment, but it's great enough.
      * ```nushell
        overlay use --prefix do.nu
        ```
-     * Create an empty `misc.do` file in the `setup/` directory.
-     * ```nushell
-       touch (($nu.config-path | path dirname) | [($in) setup misc.nu] | path join) 
-       ```
      * Clone the nu_scripts repository.
      * ```nushell
        mkdir ~/repos/opensource
@@ -124,6 +120,11 @@ to a working Nushell environment, but it's great enough.
        ```
      * Go through and do all the `do install ...` commands.
      * Start a fresh Nushell session and enjoy the customized environment.
+     * Addendum (consider consolidating this into the install flow): install the bundled Nushell plugins with the
+       following commands.
+     * ```nushell
+       plugin add nu_plugin_gstat
+       ```
 12. Install [Atuin](https://github.com/atuinsh/atuin)
      * Install Atuin and copy over my config with the following commands.
      * ```shell

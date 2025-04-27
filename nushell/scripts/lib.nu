@@ -96,11 +96,11 @@ export def dirty-git-projects [search_directory = "." --depth: int = 1] {
 }
 
 
-# Is the given Git project's working tree dirty?
+# Is the given Git project's working tree or index dirty?
 #
 # For example:
 #
-#    is-git-project-dirty ~/repos/personal/my-software        # true (a.k.a. "dirty". There are uncommitted changes.)
+#    is-git-project-dirty ~/repos/personal/my-software      # true (a.k.a. "dirty". There are uncommitted changes.)
 #    is-git-project-dirty ~/repos/personal/react-playground # false (a.k.a "clean". There are no uncommitted changes.)
 #
 def is-git-project-dirty [project_path] {

@@ -1,6 +1,24 @@
 $env.MY_DEBUG = false
 let start = date now | into int
 
+# Tell Nushell to find plugins in the same directory as the Nushell executable. For me, the executable is at
+#
+#     /opt/homebrew/bin/nu
+#
+# And official plugins that are distributed with Nushell are also located in that directory. For example:
+#
+#     /opt/homebrew/bin/nu_plugin_query
+#     /opt/homebrew/bin/nu_plugin_formats
+#     /opt/homebrew/bin/nu_plugin_polars
+#     /opt/homebrew/bin/nu_plugin_gstat
+#
+# See https://www.nushell.sh/book/configuration.html#using-constants
+#
+# For some reason I'm not getting shell completion for commands like 'plugin add' but the commands do find the plugins.
+const NU_PLUGIN_DIRS = [
+  ($nu.current-exe | path dirname)
+]
+
 $env.PATH = $env.PATH | prepend ([
     ~/.local/bin
     /opt/homebrew/bin
