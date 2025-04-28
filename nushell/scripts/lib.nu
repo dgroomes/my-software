@@ -34,7 +34,7 @@ export def git-switch-default-pull [] {
             err "This is not a Git repository."
             return
         }
-        err $"Something unexpected went wrong while inspecting the remote.\n($result.stderr)"
+        err $"Something unexpected happened while inspecting the remote.\n($result.stderr)"
         return
     }
 
@@ -674,7 +674,7 @@ export def --env cd-repo [] {
 
 # Deduplicate repeated substrings in a document.
 #
-# The '--length' is the mininum length of the substring to consider for deduplication.
+# The '--length' is the minimum length of the substring to consider for deduplication.
 export def dedupe [--length: int = 200] : string -> string {
     let input = $in
 

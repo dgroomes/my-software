@@ -52,6 +52,7 @@ use lib.nu *
 use node.nu *
 use open-jdk.nu *
 use postgres.nu *
+use work-trees.nu *
 use zdu.nu *
 
 # I don't really understand the essential coverage, or purpose, of the directories added to the PATH by the macOS

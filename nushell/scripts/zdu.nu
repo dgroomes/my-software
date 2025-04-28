@@ -151,3 +151,19 @@ export def err [msg: string] {
 export def file-name [file] {
     $file
 }
+
+# Often we will expand a tilde-containing path string. For example:
+#
+#     Original:    ~/my-project
+#     Expanded:    /Users/me/my-project
+#
+# This command does the reverse.
+#
+export def compress-home [] {
+    let p = $in
+    if ($p | str starts-with $env.HOME) {
+        $p | str replace $env.HOME "~"
+    } else {
+        $p
+    }
+}

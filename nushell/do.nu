@@ -67,6 +67,12 @@ const config_registry = {
         backup_success_msg: "'nushell/nu_scripts' sourcer file backed up."
         upstream_success_msg: "'nushell/nu_scripts' sourcer file upstreamed."
     }
+    work-trees: {
+        filename: "scripts/work-trees.nu",
+        backup_success_msg: "Git work trees lib file backed up."
+        install_success_msg: "Git work trees lib file installed."
+        upstream_success_msg: "Git work trees lib file backed upstreamed."
+    }
     zoxide: {
         filename: "vendor/autoload/zoxide.nu"
         backup_success_msg: "zoxide configuration file backed up."
