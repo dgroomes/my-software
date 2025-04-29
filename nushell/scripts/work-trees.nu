@@ -1,7 +1,7 @@
 use zdu.nu err
 use zdu.nu compress-home
 
-# WIP. Working with Git working trees.
+# Commands for working with Git working trees.
 #
 # I need a series of commands for helping me work with Git working trees (abbreviated as 'wt'). The actions are:
 #
@@ -35,8 +35,11 @@ use zdu.nu compress-home
 #
 # One thing that will be a new problem is that .gitignore'd secret files will have to be copied over as needed. I could
 # script something out. Not sure how big of a problem this will be in practice.
+export def gwt [] {
+    help gwt
+}
 
-# Get the working trees of the Git repository related to the the current working directory.
+# Get the working trees of the currently scoped Git repository.
 #
 # For example:
 #
@@ -112,7 +115,10 @@ def from-lines [l] {
     }
 }
 
-export def --env "gwt switch" [name: string@gwt-names] {
+# Switch to a working tree within the currently scoped Git repository.
+export def --env "gwt switch" [
+    name: string@gwt-names # The name of the directory containing the working tree to switch to.
+] {
 
     let f = gwt list | where (($it.path | path basename) == $name)
 
