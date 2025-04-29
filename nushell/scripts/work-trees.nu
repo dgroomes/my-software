@@ -3,14 +3,7 @@ use zdu.nu compress-home
 
 # Commands for working with Git working trees.
 #
-# I need a series of commands for helping me work with Git working trees (abbreviated as 'wt'). The actions are:
-#
-#   - list work trees
-#   - create a new work tree (TODO)
-#   - delete a work tree (TODO)
-#   - switch to a work tree
-#
-# I think the directory containing '.git' should have the default branch checked out. Seems redundant to force there to
+# Let's refer to the directory containing the '.git' directory as the root wt. I think the root wt should have the default branch checked out. Seems redundant to force there to
 # be a wt directory for the default branch. Extra directories and files are noise. Also, my aim with this is not to
 # isolate this wt from "doing real work". I'll still use it to do plenty of git commands as I wrangle, explore, and fix
 # git things. But we open a degree of freedom with a convention of a "working tree per idea" workflow. Comes at a cost.
@@ -52,7 +45,7 @@ export def gwt [] {
 #     │ 3 │ ~/repos/opensource/iceberg.scratch2 │ 22d194f5 │ refs/heads/scratch2 │
 #     ╰───┴─────────────────────────────────────┴──────────┴─────────────────────╯
 #
-export def "gwt list" [] {
+export def "gwt ls" [] {
     let r = git worktree list --porcelain | complete
 
     if ($r.exit_code != 0) {
@@ -120,7 +113,7 @@ export def --env "gwt switch" [
     name: string@gwt-names # The name of the directory containing the working tree to switch to.
 ] {
 
-    let f = gwt list | where (($it.path | path basename) == $name)
+    let f = gwt ls | where (($it.path | path basename) == $name)
 
     if ($f | is-empty) {
         err $"No working tree found for '($name)'"
@@ -130,5 +123,31 @@ export def --env "gwt switch" [
 }
 
 def "gwt-names" [] {
-    gwt list | each { $in.path | path basename }
+    gwt ls | each { $in.path | path basename }
 }
+
+# Add a new working tree and switch into it.
+#
+# There are multiple overloads of the 'git' command for creating a new working tree but there's one that I'll use the
+# most: creating a working tree and a branch at the same time. I'll just support that for now.
+export def --env "gwt add" [
+    --name (-n): string
+] {
+    let root_wt = gwt ls | sort-by { $in.path | str length } | $in.0.path | path expand
+    let repo = $root_wt | path basename
+    let wtn = $"($repo).($name)"
+    let wtd = [($root_wt | path dirname) $wtn] | path join
+
+    let r = git worktree add -b $name $wtd | complete
+
+    if ($r.exit_code != 0) {
+        err $"Unexpected response from 'git worktree add' command. \n($r.stderr)"
+        return
+    }
+
+    cd $wtd
+}
+
+# I'm not adding a 'gwt rm' because 'git worktree remove' has autocompletion. The only convenience of adding a custom
+# command would be the consistency of the 'gwt' name with the other commands. This is an important tenet though... don't
+# lose the plot. The goal is never to hide the underlying/important commands. 'git worktree remove' is perfectly fine.
