@@ -5,10 +5,10 @@ use zdu.nu compress-home
 #
 # I need a series of commands for helping me work with Git working trees (abbreviated as 'wt'). The actions are:
 #
-#   - list work trees (I need this for completions)
+#   - list work trees
 #   - create a new work tree (TODO)
 #   - delete a work tree (TODO)
-#   - switch to a work tree (TODO)
+#   - switch to a work tree
 #
 # I think the directory containing '.git' should have the default branch checked out. Seems redundant to force there to
 # be a wt directory for the default branch. Extra directories and files are noise. Also, my aim with this is not to
@@ -35,8 +35,6 @@ use zdu.nu compress-home
 #
 # One thing that will be a new problem is that .gitignore'd secret files will have to be copied over as needed. I could
 # script something out. Not sure how big of a problem this will be in practice.
-#
-# I think I'll use 'g' as a prefix name for my git-related custom commands. That's what Nushell has done with 'gstats'.
 
 # Get the working trees of the Git repository related to the the current working directory.
 #
@@ -51,7 +49,7 @@ use zdu.nu compress-home
 #     │ 3 │ ~/repos/opensource/iceberg.scratch2 │ 22d194f5 │ refs/heads/scratch2 │
 #     ╰───┴─────────────────────────────────────┴──────────┴─────────────────────╯
 #
-export def g-work-trees [] {
+export def "gwt list" [] {
     let r = git worktree list --porcelain | complete
 
     if ($r.exit_code != 0) {
@@ -112,4 +110,19 @@ def from-lines [l] {
         head: $head
         branch: $branch
     }
+}
+
+export def --env "gwt switch" [name: string@gwt-names] {
+
+    let f = gwt list | where (($it.path | path basename) == $name)
+
+    if ($f | is-empty) {
+        err $"No working tree found for '($name)'"
+    }
+
+    cd $f.0.path
+}
+
+def "gwt-names" [] {
+    gwt list | each { $in.path | path basename }
 }
