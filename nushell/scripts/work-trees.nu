@@ -28,8 +28,8 @@ use zdu.nu compress-home
 #
 # One thing that will be a new problem is that .gitignore'd secret files will have to be copied over as needed. I could
 # script something out. Not sure how big of a problem this will be in practice.
-export def gwt [] {
-    help gwt
+export def work-tree [] {
+    help work-tree
 }
 
 # Get the working trees of the currently scoped Git repository.
@@ -45,7 +45,7 @@ export def gwt [] {
 #     │ 3 │ ~/repos/opensource/iceberg.scratch2 │ 22d194f5 │ refs/heads/scratch2 │
 #     ╰───┴─────────────────────────────────────┴──────────┴─────────────────────╯
 #
-export def "gwt ls" [] {
+export def "work-tree list" [] {
     let r = git worktree list --porcelain | complete
 
     if ($r.exit_code != 0) {
@@ -109,11 +109,11 @@ def from-lines [l] {
 }
 
 # Switch to a working tree within the currently scoped Git repository.
-export def --env "gwt switch" [
-    name: string@gwt-names # The name of the directory containing the working tree to switch to.
+export def --env "work-tree switch" [
+    name: string@names # The name of the directory containing the working tree to switch to.
 ] {
 
-    let f = gwt ls | where (($it.path | path basename) == $name)
+    let f = work-tree list | where (($it.path | path basename) == $name)
 
     if ($f | is-empty) {
         err $"No working tree found for '($name)'"
@@ -122,18 +122,18 @@ export def --env "gwt switch" [
     cd $f.0.path
 }
 
-def "gwt-names" [] {
-    gwt ls | each { $in.path | path basename }
+def names [] {
+    work-tree list | each { $in.path | path basename }
 }
 
 # Add a new working tree and switch into it.
 #
 # There are multiple overloads of the 'git' command for creating a new working tree but there's one that I'll use the
 # most: creating a working tree and a branch at the same time. I'll just support that for now.
-export def --env "gwt add" [
+export def --env "work-tree add" [
     --name (-n): string
 ] {
-    let root_wt = gwt ls | sort-by { $in.path | str length } | $in.0.path | path expand
+    let root_wt = work-tree list | sort-by { $in.path | str length } | $in.0.path | path expand
     let repo = $root_wt | path basename
     let wtn = $"($repo).($name)"
     let wtd = [($root_wt | path dirname) $wtn] | path join
@@ -148,6 +148,6 @@ export def --env "gwt add" [
     cd $wtd
 }
 
-# I'm not adding a 'gwt rm' because 'git worktree remove' has autocompletion. The only convenience of adding a custom
-# command would be the consistency of the 'gwt' name with the other commands. This is an important tenet though... don't
+# I'm not adding a 'work-tree remove' because 'git worktree remove' has autocompletion. The only convenience of adding a custom
+# command would be the consistency of the 'work-tree' name with the other commands. This is an important tenet though... don't
 # lose the plot. The goal is never to hide the underlying/important commands. 'git worktree remove' is perfectly fine.

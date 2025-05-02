@@ -82,6 +82,11 @@ export alias f = file-name
 export alias gsdp = git-switch-default-pull
 export alias gs = git status
 
+alias wt = work-tree
+alias "wt ls" = work-tree list
+alias "wt switch" = work-tree switch
+alias "wt add" = work-tree add
+
 # Docker aliases
 export alias dcl = docker container ls
 ## This is what I'll call a "hard restart" version of the "up" command. It forces the containers to be created fresh
