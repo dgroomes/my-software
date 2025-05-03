@@ -224,6 +224,13 @@ to a working Nushell environment, but it's great enough.
          * ```shell
            git config --global alias.st "status --short --branch"
            ```
+             * Create a status alias with more compact output
+         * ```shell
+           git config --global alias.br  "branch --sort=-committerdate --format='%(committerdate:relative)	%(refname:short)'"
+           ```
+             * Create a branch alias that orders by latest commit date. The date is formatted like "35 hours ago", "6 days ago", etc.
+               I almost always want to see latest first. The relative date helps me understand if it was something I can jump
+               back into easily because it's recent or something so old I would need to make an effort.
          * ```shell
            git config --global push.autoSetupRemote true
            ```
