@@ -218,7 +218,7 @@ to a working Nushell environment, but it's great enough.
            git config --global init.defaultBranch main
            ```
          * ```shell
-           git config --global alias.lg "log --all --graph --pretty=format:'%C(green)%ad%C(reset) %C(auto)%h%d %s %C(blue)<%aN>%C(reset)' --date=format-local:'%Y-%m-%d'"
+           git config --global alias.lg "log --graph --pretty=format:'%C(black dim)%ad	%C(auto)%d %s' --date=relative"
            ```
              * Create a cool alternative to `git log` named `git lg`
          * ```shell
