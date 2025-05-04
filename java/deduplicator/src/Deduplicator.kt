@@ -182,29 +182,3 @@ fun suffixArray(text: String): List<Int> {
         }
     }
 }
-
-/**
- * This is naive.
- *
- * Remove all but the first occurrence of each duplicate substring.
- */
-fun removeAllButFirst(text: String, duplicates: Set<String>): String {
-    var result = text
-
-    // Process longer duplicates first to avoid removing parts of other duplicates
-    for (duplicate in duplicates.sortedByDescending { it.length }) {
-        val firstIndex = result.indexOf(duplicate)
-        if (firstIndex == -1) continue // Could happen if this duplicate was part of a longer one
-
-        var nextIndex = result.indexOf(duplicate, firstIndex + 1)
-        var count = 0
-
-        while (nextIndex != -1) {
-            result = result.substring(0, nextIndex) + result.substring(nextIndex + duplicate.length)
-            nextIndex = result.indexOf(duplicate, nextIndex)
-            count++
-        }
-    }
-
-    return result
-}

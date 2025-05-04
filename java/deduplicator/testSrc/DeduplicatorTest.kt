@@ -33,24 +33,6 @@ class DeduplicatorTest {
     }
 
     @Test
-    fun `remove all but first`() {
-        val result = removeAllButFirst("foo bar foo", setOf("foo"))
-
-        assertThat(result).isEqualTo("foo bar ")
-    }
-
-
-    @Test
-    fun `remove all but first - overlapping duplicates`() {
-        val result = removeAllButFirst("fool foo fool foo", setOf("foo", "fool "))
-
-        // "fool foo fool foo"  Start
-        // "fool foo foo"       After removing the second occurrence of "fool "
-        // "fool  "             After removing the second and third occurrences of "foo"
-        assertThat(result).isEqualTo("fool  ")
-    }
-
-    @Test
     fun `should deduplicate simple repeated text`() {
         val result = deduplicate(2, "hi hi")
 
