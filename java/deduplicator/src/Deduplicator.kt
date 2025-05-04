@@ -24,13 +24,13 @@ fun main() {
 fun deduplicate(minLength: Int, input: String): String {
     log("Deduplicating document of length ${input.length} with minimum candidate length of $minLength")
 
-    // Build suffix array
+    log("Building suffix array")
     val suffixArray = suffixArray(input)
 
-    // Find ranges to remove
+    log("Finding duplicate ranges")
     val rangesToRemove = findDuplicateRanges(input, suffixArray, minLength)
 
-    // Apply removals to create the deduplicated text
+    log("Applying removals")
     val result = applyRemovals(input, rangesToRemove)
 
     log("Deduplication complete. Original length: ${input.length}, new length: ${result.length}")
@@ -82,48 +82,10 @@ fun findDuplicateRanges(text: String, suffixArray: List<Int>, minLength: Int): L
 }
 
 /**
- * Find all duplicate ranges that should be removed.
- * This function identifies duplicates and determines which occurrences to remove.
- */
-fun findDuplicateRangesBak(text: String, suffixArray: List<Int>, minLength: Int): List<IntRange> {
-    val rangesToRemove = mutableListOf<IntRange>()
-    val lcpArray = computeLcpArray(text, suffixArray)
-
-    // Group suffixes by common prefixes
-    var i = 0
-    while (i < lcpArray.size) {
-        val lcp = lcpArray[i]
-        if (lcp >= minLength) {
-            // Found a duplicate substring of sufficient length
-            // Find all consecutive suffixes that share this prefix
-            val positions = mutableListOf(suffixArray[i], suffixArray[i + 1])
-            var j = i + 1
-            while (j < lcpArray.size && lcpArray[j] >= lcp) {
-                positions.add(suffixArray[j + 1])
-                j++
-            }
-
-            // Mark all but the first occurrence for removal
-            val dupLength = lcp
-            for (k in 1 until positions.size) {
-                rangesToRemove.add(positions[k] until positions[k] + dupLength)
-            }
-
-            // Skip all suffixes that were part of this group
-            i = j
-        } else {
-            i++
-        }
-    }
-
-    // Sort ranges and remove overlaps
-    return consolidateRanges(rangesToRemove)
-}
-
-/**
  * Consolidate overlapping ranges to avoid removing the same text multiple times.
  */
 fun consolidateRanges(ranges: List<IntRange>): List<IntRange> {
+    log("Consolidating ranges")
     if (ranges.isEmpty()) return emptyList()
 
     // Sort ranges by start position
@@ -241,10 +203,6 @@ fun removeAllButFirst(text: String, duplicates: Set<String>): String {
             result = result.substring(0, nextIndex) + result.substring(nextIndex + duplicate.length)
             nextIndex = result.indexOf(duplicate, nextIndex)
             count++
-        }
-
-        if (count > 0) {
-            log("Removed $count occurrences of duplicate: '$duplicate'")
         }
     }
 

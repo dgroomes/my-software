@@ -126,7 +126,19 @@ General clean-ups, TODOs and things I wish to implement for this project:
 * [ ] Consider biasing to lines as the boundary for deduplication. I'm not sure how this would look, but in practice
   across-line deduplication makes things confusing to read. In the normal case, we just lose the partial final line's
   worth of deduplication? Because I'm authoring the code, I have the flexibility to do this.
-* [ ] Maybe the API needs to be more structured instead of document in and document out. Use JSON. I mean, that's been
-  my whole strategy and it's worked so let's do it.
-* [ ] Make it space and time efficient. I'm not sure what the status is right, haven't thought about it critically.
+* [ ] Multi-document support.
+* [ ] HOLD Make it space and time efficient. I'm not sure what the status is right now, haven't thought about it critically.
+   * The HOLD is because the ideal algorithm for building suffix arrays is SA-IS (Suffixed Array Induced Sorting) but
+     it's very complicated to implement. I'd rather just use an existing Rust implementation for that. One way to make
+     this way faster is to implement the dedupe across multiple documents. This is a feature I want anyway. By making it
+     across documents, the largest possible suffix is the size of the largest document, not the size of all documents
+     concatenated together. I think this will reduce the effect of the algo being quadratic?
+    * Yeah it must be quadratic or something because I can get it to run on large-ish file sets but not a huge one like
+     Kafka.
 * [ ] Consider how to ID and reference deduplicated text.
+
+
+## Reference
+
+* [Wikipedia: *Suffix array*](https://en.wikipedia.org/wiki/Suffix_array)
+* [Wikipedia: *LCP array*](https://en.wikipedia.org/wiki/LCP_array)
