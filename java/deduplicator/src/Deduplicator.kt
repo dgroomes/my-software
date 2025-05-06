@@ -31,17 +31,36 @@ fun deduplicate(minLength: Int, input: String): String {
     log("Deduplicating document of length ${input.length} with minimum candidate length of $minLength")
 
     log("Building suffix array")
-    val suffixArray = suffixArray(input)
+    val suffixArr = suffixArray(input)
     if (TRACE) {
         log("Suffix array:")
-        suffixArray.forEach {
+        suffixArr.forEach {
             val s = input.substring(it)
             log("[%3d]:%s".format(it, s))
         }
     }
 
+    log("Building LCP array")
+    val lcpArr = lcpArray(input, suffixArr)
+    if (TRACE) {
+        log("LCP array:")
+        for (i in lcpArr.indices) {
+            val pos1 = suffixArr[i]
+            val pos2 = suffixArr[i + 1]
+            val l = lcpArr[i]
+            val common = if (l == 0) {
+                "(none)"
+            } else if (l > 20) {
+                input.substring(pos1, pos1 + 20) + "..."
+            } else {
+                input.substring(pos1, pos1 + l)
+            }
+            log("comparing suffixes at %3d and %3d - common: %s".format(pos1, pos2, common))
+        }
+    }
+
     log("Finding duplicate ranges")
-    val rangesToRemove = findDuplicateRanges(input, suffixArray, minLength)
+    val rangesToRemove = findDuplicateRanges(suffixArr, minLength, lcpArr)
 
     log("Applying removals")
     val result = applyRemovals(input, rangesToRemove)
@@ -54,20 +73,19 @@ fun deduplicate(minLength: Int, input: String): String {
  * Find all duplicate ranges that should be removed.
  * This function identifies duplicates and determines which occurrences to remove.
  */
-fun findDuplicateRanges(text: String, suffixArray: List<Int>, minLength: Int): List<IntRange> {
+fun findDuplicateRanges(suffixArray: List<Int>, minLength: Int, lcpArr: List<Int>): List<IntRange> {
     val rangesToRemove = mutableListOf<IntRange>()
-    val lcpArray = computeLcpArray(text, suffixArray)
 
     // Group suffixes by common prefixes
     var i = 0
-    while (i < lcpArray.size) {
-        val lcp = lcpArray[i]
+    while (i < lcpArr.size) {
+        val lcp = lcpArr[i]
         if (lcp >= minLength) {
             // Found a duplicate substring of sufficient length
             // Find all consecutive suffixes that share this prefix
             val positions = mutableListOf(suffixArray[i], suffixArray[i + 1])
             var j = i + 1
-            while (j < lcpArray.size && lcpArray[j] >= lcp) {
+            while (j < lcpArr.size && lcpArr[j] >= lcp) {
                 positions.add(suffixArray[j + 1])
                 j++
             }
@@ -82,7 +100,8 @@ fun findDuplicateRanges(text: String, suffixArray: List<Int>, minLength: Int): L
                 }
             }
 
-            // Skip all suffixes that were part of this group
+            // Skip all suffixes that were part of this group. I dont' understand why this is ok. Aren't we missing even
+            // longer matches among those?
             i = j
         } else {
             i++
@@ -149,30 +168,13 @@ fun applyRemovals(text: String, rangesToRemove: List<IntRange>): String {
  * LCP\[i] = length of the longest common prefix between
  * the suffix at position i and position i+1 in the suffix array.
  */
-fun computeLcpArray(text: String, suffixArray: List<Int>): List<Int> {
+fun lcpArray(text: String, suffixArray: List<Int>): List<Int> {
     val lcp = MutableList(suffixArray.size - 1) { 0 }
 
     for (i in 0 until suffixArray.size - 1) {
         val pos1 = suffixArray[i]
         val pos2 = suffixArray[i + 1]
         lcp[i] = longestCommonPrefix(text, pos1, pos2)
-    }
-
-    if (TRACE) {
-        log("LCP array:")
-        for (i in lcp.indices) {
-            val pos1 = suffixArray[i]
-            val pos2 = suffixArray[i + 1]
-            val l = lcp[i]
-            val common = if (l == 0) {
-                "(none)"
-            } else if (l > 20) {
-                text.substring(pos1, pos1 + 20) + "..."
-            } else {
-                text.substring(pos1, pos1 + l)
-            }
-            log("comparing suffixes at %3d and %3d - common: %s".format(pos1, pos2, common))
-        }
     }
 
     return lcp

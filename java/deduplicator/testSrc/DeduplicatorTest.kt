@@ -33,6 +33,25 @@ class DeduplicatorTest {
     }
 
     @Test
+    fun `lcp array`() {
+        val result = lcpArray("banana", listOf(5, 3, 1, 0, 4, 2))
+
+        // Refer to the earlier test case for a description of the suffix array for the 'banana' text. Now, we expect
+        // the LCP array to be:
+        //
+        // Index| First suffix  | Second suffix  | Common prefix | Length (LCP)
+        // -----|---------------|----------------|--------------|-------------
+        // 0    | a             | ana            | a             | 1
+        // 1    | ana           | anana          | ana           | 3
+        // 2    | anana         | banana         | -             | 0
+        // 3    | banana        | na             | -             | 0
+        // 4    | na            | nana           | na            | 2
+
+
+        assertThat(result).isEqualTo(listOf(1, 3, 0, 0, 2))
+    }
+
+    @Test
     fun `should deduplicate simple repeated text`() {
         val result = deduplicate(2, "hi hi")
 
