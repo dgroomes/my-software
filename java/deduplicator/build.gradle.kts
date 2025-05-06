@@ -29,7 +29,7 @@ dependencies {
 }
 
 application {
-    mainClass.set("DeduplicatorKt")
+    mainClass.set("my.dedupe.DeduplicatorKt")
 }
 
 tasks {

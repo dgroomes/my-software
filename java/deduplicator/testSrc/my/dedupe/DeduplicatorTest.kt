@@ -1,4 +1,6 @@
-import org.assertj.core.api.Assertions.assertThat
+package my.dedupe
+
+import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 
 class DeduplicatorTest {
@@ -29,7 +31,7 @@ class DeduplicatorTest {
         // 0 - banana
         // 4 - na
         // 2 - nana
-        assertThat(result).isEqualTo(listOf(5, 3, 1, 0, 4, 2))
+        Assertions.assertThat(result).isEqualTo(listOf(5, 3, 1, 0, 4, 2))
     }
 
     @Test
@@ -48,28 +50,28 @@ class DeduplicatorTest {
         // 4    | na            | nana           | na            | 2
 
 
-        assertThat(result).isEqualTo(listOf(1, 3, 0, 0, 2))
+        Assertions.assertThat(result).isEqualTo(listOf(1, 3, 0, 0, 2))
     }
 
     @Test
     fun `should deduplicate simple repeated text`() {
         val result = deduplicate(2, "hi hi")
 
-        assertThat(result).isEqualTo("hi ")
+        Assertions.assertThat(result).isEqualTo("hi ")
     }
 
     @Test
     fun `should not change text without duplicates`() {
         val result = deduplicate(1, "abc")
 
-        assertThat(result).isEqualTo("abc")
+        Assertions.assertThat(result).isEqualTo("abc")
     }
 
     @Test
     fun `minimum candidate length - repeats do not meet threshold`() {
         val result = deduplicate(3, "hihi")
 
-        assertThat(result).isEqualTo("hihi")
+        Assertions.assertThat(result).isEqualTo("hihi")
     }
 
     /**
@@ -91,41 +93,41 @@ class DeduplicatorTest {
         //   so moreso moreso // original text
         //   so moremoreso    // remove repeated "so "
         //   so more          // remove repeated "moreso". This is the weird part, because we now have no "moreso" instances.
-        assertThat(result).isEqualTo("so more")
+        Assertions.assertThat(result).isEqualTo("so more")
     }
 
     @Test
     fun `test longest common prefix - basic case`() {
         val text = "banana"
         val result = longestCommonPrefix(text, 1, 3) // "anana" vs "ana"
-        assertThat(result).isEqualTo(3) // "ana" is common
+        Assertions.assertThat(result).isEqualTo(3) // "ana" is common
     }
 
     @Test
     fun `test longest common prefix - no common prefix`() {
         val text = "abcdef"
         val result = longestCommonPrefix(text, 0, 3) // "abcdef" vs "def"
-        assertThat(result).isEqualTo(0)
+        Assertions.assertThat(result).isEqualTo(0)
     }
 
     @Test
     fun `test longest common prefix - entire suffix common`() {
         val text = "testing"
         val result = longestCommonPrefix(text, 4, 4) // "ing" vs "ing"
-        assertThat(result).isEqualTo(3)
+        Assertions.assertThat(result).isEqualTo(3)
     }
 
     @Test
     fun `test longest common prefix - empty remainder`() {
         val text = "test"
         val result = longestCommonPrefix(text, 4, 2) // "" vs "st"
-        assertThat(result).isEqualTo(0)
+        Assertions.assertThat(result).isEqualTo(0)
     }
 
     @Test
     fun `test longest common prefix - at string bounds`() {
         val text = "test"
         val result = longestCommonPrefix(text, 0, 2) // "test" vs "st"
-        assertThat(result).isEqualTo(0)
+        Assertions.assertThat(result).isEqualTo(0)
     }
 }

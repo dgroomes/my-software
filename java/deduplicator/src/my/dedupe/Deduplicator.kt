@@ -1,3 +1,5 @@
+package my.dedupe
+
 import java.time.LocalTime
 
 const val DEBUG = false
