@@ -1,7 +1,13 @@
+import java.time.LocalTime
+
 const val DEBUG = false
+const val TRACE = false
 
 private fun log(message: String) {
-    if (DEBUG) System.err.println(message)
+    if (DEBUG) {
+        val time = LocalTime.now().toString()
+        System.err.println("$time: $message")
+    }
 }
 
 /**
@@ -26,7 +32,7 @@ fun deduplicate(minLength: Int, input: String): String {
 
     log("Building suffix array")
     val suffixArray = suffixArray(input)
-    if (DEBUG) {
+    if (TRACE) {
         log("Suffix array:")
         suffixArray.forEach {
             val s = input.substring(it)
@@ -152,7 +158,7 @@ fun computeLcpArray(text: String, suffixArray: List<Int>): List<Int> {
         lcp[i] = longestCommonPrefix(text, pos1, pos2)
     }
 
-    if (DEBUG) {
+    if (TRACE) {
         log("LCP array:")
         for (i in lcp.indices) {
             val pos1 = suffixArray[i]
