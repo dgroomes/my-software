@@ -26,6 +26,13 @@ fun deduplicate(minLength: Int, input: String): String {
 
     log("Building suffix array")
     val suffixArray = suffixArray(input)
+    if (DEBUG) {
+        log("Suffix array:")
+        suffixArray.forEach {
+            val s = input.substring(it)
+            log("[%3d]:%s".format(it, s))
+        }
+    }
 
     log("Finding duplicate ranges")
     val rangesToRemove = findDuplicateRanges(input, suffixArray, minLength)
@@ -63,10 +70,9 @@ fun findDuplicateRanges(text: String, suffixArray: List<Int>, minLength: Int): L
             val earliestPos = positions.minOrNull()!!
 
             // Mark all but the earliest occurrence for removal
-            val dupLength = lcp
             for (pos in positions) {
                 if (pos != earliestPos) {
-                    rangesToRemove.add(pos until pos + dupLength)
+                    rangesToRemove.add(pos until pos + lcp)
                 }
             }
 
@@ -144,6 +150,23 @@ fun computeLcpArray(text: String, suffixArray: List<Int>): List<Int> {
         val pos1 = suffixArray[i]
         val pos2 = suffixArray[i + 1]
         lcp[i] = longestCommonPrefix(text, pos1, pos2)
+    }
+
+    if (DEBUG) {
+        log("LCP array:")
+        for (i in lcp.indices) {
+            val pos1 = suffixArray[i]
+            val pos2 = suffixArray[i + 1]
+            val l = lcp[i]
+            val common = if (l == 0) {
+                "(none)"
+            } else if (l > 20) {
+                text.substring(pos1, pos1 + 20) + "..."
+            } else {
+                text.substring(pos1, pos1 + l)
+            }
+            log("comparing suffixes at %3d and %3d - common: %s".format(pos1, pos2, common))
+        }
     }
 
     return lcp
