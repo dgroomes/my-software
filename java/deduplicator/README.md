@@ -136,7 +136,7 @@ General clean-ups, TODOs and things I wish to implement for this project:
     * Yeah it must be quadratic or something because I can get it to run on large-ish file sets but not a huge one like
      Kafka.
 * [ ] Consider how to ID and reference deduplicated text.
-* [ ] Separate the algorithm and the "chrome". This is helpful for tests and readability. I want to confine some of the
+* [x] DONE Separate the algorithm and the "chrome". This is helpful for tests and readability. I want to confine some of the
   pure functions from the debugging/logging and input/output.
 
 
