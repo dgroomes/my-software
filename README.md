@@ -148,6 +148,9 @@ General clean-ups, TODOs and things I wish to implement for this project:
   But... this is completely impractical. There's no way I'm going to generally confine myself to small files. Big files
   are often the best way to do things. Single-file scripts... An essay/blog. Still I need to capture the impactful
   strategy notes.
+* [ ] IN PROGRESS npm config. I need to deal with the usage/install of global modules. For now I'm doing one spot
+  regardless of Node/npm version. I might eventually feel the pain due to stuff like node-gyp but not yet. If so that's
+  fine and I'll put that switching logic in my `node.nu` scripts.
 
 
 ## Finished Wish List Items

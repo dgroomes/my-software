@@ -373,3 +373,8 @@ to a working Nushell environment, but it's great enough.
     * ```shell
       touch ~/.hushlogin
       ```
+40. Set up `.npmrc` file
+    * ```nushell
+      mkdir ~/.local/npm/lib
+      npm config set prefix ~/.local/npm
+      ```

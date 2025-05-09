@@ -28,6 +28,7 @@ $env.PATH = $env.PATH | prepend ([
     ~/.cargo/bin
     ~/.docker/bin
     ~/go/bin
+    ~/.local/npm/bin
 ] | each { path expand })
 
 # Reproduce the same effect of "brew shellenv". We can't use "brew shellenv" because it doesn't support Nushell so we
