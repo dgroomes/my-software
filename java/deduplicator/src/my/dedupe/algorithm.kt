@@ -4,7 +4,7 @@ package my.dedupe
  * Find all duplicate ranges that should be removed.
  * This function identifies duplicates and determines which occurrences to remove.
  */
-fun findDuplicateRanges(suffixArray: List<Int>, minLength: Int, lcpArr: List<Int>): List<IntRange> {
+fun findDuplicateRanges(suffixArray: IntArray, minLength: Int, lcpArr: IntArray): List<IntRange> {
     val rangesToRemove = mutableListOf<IntRange>()
 
     // Group suffixes by common prefixes
@@ -94,11 +94,16 @@ fun applyRemovals(text: String, rangesToRemove: List<IntRange>): String {
 
 /**
  * Compute the LCP (Longest Common Prefix) array.
- * LCP\[i] = length of the longest common prefix between
- * the suffix at position i and position i+1 in the suffix array.
+ * LCP\[i] = length of the longest common prefix between the suffix at position i and position i+1 in the suffix array.
+ *
+ * Note that this LCP array is one element shorter than the suffix array. By contrast, in many implementations, an LCP
+ * array is the same length as the suffix array and the first element is -1.
+ *
+ * This implementation is naive. There are more efficient algorithms. But in practice, it should be fast because there
+ * aren't tons of duplicates so it shouldn't have to "compute deep" into neighboring suffixes very often.
  */
-fun lcpArray(text: String, suffixArray: List<Int>): List<Int> {
-    val lcp = MutableList(suffixArray.size - 1) { 0 }
+fun lcpArray(text: String, suffixArray: IntArray): IntArray {
+    val lcp = IntArray(suffixArray.size - 1)
 
     for (i in 0 until suffixArray.size - 1) {
         val pos1 = suffixArray[i]
@@ -123,7 +128,7 @@ fun longestCommonPrefix(text: String, start1: Int, start2: Int): Int {
     return length
 }
 
-fun suffixArray(text: String): List<Int> {
+fun suffixArray(text: String): IntArray {
     return text.indices.sortedWith { a, b ->
         var i = a
         var j = b
@@ -140,5 +145,13 @@ fun suffixArray(text: String): List<Int> {
             j == text.length && i < text.length -> 1
             else -> 0
         }
-    }
+    }.toIntArray()
+}
+
+fun deduplicate(minLength: Int, input: String): String {
+    val suffixArr = suffixArray(input)
+    val lcpArr = lcpArray(input, suffixArr)
+    var rangesToRemove = findDuplicateRanges(suffixArr, minLength, lcpArr)
+    rangesToRemove = consolidateRanges(rangesToRemove)
+    return applyRemovals(input, rangesToRemove)
 }

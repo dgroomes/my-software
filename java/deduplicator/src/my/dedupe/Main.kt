@@ -1,16 +1,10 @@
 package my.dedupe
 
+import java.io.File
+import java.io.FileOutputStream
+import java.io.PrintStream
 import java.time.LocalTime
-
-const val DEBUG = false
-const val TRACE = false
-
-private fun log(message: String) {
-    if (DEBUG) {
-        val time = LocalTime.now().toString()
-        System.err.println("$time: $message")
-    }
-}
+import java.time.format.DateTimeFormatter
 
 /**
  * Deduplicate repeated blocks of text.
@@ -24,49 +18,66 @@ fun main() {
     val minLength = minLengthStr.toIntOrNull()
         ?: throw IllegalStateException("Environment variable 'MIN_CANDIDATE_LENGTH' must be a valid integer but was: '$minLengthStr'")
 
+    val debug = System.getenv("DEDUPE_DEBUG") == "TRUE"
+
     val input = System.`in`.bufferedReader().use { it.readText() }
-
-    log("Deduplicating document of length ${input.length} with minimum candidate length of $minLength")
-
-    log("Building suffix array")
-    val suffixArr = suffixArray(input)
-    if (TRACE) {
-        log("Suffix array:")
-        suffixArr.forEach {
-            val s = input.substring(it)
-            log("[%3d]:%s".format(it, s))
+    val deduped: String
+    if (debug) {
+        val file = File("dedupe.log")
+        System.err.println("Writing debug output to ${file.absolutePath}")
+        PrintStream(FileOutputStream(file)).use { ps ->
+            deduped = deduplicateDebug(minLength, input, ps).result
         }
+    } else {
+        deduped = deduplicate(minLength, input)
     }
-
-    log("Building LCP array")
-    val lcpArr = lcpArray(input, suffixArr)
-    if (TRACE) {
-        log("LCP array:")
-        for (i in lcpArr.indices) {
-            val pos1 = suffixArr[i]
-            val pos2 = suffixArr[i + 1]
-            val l = lcpArr[i]
-            val common = if (l == 0) {
-                "(none)"
-            } else if (l > 20) {
-                input.substring(pos1, pos1 + 20) + "..."
-            } else {
-                input.substring(pos1, pos1 + l)
-            }
-            log("comparing suffixes at %3d and %3d - common: %s".format(pos1, pos2, common))
-        }
-    }
-
-    log("Finding duplicate ranges")
-    var rangesToRemove = findDuplicateRanges(suffixArr, minLength, lcpArr)
-
-    log("Consolidating duplicate ranges")
-    rangesToRemove = consolidateRanges(rangesToRemove)
-
-    log("Applying removals")
-    val result = applyRemovals(input, rangesToRemove)
-
-    log("Deduplication complete. Original length: ${input.length}, new length: ${result.length}")
-    println(result)
+    println(deduped)
 }
 
+/**
+ * This is a debug version of the deduplication algorithm that returns all intermediate results and prints progress.
+ *
+ * This should be used in tests and for debugging.
+ */
+fun deduplicateDebug(minLength: Int, input: String, ps: PrintStream): DeduplicationDetails {
+    val fmt = DateTimeFormatter.ofPattern("HH:mm:ss.SS")
+
+    fun log(message: String) {
+        val time = LocalTime.now().format(fmt)
+        ps.println("$time: $message")
+    }
+
+    log("Deduplicating document of length ${input.length} with minimum candidate length of $minLength.")
+    log("Input: $input")
+
+    val suffixArr = suffixArray(input)
+    log("Suffix Array:")
+    ps.println(prettyPrintSuffixArray(input, suffixArr))
+
+    val lcpArr = lcpArray(input, suffixArr)
+    log("LCP array")
+    ps.println(prettyPrintLcpArray(input, suffixArr, lcpArr))
+
+    val rangesToRemove = findDuplicateRanges(suffixArr, minLength, lcpArr)
+    log("Duplicate ranges:")
+    ps.println(prettyPrintRanges(input, rangesToRemove))
+
+    val consolidatedRanges = consolidateRanges(rangesToRemove)
+    log("Consolidated duplicate ranges:")
+    ps.println(prettyPrintRanges(input, consolidatedRanges))
+
+    val result = applyRemovals(input, consolidatedRanges)
+
+    log("Deduplication complete")
+    ps.println(prettyPrintComparison(input, result))
+
+    return DeduplicationDetails(
+        input = input,
+        minLength = minLength,
+        suffixArray = suffixArr,
+        lcpArray = lcpArr,
+        duplicateRanges = rangesToRemove,
+        consolidatedRanges = consolidatedRanges,
+        result = result
+    )
+}

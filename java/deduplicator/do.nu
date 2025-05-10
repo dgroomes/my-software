@@ -21,8 +21,14 @@ export def build [] {
 export def run [--min-length: int]: string -> string {
     cd $DIR
     let doc = $in
+    let exe = "./build/install/deduplicator/bin/deduplicator"
+    if not ($exe | path exists) {
+        print "Executable not found. Did you run 'build'?"
+        return
+    }
+
     $env.MIN_CANDIDATE_LENGTH = $min_length | into string
-    $doc | ./build/install/deduplicator/bin/deduplicator
+    $doc | run-external $exe
 }
 
 export def install [] {

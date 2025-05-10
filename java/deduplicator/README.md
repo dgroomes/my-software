@@ -138,6 +138,10 @@ General clean-ups, TODOs and things I wish to implement for this project:
 * [ ] Consider how to ID and reference deduplicated text.
 * [x] DONE Separate the algorithm and the "chrome". This is helpful for tests and readability. I want to confine some of the
   pure functions from the debugging/logging and input/output.
+* [ ] Get serious about understanding encoding. I need to understand how the algorithm operates on bytes, and then
+  standardize or make consistent the usage. Can I just pad every character to 4 bytes because that's the longest UTF-16
+  codepoint? And then the algorithm operates on 4 byte sequences? By contrast, I could flatten the whole corpus onto some
+  short dictionary for "speed" but why bother?
 
 
 ## Reference
