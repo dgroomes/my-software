@@ -81,7 +81,8 @@ export alias f = file-name
 
 # Git aliases
 export alias gsdp = git-switch-default-pull
-export alias gs = git status
+export alias gs = git st
+export alias gl = git lg
 
 alias wt = work-tree
 alias "wt ls" = work-tree list
