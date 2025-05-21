@@ -27,7 +27,7 @@ export async function loadConfig(): Promise<LibraryConfig> {
     return configCache;
   }
 
-  const configPath = path.join(process.cwd(), "library-entries.json");
+  const configPath = path.join(process.cwd(), "test-file-bookmarks.json");
   try {
     const configData = await fs.readFile(configPath, "utf-8");
     const config = JSON.parse(configData) as LibraryConfig;

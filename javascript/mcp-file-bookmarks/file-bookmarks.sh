@@ -5,9 +5,9 @@
 dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 # Log to files relative to the script dir
-in="${dir}/context-library.in.mcp.jsonl"
-out="${dir}/context-library.out.mcp.jsonl"
-err="${dir}/context-library.err.mcp.log"
+in="${dir}/file-bookmarks.in.mcp.jsonl"
+out="${dir}/file-bookmarks.out.mcp.jsonl"
+err="${dir}/file-bookmarks.err.mcp.log"
 
 # Set up tee to capture input/output
 exec 0< <(tee "$in")

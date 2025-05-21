@@ -5,7 +5,7 @@ An MCP server for quickly referencing bookmarked local files.
 
 ## Overview
 
-The MCP File Bookmarks server is designed to make it faster to reference frequently needed files in your LLM session.
+The File Bookmarks MCP server is designed to make it faster to reference frequently needed files in your LLM session.
 
 The server uses a curated list of *bookmarks* which are paths to directories and files. These entries are stored in a simple JSON file. I don't know exactly how this will shape up. For now, I'm going to just maintain the entries by hand.
 
@@ -14,30 +14,30 @@ The vision of the usage is that you're in an AI chat session in an MCP host (e.g
 
 ## Instructions
 
-Follow these instructions to build, test, and run the MCP File Bookmarks server:
+Follow these instructions to build, test, and run the File Bookmarks MCP server:
 
 1. Activate the Nushell `do` module
-   * ```shell
+   * ```nushell
      do activate
      ```
 2. Generate the `package.json` file (if needed)
-   * ```shell
+   * ```nushell
      do package-json
      ```
 3. Install dependencies
-   * ```shell
+   * ```nushell
      do install
      ```
 4. Run tests
-   * ```shell
+   * ```nushell
      do test
      ```
 5. Build the server
-   * ```shell
+   * ```nushell
      do build
      ```
 6. Run the server in interactive mode for testing
-   * ```shell
+   * ```nushell
      do run
      ```
 7. Set up the server in VS Code
@@ -47,7 +47,7 @@ Follow these instructions to build, test, and run the MCP File Bookmarks server:
        "mcp": {
          "servers": {
            "file-bookmarks": {
-             "command": "/path/to/file-bookmarks-server.sh"
+             "command": "/path/to/file-bookmarks.sh"
            }
          }
        }

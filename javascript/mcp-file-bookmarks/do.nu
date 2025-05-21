@@ -8,9 +8,9 @@ export def package-json [] {
     let typescript = "~5.8.3" # TypeScript releases: https://github.com/Microsoft/TypeScript/releases
 
     let packageJson = {
-        name: "mcp-context-library",
+        name: "mcp-file-bookmarks",
         version: "0.1.0",
-        description: "An MCP server that provides quick access to a local 'context library' of frequently referenced files.",
+        description: "An MCP server for quickly referencing bookmarked local files.",
         type: "module",
         main: "dist/index.js",
         scripts: {
@@ -53,5 +53,5 @@ export def run [] {
 # Start the server with the MCP Inspector
 export def run-with-inspector [] {
     cd $DIR
-    npx @modelcontextprotocol/inspector@0.9.0 ./context-library.sh
+    npx @modelcontextprotocol/inspector@0.9.0 ./file-bookmarks.sh
 }

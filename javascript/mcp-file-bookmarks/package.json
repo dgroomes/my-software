@@ -1,7 +1,7 @@
 {
-  "name": "mcp-context-library",
+  "name": "mcp-file-bookmarks",
   "version": "0.1.0",
-  "description": "An MCP server that provides quick access to a local 'context library' of frequently referenced files.",
+  "description": "An MCP server for quickly referencing bookmarked local files.",
   "type": "module",
   "main": "dist/index.js",
   "scripts": {

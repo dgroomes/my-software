@@ -1,0 +1,27 @@
+[
+  {
+    "base_path": "~/repos/personal/my-software",
+    "entries": [
+      {
+        "path": "go/README.md",
+        "description": "Documentation for Go utilities"
+      },
+      {
+        "path": "javascript/json-validator/README.md",
+        "description": "JSON validator documentation"
+      },
+      {
+        "path": "java/deduplicator/src/Deduplicator.kt",
+        "description": "Text deduplication utility code"
+      },
+      {
+        "path": "nushell",
+        "description": "Nushell configuration and scripts directory"
+      },
+      {
+        "path": "javascript/json-validator/do.nu",
+        "description": "Nushell do script for JSON validator"
+      }
+    ]
+  }
+]
