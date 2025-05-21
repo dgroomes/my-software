@@ -1,26 +1,20 @@
-# mcp-context-library NOT YET IMPLEMENTED (AI slop/gold)
+# mcp-file-bookmarks NOT YET IMPLEMENTED (AI slop/gold)
 
-An MCP server that provides quick access to reference files and directories from local git repositories.
+An MCP server for quickly referencing bookmarked local files.
 
 
 ## Overview
 
-The MCP Context Library server offers fast access to frequently referenced files and directories in your local git repositories. This tool is designed to solve the common problem of needing to reference specific files during development work, whether they're configuration examples, important documentation, or code snippets.
+The MCP File Bookmarks server is designed to make it faster to reference frequently needed files in your LLM session.
 
-The server maintains a curated list of "library entries" - paths to files or directories that you've found particularly useful. These entries are stored in a simple JSON file that grows over time as you add more references.
+The server uses a curated list of *bookmarks* which are paths to directories and files. These entries are stored in a simple JSON file. I don't know exactly how this will shape up. For now, I'm going to just maintain the entries by hand.
 
-When used with Claude in VS Code, this tool allows you to:
-- Browse your library entries directly in chat
-- Instantly fetch and view the contents of reference files
-- Access frequently used configuration examples and templates
-- Study important parts of codebases without switching contexts
-
-The goal is to reduce friction when referencing important files, helping you maintain focus during development tasks.
+The vision of the usage is that you're in an AI chat session in an MCP host (e.g. VS Code, Claude Code) and you need to reference some content you've read a hundred times but can never remember, like a particular Bash snippet. You should be able to say "#bookmark bash get curr dir abs path" and the LLM can cross-reference that request with the known bookmarks and ask the server to read the content of the file.
 
 
 ## Instructions
 
-Follow these instructions to build, test, and run the MCP Context Library server:
+Follow these instructions to build, test, and run the MCP File Bookmarks server:
 
 1. Activate the Nushell `do` module
    * ```shell
@@ -52,8 +46,8 @@ Follow these instructions to build, test, and run the MCP Context Library server
      {
        "mcp": {
          "servers": {
-           "context-library": {
-             "command": "/path/to/context-library.sh"
+           "file-bookmarks": {
+             "command": "/path/to/file-bookmarks-server.sh"
            }
          }
        }
@@ -61,89 +55,48 @@ Follow these instructions to build, test, and run the MCP Context Library server
      ```
 
 
-## Using the Server
+## Bookmarks
 
-The server provides the following tools:
-
-### list_entries
-
-Lists all available library entries, optionally filtering by a pattern.
-
-Parameters:
-- `pattern` (optional): A glob pattern to filter entries (e.g., "*.md" or "java/**")
-- `exclude_patterns` (optional): An array of glob patterns to exclude (e.g., ["**/node_modules/**", "**/*.log"])
-
-Example:
-```
-$ list_entries
-```
-
-Output:
-```json
-{
-  "entries": [
-    {
-      "path": "go/README.md",
-      "description": "Documentation for Go utilities"
-    },
-    {
-      "path": "javascript/json-validator/README.md",
-      "description": "JSON validator documentation"
-    },
-    ...
-  ]
-}
-```
-
-### fetch_entry
-
-Fetches the content of a specific library entry.
-
-Parameters:
-- `path`: The path of the entry to fetch
-
-Example:
-```
-$ fetch_entry { "path": "go/README.md" }
-```
-
-Output:
-```
-# go
-
-Go code that supports my personal workflows.
-
-...
-```
-
-## Library Entries
-
-Library entries are stored in a JSON file with the following structure:
+Bookmarks are stored as an array in a `~/.local/file-bookmarks.json` file with the following structure:
 
 ```json
-{
-  "base_path": "~/repos/personal/my-software",
-  "entries": [
-    {
-      "path": "go/README.md",
-      "description": "Documentation for Go utilities"
-    },
-    {
-      "path": "javascript/json-validator/README.md",
-      "description": "JSON validator documentation"
-    }
-  ]
-}
+[
+  {
+    "base_path": "~/repos/personal/my-software",
+    "description": "My personal software projects",
+    "entries": [
+      {
+        "path": "go/README.md",
+        "description": "Documentation for Go utilities"
+      },
+      {
+        "path": "javascript/json-validator/README.md",
+        "description": "JSON validator documentation"
+      },
+      {
+        "path": "mcp/time/time.sh",
+        "description": "Among other things, contains a 'Bash trick for getting current dir'"
+      }
+    ]
+  },
+  {
+    "base_path": "~/repos/opensource/iceberg",
+    "description": "Apache Iceberg",
+    "entries": [
+      {
+        "path": "docs/docs/api.md",
+        "description": "A brief overview of the API"
+      }
+    ]
+  }
+]
 ```
 
-You can edit this file manually to add, remove, or modify entries.
 
 ## Wish List
 
 General clean-ups, TODOs and things I wish to implement for this project:
 
-* [ ] Add support for multiple base paths
-* [ ] Implement automatic discovery of interesting files
-* [ ] Add a tool to add new entries directly from Claude
-* [ ] Support version control awareness (e.g., fetch different versions of files)
-* [ ] Add support for rich content rendering (e.g., Markdown, code with syntax highlighting)
+* [ ] Implement.
+* [ ] Revive the vision of the project and encode it in th eoverview and wish list. Some of th eoriginal AI slop tech debt is asking for its interest payment: it's hard to know if a sentence was original (useful) or AI generated (a chance of being irrelevant and wasting my time).
+* [ ] Consider being very narrow on the scope. I like the keywords "bookmarks", "local", "files", "library", "context", and "reference". I'm not sure what I like most. But I need to keep this simple enough to be useful.
