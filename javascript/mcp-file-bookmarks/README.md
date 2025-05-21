@@ -9,7 +9,16 @@ The File Bookmarks MCP server is designed to make it faster to reference frequen
 
 The server uses a curated list of *bookmarks* which are paths to directories and files. These entries are stored in a simple JSON file. I don't know exactly how this will shape up. For now, I'm going to just maintain the entries by hand.
 
-The vision of the usage is that you're in an AI chat session in an MCP host (e.g. VS Code, Claude Code) and you need to reference some content you've read a hundred times but can never remember, like a particular Bash snippet. You should be able to say "#bookmark bash get curr dir abs path" and the LLM can cross-reference that request with the known bookmarks and ask the server to read the content of the file.
+The vision of the usage is that you're in an AI chat session in an MCP host (e.g. VS Code, Claude Code) and you need to reference some content you've read a hundred times but can never remember, like a particular Bash snippet. You should be able to prompt it with things like this:
+
+* > !fbg bash get curr dir abs path
+* > !fbl my-software
+
+The `!fbg` is short for "file bookmarks get" and it expresses that you want to get the contents of the bookmarked file that is identifiable by the hints you provided. The LLM cross-references that request with the known bookmarks and their descriptions and then asks the server to read the content of the file.
+
+The `!fbl` is short for "file bookmarks list" and it expresses that you just want to list the bookmarks that match the hints you provided. Similarly, the LLM does the cross-referencing and then lists the matches in the chat session.
+
+I'm using `!` as an identifying shorthand because `#` I think is overloaded in existing tooling, but we'll see.
 
 
 ## Instructions
@@ -97,6 +106,7 @@ Bookmarks are stored as an array in a `~/.local/file-bookmarks.json` file with t
 
 General clean-ups, TODOs and things I wish to implement for this project:
 
+* [ ] Triage code down to basic "hello world"-style server.
 * [ ] Implement.
-* [ ] Revive the vision of the project and encode it in th eoverview and wish list. Some of th eoriginal AI slop tech debt is asking for its interest payment: it's hard to know if a sentence was original (useful) or AI generated (a chance of being irrelevant and wasting my time).
-* [ ] Consider being very narrow on the scope. I like the keywords "bookmarks", "local", "files", "library", "context", and "reference". I'm not sure what I like most. But I need to keep this simple enough to be useful.
+* [x] DONE Revive the vision of the project and encode it in the overview and wish list. Some of the original AI slop tech debt is asking for its interest payment: it's hard to know if a sentence was original (useful) or AI generated (a chance of being irrelevant and wasting my time).
+* [x] DONE Consider being very narrow on the scope. I like the keywords "bookmarks", "local", "files", "library", "context", and "reference". I'm not sure what I like most. But I need to keep this simple enough to be useful.
