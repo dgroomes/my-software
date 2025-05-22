@@ -39,18 +39,6 @@ export def build [] {
     npm run build
 }
 
-export def test [] {
-    cd $DIR
-    npm test
-}
-
-# Start the server in interactive mode
-export def run [] {
-    cd $DIR
-    node dist/index.js
-}
-
-# Start the server with the MCP Inspector
 export def run-with-inspector [] {
     cd $DIR
     npx @modelcontextprotocol/inspector@0.9.0 ./file-bookmarks.sh

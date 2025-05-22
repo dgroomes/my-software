@@ -12,3 +12,6 @@ mcp/schema.ts
 .vscode/
 .github/copilot-config.json
 attachments/
+
+# I don't know why Claude Code insists on writing this.
+**/.claude/settings.local.json

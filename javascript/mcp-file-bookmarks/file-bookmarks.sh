@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Bash script to launch the MCP Context Library server, capturing copies of stdin/stdout/stderr.
+# Bash script to launch the File Bookmarks MCP server, capturing copies of stdin/stdout/stderr.
 
 # Get the directory containing the script
 dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"

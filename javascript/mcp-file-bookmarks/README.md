@@ -1,24 +1,28 @@
-# mcp-file-bookmarks NOT YET IMPLEMENTED (AI slop/gold)
+# mcp-file-bookmarks
 
 An MCP server for quickly referencing bookmarked local files.
 
 
 ## Overview
 
-The File Bookmarks MCP server is designed to make it faster to reference frequently needed files in your LLM session.
+The File Bookmarks MCP server is designed to make it faster to reference frequently needed files for your LLM sessions.
 
-The server uses a curated list of *bookmarks* which are paths to directories and files. These entries are stored in a simple JSON file. I don't know exactly how this will shape up. For now, I'm going to just maintain the entries by hand.
+The server exposes a curated list of *bookmarks* which are paths to files. The server has these tools:
 
-The vision of the usage is that you're in an AI chat session in an MCP host (e.g. VS Code, Claude Code) and you need to reference some content you've read a hundred times but can never remember, like a particular Bash snippet. You should be able to prompt it with things like this:
+* `howto()`
+  * Teach the agent workflows about how to use the tools
+* `list()`
+  * List bookmarks and their descriptions
+* `get(base_path: string, entry_path: string)`
+  * Get the file contents of a bookmark
 
-* > !fbg bash get curr dir abs path
-* > !fbl my-software
+The vision is that you're in an agentic AI chat session, and you need to reference some content you've read a hundred times but can never remember, like a particular Bash snippet. Let's say you had previously bookmarked a Bash script and used a description that makes it clear that the script contains the snippet. Then, you can make the agent locate the bookmark file and pull in its contents into the chat session with a prompt like this:
 
-The `!fbg` is short for "file bookmarks get" and it expresses that you want to get the contents of the bookmarked file that is identifiable by the hints you provided. The LLM cross-references that request with the known bookmarks and their descriptions and then asks the server to read the content of the file.
+* > !fb bash trick for curr dir
 
-The `!fbl` is short for "file bookmarks list" and it expresses that you just want to list the bookmarks that match the hints you provided. Similarly, the LLM does the cross-referencing and then lists the matches in the chat session.
+Because of the magic of LLMs, the agent can make sense of what you want.
 
-I'm using `!` as an identifying shorthand because `#` I think is overloaded in existing tooling, but we'll see.
+`!fb` is short for "File Bookmarks" and it makes it clear to the agent that you are trying to read bookmarked files. I'm using `!` as an identifying shorthand because `#` I think is overloaded in existing tooling, but we'll see.
 
 
 ## Instructions
@@ -37,19 +41,15 @@ Follow these instructions to build, test, and run the File Bookmarks MCP server:
    * ```nushell
      do install
      ```
-4. Run tests
-   * ```nushell
-     do test
-     ```
-5. Build the server
+4. Build the server
    * ```nushell
      do build
      ```
-6. Run the server in interactive mode for testing
+5. Start the server with the MCP Inspector
    * ```nushell
-     do run
+     do run-with-inspector
      ```
-7. Set up the server in VS Code
+6. Set up the server in VS Code
    * Add the following to your VS Code settings.json file:
      ```json
      {
@@ -66,7 +66,7 @@ Follow these instructions to build, test, and run the File Bookmarks MCP server:
 
 ## Bookmarks
 
-Bookmarks are stored as an array in a `~/.local/file-bookmarks.json` file with the following structure:
+Bookmarks are stored in a `~/.local/file-bookmarks.json` file. I don't know how all this will shape up, so I'm just using a simple "directories of entries" approach now and manually editing the JSON file. Here is an example:
 
 ```json
 [
@@ -102,11 +102,27 @@ Bookmarks are stored as an array in a `~/.local/file-bookmarks.json` file with t
 ```
 
 
+## Miscellaneous
+
+* I want to use the STDIO transport NOT HTTP.
+* I want all my ts code in one file. Right now, there are two files. Consolidate them.
+* I don't want to bring in any extra dependencies besides the MCP TS SDK, if possible.
+* I want to convey errors in a way that's idiomatic with MCP protocol. Concise and useful error handling is hard. No need to throw an error and crash the program if it is recoverable.
+* All code should be in one `.ts` file. This is a small project. Let's keep it simple.
+
+
 ## Wish List
 
 General clean-ups, TODOs and things I wish to implement for this project:
 
-* [ ] Triage code down to basic "hello world"-style server.
-* [ ] Implement.
+* [x] DONE Triage code down to basic "hello world"-style server.
+* [x] DONE Implement.
+    * DONE Ok it's pretty good, but still AI sloppy. I need to attach examples from the MCP TS SDK.
+    * DONE Consider error handling. Is it idiomatic compared to the example TS servers? Are we propagating the "MCP way"?
+    * DONE Is this Zod stuff even right? Are the types of the tool calls expressed correctly?
+    * DONE Take another pass over the code. There are multiple differences from the vision in the README. For one, I need to implement the `howto()` tool. I also need to make sure I'm handling the multiple match and none match cases correctly. These are all just instructions for the agent from the `howto()` tool.
+    * DONE (Yes, wow nice. LLMs can sometimes follow instructions amazingly) Does it work?
 * [x] DONE Revive the vision of the project and encode it in the overview and wish list. Some of the original AI slop tech debt is asking for its interest payment: it's hard to know if a sentence was original (useful) or AI generated (a chance of being irrelevant and wasting my time).
 * [x] DONE Consider being very narrow on the scope. I like the keywords "bookmarks", "local", "files", "library", "context", and "reference". I'm not sure what I like most. But I need to keep this simple enough to be useful.
+* [ ] My functions should use MCP response types instead of strings. I need to be able to return the `isError: true` when needed.
+* [ ] Keep track of 'howto'. Return an error if other tools are called before `howto()`.
