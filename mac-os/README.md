@@ -378,3 +378,8 @@ to a working Nushell environment, but it's great enough.
       mkdir ~/.local/npm/lib
       npm config set prefix ~/.local/npm
       ```
+41. Install Claude Code user *memory* file
+    * ```nushell
+      mkdir ~/.claude
+      cp ../claude/CLAUDE.user.md ~/.claude/CLAUDE.md
+      ```
