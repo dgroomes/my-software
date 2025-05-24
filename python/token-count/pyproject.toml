@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "my_software"
+name = "token_count"
 version = "0.1.0"
-description = "My Python personal software"
+description = "My LLM token counter"
 authors = ["David Groomes <dwgroomes@gmail.com>"]
 readme = "README.md"
 
@@ -12,7 +12,7 @@ tiktoken = "~0.7.0"
 
 
 [tool.poetry.scripts]
-token-count = "my_software.token_count:token_count"
+token-count = "token_count.token_count:token_count"
 
 
 [build-system]
