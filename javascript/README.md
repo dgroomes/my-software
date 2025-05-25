@@ -29,3 +29,4 @@ General clean-ups, TODOs and things I wish to implement for this project:
 * [ ] Consider porting over my Raycast plugin or at least the notes I have about it. I never really used this plugin.
   I think opening projects from the commandline or from within Intellij is good. But I feel that there has to be some
   plugin idea somewhere for me, however small.
+* [ ] IN PROGRESS "rules" MCP server. 
