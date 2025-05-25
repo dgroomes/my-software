@@ -1,113 +1,92 @@
 # mcp-rules
 
-**NOTICE**: This is an AI first draft. Needs evolution.
-
 An MCP server for bootstrapping LLM agents with user and project-specific rules.
 
 
 ## Overview
 
-The Rules MCP server solves a fundamental bootstrapping problem in LLM workflows: how to efficiently load context-specific instructions before an agent begins its work. Just as a README file commands readers to "read me first," this server ensures agents load their rules first.
-
-This is a bootstrapping problem because the execution chain works backwards: an AI chat session relies on an MCP server config, which relies on installed tools, and those tools must load user-defined rules before providing useful advice or generating code. Without this bootstrap step, agents lack the context to work effectively.
+The Rules MCP server implements a fundamental step in LLM workflows: loading context-specific instructions before an agent begins its work. Just as a README file commands readers to "read me first," this server ensures agents load their rules first.
 
 The server exposes a single tool:
-* `LoadRules()` - Locates and returns rule files from user, project, and user-project contexts
+* `load_rules()` - Locates and returns agent rules. Searches the conventional _user_, _project_, and _user-project_ locations.
 
-### The Problem Statement
 
-When working with LLM agents like Cursor, Claude Code, or Copilot, users accumulate valuable patterns, preferences, and project-specific knowledge. This wisdom gets scattered across:
-- Memory features (like Claude's CLAUDE.md)
-- Cursor rules files
-- Project-specific conventions
-- Personal coding preferences
+## The Problem: Competing Conventions
 
-Each tool has its own mechanism, creating fragmentation. We need a unified way to bootstrap agents with this context.
+When working with LLM agents, users accumulate valuable instructions for the agent about architecture, code style, and more. But, these rules are scattered across many locations:
 
-### Prior Art and Inspiration
+* Cursor uses `.cursor/rules/{rule_name}.mdc`
+* Copilot uses `.github/copilot-instructions.md`
+* Windsurf uses `.windsurf/rules/{rule_name}.md`
+* Claude Code uses `CLAUDE.md`
+* OpenAI's Codex CLI uses `AGENTS.md`
 
-This project builds on established patterns:
-- **CLAUDE.md** - Claude Code's memory feature that loads project context
-- **Cursor rules** - Project-specific instructions for the Cursor editor
-- **README files** - The universal "read me first" convention
+How does an agent know which rules to load? Should the agent load all of them?
 
-The key insight is that these are all rules - instructions that guide agent behavior. By standardizing on a simple format (markdown files named `AGENT.md`), we create a portable solution.
 
-### Why "AGENT.md"?
+## `AGENT.md`
 
-The filename `AGENT.md` was chosen for its clarity and brevity:
-- **AGENT** - Makes it clear the audience is an AI agent (in today's context, this unambiguously means an LLM agent)
-- **.md** - Indicates prose written in markdown, not structured data like JSON. The content has statistical structure (natural language patterns) rather than rigid schema
+Emboldened by the "fast software writing and maintenance" I get from LLMs and the standardization we have with the Model Context Protocol, I'm going to solve this problem for myself by creating my own convention and related tooling: the `AGENT.md` file and the Rules MCP server.
 
-This short name is important because these files will appear frequently: at least one per project, one in the home directory, and potentially hidden versions in `.my/` directories.
+Why the name `AGENT.md`?
 
-### The ".my" Directory Convention
+* It's short: A single word and short extension.
+* It's familiar: While "agent" means many things broadly, in the context of reading and writing code, we often know it to mean an AI/LLM agent.
+* Precedent: OpenAI's Codex CLI uses `AGENTS.md`, so `AGENT.md` (singular) is a natural variation
 
-The `.my/` directory serves as a git-ignored, project-local space for personal customizations. This allows:
-- User-specific rules that shouldn't be committed to version control
-- Temporary context for current work sessions
-- Personal preferences overlaid on team projects
+
+## The `.my/` Directory
+
+I often create `.my/` directories in my projects to help me work on my current task. I globally git-ignore this directory. I use it for:
+
+* LLM prompts
+* Storing reference files to be used as LLM context
+* Stashing LLM outputs or old code for reference if I need to undo some work
+
+The Rules server looks in the `.my/` directory for an `AGENT.md` file. This is a form of *user-project rules* because they are user-defined but specific to the current project.
+
 
 ### Rule File Locations
 
 The Rules server searches for `AGENT.md` files in three contexts:
 
-1. **User rules** - `~/.config/llm-agent/AGENT.md`
-   - Global preferences and patterns
-   - Shared across all projects
-   
-2. **Project rules** - `./AGENT.md` (in project root)
-   - Team conventions and project standards
-   - Committed to version control
-   
+1. **User rules** - `${XDG_CONFIG_HOME}/llm-agent/AGENT.md`
+   * User-specified rules that should apply to all projects
+   * These rules often encode personal workflow/chat preferences like "Always commit after writing code"
+2. **Project rules** - `./AGENT.md` (in current directory and upwards)
+   * Project-specific rules that are agreed upon and shared by the team
+   * Committed to version control
 3. **User-project rules** - `./.my/AGENT.md`
-   - Personal overrides for the current project
+   - Personal overrides and additions for the current project
    - Git-ignored, not shared with team
 
-### Why XDG Base Directory?
-
-For global rules, we use `~/.config/llm-agent/` following the XDG Base Directory specification. Why not macOS's `~/Library/Application Support`?
-- Too verbose for CLI usage - users need to reference these paths
-- Not portable to Linux systems
-- Hidden from casual browsing
-
-The `llm-agent` prefix is necessary in shared locations like `~/.config` because outside an LLM context, "agent" is ambiguous. The prefix clarifies we're dealing with LLM agent configuration.
+I wrestled with using just `~/.AGENT.md` for user rules, but I don't want to clutter the home directory, and the word "agent" in that context is not necessarily obviously related to LLMs. So, I chose `${XDG_CONFIG_HOME}/llm-agent/AGENT.md` to keep it explicitly named and isolated.
 
 
 ## Instructions
 
 Follow these instructions to build, test, and run the Rules MCP server:
 
-1. Pre-requisite: Node.js
-   * I'm using `v20.17.0`
-2. Activate the Nushell `do` module
+1. Install dependencies
    * ```nushell
-     do activate
+     npm install
      ```
-3. Generate the `package.json` file (if needed)
+2. Build the server
    * ```nushell
-     do package-json
+     npx tsc
      ```
-4. Install dependencies
+3. Run the server with the MCP Inspector
    * ```nushell
-     do install
+     npx @modelcontextprotocol/inspector@0.9.0 ./rules.sh
      ```
-5. Build the server
-   * ```nushell
-     do build
-     ```
-6. Run the server with the MCP Inspector
-   * ```nushell
-     do run-with-inspector
-     ```
-7. Set up the server in your MCP-compatible editor
+4. Set up the server in your MCP-compatible editor
    * Add the following to your editor's MCP configuration:
      ```json
      {
        "mcp": {
          "servers": {
            "rules": {
-             "command": "/path/to/mcp-rules.sh"
+             "command": "/path/to/rules.sh"
            }
          }
        }
@@ -119,13 +98,6 @@ Follow these instructions to build, test, and run the Rules MCP server:
 
 General clean-ups, TODOs and things I wish to implement for this project:
 
-* [ ] Scaffold the TypeScript MCP server with a single `LoadRules` tool
-* [ ] Implement rule file discovery logic for all three contexts (user, project, user-project)
-* [ ] Handle missing files gracefully - return helpful messages instead of errors
-* [ ] Add file watching to detect when rule files change
-* [ ] Consider caching rules with appropriate invalidation
-* [ ] Create example AGENT.md files showing effective rule patterns
-* [ ] Add a tool for listing which rule files were found
-* [ ] Consider supporting additional rule file locations (like workspace-specific rules)
-* [ ] Document best practices for writing effective rules
-* [ ] Add validation to ensure rules don't contain sensitive information
+* [ ] Implement
+* [ ] Consider using an identifying string like `!rules` and supporting skipping rules loading like with a user message "!rules skip"
+  or listing rules location files with `!rules locations`. Not sure yet.
