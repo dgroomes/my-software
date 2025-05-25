@@ -378,8 +378,13 @@ to a working Nushell environment, but it's great enough.
       mkdir ~/.local/npm/lib
       npm config set prefix ~/.local/npm
       ```
-41. Install LLM agent rules
+41. Activate the `do.nu` script
     * ```nushell
-      mkdir ~/.config/llm-agent
-      cp ../llm-agent/AGENT.md ~/.config/llm-agent
+      overlay use --prefix do.nu
+      ```
+    * Note: I'm finally to the point of scripting out the setup. Ideally this step should come earlier in the process,
+      but bootstrapping matters. Over time, push this earlier and incorporate more of the steps into the `do.nu` script
+42. Install LLM agent rules
+    * ```nushell
+      do llm-rules
       ```

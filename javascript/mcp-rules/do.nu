@@ -44,7 +44,7 @@ export def run-with-inspector [] {
 export def install-server [] {
     cd $DIR
     let cmd = "rules.sh" | path expand
-    claude mcp add rules $cmd
+    claude mcp add --scope user rules $cmd
 }
 
 export def trunc-and-follow [] {
