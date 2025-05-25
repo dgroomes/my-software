@@ -1,0 +1,14 @@
+{
+  "name": "mcp-rules",
+  "version": "0.1.0",
+  "description": "An MCP server for bootstrapping LLM agents with user- and project-specific rules.",
+  "type": "module",
+  "main": "dist/index.js",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "~1.10.2"
+  },
+  "devDependencies": {
+    "typescript": "~5.8.3",
+    "@types/node": "^22.14.1"
+  }
+}

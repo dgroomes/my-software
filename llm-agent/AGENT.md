@@ -1,8 +1,3 @@
-# Workflow
-
-* Read the `${cwd}/.my/CLAUDE.md` (if exists) for context that is customized for the current effort. You are allowed to read the `.my/` directory even though it is dot-hidden and git-ignored. This file is for your alignment.
-
-
 # Miscellaneous
 
 * Pay special attention to the "Wish List" section of the README to anchor your work on the "IN PROGRESS" task if it exists.

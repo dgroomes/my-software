@@ -378,8 +378,8 @@ to a working Nushell environment, but it's great enough.
       mkdir ~/.local/npm/lib
       npm config set prefix ~/.local/npm
       ```
-41. Install Claude Code user *memory* file
+41. Install LLM agent rules
     * ```nushell
-      mkdir ~/.claude
-      cp ../claude/CLAUDE.user.md ~/.claude/CLAUDE.md
+      mkdir ~/.config/llm-agent
+      cp ../llm-agent/AGENT.md ~/.config/llm-agent
       ```

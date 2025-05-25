@@ -1,6 +1,6 @@
 # mcp-rules
 
-An MCP server for bootstrapping LLM agents with user and project-specific rules.
+An MCP server for bootstrapping LLM agents with user- and project-specific rules.
 
 
 ## Overview
@@ -13,7 +13,7 @@ The server exposes a single tool:
 
 ## The Problem: Competing Conventions
 
-When working with LLM agents, users accumulate valuable instructions for the agent about architecture, code style, and more. But, these rules are scattered across many locations:
+When working with LLM agents, users accumulate effective instructions for the agent about the project's architecture, code style, and more. But, these rules are scattered across different vendor locations:
 
 * Cursor uses `.cursor/rules/{rule_name}.mdc`
 * Copilot uses `.github/copilot-instructions.md`
@@ -26,7 +26,7 @@ How does an agent know which rules to load? Should the agent load all of them?
 
 ## `AGENT.md`
 
-Emboldened by the "fast software writing and maintenance" I get from LLMs and the standardization we have with the Model Context Protocol, I'm going to solve this problem for myself by creating my own convention and related tooling: the `AGENT.md` file and the Rules MCP server.
+Emboldened by the "fast software writing and maintenance" power I get from LLMs and the standardization we have with the Model Context Protocol, I'm going to solve this problem for myself by creating my own convention and related tooling: the `AGENT.md` file and the Rules MCP server.
 
 Why the name `AGENT.md`?
 
@@ -43,7 +43,7 @@ I often create `.my/` directories in my projects to help me work on my current t
 * Storing reference files to be used as LLM context
 * Stashing LLM outputs or old code for reference if I need to undo some work
 
-The Rules server looks in the `.my/` directory for an `AGENT.md` file. This is a form of *user-project rules* because they are user-defined but specific to the current project.
+The Rules server looks in the `.my/` directory for an `AGENT.md` file. This is a form of *user-project* rules because they are user-defined and specific to the current project.
 
 
 ### Rule File Locations
@@ -67,19 +67,27 @@ I wrestled with using just `~/.AGENT.md` for user rules, but I don't want to clu
 
 Follow these instructions to build, test, and run the Rules MCP server:
 
-1. Install dependencies
+1. Activate the Nushell `do` module
    * ```nushell
-     npm install
+     do activate
      ```
-2. Build the server
+2. Generate the `package.json` file (if needed)
    * ```nushell
-     npx tsc
+     do package-json
      ```
-3. Run the server with the MCP Inspector
+3. Install dependencies
    * ```nushell
-     npx @modelcontextprotocol/inspector@0.9.0 ./rules.sh
+     do install
      ```
-4. Set up the server in your MCP-compatible editor
+4. Build the server
+   * ```nushell
+     do build
+     ```
+5. Start the server with the MCP Inspector
+   * ```nushell
+     do run-with-inspector
+     ```
+6. Set up the server in your MCP-compatible editor
    * Add the following to your editor's MCP configuration:
      ```json
      {
@@ -98,6 +106,8 @@ Follow these instructions to build, test, and run the Rules MCP server:
 
 General clean-ups, TODOs and things I wish to implement for this project:
 
-* [ ] Implement
-* [ ] Consider using an identifying string like `!rules` and supporting skipping rules loading like with a user message "!rules skip"
+* [x] Implement
+* [ ] Get user installation correct. It's installed only in the local place, not the user/global space. I'm struggling finding which files Claude Code is using to express its state. 
+* [ ] Consider using an identifying string like `!rules` and supporting skipping rules loading like with a user message "!rules off"
   or listing rules location files with `!rules locations`. Not sure yet.
+* [ ] Consider `.mdc` extension and/or using the standard header metadata for things like the path of the rule file and importance level. Not sure it matters.
