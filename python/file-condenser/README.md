@@ -7,18 +7,24 @@ An LLM-powered tool that condenses files by removing redundant syntax while pres
 
 ## Overview
 
-This tool uses the Qwen3 language model to intelligently condense files, particularly structured data files like JSON, by
+This tool uses a local LLM to intelligently condense files, particularly structured data files like JSON, by
 removing redundant syntax elements (field names, brackets, punctuation) while preserving the actual information. Unlike
-a summarizer that omits details or a compressor that preserves all bits, this "condenser" creates a lossy but
+a _summarizer_ that omits details or a _compressor_ that preserves all bits, this _condenser_ creates a lossy but
 information-rich representation that's ideal for feeding into LLMs.
 
 The primary use case is reducing token counts of files to fit within LLM context windows. LLMs excel at reading fuzzy,
 natural language representations and don't require perfect syntax preservation. By condensing files this way, we can fit
 more meaningful content into limited context windows.
 
-This project leverages Qwen3's 30B model (8-bit quantized) which can run locally on a Mac with 32GB RAM. The model's
-tool-calling capabilities enable an agentic approach where the program can intelligently chunk through files, build
-vocabulary, and even backtrack to apply newly discovered condensing strategies to earlier content.
+The use-case of "compressing prompts for LLMs" is widely explored. I'm trying to figure out if I can use some of these other other tools directly or if I'm better off implementing core concepts into my own tool. Examples include:
+
+* [CompressGPT](https://github.com/yasyf/compress-gpt)
+* [LLM Text Compressor](https://github.com/taylorbayouth/llm-text-compressor)
+* [PCToolkit: A Unified Plug-and-Play Prompt Compression Toolkit of Large Language Models](https://github.com/3DAgentWorld/Toolkit-for-Prompt-Compression)
+* [Selective Context for LLMs](https://github.com/liyucheng09/selective_context)
+* [LLMLingua](https://github.com/microsoft/LLMLingua)
+
+I''m not exactly sure where I'm going with this. I mainly wanted a vehicle for exploring an agentic workflow and building an intuition for how smart local LLMs can be.
 
 
 ## Instructions
@@ -26,14 +32,12 @@ vocabulary, and even backtrack to apply newly discovered condensing strategies t
 Follow these instructions to run the file condenser.
 
 1. Pre-requisite: Python
-   * I'm using Python `3.12.7` which is available on my PATH as `python3`.
-2. Pre-requisite: uv
-   * Install uv for managing Python dependencies inline.
-3. Pre-requisite: GPU/Memory
-   * Ensure you have sufficient memory to run Qwen3 30B quantized model (approximately 20-25GB RAM).
-4. Run the condenser
+   * I'm using Python `3.13.3` which is available on my PATH as `python3`.
+2. Pre-requisite: `uv`
+   * I'm using 0.7.7
+3. Run the condenser
    * ```bash
-     python3 file-condenser.py input.json > output.txt
+     uv file-condenser.py input.json > output.txt
      ```
    * The tool will process the input file in chunks and output the condensed version.
 
@@ -72,22 +76,25 @@ deps: express 4.18.0, lodash 4.17.21
 dev: jest 29.0.0, webpack 5.74.0
 ```
 
-The condensed version preserves all the meaningful information but reduces tokens by ~70% through removing redundant
-JSON syntax.
+The condensed version preserves most of the meaningful information but reduces tokens by removing redundant JSON syntax.
 
 
-## Implementation Details
+## Implementation Constraints
 
-The file condenser is implemented as a single Python file using uv's inline script metadata (PEP 723) for dependency
-management. The program uses HuggingFace's transformers library to load and run the Qwen3 model locally.
+* I want this as only one Python file (`file-condenser.py`). Keep it reduced and avoid feature bloat.
+* Minimal external dependencies. Rely on the LLM to do "smart" things
+* Use `uv` and inline script metadata (PEP 723) 
+
+
+## Design
 
 The core algorithm works as follows:
 
-1. **Chunked Reading**: Files are processed 10 lines at a time to manage memory and allow for incremental processing
-2. **Vocabulary Building**: As the agent processes chunks, it builds a vocabulary of condensing strategies
-3. **Backtracking**: When new condensing opportunities are discovered, the agent can revisit earlier chunks to apply
+1. **Chunked Reading** (NOT IMPLEMENTED): Files are processed 10 lines at a time to manage memory and allow for incremental processing
+2. **Vocabulary Building** (NOT IMPLEMENTED): As the agent processes chunks, it builds a vocabulary of condensing strategies
+3. **Backtracking** (NOT IMPLEMENTED): When new condensing opportunities are discovered, the agent can revisit earlier chunks to apply
    improved strategies
-4. **Tool Calls**: The agent uses defined tools for:
+4. **Tool Calls** (NOT IMPLEMENTED): The agent uses defined tools for:
    - Reading file chunks
    - Writing condensed output
    - Managing vocabulary and state
@@ -96,33 +103,23 @@ The core algorithm works as follows:
 The implementation is primarily prompt-driven, with the LLM doing the heavy lifting of understanding content and
 applying condensing strategies. The Python code provides the orchestration loop and tool infrastructure.
 
-Dependencies are minimal:
-- `transformers` - For loading and running Qwen3
-- `torch` - Required by transformers
-- Standard library modules for file I/O and orchestration
-
 
 ## Wish List
 
 General clean-ups, TODOs and things I wish to implement for this project:
 
-* [ ] Implement the basic chunked file reading loop
-* [ ] Add Qwen3 model loading with appropriate quantization settings
-* [ ] Design and implement the tool-calling interface for file operations
-* [ ] Create comprehensive prompts for the condensing task
-* [ ] Add vocabulary persistence between chunks
-* [ ] Implement the backtracking mechanism for applying new strategies
-* [ ] Add support for different file types (JSON, YAML, TOML, etc.)
-* [ ] Create benchmarks showing token reduction percentages
-* [ ] Add a dry-run mode that estimates token savings without full processing
-* [ ] Support for custom condensing strategies via configuration
-* [ ] Batch processing mode for multiple files
-* [ ] Integration with token-count tool for before/after comparisons
+* [ ] IN PROGRESS "Hello world" prompt using ollama Python bindings
+* [ ] Implement one-shot condensing (full file)
+* [ ] Wire in tool support. Start with "read next file" or something? I don't ever want the LLM to construct file *paths* for reading/writing. It needs to be constrained to allowed file paths. 
+* [ ] Integration with token-count tool for before/after comparisons. This is a pre-requisite for chunked condensing.
+* [ ] Implement chunked condensing (X tokens at a time). This is where the agent comes in?
+* [ ] Consider renaming as "prompt compressor". This is a clearer name. I went with condenser for disambiguation and I went with "file" because I'm not trying to compress my prompts exactly, but the file attachments I put in my prompts. Also, I want to consider condensing into a `.md` file with YAML front-matter, from which there can be structured data like keywords, etc. That way the condensed files can be searched/indexed with traditional tools. Even relationships. Better yet... maybe this should all just go into a SQLite db?
+* [ ] Consider evals.
 
 
 ## Reference
 
-* [Qwen/Qwen2.5-32B-Instruct on HuggingFace](https://huggingface.co/Qwen/Qwen2.5-32B-Instruct)
+* [Qwen3-30B-A3B-FP8 on HuggingFace](https://huggingface.co/Qwen/Qwen3-30B-A3B-FP8)
 * [PEP 723 – Inline script metadata](https://peps.python.org/pep-0723/)
 * [HuggingFace Transformers documentation](https://huggingface.co/docs/transformers)
 * [Guidance - A guidance language for controlling large language models](https://github.com/guidance-ai/guidance)
