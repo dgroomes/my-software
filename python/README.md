@@ -17,7 +17,7 @@ General clean-ups, TODOs and things I wish to implement for this project:
   compress this? Is UV good for this? Single file programs with the metadata in the block comment at the top? I don't
   have a need for shared Python code right now and I'm not sure Python monorepo tooling is good at this point. Stick to
   individual projects.
-* [ ] IN PROGRESS What can I get done with Qwen3? Let's implement a "prompt compressor"-like library in `file-condenser/`.
+* [x] DONE What can I get done with Qwen3? Let's implement a "prompt compressor"-like library in `text-condenser/`.
 
 
 ## Reference
