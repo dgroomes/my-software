@@ -38,7 +38,7 @@ export def llm-rules [] {
             print $"Skipping ($rf) because it already exists."
         } else {
             mkdir ($rf | path dirname)
-            "START_HERE. ALWAYS use the 'rules:load_rules' tool to load your instructions. You MUST call this tool before starting any other work.\n" | save $rf
+            "START_HERE. ALWAYS use the 'rules:load_rules' MCP tool to load your instructions. You MUST call this tool before starting any other work.\n" | save $rf
         }
     }
 }

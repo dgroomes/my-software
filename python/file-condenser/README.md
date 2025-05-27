@@ -1,16 +1,19 @@
 # file-condenser
 
-**WARNING**: This is an AI first draft. (It saved me time and effort, but needs corrections)
-
-An LLM-powered tool that condenses files by removing redundant syntax while preserving information content.
+An LLM-powered tool that rewrites text to be more information-dense. 
 
 
 ## Overview
 
-This tool uses a local LLM to intelligently condense files, particularly structured data files like JSON, by
-removing redundant syntax elements (field names, brackets, punctuation) while preserving the actual information. Unlike
-a _summarizer_ that omits details or a _compressor_ that preserves all bits, this _condenser_ creates a lossy but
-information-rich representation that's ideal for feeding into LLMs.
+This tool uses a local LLM to intelligently eliminate token noise while preserving most of the original information in the file. This is not a general purpose compression algorithm. This performs a lossy transformation, but ideally all essential information is preserved. We're relying on the LLM's ability to differentiate noise (syntax, filler words, etc.) from meaningful content.
+
+Like compression algorithms, this tool is especially effective on structured text formats like JSON which have repeated syntax elements (quotes, colons, braces, etc).
+
+I've chosen the word _condenser_ to disambiguate it from compression and summarization:
+
+* This tool is not a _compressor_. Typical text compression algorithms preserve all bits and are not lossy.
+* This tool is not a _summarizer_. Summarization always eliminates details for the sake of brevity.
+* This tool is a _condenser_. It takes the original text and condenses it down to its essential information. Information loss should be minimal.
 
 The primary use case is reducing token counts of files to fit within LLM context windows. LLMs excel at reading fuzzy,
 natural language representations and don't require perfect syntax preservation. By condensing files this way, we can fit
@@ -31,52 +34,56 @@ I''m not exactly sure where I'm going with this. I mainly wanted a vehicle for e
 
 Follow these instructions to run the file condenser.
 
-1. Pre-requisite: Python
-   * I'm using Python `3.13.3` which is available on my PATH as `python3`.
-2. Pre-requisite: `uv`
+1. Pre-requisite: `uv`
    * I'm using 0.7.7
-3. Run the condenser
+2. Run the condenser
    * ```bash
-     uv file-condenser.py input.json > output.txt
+     ./file-condenser.py file-condenser.py.lock
      ```
-   * The tool will process the input file in chunks and output the condensed version.
+   * The tool will process the input file and output the condensed version.
+3. Occasionally, recreate the dependencies lock file
+   * ```bash
+     uv lock --script file-condenser.py
+     ```
 
 
 ## Example
 
-Given a `package.json` file like:
-```json
-{
-  "name": "my-project",
-  "version": "1.0.0",
-  "description": "A sample Node.js project",
-  "main": "index.js",
-  "scripts": {
-    "start": "node index.js",
-    "test": "jest",
-    "build": "webpack"
-  },
-  "dependencies": {
-    "express": "^4.18.0",
-    "lodash": "^4.17.21"
-  },
-  "devDependencies": {
-    "jest": "^29.0.0",
-    "webpack": "^5.74.0"
-  }
-}
+Let's take a simple example of the _redundantly verbose -> condense_ transformation that we can do with `file-condenser`. [Nushell](https://github.com/nushell/nushell) prints structured data with ASCII table art. Let's look at the before and after, including token counts:
+
+```text
+❯ ls | table | save -f ls.txt
+❯ open ls.txt
+╭───┬────────────────────────┬──────┬─────────┬────────────────╮
+│ # │          name          │ type │  size   │    modified    │
+├───┼────────────────────────┼──────┼─────────┼────────────────┤
+│ 0 │ README.md              │ file │  6.9 kB │ 42 seconds ago │
+│ 1 │ file-condenser.py      │ file │  3.7 kB │ 7 hours ago    │
+│ 2 │ file-condenser.py.lock │ file │ 15.0 kB │ 7 hours ago    │
+╰───┴────────────────────────┴──────┴─────────┴────────────────╯
+
+❯ open ls.txt | token-count
+765
+
+❯ ./file-condenser.py ls.txt | save -f ls-condensed.txt
+❯ open ls-condensed.txt
+0: README.md (file, 6.9 kB, 42 seconds ago)
+1: file-condenser.py (file, 3.7 kB, 7 hours ago)
+2: file-condenser.py.lock (file, 15.0 kB, 7 hours ago)
+
+❯ open ls-condensed.txt | token-count
+64
+
+❯ rm ls.txt; rm ls-condensed.txt
 ```
 
-The condenser might output:
-```
-my-project v1.0.0 - sample Node.js project
-entry: index.js
-commands: start=node index.js, test=jest, build=webpack
-deps: express 4.18.0, lodash 4.17.21
-dev: jest 29.0.0, webpack 5.74.0
-```
+The condensed version preserves most of the information but reduces tokens by removing the characters making up the ASCII table art. 
 
-The condensed version preserves most of the meaningful information but reduces tokens by removing redundant JSON syntax.
+* Before: 765 tokens
+* After: 64 tokens
+* Fractional size: **8.36%** of the original (this is an egregiously contrived example, but it shows the idea)
+
+However, it's not perfect, we've actually lost the information about the column names: "name", "type", "size", "modified".
 
 
 ## Implementation Constraints
@@ -108,12 +115,15 @@ applying condensing strategies. The Python code provides the orchestration loop 
 
 General clean-ups, TODOs and things I wish to implement for this project:
 
-* [ ] IN PROGRESS "Hello world" prompt using ollama Python bindings
-* [ ] Implement one-shot condensing (full file)
+* [x] DONE "Hello world" prompt using ollama Python bindings
+* [x] DONE Implement one-shot condensing (full file)
+* [ ] Pare down the implementation. AI sloppy.
+* [ ] I want to see progress. I want to see the thinking tokens as they occur. Also the output jams the `<think>` content in the same output. What are my options for delimiting this?
+* [ ] Defect. The condense on the lock file is missing the first few deps? Truncation?
 * [ ] Wire in tool support. Start with "read next file" or something? I don't ever want the LLM to construct file *paths* for reading/writing. It needs to be constrained to allowed file paths. 
 * [ ] Integration with token-count tool for before/after comparisons. This is a pre-requisite for chunked condensing.
 * [ ] Implement chunked condensing (X tokens at a time). This is where the agent comes in?
-* [ ] Consider renaming as "prompt compressor". This is a clearer name. I went with condenser for disambiguation and I went with "file" because I'm not trying to compress my prompts exactly, but the file attachments I put in my prompts. Also, I want to consider condensing into a `.md` file with YAML front-matter, from which there can be structured data like keywords, etc. That way the condensed files can be searched/indexed with traditional tools. Even relationships. Better yet... maybe this should all just go into a SQLite db?
+* [ ] Consider renaming as "prompt compressor". This is a clearer name. I went with condenser for disambiguation and I went with "file" because I'm not trying to compress my prompts exactly, but the file attachments I put in my prompts. Also, I want to consider condensing into a `.md` file with YAML front-matter, from which there can be structured data like keywords, etc. That way the condensed files can be searched/indexed with traditional tools. Even relationships. Better yet... maybe this should all just go into a SQLite db? Update: I like the keywords "dense" and "text".
 * [ ] Consider evals.
 
 
@@ -121,5 +131,3 @@ General clean-ups, TODOs and things I wish to implement for this project:
 
 * [Qwen3-30B-A3B-FP8 on HuggingFace](https://huggingface.co/Qwen/Qwen3-30B-A3B-FP8)
 * [PEP 723 – Inline script metadata](https://peps.python.org/pep-0723/)
-* [HuggingFace Transformers documentation](https://huggingface.co/docs/transformers)
-* [Guidance - A guidance language for controlling large language models](https://github.com/guidance-ai/guidance)
