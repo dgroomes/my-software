@@ -11,5 +11,13 @@
     "workbench.tree.indent": 16,
 
     // https://code.visualstudio.com/blogs/2025/02/12/next-edit-suggestions
-    "github.copilot.nextEditSuggestions.enabled": true
+    "github.copilot.nextEditSuggestions.enabled": true,
+
+    "chat.instructionsFilesLocations": {
+
+        // I thought I could use a variable here for the home directory, but it doesn't work.
+        "/Users/davidgroomes/.config/llm-agent": true,
+        // Also keep the default location. I think I need to explicitly add this because I've overridden the default property value.
+        ".github/instructions": true
+    }
 }
