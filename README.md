@@ -152,7 +152,8 @@ General clean-ups, TODOs and things I wish to implement for this project:
   regardless of Node/npm version. I might eventually feel the pain due to stuff like node-gyp but not yet. If so that's
   fine and I'll put that switching logic in my `node.nu` scripts.
 * [ ] Consider moving finished wish list items to own file so that we can save LLM tokens. I only want to ingest those 
-  when doing refinement/history on my open wish list items (rare).
+  when doing refinement/history on my open wish list items (rare). Or... maybe consider using GitHub issues... but that's such an escalation. Or, create a "README"-like MCP tool that parses the finished section out. An agent would call this tool instead of reading the readme directly. Similarly, I might need a tool for updating (toggling) the status of items. I've already explored this but switched gears because of lack of experience with MCP/agents.
+* [ ] Consider `my-project-conventions` agent/tools. If it's my project (heuristics, in my GitHub user) and follows some other patterns (e.g. "wish list" section), then find and fix conventional issues (e.g. double newline, naming of sections, single line intro, etc).
 
 
 ## Finished Wish List Items

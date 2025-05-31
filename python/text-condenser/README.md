@@ -1,5 +1,16 @@
 # text-condenser
 
+---
+**MARKED FOR DELETION**
+
+This was insightful, but a few notes: I'm going to prefer to host LLM inference in a separate process, accessible by the
+OpenAI-compatible API. This enables important decoupling. I would rather my agent be in TypeScript or Kotlin, for one.
+
+Also, instead of "text-condenser", I want a more general "study" agent that studies and compresses and indexes a project
+Vague, but that's the idea. And I would implement that likely in Kotlin.
+
+---
+
 An LLM-powered tool that rewrites text to be more information-dense. 
 
 
