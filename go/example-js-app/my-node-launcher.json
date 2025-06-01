@@ -1,0 +1,7 @@
+{
+  "entrypoint": "app.js",
+  "node_version": 23,
+  "node_args": [
+    "--no-warnings"
+  ]
+}

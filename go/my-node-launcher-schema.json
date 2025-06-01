@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dgroomes/my-software/go/my-node-launcher-schema.json",
+  "title": "Manifest file for 'my-node-launcher'",
+  "description": "A schema for the 'my-node-launcher.json' manifest file, which describes requirements for launching Node.js programs using the 'my-node-launcher' tool.",
+  "type": "object",
+  "properties": {
+    "entrypoint": {
+      "type": "string",
+      "description": "Path to the JavaScript file that serves as the program entrypoint"
+    },
+    "dry_run": {
+      "type": "boolean",
+      "description": "If true, the command will be printed instead of executed",
+      "default": false
+    },
+    "node_version": {
+      "type": "integer",
+      "description": "Required Node.js version"
+    },
+    "node_args": {
+      "type": "array",
+      "description": "Arguments to pass to the Node.js runtime (e.g., '--no-warnings')",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    }
+  },
+  "required": ["entrypoint", "node_version"],
+  "additionalProperties": false
+}

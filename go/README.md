@@ -36,6 +36,11 @@ A compressed form like this is useful, for example, if you want to use the progr
 This is an alternative to the Gradle [`application` plugin](https://docs.gradle.org/current/userguide/application_plugin.html) which creates a shell *start script* that encodes all this same info. I use the `application` plugin very frequently, but now, I need to eject from Posix shell and get finer control and better legibility. So I'm going with a "Go binary + JSON manifest" as a Java program launcher.
 
 
+## `my-node-launcher`
+
+`my-node-launcher` launches Node.js programs by finding and invoking a specified version of Node.js installed on the system. Similar to `my-launcher`, it uses a manifest file(`my-node-launcher.json`) that describes the required Node.js version and an entrypoint JavaScript file.
+
+
 ## `my-fuzzy-finder`
 
 `my-fuzzy-finder` is a commandline fuzzy finder with a JSON API. It's designed to have a similar user experience to
@@ -151,14 +156,25 @@ Follow these instructions to build, run and install my software.
     * ```nushell
       do build
       ```
-    * The executables (i.e. `my-java-launcher`, `my-fuzzy-finder`) will be in the `bin/` directory. Try them out as needed to
-      do validation and exploration. If you are satisfied, then you can install the executables globally with the next
-      step.
+    * The executables will be in the `bin/` directory. Try them out as needed to do validation and exploration. If you are satisfied, then you can install the executables globally with the next step.
 7. Build and install the executables to your `GOBIN`:
     * ```nushell
       do install
       ```
     * Now you can run the executables from anywhere on your system.
+8. Demonstrate `my-node-launcher`
+    * Copy the launcher into the example JS app.
+    * ```nushell
+      cp bin/my-node-launcher example-js-app/capitalize
+      ```
+    * Try out the launcher. Launch the example program with the following command.
+    * ```nushell
+      ./example-js-app/capitalize hello world
+      ```
+    * It should output the following.
+    * ```text
+      Hello World
+      ```
 
 
 ## Wish List
@@ -167,14 +183,14 @@ General clean-ups, TODOs and things I wish to implement for this project:
 
 * [ ] Need to handle items that exceed the full height?
 * [ ] Workaround `./` parsing gap of the new Nushell parser.
-* [ ] Make a Node launcher for JavaScript programs. This would be similar to `my-java-launcher` but for Node.js. If this works
-  nicely, I'll rename `my-launcher` to `my-java-launcher`. I don't see a compelling reason to couple a Node launcher with
+* [x] DONE Make a Node launcher for JavaScript programs. This would be similar to `my-java-launcher` but for Node.js. I don't see a compelling reason to couple a Node launcher with
   the Java launcher, especially because of the schema, there would be conflicting possible options like specifying a
   Java classpath while also specifying a Node version. Those don't go together. In the day and age of quick,
   context-window-amenable programs tailored for LLM copilot, small/focused is good.
    * DONE I need to advertise Node homes in an environment variable. What's a conventional name for this? In Java we use
      `JAVA_HOME`.
-   * Implement 
+   * DONE Implement
+* [ ] Consider supporting env vars in the manifest files of the launchers. For now, YAGNI. But it can be useful for setting things like JVM memory options, etc.
 
 
 ## Finished Wish List Items
