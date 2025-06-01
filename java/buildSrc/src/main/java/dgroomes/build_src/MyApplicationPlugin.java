@@ -15,7 +15,7 @@ import org.gradle.api.tasks.bundling.Jar;
 
 /**
  * This Gradle {@link Plugin} is an alternative to the <a href="https://docs.gradle.org/current/userguide/application_plugin.html">Application plugin</a>.
- * This plugin serves the same purpose, but uses the 'my-launcher' executable and manifest file instead of a POSIX shell
+ * This plugin serves the same purpose, but uses the 'my-java-launcher' executable and manifest file instead of a POSIX shell
  * script (called the "start script") for launching the Java program.
  * <p>
  * I have some design thoughts on this plugin:
@@ -63,7 +63,7 @@ public class MyApplicationPlugin implements Plugin<Project> {
         });
 
         distSpec.into("bin", bin -> {
-            bin.from(findAndCopyMyLauncher).rename("my-launcher", project.getName());
+            bin.from(findAndCopyMyLauncher).rename("my-java-launcher", project.getName());
         });
 
         distSpec.into("bin", bin -> {

@@ -19,7 +19,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 /**
- * Create a 'my-launcher.json' manifest file.
+ * Create a 'my-java-launcher.json' manifest file.
  */
 @DisableCachingByDefault(because = "Not worth caching")
 public class CreateMyLauncherManifest extends DefaultTask {
@@ -70,23 +70,23 @@ public class CreateMyLauncherManifest extends DefaultTask {
         try (var fileWriter = new FileWriter(getManifest())) {
             jsonWriter.writeValue(fileWriter, manifest);
         } catch (IOException e) {
-            throw new GradleException("Something went wrong while writing the 'my-launcher.json' manifest file", e);
+            throw new GradleException("Something went wrong while writing the 'my-java-launcher.json' manifest file", e);
         }
     }
 
     @Override
     public String getDescription() {
-        return "Creates a 'my-launcher' manifest file and copies in the 'my-launcher' executable.";
+        return "Creates a 'my-java-launcher' manifest file and copies in the 'my-java-launcher' executable.";
     }
 
     @OutputDirectory
     public File getOutputDir() {
-        var myLauncherDir = new File(getProject().getLayout().getBuildDirectory().getAsFile().get(), "my-launcher");
+        var myLauncherDir = new File(getProject().getLayout().getBuildDirectory().getAsFile().get(), "my-java-launcher");
         return new File(myLauncherDir, "manifest");
     }
 
     @Internal
     public File getManifest() {
-        return new File(getOutputDir(), "my-launcher.json");
+        return new File(getOutputDir(), "my-java-launcher.json");
     }
 }

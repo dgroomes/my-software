@@ -13,14 +13,27 @@ Note: I might consider building and publishing binaries using GitHub Actions, an
 for now, `go install` should work fine for me.
 
 
-## `my-launcher`
+## `my-java-launcher`
 
-`my-launcher` launches Java programs by finding and invoking the correct version `java` installed on the system.
-It depends on a `my-manifest.json` file that describes the exact version of Java, the classpath, the main class, and
-other Java system properties, etc. This is an alternative to the Gradle [`application` plugin](https://docs.gradle.org/current/userguide/application_plugin.html)
-which creates a shell *start script* that encodes all this same info. I use the `application` plugin very frequently,
-but now, I need to eject from Posix shell and get finer control and better legibility. So I'm going with a "Go
-binary + JSON manifest" as a Java program launcher.
+`my-java-launcher` is a launcher for Java programs.
+
+An advantage of a launcher is that you run a program with only one word instead of multiple. For example, launching a Java program normally looks something like this:
+
+```shell
+java -cp my-program.jar com.example.MyProgram
+```
+
+Whereas with a launcher, the details are encapsulated:
+
+```shell
+my-program
+```
+
+A compressed form like this is useful, for example, if you want to use the program as a CLI tool. Having a launcher makes a Java program much more "installed" compared to just having a `.jar` file.
+
+`my-java-launcher` is designed to be shipped in the program's installation directory, side-by-side the program's `.jar` files and related program assets. `my-java-launcher`, will find and invoke a specified version of Java installed on the system. It depends on a `my-manifest.json` file that describes the exact version of Java, the classpath, the main class, and other Java system properties, etc.
+
+This is an alternative to the Gradle [`application` plugin](https://docs.gradle.org/current/userguide/application_plugin.html) which creates a shell *start script* that encodes all this same info. I use the `application` plugin very frequently, but now, I need to eject from Posix shell and get finer control and better legibility. So I'm going with a "Go binary + JSON manifest" as a Java program launcher.
 
 
 ## `my-fuzzy-finder`
@@ -138,14 +151,14 @@ Follow these instructions to build, run and install my software.
     * ```nushell
       do build
       ```
-    * The executables (i.e. `my-launcher`, `my-fuzzy-finder`) will be in the `bin/` directory. Try them out as needed to
+    * The executables (i.e. `my-java-launcher`, `my-fuzzy-finder`) will be in the `bin/` directory. Try them out as needed to
       do validation and exploration. If you are satisfied, then you can install the executables globally with the next
       step.
 7. Build and install the executables to your `GOBIN`:
     * ```nushell
       do install
       ```
-    * Now you can run the executables, like `my-launcher`, from anywhere on your system.
+    * Now you can run the executables from anywhere on your system.
 
 
 ## Wish List
@@ -154,13 +167,14 @@ General clean-ups, TODOs and things I wish to implement for this project:
 
 * [ ] Need to handle items that exceed the full height?
 * [ ] Workaround `./` parsing gap of the new Nushell parser.
-* [ ] Make a Node launcher for JavaScript programs. This would be similar to `my-launcher` but for Node.js. If this works
+* [ ] Make a Node launcher for JavaScript programs. This would be similar to `my-java-launcher` but for Node.js. If this works
   nicely, I'll rename `my-launcher` to `my-java-launcher`. I don't see a compelling reason to couple a Node launcher with
   the Java launcher, especially because of the schema, there would be conflicting possible options like specifying a
   Java classpath while also specifying a Node version. Those don't go together. In the day and age of quick,
   context-window-amenable programs tailored for LLM copilot, small/focused is good.
-   * I need to advertise Node homes in an environment variable. What's a conventional name for this? In Java we use
+   * DONE I need to advertise Node homes in an environment variable. What's a conventional name for this? In Java we use
      `JAVA_HOME`.
+   * Implement 
 
 
 ## Finished Wish List Items
@@ -184,7 +198,7 @@ General clean-ups, TODOs and things I wish to implement for this project:
 * [x] DONE Re-use the `textinput` Bubbles component and in general compress the code 
 * [x] DONE (fixed/obsoleted by other refactoring) Re-size defect. When resizing and then moving the cursor, the program panics.
 * [x] DONE Support multi-line
-* [x] OBSOLETE (Somehow resolved on itself. Not sure why) Support special (longer unicode?) characters like `°` in the underline highlighting.
+* [x] OBSOLETE (Somehow resolved on itself. Not sure why) Support special (longer Unicode?) characters like `°` in the underline highlighting.
 * [x] DONE Defect: Get cursor blinking working again.
 * [x] DONE Support JSON array input
 * [X] DONE (Big restructuring but great result) Defect: beginning content is cut off. I think it's cutting off by as many additional lines there are per item
@@ -192,7 +206,7 @@ General clean-ups, TODOs and things I wish to implement for this project:
   example.
 * [x] OBSOLETE (Already works, the content is just truncated, that's good) items that exceed the full width
 * [x] DONE Support 'fzf' search syntax.
-* [x] DONE (Update 2: I'm going to pare it down. A hard fork. Update 1: Alternatively, it might best to just do a shallow fork so that I can preserve the diff better. Not sure.) Pare down 'fzf' code. Thankfully I was able to get fzf integration without many (half?) of the original source
+* [x] DONE (Update 2: I'm going to pare it down. A hard fork. Update 1: Alternatively, it might be best to just do a shallow fork so that I can preserve the diff better. Not sure.) Pare down 'fzf' code. Thankfully I was able to get fzf integration without many (half?) of the original source
   code. But still, I should be able to trim it down much more (and learn it).
     * DONE Remove caching
     * DONE consolidate item.go
@@ -208,7 +222,7 @@ General clean-ups, TODOs and things I wish to implement for this project:
 * [x] PARTIAL (Unfortunately the new Nushell parser is missing a critical mass of cases) posix-nushell-compatibility-checker. For prototypical commands (command plus string args) I don't want the
   noise of the Nu raw string. Just allow the original command to exist. 
    * DONE Scaffold.
-   * DONE (Idk I think they are just there and that's fine) What are the top-level `*syntax.File` and `syntax.Stmt` types? Are those just always there?
+   * DONE (IDK I think they are just there and that's fine) What are the top-level `*syntax.File` and `syntax.Stmt` types? Are those just always there?
    * I really need to parse Nushell as well. Because what looks like a string literal in shell could be interpolation
      in Nushell for example. I need to parse the expression for both langs (shell/Nu) and assert that they are both
      "boring cmd + string args". I don't need to support any more cases. This is better than 80/20, this is like 95/5.
