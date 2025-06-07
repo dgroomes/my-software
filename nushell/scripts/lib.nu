@@ -672,6 +672,26 @@ export def --env cd-repo [] {
     $result | get full_path | cd $in
 }
 
+# Clone a local repository into the current directory. This presents a menu of all
+# repositories from ~/repos and creates a local git clone when one is selected.
+# This is useful for creating scratch pad directories with reference codebases.
+export def clone-local-repo [] {
+    let result = repos | fz
+    if ($result | is-empty) { return }
+
+    let source_path = $result | get full_path
+    let repo_name = $source_path | path basename
+    
+    # Check if destination already exists
+    if ($repo_name | path exists) {
+        err $"Directory '($repo_name)' already exists in current directory"
+    }
+    
+    # Perform the git clone
+    print $"Cloning ($result.description) to ./($repo_name)"
+    git clone $source_path $repo_name
+}
+
 # Deduplicate repeated substrings in a document.
 #
 # The '--length' is the minimum length of the substring to consider for deduplication.

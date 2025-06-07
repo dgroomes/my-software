@@ -107,6 +107,7 @@ $env.config.completions.external = {
 }
 
 export alias cdr = cd-repo
+export alias clr = clone-local-repo
 export alias rfr = run-from-readme
 
 # Discover keg installations of OpenJDK and make them available (i.e. "advertise") as version-specific "JAVA_HOME"
