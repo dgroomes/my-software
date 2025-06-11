@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "claude_proxy"
+version = "0.1.0"
+description = "HTTP proxy for sandboxing Claude Code sessions"
+authors = ["David Groomes"]
+packages = [{include = "claude_proxy"}]
+
+[tool.poetry.dependencies]
+python = "~3.13"
+mitmproxy = "~12.1.1"
+
+[tool.poetry.scripts]
+claude-proxy = "claude_proxy.proxy:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
