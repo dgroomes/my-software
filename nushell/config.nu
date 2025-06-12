@@ -68,6 +68,8 @@ export alias clc = cp-last-cmd
 export alias ll = ls -l
 export alias la = ls -a
 
+export alias cs = claude-sandboxed
+
 # Copy and Paste.
 #
 # 'pbcopy' and 'pbpaste' are too long to type for frequent use. 'pbpaste' I especially struggle with for some reason.

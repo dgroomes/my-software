@@ -73,6 +73,42 @@ explored those. Right now, I'm getting big leverage out of direct AI Chat and I 
 that can help me read larger programs that can help me build larger programs.
 
 
+## `claude-sandboxed`
+
+Launch Claude Code in a sandbox where network and file system access is restricted. 
+
+When I work with Claude Code, I'm in a session on a particular directory and working on some specific task. We want the Claude session sandboxed to that directory and to a minimum set of external files and resources (files, environment variables, ports, etc).
+
+My current thinking is to use the macOS seatbelt system to sandbox the process, and to use my `claude-proxy` server to constrain outbound network traffic. Go is a great choice for a launcher. In the launcher, we also run some pre-checks to assert that the environment is setup and provide actionable error messages if not.
+
+Sandboxing reduces freedom, which means it will be annoying at times. Let's try to offset this annoyance by making the sandbox strategy clear and the launching process fast and clear as well.
+
+In the future, I might consider:
+
+* Use App Sandbox (unlikely because it does not work well for CLI tools)
+* Use a container/VM (eyes are on the new "containers" project just released at WWDC 2025)
+* Create a system for parameterizing allowed hosts, allowed executables, allowed dirs/files, and allowed environment variables.
+* Genericize the launcher for other commandline agents or tools
+* How to let Claude Code check for updates. Right now it makes a request to the npm registry. Should allow this endpoint flow?
+* Allow passthrough of args from the launcher to Claude Code. As is, we've broken all the '-p' stuff and everything.
+* Clean up these logs : ✅ Proxy server running  Sandbox applied. Running checks...  Unsolicited response received on idle HTTP channel starting with "Denied. This is a sandbox."; err=<nil> Unsolicited response received on idle HTTP channel starting with "Denied. This is a sandbox."; err=<nil>
+* ... or maybe I'll do nothing because Claude Code might solve these things in later releases and/or a new alternative will emerge
+ 
+The ideal user experience for launching Claude Code via the sandboxed launcher is:
+
+```text
+$ cs
+✅ Proxy server running
+Sandbox applied. Running checks...
+✅ Remote calls blocked
+✅ Anthropic calls via proxy allowed
+✅ Non-Anthropic calls via proxy blocked
+
+╭─────────────────────────────────────────────────╮
+│ ✻ Welcome to Claude Code!
+```
+
+
 ## Instructions
 
 Follow these instructions to build, run and install my software.
@@ -191,6 +227,7 @@ General clean-ups, TODOs and things I wish to implement for this project:
      `JAVA_HOME`.
    * DONE Implement
 * [ ] Consider supporting env vars in the manifest files of the launchers. For now, YAGNI. But it can be useful for setting things like JVM memory options, etc.
+* [ ] Flesh out `claude.sb`. I need to perfect the SBPL and get more narrow about allowed sub-process executables.
 
 
 ## Finished Wish List Items

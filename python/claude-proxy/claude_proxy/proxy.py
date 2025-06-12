@@ -2,7 +2,6 @@ import asyncio
 import signal
 import sys
 from pathlib import Path
-from urllib.parse import urlparse
 from mitmproxy import options, http
 from mitmproxy.tools import dump
 

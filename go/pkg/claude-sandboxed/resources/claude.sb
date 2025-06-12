@@ -1,0 +1,36 @@
+;; Seatbelt profile for Claude Code
+(version 1)
+
+;; I would prefer to do 'deny default' but I'm getting errors in Node.js. Until I can figure out the exact things it needs, I'll use default settings and target my "known knowns".
+(allow default)
+
+;; Broadly prohibit file write access
+(deny file-write*)
+
+(allow file-write*
+    ;; Allow writing to the current project
+    (subpath (param "PROJECT_DIR"))
+
+    ;; Claude Code does administrative stuff in ~/.claude.json and ~/.claude
+    (literal (param "CLAUDE_JSON_PATH"))
+    (subpath (param "CLAUDE_DIR")))
+
+;; I'm not totally sure if these are needed but probably
+(allow file-write-data
+    (literal "/dev/stdout")
+    (literal "/dev/stderr")
+    (literal "/dev/null"))
+
+;; Broadly deny network access  and the port used for the OAuth flow
+(deny network*)
+(allow network-outbound
+    (remote tcp "localhost:9051") ;; claude-proxy
+    (remote tcp "localhost:54545") ;; OAuth flow. Not sure this is needed. Maybe only inbound is needed.
+)
+(allow network-inbound  (local  tcp "localhost:54545")) ;; OAuth flow
+
+;; Talk to the security/trust daemons
+;; Not sure these are needed but think so because Claude Code uses keychain for API key or OAuth?
+(allow mach-lookup
+       (global-name "com.apple.securityd")
+       (global-name "com.apple.trustd"))
