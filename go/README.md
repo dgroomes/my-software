@@ -62,16 +62,6 @@ structure in an ad-hoc way. I want to avoid particularly gnarly stringly-typed p
 - The [Bubbles](https://github.com/charmbracelet/bubbles) TUI component library
 - The "fuzzy" library <https://github.com/sahilm/fuzzy>.
 
-## `go-body-omitter/`
-
-`go-body-omitter` is a Go program that strips function bodies from Go source code. It's designed to help you jam Go
-software into an LLM, where you would otherwise not be able to fit the original program into the context window because
-it's too many tokens.
-
-I'm interested, in general, in "explain a codebase to me and help me explore it tools", like Sourcegraph + Cody. I've
-explored those. Right now, I'm getting big leverage out of direct AI Chat and I can use AI Chat to build a small program
-that can help me read larger programs that can help me build larger programs.
-
 
 ## `claude-sandboxed`
 
@@ -147,58 +137,17 @@ Follow these instructions to build, run and install my software.
     * ```nushell
       do run my-fuzzy-finder --example --debug
       ```
-4. Build and run `go-body-omitter`:
-    * ```nushell
-      r#'
-      package main
-      
-      import "fmt"
-      
-      func main() {
-        fmt.Println("hello")
-      }
-      '# | do run go-body-omitter
-      ```
-    * The output should look like the following.
-    * ```text
-      package main
-      
-      import "fmt"
-      
-      func main() {
-          // OMITTED      
-      }
-      ```
-    * Try other incantations, like the following. This one shows the effect of the shrink.
-    * ```nushell
-      fd --extension go | wrap file |
-        insert tokens { |row| open --raw $row.file | token-count | into int } |
-        insert tokens-after-omission { |row| open --raw $row.file | do run go-body-omitter | token-count | into int } |
-        sort-by --reverse tokens
-      ```
-    * It outputs the following:
-    * | file                                  | tokens | tokens-after-omission |
-      |---------------------------------------|--------|-----------------------|
-      | pkg/my-fuzzy-finder/main.go           | 3977   | 1427                  |
-      | pkg/my-fuzzy-finder-lib/fuzzy.go      | 1797   | 667                   |
-      | pkg/my-fuzzy-finder-lib/fuzzy_test.go | 1246   | 33                    |
-      | pkg/go-body-omitter/main.go           | 326    | 111                   |
-5. Try `posix-nushell-compatibility-checker`:
-    * ```nushell
-      'echo "hello there" world' | do run posix-nushell-compatibility-checker
-      ```
-    * The exit code should be 0, indicating that the `echo ...` command is interpreted the same between POSIX and Nushell.
-6. Build all executables:
+4. Build all executables:
     * ```nushell
       do build
       ```
     * The executables will be in the `bin/` directory. Try them out as needed to do validation and exploration. If you are satisfied, then you can install the executables globally with the next step.
-7. Build and install the executables to your `GOBIN`:
+5. Build and install the executables to your `GOBIN`:
     * ```nushell
       do install
       ```
     * Now you can run the executables from anywhere on your system.
-8. Demonstrate `my-node-launcher`
+6. Demonstrate `my-node-launcher`
     * Copy the launcher into the example JS app.
     * ```nushell
       cp bin/my-node-launcher example-js-app/capitalize

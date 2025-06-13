@@ -18,18 +18,6 @@ export def --wrapped "run my-fuzzy-finder" [...args] {
     }
 }
 
-export def "run go-body-omitter" [] {
-    let _in = $in
-    cd $DIR
-    $_in | go run my-software/pkg/go-body-omitter
-}
-
-export def "run posix-nushell-compatibility-checker" [] {
-    let _in = $in
-    cd $DIR
-    $_in | go run my-software/pkg/posix-nushell-compatibility-checker
-}
-
 export def build [] {
     cd $DIR
     mkdir bin; go build -o bin  './...'

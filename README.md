@@ -155,6 +155,18 @@ General clean-ups, TODOs and things I wish to implement for this project:
   when doing refinement/history on my open wish list items (rare). Or... maybe consider using GitHub issues... but that's such an escalation. Or, create a "README"-like MCP tool that parses the finished section out. An agent would call this tool instead of reading the readme directly. Similarly, I might need a tool for updating (toggling) the status of items. I've already explored this but switched gears because of lack of experience with MCP/agents.
 * [ ] Consider `my-project-conventions` agent/tools. If it's my project (heuristics, in my GitHub user) and follows some other patterns (e.g. "wish list" section), then find and fix conventional issues (e.g. double newline, naming of sections, single line intro, etc).
 * [ ] I need a way to install the launcher. With the Java launcher, I use a Gradle plugin. But with npm there isn't as strong a story for this (you can make an argument, but I know enough to not try it). I'll just use Nushell.
+* [ ] IN PROGRESS Spring cleaning. There's quite a bit of stuff I've been holding onto because I thought I might use it or complete but haven't. I need to lean this codebase out. I can delete it and it'll still be in vcs. So let's do it.
+   * DONE Delete whole sub-projects and track them in a "consider revising" with list item
+   * Remove finished wish list items. This one hurts a little... but they take up context windows and my own space too. Gotta drop it. It's still minable in vcs.
+* [ ] Consider bringing back any of these archived projects that were removed from this repository in the commit after 31f63e651c3c30921294dfcaccbc668329ed8a4b:
+   * `go/pkg/go-body-omitter`
+   * `go/pkg/posix-nushell-compatibility-checker`
+   * `java/java-body-omitter`
+   * `karabiner/assets/complex_modifications/move-between-tabs.json`
+   * `karabiner/assets/complex_modifications/open-apps.json`
+   * `mcp/` This was neat but just learning from first principles. I've captured the knowledge and tricks elsewhere.
+   * `python/text-condenser` Gestated into a decent vision. Recover the plan/language.
+   * `rust/nushell-ast-printer`
 
 
 ## Finished Wish List Items
