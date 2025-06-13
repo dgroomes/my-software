@@ -92,46 +92,13 @@ General clean-ups, TODOs and things I wish to implement for this project:
 * [ ] Consider restoring (at `b3154dde` and before) my Postgres-related Bash functions. These were hard fought and useful. Maybe reimplement in
   Nushell. Alternatively, I often use Postgres in Docker. But still. (Same is true of the Mongo functions but not sure
   how much I'll ever use Mongo again.)
-* [x] DONE (It's a known bug in Atuin) Why isn't `enter_accept = true` working for Atuin? It has no effect.
-* [x] DONE Poetry completion isn't working... I've been here before
-* [x] DONE Completion isn't working for brew... We've [been here before](https://github.com/dgroomes/my-software/commit/15339d8e51b7649807669d508679b525feb9e7e5)
-* [x] DONE Revert to a more standard (non high contrast) color theme for Ghostty and instead use a more targeted approach:
-  create higher contrast color themes/settings in specific tools like Nushell and LS_COLORS (already done). I realized
-  that modifying the colors of the 256 ANSI colors (at least beyond the base ones) is kind of a kludgy and imperfect
-  thing to do because it crushes most of those colors, and it doesn't even solve a global contrast problem because CLI
-  tools can just use whatever color (hex) they want (like my own fuzzy finder). So forget it. If there is a CLI/TUI tool
-  that has particularly bad contrast, and codes to the ANSI-256 colors, and doesn't have its own color configuration, then
-  I'll consider "redefining ANSI 256", but overall I think that should be rare and I don't to redefine system things
-  without big thought.
-* [x] DONE Try out Nushell's new "vendor auto load" configuration feature
-* [x] DONE (good enough for now; I have to use Obsidian to get more of an opinion) Obsidian + LLM. I want to browse and search my README files in a convenient way (*compressed workflow*). I have a decent corpus
-  of content in the README files of my many playground-style GitHub repositories. I often want to copy specific pieces
-  from them and find snippets of knowledge (sometimes I know I have done something but can't find the right repository).
-  My overarching desire is to be able to have semantic search over my hard-earned writing (I write for "me" as the main
-  audience). While I can (and do) use grep and GitHub search, I think Obsidian plus LLMs (either local or via hosted LLM APIs),
-  is a good approach in 2025. There is a neat Obsidian plugin called [Smart Connections](https://github.com/brianpetro/obsidian-smart-connections)
-  that I want to try. As part of this idea, I need a strategy for locating the markdown files into an Obsidian vault.
-  Obsidian does not like symlinks. So, my thought is that I should prefer a copying mechanism.
-   * DONE Script out some code and notes. It's open ended.
-   * DONE Install "Smart Connections". Do some embeddings and try it out.
-   * Note: I'm also interested in semantic search over the many comments, function names, etc, in my actual code... but
-     there is not an obvious way to do this... Although I'm tempted to parse out the comments (I've parsed out Go and
-     Java with the proper compiler toolchains so, it's totally possible) and embed/index them. But the presentation part
-     is hard
 * [ ] I really want quick, keyboard-based diff review like I have in Intellij. See <https://github.com/microsoft/vscode/issues/24389>
-* [x] DONE Remove duplicate strings in prompt bundles. This is what I want to use in principle: <https://github.com/google-research/deduplicate-text-datasets>
-  Somewhat ambitious, but I think this has the potential to be as successful and appropriate as my `fzf` port. The
-  source code is relatively small. I'd like to reimplement a toy version of it in Kotlin for short term. After I grok it,
-  I can consider rewriting it Rust but I expect I will never need that performance. My prompt files will only ever be
-  like a couple megabytes max, right?
-   * DONE Incorporate deduplication into bundling code.
 * [ ] I want enhanced (LLM) search over my browser history. Safari somehow clobbers entries in my history, or at least
   they don't show up. It's almost like it consolidates multiple pages for the same host or something. For example, as I
   explore a new topic I'll look at official docs which are often scattered across multiple subsets of pages because of marketing
   reasons and/or the natural sprawl of a volunteer-driven project. Some of these pages are golden, but hard to discover.
   If I've found them once, then I want to find them again. Maybe I should use bookmarks/read-later more. Whatever it is,
   consider this story again. Apache Iceberg (and the branching into Hive stuff) is a good example of this.
-* [x] DONE (duh, I need to start on page 0 of the API, not page 1) Java 24. Adoptium is publishing this in the next few days. I did an ea version but want the full one.
 * [ ] (aspirational) Finetune an LLM on parsing/extracting my TODO/WishList items. They aren't fully machine readable
   because of formatting differences and also I use different words sometimes (DONE, SKIP, HOLD, and I might make
   something up) so they aren't perfectly classifiable by keyword. I think this is a pretty good candidate for a
@@ -148,16 +115,13 @@ General clean-ups, TODOs and things I wish to implement for this project:
   But... this is completely impractical. There's no way I'm going to generally confine myself to small files. Big files
   are often the best way to do things. Single-file scripts... An essay/blog. Still I need to capture the impactful
   strategy notes.
-* [x] DONE npm config. I need to deal with the usage/install of global modules. For now I'm doing one spot
-  regardless of Node/npm version. I might eventually feel the pain due to stuff like node-gyp but not yet. If so that's
-  fine and I'll put that switching logic in my `node.nu` scripts.
 * [ ] Consider moving finished wish list items to own file so that we can save LLM tokens. I only want to ingest those 
   when doing refinement/history on my open wish list items (rare). Or... maybe consider using GitHub issues... but that's such an escalation. Or, create a "README"-like MCP tool that parses the finished section out. An agent would call this tool instead of reading the readme directly. Similarly, I might need a tool for updating (toggling) the status of items. I've already explored this but switched gears because of lack of experience with MCP/agents.
 * [ ] Consider `my-project-conventions` agent/tools. If it's my project (heuristics, in my GitHub user) and follows some other patterns (e.g. "wish list" section), then find and fix conventional issues (e.g. double newline, naming of sections, single line intro, etc).
 * [ ] I need a way to install the launcher. With the Java launcher, I use a Gradle plugin. But with npm there isn't as strong a story for this (you can make an argument, but I know enough to not try it). I'll just use Nushell.
-* [ ] IN PROGRESS Spring cleaning. There's quite a bit of stuff I've been holding onto because I thought I might use it or complete but haven't. I need to lean this codebase out. I can delete it and it'll still be in vcs. So let's do it.
+* [x] DONE Spring cleaning. There's quite a bit of stuff I've been holding onto because I thought I might use it or complete but haven't. I need to lean this codebase out. I can delete it and it'll still be in vcs. So let's do it.
    * DONE Delete whole sub-projects and track them in a "consider revising" with list item
-   * Remove finished wish list items. This one hurts a little... but they take up context windows and my own space too. Gotta drop it. It's still minable in vcs.
+   * DONE Remove finished wish list items. This one hurts a little... but they take up context windows and my own space too. Gotta drop it. It's still minable in vcs.
 * [ ] Consider bringing back any of these archived projects that were removed from this repository in the commit after 31f63e651c3c30921294dfcaccbc668329ed8a4b:
    * `go/pkg/go-body-omitter`
    * `go/pkg/posix-nushell-compatibility-checker`
@@ -167,42 +131,4 @@ General clean-ups, TODOs and things I wish to implement for this project:
    * `mcp/` This was neat but just learning from first principles. I've captured the knowledge and tricks elsewhere.
    * `python/text-condenser` Gestated into a decent vision. Recover the plan/language.
    * `rust/nushell-ast-printer`
-
-
-## Finished Wish List Items
-
-* [x] DONE System for measuring the time it takes to load scripts in `.bashrc` and `.bash_profile`. I want to do something
-  like [this very cool project](https://github.com/colindean/hejmo/blob/0f14c6d00c653fcbb49236c4f2c2f64b267ffb3c/dotfiles/bash_profile#L93)!
-* [x] DONE (The answer is: never use eager completion loading) Loading my bash completions is slow. Doesn't bash completions support lazy loading? I have some good notes in `bash/BASH_COMPLETION.md`.
-  Maybe most software still only provides v1 completion (which doesn't support lazy/on-demand)...
-* [x] DONE Create my personal framework/strategy for managing "scripts to source during Bash shell initialization time"
-    * DONE Scaffold out a Perl script
-* [ ] SKIP Add more external documentation to `bb` (the internal documentation in the '--help' is already extremely thorough)
-* [ ] SKIP (bb is complete) Implement the fifo/domain-socket -based benchmarking described in `bb`
-* [ ] (SKIP: virtual environments satisfy Python version switching) Python SDK management. Don't bother with custom formula. Just use the core ones, which already include
-  3.9, 3.10, 3.11 and 3.12. That's perfect. UPDATE: I think Python switching is not as necessary as Java or Node.js
-  switching because we often use virtual environments. So, in a Python project, you typically activate its virtual env
-  and that's your way of switching Python versions. And for one-off scripts, would I just be using the latest Python
-  anyway? I'm going to skip this for now.
-* [x] DONE Node.js SDK management (I think this should be totally feasible since I figured this out with OpenJDK and am happy
-  with that).
-* [x] DONE Make a "Java program launcher" in Go. In any interpreted program, (Java, Python, Ruby, JavaScript), the program
-  needs to be run with an interpreter (JVM, `python`, `ruby`, `node`, etc.). This is totally fine, but distributing
-  these programs is often a challenge because the user needs to have the interpreter installed, and it needs to be a
-  compatible version, and it needs to be discoverable when launching the program. In Java, we have things like the `JAVA_HOME`
-  environment variable to help with that. But that doesn't help with version compatibility. By contrast, programs that
-  compile to an executable binary (e.g. Go, C) are easy to distribute. They are "all-in-one". (To be fair, the same
-  distribution headache is true for Go and Co programs if they link to shared libraries). I have a Java program in `java/markdown-code-fence-reader`
-  that works as long as my `JAVA_HOME` is a Java 21 JDK, but my shell environment differs per project. I want to solve
-  this scenario.
-    * DONE Go side
-    * DONE Gradle side
-* [x] DONE Properly add Nushell steps to instructions. Bootstrapping is important.
-* [x] DONE `pipx` shell completion is broken. It's working in bash. Not sure why not working in Nushell. Strange, even
-  `BASH_COMPLETION_INSTALLATION_DIR=/opt/homebrew/opt/bash-completion@2 ./one-shot-bash-completion.bash "pipx "` works.
-* [x] DONE `brew` completion doesn't work.
-* [x] DONE Create a `java-body-omitter` program that works just like the `go-body-omitter` program but for Java.
-* [x] DONE Can I get rid of `bb`? I no longer have a need for the speed-up of bb and also my spread of bash files is tiny
-  now because I'm on Nushell. The catalyst is that `brew shellenv` is misbehaving now because it overwrites the PATH
-  with some hardcoded stuff... not going to bother figuring that out.
-* [x] DONE Split out instructions into own directory. It's worked well but now this repo is `my-software`, much more broad.
+* [ ] Split up Go programs into own sub-projects. I've really only found Gradle to be an effective monorepo tool. It splits things in separate compilation units and dependency trees. Nothing else is as powerful and that's perfectly fine. I'll keep my Java/Kotlin comingled by a single Gradle project, but READMEs have to go in their own sub-projects.

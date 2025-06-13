@@ -34,12 +34,6 @@ I'm especially interested in search.
 
 General clean-ups, TODOs and things I wish to implement for this project:
 
-* [x] DONE Start project by copying the sample plugin.
-* [x] DONE pare down esbuild
-* [x] DONE Get intellisense to work
-* [x] DONE Pare down some of the features to the point I understand most of the plugin code
-* [x] DONE Update versions
-* [x] DONE `package-json.mjs` or similar
 * [ ] Consider Vite (I don't know I'm very happy with esbuild)
 
 ## Reference

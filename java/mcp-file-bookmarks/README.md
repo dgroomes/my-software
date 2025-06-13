@@ -93,10 +93,10 @@ Bookmarks are stored in a `~/.local/file-bookmarks.json` file. I don't know how 
 ]
 ```
 
+
 ## Wish List
 
 General clean-ups, TODOs and things I wish to implement for this project:
 
-* [x] DONE Port/rewrite from the TypeScript implementation
 * [ ] My functions should use MCP response types instead of strings. I need to be able to return the `isError: true` when needed.
 * [ ] Keep track of 'howto'. Return an error if other tools are called before `howto()`.

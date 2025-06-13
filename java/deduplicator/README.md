@@ -119,10 +119,6 @@ optimizations that can be made, but I need to not be tempted to go into those. I
 
 General clean-ups, TODOs and things I wish to implement for this project:
 
-* [x] DONE Scaffold the project
-* [x] DONE Write tests.
-* [x] DONE First pass implement.
-* [x] DONE Install instructions
 * [ ] Consider biasing to lines as the boundary for deduplication. I'm not sure how this would look, but in practice
   across-line deduplication makes things confusing to read. In the normal case, we just lose the partial final line's
   worth of deduplication? Because I'm authoring the code, I have the flexibility to do this.
@@ -136,8 +132,6 @@ General clean-ups, TODOs and things I wish to implement for this project:
     * Yeah it must be quadratic or something because I can get it to run on large-ish file sets but not a huge one like
      Kafka.
 * [ ] Consider how to ID and reference deduplicated text.
-* [x] DONE Separate the algorithm and the "chrome". This is helpful for tests and readability. I want to confine some of the
-  pure functions from the debugging/logging and input/output.
 * [ ] Get serious about understanding encoding. I need to understand how the algorithm operates on bytes, and then
   standardize or make consistent the usage. Can I just pad every character to 4 bytes because that's the longest UTF-16
   codepoint? And then the algorithm operates on 4 byte sequences? By contrast, I could flatten the whole corpus onto some

@@ -44,7 +44,4 @@ away from this if feasible and find a faster combination of commands and automat
 
 General clean-ups, TODOs and things I wish to implement for this project:
 
-* [x] DONE Wire in ~~commonmark-java~~ [jetbrains/markdown](https://github.com/JetBrains/markdown). commonmark-java
-  is not parsing code blocks inside lists at all unfortunately and that's the exact use case I have.
-* [x] DONE Return as JSON.
-* [x] DONE Nushell side of things.
+* [ ] ?

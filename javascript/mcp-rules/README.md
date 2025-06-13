@@ -107,11 +107,6 @@ Follow these instructions to build, test, and run the Rules MCP server:
 
 General clean-ups, TODOs and things I wish to implement for this project:
 
-* [x] Implement
-* [x] DONE Get user installation correct. It's installed only in the local place, not the user/global space. I'm struggling finding which files Claude Code is using to express its state.
-   * Update: Ok the Claude config is pretty legible. It uses a `.claude` in your local dir and in home. Although for the local the settings file is `.claude/settings.local.json` (the local seems redundant) and for home dir it's `~/.claude/settings.json.` 
-   * DONE Ok getting mixed results. 3 out of 4 times Claude is loading my rules. I think another encouragement would be to put vendor specific rules at the global level that says, "Always load ruls with the rules:load_rules tool.". In other words use the vendor-specific rules-loading mechanism to tell the agen to use my mech.
-   * DONE Test auto-loading behavior in copilot (vs code, or intellij?). Update: not possible. See note in mac-os/do.nu. That's fine.
 * [ ] Consider using an identifying string like `!rules` and supporting skipping rules loading like with a user message "!rules off"
   or listing rules location files with `!rules locations`. Not sure yet.
 * [ ] Consider `.mdc` extension and/or using the standard header metadata for things like the path of the rule file and importance level. Not sure it matters.
