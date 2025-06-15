@@ -29,7 +29,18 @@ _bash_profile_log() {
 }
 
 _bash_profile_log "Program name: $0"
-_bash_profile_parent_cmd="$(ps -p $PPID -o comm=)"
+
+# Executing suid programs is prohibited by macOS seatbelted processes and 'ps' is a suid program for some reason on
+# macOS. I would prefer to explicitly check if we were in a seatbelt sandbox and if so, just skip this call.
+# Unfortunately, there is no explicit way to check for a sandbox... you have to rely on heuristics. That doesn't help
+# with legibility so this long comment will suffice.
+#
+# We need to fail gracefully if 'ps' is not permitted.
+_bash_profile_parent_cmd=$(ps -p "$PPID" -o comm= 2>/dev/null) || {
+  _bash_profile_log "'ps' command failed likely because we are in a seatbelt sandbox. Parent process can't be found."
+  _bash_profile_parent_cmd="unknown"
+}
+
 _bash_profile_log "Parent command: $_bash_profile_parent_cmd"
 _bash_profile_log "PID: $$"
 _bash_profile_log "Arguments count: $#"

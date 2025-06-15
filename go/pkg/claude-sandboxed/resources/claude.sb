@@ -13,7 +13,10 @@
 
     ;; Claude Code does administrative stuff in ~/.claude.json and ~/.claude
     (literal (param "CLAUDE_JSON_PATH"))
-    (subpath (param "CLAUDE_DIR")))
+    (subpath (param "CLAUDE_DIR"))
+
+    ;; A conventional file I use for debugging my Bash initialization
+    (literal (param "SHELL_DEBUG_LOG_PATH")))
 
 ;; I'm not totally sure if these are needed but probably
 (allow file-write-data

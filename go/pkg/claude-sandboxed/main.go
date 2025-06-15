@@ -24,12 +24,17 @@ import (
 extern int sandbox_init_with_parameters(const char *profile, uint64_t flags, const char *const parameters[], char **errorbuf);
 extern void sandbox_free_error(char *errorbuf);
 
-// Helper function to initialize sandbox with project directory, claude.json path, and claude dir parameters
-int init_sandbox_with_params(const char* profile, const char* project_dir, const char* claude_json_path, const char* claude_dir) {
+// This is our bridge from Go to the native 'sandbox_init_with_parameters' C function.
+int sandbox_init_go_bridge(const char* profile, const char* project_dir, const char* claude_json_path, const char* claude_dir, const char* shell_debug_log_path) {
+
+    // This hardcoding is a code smell but I've experimented with parameterizing on a map of parameters but that
+    // balloons the amount of code that does C things (malloc from Go, etc) and ultimately increases the likelihood
+    // that I make a C mistake (scary). Let's keep it legible and non-DRY for now.
     const char* params[] = {
         "PROJECT_DIR", project_dir,
         "CLAUDE_JSON_PATH", claude_json_path,
         "CLAUDE_DIR", claude_dir,
+        "SHELL_DEBUG_LOG_PATH", shell_debug_log_path,
         NULL
     };
     char* error_buf = NULL;
@@ -166,6 +171,7 @@ func initializeSandbox(projectDir string) error {
 	}
 	claudeJSONPath := filepath.Join(homeDir, ".claude.json")
 	claudeDir := filepath.Join(homeDir, ".claude")
+	shellDebugLogPath := filepath.Join(homeDir, ".shell-debug.log")
 
 	// Convert Go strings to C strings
 	cProfile := C.CString(seatbeltProfile)
@@ -180,8 +186,10 @@ func initializeSandbox(projectDir string) error {
 	cClaudeDir := C.CString(claudeDir)
 	defer C.free(unsafe.Pointer(cClaudeDir))
 
-	// Call our helper function
-	result := C.init_sandbox_with_params(cProfile, cProjectDir, cClaudeJSONPath, cClaudeDir)
+	cShellDebugLogPath := C.CString(shellDebugLogPath)
+	defer C.free(unsafe.Pointer(cShellDebugLogPath))
+
+	result := C.sandbox_init_go_bridge(cProfile, cProjectDir, cClaudeJSONPath, cClaudeDir, cShellDebugLogPath)
 
 	if result != 0 {
 		return fmt.Errorf("sandbox_init failed with code %d", result)
