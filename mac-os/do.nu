@@ -27,3 +27,12 @@ export def llm-rules [] {
         cp ../llm-agent/CLAUDE.md $claude_file
     }
 }
+
+export def llm-prompts [] {
+    cd $DIR
+
+    let prompts_dir = "~/.config/llm-agent/prompts" | path expand
+    mkdir $prompts_dir
+
+    cp -r ../llm-agent/prompts/* $prompts_dir
+}

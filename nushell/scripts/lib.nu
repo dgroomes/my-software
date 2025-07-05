@@ -681,12 +681,12 @@ export def clone-local-repo [] {
 
     let source_path = $result | get full_path
     let repo_name = $source_path | path basename
-    
+
     # Check if destination already exists
     if ($repo_name | path exists) {
         err $"Directory '($repo_name)' already exists in current directory"
     }
-    
+
     # Perform the git clone
     print $"Cloning ($result.description) to ./($repo_name)"
     git clone $source_path $repo_name
@@ -740,3 +740,12 @@ export def wikipedia [title: string] {
     $pages | get $page_id | get extract
 }
 
+# Copy the contents of a prompt into the clipboard
+export def prompt [p: string@prompt-files] {
+    let f = [ ~/.config/llm-agent/prompts $p] | path join | path expand
+    open -r $f | pbcopy
+}
+
+def prompt-files [] {
+    ls ~/.config/llm-agent/prompts | each { get name | path basename }
+}

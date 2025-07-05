@@ -388,3 +388,7 @@ to a working Nushell environment, but it's great enough.
     * ```nushell
       do llm-rules
       ```
+43. Install LLM prompts
+    * ```nushell
+      do llm-prompts
+      ```
