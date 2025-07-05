@@ -167,3 +167,39 @@ export def compress-home [] {
         $p
     }
 }
+
+# Convert a Unix epoch timestamp to a `datetime`
+#
+# This command is all about practical convenience. I often encounter Unix epoch timestamps. But they are all over the
+# place in terms of input shapes: seconds, milliseconds, strings and integers. This command handles them all. In a more
+# formal program, we would prefer to be stricter about the inputs.
+#
+# This command is named "epoch-into-datetime" to match the existing "into {type}" family of builtin Nushell commands.
+#
+@example "epoch as integer seconds" { 1751545681 | epoch-into-datetime } --result 2025-07-03T07:28:01-05:00
+@example "epoch as string seconds" { "1751545681" | epoch-into-datetime } --result 2025-07-03T07:28:01-05:00
+@example "epoch as milliseconds" { 1751545681999 | epoch-into-datetime } --result 2025-07-03T07:28:01-05:00
+export def epoch-into-datetime []: [string -> datetime, int -> datetime, float -> datetime] {
+    let raw = $in
+
+    # Normalise to integer
+    let ts_int = match ($raw | describe) {
+        "int"    => $raw
+        "float"  => ($raw | into int)
+        "string" => (try { $raw | str trim | into int } catch {
+            error make --unspanned { msg: $"Input string ($raw) is not a valid integer epoch timestamp." }
+        })
+        _ => (error make --unspanned { msg: $"Unsupported input type: ($raw | describe)" })
+    }
+
+    # Truncate to seconds
+    let ts_secs = if ($ts_int >= 1_000_000_000_000) or ($ts_int <= -1_000_000_000_000) {
+        $ts_int / 1000 | into int
+    } else {
+        $ts_int
+    }
+
+    # For convenience, let's attach the local timezone into the datetime record. I can make better sense of a locally
+    # formatted date/time string than one in UTC.
+    $ts_secs | into datetime -f '%s' | date to-timezone LOCAL
+}
