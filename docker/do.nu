@@ -4,10 +4,7 @@ export def build-my-dev [--no-cache] {
     cd $DIR
     cd my-dev
 
-    mut opts = [
-        --tag my-dev:local
-        --file my-dev.Dockerfile
-    ]
+    mut opts = [--tag my-dev:local]
 
     if $no_cache {
         $opts = $opts | append "--no-cache"

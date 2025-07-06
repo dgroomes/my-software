@@ -4,16 +4,27 @@
 # Let's use a pretty barebones but friendly Linux distribution
 FROM debian:12.11-slim
 
-ENV DEBIAN_FRONTEND=noninteractive \
-    RUSTUP_HOME=/usr/local/rustup \
+WORKDIR /usr/local/my-dev-install
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Bootstrap from Bash to Nushell
+COPY 1-rust-and-nushell.bash .
+ENV RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \
-    PATH=/usr/local/cargo/bin:/usr/local/node/bin:$PATH
+    PATH=/usr/local/cargo/bin:$PATH
+RUN ["/bin/bash", "/usr/local/my-dev-install/1-rust-and-nushell.bash"]
 
-COPY 1-bootstrap-nushell.bash /usr/local/my-dev-install/
-RUN ["/bin/bash", "/usr/local/my-dev-install/1-bootstrap-nushell.bash"]
+# Install Node.js
+COPY 2-nodejs.nu .
+# The end-user ('me') needs write permissions to the npm global install directory. Let's use a conventional location
+# in the user's home directory. Remember, there are no other users designed to be in this container. We can cater to the
+# 'me' user exclusively.
+ENV NPM_CONFIG_PREFIX=/home/me/.local/npm \
+    PATH=/usr/local/node/bin:/home/me/.local/npm/bin:$PATH
+RUN ["/usr/local/cargo/bin/nu", "/usr/local/my-dev-install/2-nodejs.nu"]
 
-COPY 2-everything-else.nu /usr/local/my-dev-install/
-RUN ["/usr/local/cargo/bin/nu", "/usr/local/my-dev-install/2-everything-else.nu"]
+# Install even more stuff (coming soon)
 
 # Create unprivileged user
 #

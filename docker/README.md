@@ -49,5 +49,7 @@ Follow these instructions to work with Docker configurations in this directory.
 
 General clean-ups, TODOs and things I wish to implement for this project:
 
-* [ ] IN PROGRESS Layer in Node.js into the base development image
+* [x] DONE Layer in Node.js into the base development image
 * [ ] Create a "claude-code" image. Or rather, create Nu scripts that install Claude Code and dependencies. I guess I'm not sure if I want to formalize a bunch of Dockerfiles. Can I get away with saving containers in a stateful way? Instead of saving images? I don't really know. Like for a new project, I could create a new container from my base, and then boostrap all the deps I want. Maybe that will take a long time to install things like Node? Hmmm... Or maybe all the "big things" should go in the base image for speed, and the little packages (like npm packages) can be installed on-demand.
+* [ ] I haven't figured out if the build being so slow (over 2 min) is going to get annoying and what I can/should do about caching... doesn't matter yet. Also I might need to cache bust just in general (I guess that's why I added --no-cache optional flag in the nushell script)
+* [ ] There has to be some other way to script out building a Docker image than Dockerfiles. There is like a Go API right?
