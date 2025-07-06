@@ -8,33 +8,34 @@ WORKDIR /usr/local/my-dev-install
 
 ENV DEBIAN_FRONTEND=noninteractive
 
+COPY 1-root-stuff.bash .
+RUN ["bash", "1-root-stuff.bash"]
+
+# Now we cross the root/user divide. We're seeing the root/user tension here. The earlier workspace is writeable by root,
+# but not by the 'me' user. I could make it writeable to the 'me' user, but it's a code smell making anything in /usr or
+# the like writeable by a non-root user. So let's just create a new workspace for the 'me' user.
+USER me
+WORKDIR /home/me/.local/my-dev-install
+
 # Bootstrap from Bash to Nushell
-COPY 1-rust-and-nushell.bash .
-ENV RUSTUP_HOME=/usr/local/rustup \
-    CARGO_HOME=/usr/local/cargo \
-    PATH=/usr/local/cargo/bin:$PATH
-RUN ["/bin/bash", "/usr/local/my-dev-install/1-rust-and-nushell.bash"]
+#
+# Remember, there are no other users designed to be in this container. Let's cater everything (e.g. install locations)
+# to the 'me' user exclusively.
+#
+# Let's install the Rust toolchain in a conventional location in the user's home directory: "~/.local".
+COPY 2-rust-and-nushell.bash .
+ENV RUSTUP_HOME=/home/me/.local/rustup \
+    CARGO_HOME=/home/me/.local/cargo \
+    PATH=/home/me/.local/cargo/bin:$PATH
+RUN ["bash", "2-rust-and-nushell.bash"]
 
 # Install Node.js
-COPY 2-nodejs.nu .
-# The end-user ('me') needs write permissions to the npm global install directory. Let's use a conventional location
-# in the user's home directory. Remember, there are no other users designed to be in this container. We can cater to the
-# 'me' user exclusively.
+COPY 3-nodejs.nu .
 ENV NPM_CONFIG_PREFIX=/home/me/.local/npm \
-    PATH=/usr/local/node/bin:/home/me/.local/npm/bin:$PATH
-RUN ["/usr/local/cargo/bin/nu", "/usr/local/my-dev-install/2-nodejs.nu"]
+    PATH=/home/me/.local/node/bin:/home/me/.local/npm/bin:$PATH
+RUN ["nu", "3-nodejs.nu"]
 
-# Install even more stuff (coming soon)
-
-# Create unprivileged user
-#
-# Like my own strategy on macOS, I'll keep Bash as the login/default shell. I don't want to even try running things
-# like Claude Code from Nushell and I don't want to coerce the LLM to execute Nu commands; it has little idea about that
-# in its training data. And I think Claude Code implements a lot of Bash/Zsh-specific idiosyncrasies. Let's keep things
-# compatible.
-RUN ["useradd", "-m", "-s", "/bin/bash", "me"]
-USER me
-
+# After everthing is installed, land the user into a starting-point directory where they can focus on their work.
 WORKDIR /home/me/workspace
 
 # I still don't understand exactly why we need things like tini, but I trust that it is useful. I'm just a little

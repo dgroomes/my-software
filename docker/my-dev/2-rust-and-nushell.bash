@@ -7,9 +7,6 @@
 
 set -euo pipefail
 
-apt-get update
-apt-get install -y --no-install-recommends curl ca-certificates build-essential pkg-config tini xz-utils
-
 curl -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain 1.85.1
 
 cargo install nu --locked --version 0.105.1
