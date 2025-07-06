@@ -50,6 +50,8 @@ Follow these instructions to work with Docker configurations in this directory.
 General clean-ups, TODOs and things I wish to implement for this project:
 
 * [x] DONE Layer in Node.js into the base development image
-* [ ] Create a "claude-code" image. Or rather, create Nu scripts that install Claude Code and dependencies. I guess I'm not sure if I want to formalize a bunch of Dockerfiles. Can I get away with saving containers in a stateful way? Instead of saving images? I don't really know. Like for a new project, I could create a new container from my base, and then boostrap all the deps I want. Maybe that will take a long time to install things like Node? Hmmm... Or maybe all the "big things" should go in the base image for speed, and the little packages (like npm packages) can be installed on-demand.
+* [ ] Layer in Claude Code.
 * [ ] I haven't figured out if the build being so slow (over 2 min) is going to get annoying and what I can/should do about caching... doesn't matter yet. Also I might need to cache bust just in general (I guess that's why I added --no-cache optional flag in the nushell script)
-* [ ] There has to be some other way to script out building a Docker image than Dockerfiles. There is like a Go API right?
+* [ ] Consider BuildKit LLB, and/or Dagger. I'd like to see what's possible. I'd like to fuse the downloading/untarring that can happen outside the container, and the instructions for copying it into the container, in the same program/project for cohesion. I'd just like to see what's possible.
+* [ ] I need to re-think some of root/user stuff. Install Rustup/Cargo as root is kind of obnoxious because now my Cargo bin is in /usr/local/bin so when 'me' user tries to build a project it won't have write access to put the binary there.
+* [ ] Consider the idea: can I get away with saving containers in a stateful way? Instead of saving images? Is there a compressed workflow hidden somewhere in here? Now I'm thinking about putting DevContainer's style instructions/Dockerfile in the `.my` directory and using that by convention.
