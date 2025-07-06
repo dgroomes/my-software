@@ -278,8 +278,16 @@ func main() {
 		os.Exit(1)
 	}
 	for k, v := range proxyEnv {
+		// TODO: this is silly, we're environment variables with string "K=V"? Is that not inviting escaping problems.
+		// Seems odd.
 		env = append(env, fmt.Sprintf("%s=%s", k, v))
 	}
+
+	// TODO: I haven't tried this yet. Committing it for next time.
+	// Set DYLD_USE_DTRACE=0 to prevent binaries from attempting to write to DTrace paths
+	// When sandboxed, these writes are denied by default, but setting this reduces unnecessary
+	// logging noise from repeated denial messages in system logs
+	// env = append(env, "DYLD_USE_DTRACE=0")
 
 	// Replace this process with Claude Code
 	err = syscall.Exec(claudePath, []string{"claude"}, env)
