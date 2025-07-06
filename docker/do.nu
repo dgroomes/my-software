@@ -1,11 +1,12 @@
 const DIR = path self | path dirname
 
-export def build-my-nushell [--no-cache] {
+export def build-my-dev [--no-cache] {
     cd $DIR
+    cd my-dev
 
     mut opts = [
-        --tag my-nushell
-        --file my-nushell.Dockerfile
+        --tag my-dev:local
+        --file my-dev.Dockerfile
     ]
 
     if $no_cache {
@@ -15,7 +16,8 @@ export def build-my-nushell [--no-cache] {
     docker build ...$opts .
 }
 
-export def run-my-nushell [] {
+export def run-my-dev [] {
     cd $DIR
-    docker run --rm -it my-nushell
+    cd my-dev
+    docker run --rm -it my-dev:local
 }
