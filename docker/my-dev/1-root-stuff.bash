@@ -27,8 +27,7 @@ apt-get install -y --no-install-recommends \
   gh \
   git \
   jq \
-  pkg-config \
-  tini
+  pkg-config
 
 # Create unprivileged user
 #

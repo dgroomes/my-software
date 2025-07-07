@@ -16,5 +16,6 @@ export def build-my-dev [--no-cache] {
 export def run-my-dev [] {
     cd $DIR
     cd my-dev
-    docker run --rm -it my-dev:local
+    docker run --name my-dev --init --rm --detach my-dev:local
+    docker exec --interactive --tty my-dev bash
 }

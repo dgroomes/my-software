@@ -38,8 +38,8 @@ RUN ["nu", "3-nodejs.nu"]
 # After everthing is installed, land the user into a starting-point directory where they can focus on their work.
 WORKDIR /home/me/workspace
 
-# I still don't understand exactly why we need things like tini, but I trust that it is useful. I'm just a little
-# confused about how the OS sends (or chooses to not send) signals and especially how that relates to PID 1. I just can't
-# get a straight answer and example from the LLM. I need to hit the books on that. But let's use it.
-ENTRYPOINT ["/usr/bin/tini", "--"]
-CMD ["/bin/bash"]
+# I'm trying out a do-nothing entrypoint, which means the container is only useful when you 'exec' additional processes
+# in it. For me, that should work. I'm building Nushell scripting around this workflow to quickly create and attach to
+# the development containers. I don't need to rely on the container entrypoint as the actual doorway I use to start
+# work in the container.
+ENTRYPOINT ["sleep", "infinity"]
