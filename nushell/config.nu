@@ -83,6 +83,7 @@ export alias f = file-name
 
 # Git aliases
 export alias gsdp = git-switch-default-pull
+export alias gcam = git-checkout-as-my
 export alias gs = git st
 export alias gl = git lg
 

@@ -749,3 +749,30 @@ export def prompt [p: string@prompt-files] {
 def prompt-files [] {
     ls ~/.config/llm-agent/prompts | each { get name | path basename }
 }
+
+# Check out a reference and create a local branch named after that reference with a convention prefix of "my-".
+#
+# @example "Checkout v1.0.0 will create a branch my-v1.0.0" { git-checkout-as-my v1.0.0 }
+#
+# This is a compressed workflow over the common task of checking out a reference, like a tag, and retyping a similarly
+# named branch name to use as the local branch. This command does the same but with less typing, and therefore less
+# typo-ing.
+export def git-checkout-as-my [ref: string@git-refs] {
+    # Clean up the chosen ref so we can build a nice local name
+    let base = (
+        $ref
+        | str replace -r '^refs/(heads/|remotes/)' ''
+        | str replace -r '^origin/' ''
+    )
+    let local = $"my-($base)"
+
+    git switch --create $local $ref
+}
+
+def git-refs [] {
+    # I'm not really sure how many ref types I really need. This works for now.
+    git for-each-ref --format='%(refname:short)' refs/heads refs/tags
+      | lines
+      | uniq
+      | sort
+}

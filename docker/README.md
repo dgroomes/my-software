@@ -58,3 +58,4 @@ General clean-ups, TODOs and things I wish to implement for this project:
 * [ ] Define an agentic runbook (instructions in a prompt + scripts) to find latest versions of deps and update them in our code 
 * [ ] Consider sandboxing/LSM stuff (e.g. Landlock) similar to what I did with seatbelt. I'd like the exec tool (the shell it uses is configurable I think) to be some wrapper executable that self-sandboxes bash
 * [ ] Layer in my own Nu scripts. A pre-req to this will be splitting out my macOS-specific stuff. Shouldn't be too crazy.
+* [ ] Get my rules MCP server in the image, and also my rules files.
