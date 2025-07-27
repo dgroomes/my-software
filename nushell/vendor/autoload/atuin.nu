@@ -7,7 +7,7 @@ hide-env -i ATUIN_HISTORY_ID
 let ATUIN_KEYBINDING_TOKEN = $"# (random uuid)"
 
 let _atuin_pre_execution = {||
-    if ($nu | get -i history-enabled) == false {
+    if ($nu | get --optional history-enabled) == false {
         return
     }
     let cmd = (commandline)
@@ -25,7 +25,13 @@ let _atuin_pre_prompt = {||
         return
     }
     with-env { ATUIN_LOG: error } {
-        do { atuin history end $'--exit=($last_exit)' -- $env.ATUIN_HISTORY_ID } | complete
+        if (version).minor >= 104 or (version).major > 0 {
+            job spawn -t atuin {
+                ^atuin history end $'--exit=($env.LAST_EXIT_CODE)' -- $env.ATUIN_HISTORY_ID | complete
+            } | ignore
+        } else {
+            do { atuin history end $'--exit=($last_exit)' -- $env.ATUIN_HISTORY_ID } | complete
+        }
 
     }
     hide-env ATUIN_HISTORY_ID
@@ -47,10 +53,10 @@ def _atuin_search_cmd [...flags: string] {
         $ATUIN_KEYBINDING_TOKEN,
         ([
             `with-env { ATUIN_LOG: error, ATUIN_QUERY: (commandline) } {`,
-                (if $nu_version.0 <= 0 and $nu_version.1 <= 90 { 'commandline' } else { 'commandline edit' }),
-                (if $nu_version.1 >= 92 { '(run-external atuin search' } else { '(run-external --redirect-stderr atuin search' }),
+                'commandline edit',
+                '(run-external atuin search',
                     ($flags | append [--interactive] | each {|e| $'"($e)"'}),
-                (if $nu_version.1 >= 92 { ' e>| str trim)' } else {' | complete | $in.stderr | str substring ..-1)'}),
+                ' e>| str trim)',
             `}`,
         ] | flatten | str join ' '),
     ] | str join "\n"
@@ -62,9 +68,9 @@ $env.config = (
     $env.config | upsert hooks (
         $env.config.hooks
         | upsert pre_execution (
-            $env.config.hooks | get -i pre_execution | default [] | append $_atuin_pre_execution)
+            $env.config.hooks | get --optional pre_execution | default [] | append $_atuin_pre_execution)
         | upsert pre_prompt (
-            $env.config.hooks | get -i pre_prompt | default [] | append $_atuin_pre_prompt)
+            $env.config.hooks | get --optional pre_prompt | default [] | append $_atuin_pre_prompt)
     )
 )
 
