@@ -3,13 +3,13 @@ class MyOpenJdkAT24 < Formula
 
   homepage "https://github.com/dgroomes/my-software"
 
-  url "https://github.com/adoptium/temurin24-binaries/releases/download/jdk-24.0.1%2B9/OpenJDK24U-jdk_aarch64_mac_hotspot_24.0.1_9.tar.gz"
+  url "https://github.com/adoptium/temurin24-binaries/releases/download/jdk-24.0.2%2B12/OpenJDK24U-jdk_aarch64_mac_hotspot_24.0.2_12.tar.gz"
 
   version "0.0.0"
 
   keg_only :versioned_formula
 
-  sha256 "e3b1fe4cd3da335d07d62f335ae958f5a43c594be1ba333a06a03a49d2212cd4"
+  sha256 "db2ba6f72c19ad8b742303a504f58474bceeb94174a185de5f095c1d45577f1c"
 
   def install
     libexec.install "Contents"
