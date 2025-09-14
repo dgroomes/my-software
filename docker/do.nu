@@ -1,6 +1,6 @@
 const DIR = path self | path dirname
 
-export def build-my-dev [--no-cache] {
+export def build [--no-cache] {
     cd $DIR
     cd my-dev
 
@@ -13,9 +13,11 @@ export def build-my-dev [--no-cache] {
     docker build ...$opts .
 }
 
-export def run-my-dev [] {
-    cd $DIR
-    cd my-dev
+export def run [] {
     docker run --name my-dev --init --rm --detach my-dev:local
-    docker exec --interactive --tty my-dev bash
+    docker exec --interactive --tty my-dev nu
+}
+
+export def stop [] {
+    docker stop my-dev
 }

@@ -29,19 +29,27 @@ The `my-dev` Docker image is designed as a base image for my development work th
 
 ## Instructions
 
-Follow these instructions to work with Docker configurations in this directory.
+Follow these instructions to build the `my-dev` Docker image and interact with it.
 
 1. Activate the `do.nu` script 
-   * ```nushell
+   - ```nushell
      do activate
      ```
 2. Build the `my-dev` image
-   * ```nushell
-     do build-my-dev
+   - ```nushell
+     do build
      ```
-3. Say "hello world" from the container
-   * ```nushell
-     docker run --rm my-dev:local node -e "console.log('Hello, World!')"
+3. Run the container and start a Nushell session
+   - ```nushell
+     do run
+     ```
+4. Say "hello world" from the container using Node.js
+   - ```nushell
+     node -e 'console.log("Hello, World!")'
+     ```
+   - When you're done, exit the shell session with `exit`. Then stop the container with the following command.
+   - ```nushell
+     do stop
      ```
 
 
@@ -49,13 +57,14 @@ Follow these instructions to work with Docker configurations in this directory.
 
 General clean-ups, TODOs and things I wish to implement for this project:
 
-* [x] DONE Layer in Node.js into the base development image
-* [x] DONE Layer in Claude Code.
-* [ ] I haven't figured out if the build being so slow (over 2 min) is going to get annoying and what I can/should do about caching... doesn't matter yet. Also I might need to cache bust just in general (I guess that's why I added --no-cache optional flag in the nushell script)
-* [ ] Consider BuildKit LLB, and/or Dagger. I'd like to see what's possible. I'd like to fuse the downloading/untarring that can happen outside the container, and the instructions for copying it into the container, in the same program/project for cohesion. I'd just like to see what's possible. I'd really like to see if I can write some code that cache-busts based on the hash of the scripts we copy in. One thing I think is really neat about Docker/containers is the permanence of setting env vars, instead of having to bootstrap that from the shell. Doing it earlier than shell is nice.
-* [x] DONE (This is causing problems for the Claude Code install; so need to address it) I need to re-think some of root/user stuff. Install Rustup/Cargo as root is kind of obnoxious because now my Cargo bin is in /usr/local/bin so when 'me' user tries to build a project it won't have write access to put the binary there.
-* [ ] Consider the idea: can I get away with saving containers in a stateful way? Instead of saving images? Is there a compressed workflow hidden somewhere in here? Now I'm thinking about putting DevContainer's style instructions/Dockerfile in the `.my` directory and using that by convention.
-* [ ] Define an agentic runbook (instructions in a prompt + scripts) to find latest versions of deps and update them in our code 
-* [ ] Consider sandboxing/LSM stuff (e.g. Landlock) similar to what I did with seatbelt. I'd like the exec tool (the shell it uses is configurable I think) to be some wrapper executable that self-sandboxes bash
-* [ ] Layer in my own Nu scripts. A pre-req to this will be splitting out my macOS-specific stuff. Shouldn't be too crazy.
-* [ ] Get my rules MCP server in the image, and also my rules files.
+- [x] DONE Layer in Node.js into the base development image
+- [x] DONE Layer in Claude Code.
+- [ ] I haven't figured out if the build being so slow (over 2 min) is going to get annoying and what I can/should do about caching... doesn't matter yet. Also I might need to cache bust just in general (I guess that's why I added --no-cache optional flag in the nushell script)
+- [ ] Consider BuildKit LLB, and/or Dagger. I'd like to see what's possible. I'd like to fuse the downloading/untarring that can happen outside the container, and the instructions for copying it into the container, in the same program/project for cohesion. I'd just like to see what's possible. I'd really like to see if I can write some code that cache-busts based on the hash of the scripts we copy in. One thing I think is really neat about Docker/containers is the permanence of setting env vars, instead of having to bootstrap that from the shell. Doing it earlier than shell is nice.
+- [x] DONE (This is causing problems for the Claude Code install; so need to address it) I need to re-think some of root/user stuff. Install Rustup/Cargo as root is kind of obnoxious because now my Cargo bin is in /usr/local/bin so when 'me' user tries to build a project it won't have write access to put the binary there.
+- [ ] Consider the idea: can I get away with saving containers in a stateful way? Instead of saving images? Is there a compressed workflow hidden somewhere in here? Now I'm thinking about putting DevContainer's style instructions/Dockerfile in the `.my` directory and using that by convention.
+- [ ] Define an agentic runbook (instructions in a prompt + scripts) to find latest versions of deps and update them in our code 
+- [ ] Consider sandboxing/LSM stuff (e.g. Landlock) for Claude Code similar to what I did with seatbelt. I'd like the exec tool (the shell it uses is configurable I think) to be some wrapper executable that self-sandboxes bash
+- [ ] Layer in my own Nu scripts. A pre-req to this will be splitting out my macOS-specific stuff. Shouldn't be too crazy.
+- [ ] Get my rules MCP server in the image, and also my rules files.
+- [ ] SSH server. It's been three years that I've been off-and-on exploring the "dev containers" idea (linux-playground, dev-containers-playground, intellij-playground, vscode-playground) and SSH is central to how clients interface with the dev container. I'd like to run an SSH server in the container. DevPod does something super clever, which is install an agent in the container and then makes special SSH config entry using `ProxyCommand` to basically get SSH but via stdout/stdin? I won't do that I don't think, but clever.

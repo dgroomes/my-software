@@ -39,7 +39,7 @@ export def git-switch-default-pull [] {
     }
 
     let branch = try {
-      $result.stdout | lines | find --regex 'HEAD' | get 0 | split words | get 2
+      $result.stdout | lines | find --regex 'HEAD' --no-highlight | get 0 | split words | get 2
     } catch {
         err "Unexpected problem parsing the default branch from the output of 'git remote show origin'."
     }

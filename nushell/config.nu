@@ -136,13 +136,30 @@ let filtered = $hooks | where ($it | describe) != "string" or $it !~ "# ERASE ME
 $env.config.hooks.pre_prompt = $filtered
 '#
 
+# Duplicating this snippet is a bit dirty, but this use case is still nascent, so we'll start here
+const ACTIVATE_DO_FROM_MY = r#'
+# ERASE ME
+overlay use --prefix .my/do.nu
+let hooks = $env.config.hooks.pre_prompt
+let filtered = $hooks | where ($it | describe) != "string" or $it !~ "# ERASE ME"
+$env.config.hooks.pre_prompt = $filtered
+'#
+
 # Activate a 'do.nu' script as an overlay module.
 #
 # By convention, I put 'do.nu' scripts in projects and this lets me compress my workflow. The 'do activate' command
 # activates the local 'do.nu' script as a module using Nushell's *overlays*. Because of Nushell's parse-evaluate model, this
 # is actually pretty difficult to do, so we can abuse Nushell hooks to do this.
 export def --env "do activate" [] {
-    if not ("do.nu" | path exists) {
+
+    # By convention, I put 'do.nu' scripts either in the root or in a '.my' directory. Check both places. The '.my'
+    # directory takes precedence.
+
+    let activate_hook = if (".my/do.nu" | path exists) {
+        $ACTIVATE_DO_FROM_MY
+    } else if ("do.nu" | path exists) {
+        $ACTIVATE_DO
+    } else {
         err "No 'do.nu' script found."
     }
 
@@ -150,7 +167,7 @@ export def --env "do activate" [] {
     # erase itself. I have details about this pattern in my nushell-playground repository: https://github.com/dgroomes/nushell-playground/blob/b505270046fd2c774927749333e67707073ad62d/hooks.nu#L72
 
     $env.config = ($env.config | upsert hooks.pre_prompt {
-        default [] | append $ACTIVATE_DO
+        default [] | append $activate_hook
     })
 }
 
