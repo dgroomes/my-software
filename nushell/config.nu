@@ -55,6 +55,8 @@ use open-jdk.nu *
 use postgres.nu *
 use work-trees.nu *
 use zdu.nu *
+use subject.nu *
+use my-dir.nu *
 
 # I don't really understand the essential coverage, or purpose, of the directories added to the PATH by the macOS
 # "/usr/libexec/path_helper" tool. But, at the least, I know it adds "/usr/local/bin" to the PATH and I need that.

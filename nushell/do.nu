@@ -38,6 +38,12 @@ const config_registry = {
         install_success_msg: "Library file installed."
         upstream_success_msg: "Library file upstreamed."
     }
+    my-dir: {
+        filename: "scripts/my-dir.nu"
+        backup_success_msg: "'my-dir' library file backed up."
+        install_success_msg: "'my-dir' library file installed."
+        upstream_success_msg: "'my-dir' library file upstreamed."
+    }
     node: {
         filename: "scripts/node.nu"
         backup_success_msg: "Node.js library file backed up."
@@ -61,6 +67,12 @@ const config_registry = {
         backup_success_msg: "Starship configuration file backed up."
         install_success_msg: "Starship configuration file installed."
         upstream_success_msg: "Starship configuration file upstreamed."
+    }
+    subject: {
+        filename: "scripts/subject.nu"
+        backup_success_msg: "'subject' library file backed up."
+        install_success_msg: "'subject' library file installed."
+        upstream_success_msg: "'subject' library file upstreamed."
     }
     nu_scripts_sourcer: {
         filename: "vendor/autoload/nu-scripts-sourcer.nu"
