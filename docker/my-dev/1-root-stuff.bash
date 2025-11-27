@@ -14,6 +14,11 @@
 
 set -euo pipefail
 
+# 2025-11-16: I don't know why I added this... but afraid to delete it. If it only yields a small space savings, then I
+# don't care for it. But I vaguely remember running into a more cryptic and fatal problem so keeping it here for now.
+rm -rf /var/lib/apt/lists/*
+apt-get clean
+
 apt-get update
 
 # Let's generally follow the list of packages that Anthropic downloads in their own Dockerfile for Claude Code. The

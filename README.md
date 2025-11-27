@@ -132,5 +132,6 @@ General clean-ups, TODOs and things I wish to implement for this project:
    * `python/text-condenser` Gestated into a decent vision. Recover the plan/language.
    * `rust/nushell-ast-printer`
 * [ ] Split up Go programs into own sub-projects. I've really only found Gradle to be an effective monorepo tool. It splits things in separate compilation units and dependency trees. Nothing else is as powerful and that's perfectly fine. I'll keep my Java/Kotlin co-mingled by a single Gradle project, but READMEs have to go in their own sub-projects.
-* [ ] IN PROGRESS Sandbox profile should allow `mkdir` and `pwd` don't know why these are blocked. `(allow default)` allows sub-processes so what's going on?
+* [ ] PARTIAL Sandbox profile should allow `mkdir` and `pwd` don't know why these are blocked. `(allow default)` allows sub-processes so what's going on?
    * DONE Allow file write to my conventional '~/.shell-debug.log'
+* [ ] Rewrite Git aliases as just shell aliases (Nushell). I don't see super see the point of git aliases plus I already re-wrap them in shorter shell aliases anyway ('gl' for 'git lg' for 'git log ...')
