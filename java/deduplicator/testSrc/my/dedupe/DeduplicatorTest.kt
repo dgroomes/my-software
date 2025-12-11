@@ -6,40 +6,10 @@ import org.junit.jupiter.api.Test
 class DeduplicatorTest {
 
     @Test
-    fun `suffix array`() {
-        val result = suffixArray("banana").toList()
-
-        // Document:
-        //
-        // 0 1 2 3 4 5
-        // b a n a n a
-        //
-        // Suffixes:
-        //
-        // 0 - banana
-        // 1 - anana
-        // 2 - nana
-        // 3 - ana
-        // 4 - na
-        // 5 - a
-        //
-        // Suffixes sorted:
-        //
-        // 5 - a
-        // 3 - ana
-        // 1 - anana
-        // 0 - banana
-        // 4 - na
-        // 2 - nana
-        assertThat(result).isEqualTo(listOf(5, 3, 1, 0, 4, 2))
-    }
-
-    @Test
     fun `lcp array`() {
         val result = lcpArray("banana", intArrayOf(5, 3, 1, 0, 4, 2))
 
-        // Refer to the earlier test case for a description of the suffix array for the 'banana' text. Now, we expect
-        // the LCP array to be:
+        // The LCP array for "banana" with suffix array [5, 3, 1, 0, 4, 2]:
         //
         // Index| First suffix  | Second suffix  | Common prefix | Length (LCP)
         // -----|---------------|----------------|--------------|-------------
@@ -48,7 +18,6 @@ class DeduplicatorTest {
         // 2    | anana         | banana         | -             | 0
         // 3    | banana        | na             | -             | 0
         // 4    | na            | nana           | na            | 2
-
 
         assertThat(result).isEqualTo(intArrayOf(1, 3, 0, 0, 2))
     }
@@ -94,40 +63,5 @@ class DeduplicatorTest {
         //   so moremoreso    // remove repeated "so "
         //   so more          // remove repeated "moreso". This is the weird part, because we now have no "moreso" instances.
         assertThat(result).isEqualTo("so more")
-    }
-
-    @Test
-    fun `test longest common prefix - basic case`() {
-        val text = "banana"
-        val result = longestCommonPrefix(text, 1, 3) // "anana" vs "ana"
-        assertThat(result).isEqualTo(3) // "ana" is common
-    }
-
-    @Test
-    fun `test longest common prefix - no common prefix`() {
-        val text = "abcdef"
-        val result = longestCommonPrefix(text, 0, 3) // "abcdef" vs "def"
-        assertThat(result).isEqualTo(0)
-    }
-
-    @Test
-    fun `test longest common prefix - entire suffix common`() {
-        val text = "testing"
-        val result = longestCommonPrefix(text, 4, 4) // "ing" vs "ing"
-        assertThat(result).isEqualTo(3)
-    }
-
-    @Test
-    fun `test longest common prefix - empty remainder`() {
-        val text = "test"
-        val result = longestCommonPrefix(text, 4, 2) // "" vs "st"
-        assertThat(result).isEqualTo(0)
-    }
-
-    @Test
-    fun `test longest common prefix - at string bounds`() {
-        val text = "test"
-        val result = longestCommonPrefix(text, 0, 2) // "test" vs "st"
-        assertThat(result).isEqualTo(0)
     }
 }

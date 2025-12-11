@@ -36,14 +36,81 @@ export def install [] {
     ln -sf ('build/install/deduplicator/bin/deduplicator' | path expand) ~/.local/bin/deduplicator
 }
 
-# I want to understand where the slowness is. 90% sure it's when building the suffix array. So apply the deduplicator
-# over an increasing size of corpus and time it. Update: yes the SA is slow but also consolidating ranges slows as well.
+# Set up the Kafka repo for testing with large corpora.
+export def setup-kafka [] {
+    cd $DIR
+    let my_dir = ".my"
+    let repos_dir = $"($my_dir)/repos"
+    let kafka_dir = $"($repos_dir)/kafka"
+
+    if not ($my_dir | path exists) {
+        print "Creating .my directory..."
+        mkdir $my_dir
+    }
+
+    if not ($repos_dir | path exists) {
+        print "Creating .my/repos directory..."
+        mkdir $repos_dir
+    }
+
+    if not ($kafka_dir | path exists) {
+        print "Cloning Apache Kafka repository (this may take a while)..."
+        git clone --depth 1 https://github.com/apache/kafka.git $kafka_dir
+        print "Kafka cloned successfully!"
+    } else {
+        print "Kafka repository already exists at .my/repos/kafka"
+    }
+}
+
+# Clone the SA-IS reference implementations for study.
+export def setup-references [] {
+    cd $DIR
+    let my_dir = ".my"
+    let repos_dir = $"($my_dir)/repos"
+
+    if not ($my_dir | path exists) {
+        print "Creating .my directory..."
+        mkdir $my_dir
+    }
+
+    if not ($repos_dir | path exists) {
+        print "Creating .my/repos directory..."
+        mkdir $repos_dir
+    }
+
+    # Clone the Rust SA-IS port (of Chrome's implementation)
+    let sa_is_dir = $"($repos_dir)/sa-is"
+    if not ($sa_is_dir | path exists) {
+        print "Cloning sa-is (Rust port of Chrome's SA-IS)..."
+        git clone https://github.com/oguzbilgener/sa-is.git $sa_is_dir
+        print "sa-is cloned successfully!"
+    } else {
+        print "sa-is already exists at .my/repos/sa-is"
+    }
+
+    # Clone Google Research's deduplicate-text-datasets
+    let google_dir = $"($repos_dir)/deduplicate-text-datasets"
+    if not ($google_dir | path exists) {
+        print "Cloning Google Research deduplicate-text-datasets..."
+        git clone https://github.com/google-research/deduplicate-text-datasets.git $google_dir
+        print "deduplicate-text-datasets cloned successfully!"
+    } else {
+        print "deduplicate-text-datasets already exists at .my/repos/deduplicate-text-datasets"
+    }
+}
+
+# Benchmark deduplication on increasingly large corpus sizes.
 export def benchmark [] {
     cd $DIR
 
+    let kafka_dir = ".my/repos/kafka"
+    if not ($kafka_dir | path exists) {
+        print "Kafka not found. Run 'do setup-kafka' first."
+        return
+    }
+
     let full_project_str = do {
-      # cd ../..
-      cd ~/repos/opensource/kafka
+      cd $kafka_dir
       fd -t f | where (is-text-file) | each { open --raw $in } | str join "\n"
     }
 

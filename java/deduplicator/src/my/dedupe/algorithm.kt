@@ -1,11 +1,47 @@
 package my.dedupe
 
+import java.util.TreeMap
+
 /**
  * Find all duplicate ranges that should be removed.
  * This function identifies duplicates and determines which occurrences to remove.
+ *
+ * Uses a TreeMap to consolidate ranges on-the-fly, which avoids creating millions
+ * of IntRange objects and enables processing of large corpora like the Kafka source code.
  */
 fun findDuplicateRanges(suffixArray: IntArray, minLength: Int, lcpArr: IntArray): List<IntRange> {
-    val rangesToRemove = mutableListOf<IntRange>()
+    // Use a TreeMap to consolidate ranges on-the-fly
+    // Key: start position, Value: end position (exclusive)
+    // This avoids creating millions of IntRange objects
+    val rangeMap = TreeMap<Int, Int>()
+
+    fun addRange(start: Int, end: Int) {
+        // Find overlapping or adjacent ranges and merge
+        var newStart = start
+        var newEnd = end
+
+        // Check for range that ends at or after our start
+        val floorEntry = rangeMap.floorEntry(start)
+        if (floorEntry != null && floorEntry.value >= start) {
+            // Overlaps with or adjacent to floor entry - merge
+            newStart = floorEntry.key
+            newEnd = maxOf(newEnd, floorEntry.value)
+            rangeMap.remove(floorEntry.key)
+        }
+
+        // Remove all ranges that start within our new range
+        while (true) {
+            val higherEntry = rangeMap.higherEntry(newStart)
+            if (higherEntry != null && higherEntry.key <= newEnd) {
+                newEnd = maxOf(newEnd, higherEntry.value)
+                rangeMap.remove(higherEntry.key)
+            } else {
+                break
+            }
+        }
+
+        rangeMap[newStart] = newEnd
+    }
 
     // Group suffixes by common prefixes
     var i = 0
@@ -24,31 +60,33 @@ fun findDuplicateRanges(suffixArray: IntArray, minLength: Int, lcpArr: IntArray)
             // Find the earliest occurrence in the original text
             val earliestPos = positions.minOrNull()!!
 
-            // Mark all but the earliest occurrence for removal
+            // Mark all but the earliest occurrence for removal (consolidating on-the-fly)
             for (pos in positions) {
                 if (pos != earliestPos) {
-                    rangesToRemove.add(pos until pos + lcp)
+                    addRange(pos, pos + lcp)
                 }
             }
 
-            // Skip all suffixes that were part of this group. I dont' understand why this is ok. Aren't we missing even
-            // longer matches among those?
+            // Skip all suffixes that were part of this group
             i = j
         } else {
             i++
         }
     }
 
-    return rangesToRemove
+    // Convert TreeMap to list of IntRange
+    return rangeMap.map { (start, end) -> start until end }
 }
 
 /**
  * Consolidate overlapping ranges to avoid removing the same text multiple times.
+ * Note: With the new findDuplicateRanges implementation, ranges are already consolidated,
+ * so this function is now essentially a no-op but kept for API compatibility.
  */
 fun consolidateRanges(ranges: List<IntRange>): List<IntRange> {
     if (ranges.isEmpty()) return emptyList()
 
-    // Sort ranges by start position
+    // Ranges should already be consolidated, but handle the case where they're not
     val sortedRanges = ranges.sortedBy { it.first }
     val result = mutableListOf<IntRange>()
 
@@ -93,59 +131,55 @@ fun applyRemovals(text: String, rangesToRemove: List<IntRange>): String {
 }
 
 /**
- * Compute the LCP (Longest Common Prefix) array.
+ * Compute the LCP (Longest Common Prefix) array using Kasai's algorithm.
  * LCP\[i] = length of the longest common prefix between the suffix at position i and position i+1 in the suffix array.
  *
  * Note that this LCP array is one element shorter than the suffix array. By contrast, in many implementations, an LCP
  * array is the same length as the suffix array and the first element is -1.
  *
- * This implementation is naive. There are more efficient algorithms. But in practice, it should be fast because there
- * aren't tons of duplicates so it shouldn't have to "compute deep" into neighboring suffixes very often.
+ * Kasai's algorithm runs in O(n) time. The key insight is that if we know LCP[rank[i]] = k, then
+ * LCP[rank[i+1]] >= k-1. This is because when we move one character forward in the text, we lose at most
+ * one character from the common prefix.
  */
 fun lcpArray(text: String, suffixArray: IntArray): IntArray {
-    val lcp = IntArray(suffixArray.size - 1)
+    val n = suffixArray.size
+    if (n <= 1) return IntArray(0)
 
-    for (i in 0 until suffixArray.size - 1) {
-        val pos1 = suffixArray[i]
-        val pos2 = suffixArray[i + 1]
-        lcp[i] = longestCommonPrefix(text, pos1, pos2)
+    // Build the inverse suffix array (rank array)
+    // rank[i] = position of suffix starting at i in the sorted suffix array
+    val rank = IntArray(n)
+    for (i in 0 until n) {
+        rank[suffixArray[i]] = i
+    }
+
+    val lcp = IntArray(n - 1)
+    var k = 0 // Current LCP length
+
+    // Process suffixes in text order (not suffix array order)
+    for (i in 0 until n) {
+        val r = rank[i]
+
+        // Skip the first suffix in sorted order (no predecessor to compare with)
+        if (r == 0) {
+            k = 0
+            continue
+        }
+
+        // j is the text position of the suffix that comes before suffix i in sorted order
+        val j = suffixArray[r - 1]
+
+        // Extend the match as far as possible
+        while (i + k < n && j + k < n && text[i + k] == text[j + k]) {
+            k++
+        }
+
+        lcp[r - 1] = k
+
+        // Key insight: when we move to the next text position, we can only lose at most 1 from the LCP
+        if (k > 0) k--
     }
 
     return lcp
-}
-
-/**
- * Find the length of the longest common prefix between two suffixes.
- */
-fun longestCommonPrefix(text: String, start1: Int, start2: Int): Int {
-    var length = 0
-    val maxLength = minOf(text.length - start1, text.length - start2)
-
-    while (length < maxLength && text[start1 + length] == text[start2 + length]) {
-        length++
-    }
-
-    return length
-}
-
-fun suffixArray(text: String): IntArray {
-    return text.indices.sortedWith { a, b ->
-        var i = a
-        var j = b
-        while (i < text.length && j < text.length) {
-            val charComp = text[i].compareTo(text[j])
-            if (charComp != 0) return@sortedWith charComp
-            i++
-            j++
-        }
-        // If we get here, one is a prefix of the other
-        // The shorter one should come first
-        when {
-            i == text.length && j < text.length -> -1
-            j == text.length && i < text.length -> 1
-            else -> 0
-        }
-    }.toIntArray()
 }
 
 fun deduplicate(minLength: Int, input: String): String {

@@ -39,46 +39,23 @@ The `deduplicator` tool will confine large repeated text blocks to only their fi
 precious tokens in a prompt. There's no value in repeating a text snippet that is already present in the context. We can
 instead refer to it by something like an alias, a file name plus line number, or a description.
 
-Google Research has shared a focused (and fast) [deduplicator implementation in Rust](https://github.com/google-research/deduplicate-text-datasets).
-The most common deduplication algorithm, as far as I can tell, uses _suffix arrays_. That's what I want to do and what I
-want to learn, but I'm a bit out of my depth so I'm going to iterate from the ground up with some smart LLMs plus the
-Google implementation as a reference. Let's see what happens.
 
-My needs are far less constrained than the Google implementation and I should enjoy a simpler implementation. Here are
-the differences:
+## Algorithm
 
-* I'm only going to deduplicate up to a few a megabytes of text, not 750GB.
-* I don't need parallelism
-* I can use a garbage collected language: Kotlin, instead of Rust (although this type of program is a good target for Rust)
-* I don't need to spill to disk. In-memory will be fine.
+This is hard stuff. The vision is an algorithmically efficient implementation—linear time, not quadratic. This
+efficiency comes at the cost of algorithmic complexity. The implementation uses the **SA-IS (Suffix Array Induced
+Sorting)** algorithm which runs in **O(n)** time and space. This is the optimal algorithm for suffix array construction.
 
-A constraint I'd like to preserve is preventing a huge memory footprint. Building a suffix array for a document
-of N characters is something like `N(N - 1) / 2` in the naive case. For example, the document "funky fiesta fun" is 16
-characters long and has the following suffixes:
+The deduplication pipeline:
 
-```text
-unky fiesta fun
-nky fiesta fun
-ky fiesta fun
-y fiesta fun
- fiesta fun
-fiesta fun
-iesta fun
-esta fun
-sta fun
-ta fun
-a fun
- fun
-fun
-un
-n
-```
+1. **SA-IS**: Build a suffix array in linear time
+2. **Kasai's Algorithm**: Compute the LCP (Longest Common Prefix) array in linear time
+3. **Range Consolidation**: Use a TreeMap to efficiently merge overlapping duplicate ranges on-the-fly, avoiding
+   millions of object allocations
 
-This totals 120 characters (`16 * 15 / 2 =  120`). This README.md is around 4,000 characters which turns into 8MB worth
-of strings in a suffix array. For a corpus of 1,000 files of similar length, that would be roughly 8GB. That's too much.  
-
-The solution is easy: represent the suffixes as offsets into the original documents. There are even more performance
-optimizations that can be made, but I need to not be tempted to go into those. I don't need it.
+I relied on LLMs (Claude) to help me understand and implement the SA-IS algorithm. The implementation is a Kotlin port
+of the [sa-is](https://github.com/oguzbilgener/sa-is) Rust library, which itself is derived from the Chromium project's
+SA-IS implementation. See `LICENSES/SA-IS.txt` for the license.
 
 
 ## Instructions
@@ -123,22 +100,16 @@ General clean-ups, TODOs and things I wish to implement for this project:
   across-line deduplication makes things confusing to read. In the normal case, we just lose the partial final line's
   worth of deduplication? Because I'm authoring the code, I have the flexibility to do this.
 * [ ] Multi-document support.
-* [ ] HOLD Make it space and time efficient. I'm not sure what the status is right now, haven't thought about it critically.
-   * The HOLD is because the ideal algorithm for building suffix arrays is SA-IS (Suffixed Array Induced Sorting) but
-     it's very complicated to implement. I'd rather just use an existing Rust implementation for that. One way to make
-     this way faster is to implement the dedupe across multiple documents. This is a feature I want anyway. By making it
-     across documents, the largest possible suffix is the size of the largest document, not the size of all documents
-     concatenated together. I think this will reduce the effect of the algo being quadratic?
-    * Yeah it must be quadratic or something because I can get it to run on large-ish file sets but not a huge one like
-     Kafka.
-* [ ] Consider how to ID and reference deduplicated text.
-* [ ] Get serious about understanding encoding. I need to understand how the algorithm operates on bytes, and then
-  standardize or make consistent the usage. Can I just pad every character to 4 bytes because that's the longest UTF-16
-  codepoint? And then the algorithm operates on 4 byte sequences? By contrast, I could flatten the whole corpus onto some
-  short dictionary for "speed" but why bother?
+* [x] DONE Implement SA-IS algorithm for O(n) suffix array construction
+* [x] DONE Implement Kasai's algorithm for O(n) LCP array construction
+* [ ] Consider how to ID and reference deduplicated text
+* [ ] Get serious about understanding encoding (UTF-16 codepoints, byte sequences, etc.)
 
 
-## Reference
+## References
 
 * [Wikipedia: *Suffix array*](https://en.wikipedia.org/wiki/Suffix_array)
 * [Wikipedia: *LCP array*](https://en.wikipedia.org/wiki/LCP_array)
+* [Stanford CS166 Lecture Notes on SA-IS](https://web.stanford.edu/class/archive/cs/cs166/cs166.1196/lectures/04/Small04.pdf)
+* [Google Research: deduplicate-text-datasets](https://github.com/google-research/deduplicate-text-datasets)
+* [sa-is (Rust)](https://github.com/oguzbilgener/sa-is) - Rust port of Chrome's SA-IS implementation
