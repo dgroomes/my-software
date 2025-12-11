@@ -121,11 +121,12 @@ export def benchmark [] {
         1000000
         2000000
         3000000
+        100000000
     ]
 
     for i in $case_sizes {
         let c = $full_project_str | str substring 0..<$i
-        let d  = timeit { $c | run --min-length 4 | str length }
+        let d  = timeit { $c | run --min-length 100 | str length }
         print $"De-duplicating ($c | str length | comma-per-thousand) characters took ($d)\n\n"
     }
 

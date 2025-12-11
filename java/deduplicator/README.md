@@ -104,6 +104,8 @@ General clean-ups, TODOs and things I wish to implement for this project:
 * [x] DONE Implement Kasai's algorithm for O(n) LCP array construction
 * [ ] Consider how to ID and reference deduplicated text
 * [ ] Get serious about understanding encoding (UTF-16 codepoints, byte sequences, etc.)
+* [ ] Make it faster. In my other branch, Opus 4.5 was able to get performacne down from 20 seconds to around 5 seconds
+  on the Kafka source. Bring in some of those optimizations. Currently we're at 13 seconds. 
 
 
 ## References
