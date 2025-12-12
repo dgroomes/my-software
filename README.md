@@ -135,3 +135,4 @@ General clean-ups, TODOs and things I wish to implement for this project:
 * [ ] PARTIAL Sandbox profile should allow `mkdir` and `pwd` don't know why these are blocked. `(allow default)` allows sub-processes so what's going on?
    * DONE Allow file write to my conventional '~/.shell-debug.log'
 * [ ] Rewrite Git aliases as just shell aliases (Nushell). I don't see super see the point of git aliases plus I already re-wrap them in shorter shell aliases anyway ('gl' for 'git lg' for 'git log ...')
+* [ ] Actually incorporate the Claude *Skills*. The one I added is LLM inferred (though pretty good) and based on a wide upgrade of my junit-playground.
