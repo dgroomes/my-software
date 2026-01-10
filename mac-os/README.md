@@ -304,13 +304,13 @@ to a working Nushell environment, but it's great enough.
 25. Install Rust
      1. Install `rustup` using the instructions in the official [rust-lang site](https://www.rust-lang.org/tools/install)
      and **do not** allow it to modify the `PATH`.
-26. Rust-based tools
-     * There is a nascent but rich ecosystem of Rust-based command-line tools. Many of them are substitutes for traditional
+26. Install [zoxide](https://github.com/ajeetdsouza/zoxide)
+     - Note: There is a nascent but rich ecosystem of Rust-based command-line tools. Many of them are substitutes for traditional
        commands like `ls`, `du`, and `cat` but they bring a bevy of extra features. Best of all, they are fast. Keep track
        of this "re-implemented in Rust" trend and follow this great article [*Rewritten in Rust: Modern Alternatives of Command-Line Tools*](https://zaiste.net/posts/shell-commands-rust/)
        on <https://zaiste.net/>.
-     * [`zoxide`](https://github.com/ajeetdsouza/zoxide) is "a smarter `cd` command". Install it with the following command.
-     * ```nushell
+     - Zoxide is "a smarter `cd` command". Install it with the following command.
+     - ```nushell
        cargo install zoxide --locked
        ```
 27. Install [CleanShot](https://cleanshot.com/)
@@ -396,4 +396,14 @@ to a working Nushell environment, but it's great enough.
     * I used HomeBrew although they don't advertise that for some reason. Also, generate the Bash completion scripts with the following command.
     * ```nushell
       devpod completion bash | save ~/.local/share/bash-completion/completions/devpod
+      ```
+45. Install [rip2](https://github.com/MilesCranmer/rip2)
+    - rip2 is a fork of <https://github.com/nivekuil/rip> and is "A safe and ergonomic alternative to rm". Install it
+      with the following command.
+    - ```nushell
+      cargo install --locked rip2
+      ```
+    - Then install completions with the following command.
+    - ```nushell
+      rip completions nushell | save ([$nu.default-config-dir vendor/autoload/rip2-completions.nu] | path join)
       ```
