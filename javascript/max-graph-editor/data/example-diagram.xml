@@ -1,0 +1,68 @@
+<GraphDataModel>
+  <root>
+    <Cell id="0">
+      <Object as="style" />
+    </Cell>
+    <Cell id="1" parent="0">
+      <Object as="style" />
+    </Cell>
+    <Cell id="2" value="Browser" vertex="1" parent="1">
+      <Geometry _x="70" _y="340" _width="140" _height="60" as="geometry" />
+      <Object rounded="1" whiteSpace="wrap" html="1" as="style" />
+    </Cell>
+    <Cell id="3" value="Bun Server" vertex="1" parent="1">
+      <Geometry _x="580" _y="380" _width="160" _height="60" as="geometry" />
+      <Object rounded="1" whiteSpace="wrap" html="1" as="style" />
+    </Cell>
+    <Cell id="4" value="Diagram XML File" vertex="1" parent="1">
+      <Geometry _x="580" _y="80" _width="170" _height="60" as="geometry" />
+      <Object rounded="1" whiteSpace="wrap" html="1" as="style" />
+    </Cell>
+    <Cell id="5" value="sync" edge="1" parent="1" source="2" target="3">
+      <Geometry relative="1" as="geometry" />
+      <Object endArrow="block" html="1" as="style" />
+    </Cell>
+    <Cell id="6" value="write" edge="1" parent="1" source="3" target="4">
+      <Geometry relative="1" as="geometry" />
+      <Object endArrow="block" html="1" as="style" />
+    </Cell>
+    <Cell id="7" value="Dynamic Box" vertex="1" parent="1">
+      <Geometry _x="260" _y="420" _width="160" _height="70" as="geometry" />
+      <Object as="style" />
+    </Cell>
+    <Cell id="8" value="Param Box" vertex="1" parent="1">
+      <Geometry _x="300" _y="500" _width="150" _height="70" as="geometry" />
+      <Object as="style" />
+    </Cell>
+    <Cell id="9" value="Puppet Box" vertex="1" parent="1">
+      <Geometry _x="150" _y="70" _width="170" _height="70" as="geometry" />
+      <Object as="style" />
+    </Cell>
+    <Cell id="10" value="Args Box" vertex="1" parent="1">
+      <Geometry _x="520" _y="520" _width="150" _height="70" as="geometry" />
+      <Object as="style" />
+    </Cell>
+    <Cell id="11" value="Pre Args" vertex="1" parent="1">
+      <Geometry _x="720" _y="520" _width="150" _height="70" as="geometry" />
+      <Object as="style" />
+    </Cell>
+    <Cell id="12" value="Parametric Box" vertex="1" parent="1">
+      <Geometry _x="900" _y="560" _width="180" _height="70" as="geometry" />
+      <Object as="style" />
+    </Cell>
+    <Cell id="14" value="New Node" vertex="1" parent="1">
+      <Geometry _x="220" _y="250" _width="150" _height="64" as="geometry" />
+      <Object rounded="1" whiteSpace="wrap" html="1" fillColor="#dae8fc" strokeColor="#6c8ebf" as="style" />
+    </Cell>
+    <Cell id="17" edge="1" parent="1" source="14">
+      <Geometry relative="1" as="geometry">
+        <Point _x="440" _y="70" as="targetPoint" />
+      </Geometry>
+      <Object as="style" />
+    </Cell>
+    <Cell id="18" value="" edge="1" parent="1" source="4" target="9">
+      <Geometry relative="1" as="geometry" />
+      <Object endArrow="block" html="1" rounded="1" as="style" />
+    </Cell>
+  </root>
+</GraphDataModel>

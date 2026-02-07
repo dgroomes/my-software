@@ -16,7 +16,7 @@ export def --env new-subject [subject?] {
     let today = date now | format date "%Y-%m-%d"
     let descriptor = coalesce $subject (date now | format date "%H-%M-%S")
     let dirname = $today + "_" + $descriptor
-    let dir = [$nu.home-path subjects $dirname] | path join | path expand
+    let dir = [$nu.home-dir subjects $dirname] | path join | path expand
     if ($dir | path exists) {
         error make --unspanned {
           msg: ("The directory already exists: " + $dir)

@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MaxGraph Editor</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <style>
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+        background: #0f1115;
+        color: #f0f3f8;
+      }
+
+      header {
+        padding: 12px 16px;
+        border-bottom: 1px solid #242a33;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      main {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        padding: 12px;
+        height: calc(100vh - 57px);
+        box-sizing: border-box;
+      }
+
+      .panel {
+        background: #161b22;
+        border: 1px solid #242a33;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        min-height: 0;
+      }
+
+      .panel h2 {
+        margin: 0;
+        padding: 10px 12px;
+        font-size: 14px;
+        border-bottom: 1px solid #242a33;
+      }
+
+      textarea {
+        flex: 1;
+        border: 0;
+        outline: none;
+        resize: none;
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 13px;
+        line-height: 1.45;
+        color: #f0f3f8;
+        background: #0f1115;
+        padding: 12px;
+      }
+
+      #graph {
+        flex: 1;
+        background: #ffffff;
+        margin: 0 12px 12px;
+        border-radius: 6px;
+        overflow: hidden;
+        min-height: 320px;
+      }
+
+      #graph:focus {
+        outline: 2px solid #388bfd;
+        outline-offset: -2px;
+      }
+
+      .graph-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 12px;
+        border-bottom: 1px solid #242a33;
+      }
+
+      .graph-toolbar input {
+        min-width: 170px;
+        height: 30px;
+        border: 1px solid #2f3742;
+        border-radius: 6px;
+        padding: 0 8px;
+        color: #f0f3f8;
+        background: #0f1115;
+      }
+
+      .graph-toolbar button {
+        height: 30px;
+        padding: 0 10px;
+        border: 1px solid #2f3742;
+        border-radius: 6px;
+        color: #f0f3f8;
+        background: #1f2631;
+        cursor: pointer;
+      }
+
+      .graph-toolbar button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .selection-summary {
+        margin-left: auto;
+        font-size: 12px;
+        color: #8b949e;
+      }
+
+      pre {
+        margin: 0;
+        white-space: pre-wrap;
+        overflow: auto;
+        padding: 12px;
+        color: #c5d3e8;
+        border-top: 1px solid #242a33;
+        max-height: 180px;
+      }
+
+      .muted {
+        color: #8b949e;
+      }
+
+      .ok {
+        color: #3fb950;
+      }
+
+      .warn {
+        color: #d29922;
+      }
+
+      @media (max-width: 1000px) {
+        main {
+          grid-template-columns: 1fr;
+          height: auto;
+          min-height: calc(100vh - 57px);
+        }
+
+        .selection-summary {
+          width: 100%;
+          margin-left: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
