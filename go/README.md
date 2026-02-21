@@ -166,7 +166,7 @@ Follow these instructions to build, run and install my software.
 
 General clean-ups, TODOs and things I wish to implement for this project:
 
-* [ ] Need to handle items that exceed the full height?
-* [ ] Workaround `./` parsing gap of the new Nushell parser.
-* [ ] Consider supporting env vars in the manifest files of the launchers. For now, YAGNI. But it can be useful for setting things like JVM memory options, etc.
-* [ ] Flesh out `claude.sb`. I need to perfect the SBPL and get more narrow about allowed sub-process executables.
+- [ ] Need to handle items that exceed the full height?
+- [ ] Workaround `./` parsing gap of the new Nushell parser.
+- [ ] Consider supporting env vars in the manifest files of the launchers. For now, YAGNI. But it can be useful for setting things like JVM memory options, etc.
+- [ ] Flesh out `claude.sb`. I need to perfect the SBPL and get more narrow about allowed sub-process executables.

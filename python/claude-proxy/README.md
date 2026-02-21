@@ -59,8 +59,8 @@ Follow these instructions to build and run the proxy.
 
 General clean-ups, TODOs and things I wish to implement for this project:
 
-* [ ] Use "lazy" connection strategy to avoid DNS lookups and TCP handshakes for blocked domains. With the `mitmdump` CLI, there's an option for doing this but when running it programmatically I just can't figure it out.
-* [ ] Use a `do.nu` script
-* [ ] Convert to `uv`.
-* [ ] Consider writing requests/response to a sqlite db, encrypted/sandboxed with macOS facilities?
-* [ ] Re-consider how the cert is saved/managed. Codesigning? Idk. 
+- [ ] Use "lazy" connection strategy to avoid DNS lookups and TCP handshakes for blocked domains. With the `mitmdump` CLI, there's an option for doing this but when running it programmatically I just can't figure it out.
+- [ ] Use a `do.nu` script
+- [ ] Convert to `uv`.
+- [ ] Consider writing requests/response to a sqlite db, encrypted/sandboxed with macOS facilities?
+- [ ] Re-consider how the cert is saved/managed. Codesigning? Idk. 

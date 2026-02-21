@@ -55,5 +55,5 @@ Conversely, to export settings *from* Intellij into this repo, follow these inst
 Configure these settings manually in the IDE.
 
 1. Disable commit checks for new projects
-   * [reference](https://stackoverflow.com/a/76513983)
+   - [reference](https://stackoverflow.com/a/76513983)
    * `File` > `New Projects Setup` > `Settings for New Projects...` > `Version Control` > `Commit` and in `Advanced Commit Checks` uncheck `Analyze code` and `Check TODO`. The analysis is slow and for the TODOs I have long-lived ones by design. It's strategic to say "let me not do this thing now but consider it for later". I mean I guess I could use a different keyword that that?

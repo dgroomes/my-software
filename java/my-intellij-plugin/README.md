@@ -35,4 +35,4 @@ Follow these instructions to build and use the plugin:
 
 General clean-ups, TODOs and things I wish to implement for this project:
 
-* [ ] ?
+- [ ] ?

@@ -44,4 +44,4 @@ away from this if feasible and find a faster combination of commands and automat
 
 General clean-ups, TODOs and things I wish to implement for this project:
 
-* [ ] ?
+- [ ] ?

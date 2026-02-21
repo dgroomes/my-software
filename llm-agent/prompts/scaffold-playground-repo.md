@@ -178,8 +178,8 @@ Follow these instructions to build and run the example program.
 ## Reference
 
 {Reference items from the intake, in a list, and using markdown citation style:
-* [Wikipedia: *CUDA*][cuda]
-* [NVIDIA: *NVIDIA Toolkit*][toolkit]
+- [Wikipedia: *CUDA*][cuda]
+- [NVIDIA: *NVIDIA Toolkit*][toolkit]
   
 [cuda]: https://en.wikipedia.org/wiki/CUDA
 [toolkit]: https://developer.nvidia.com/cuda-toolkit 

@@ -107,6 +107,6 @@ Follow these instructions to build, test, and run the Rules MCP server:
 
 General clean-ups, TODOs and things I wish to implement for this project:
 
-* [ ] Consider using an identifying string like `!rules` and supporting skipping rules loading like with a user message "!rules off"
+- [ ] Consider using an identifying string like `!rules` and supporting skipping rules loading like with a user message "!rules off"
   or listing rules location files with `!rules locations`. Not sure yet.
-* [ ] Consider `.mdc` extension and/or using the standard header metadata for things like the path of the rule file and importance level. Not sure it matters.
+- [ ] Consider `.mdc` extension and/or using the standard header metadata for things like the path of the rule file and importance level. Not sure it matters.

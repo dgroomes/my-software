@@ -23,9 +23,9 @@ standard because I'm happy to download the Eclipse Temurin binaries instead of b
 
 ## Reference
 
-* [GitHub repository: *homebrew-playground*](https://github.com/dgroomes/homebrew-playground)
+- [GitHub repository: *homebrew-playground*](https://github.com/dgroomes/homebrew-playground)
   * This is my own codebase for learning Homebrew
-* [Adoptium](https://adoptium.net)
+- [Adoptium](https://adoptium.net)
   * > Prebuilt OpenJDK Binaries for Free!
-* [Homebrew core formula for OpenJDK 17](https://github.com/Homebrew/homebrew-core/blob/3f593a20333d496928a1daed45aedc8f1b2b454a/Formula/o/openjdk%4017.rb)
+- [Homebrew core formula for OpenJDK 17](https://github.com/Homebrew/homebrew-core/blob/3f593a20333d496928a1daed45aedc8f1b2b454a/Formula/o/openjdk%4017.rb)
   * This was helpful to study as a reference for my own formulas.

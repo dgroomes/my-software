@@ -96,11 +96,11 @@ SA-IS implementation. See `LICENSES/SA-IS.txt` for the license.
 
 General clean-ups, TODOs and things I wish to implement for this project:
 
-* [ ] Consider biasing to lines as the boundary for deduplication. I'm not sure how this would look, but in practice
+- [ ] Consider biasing to lines as the boundary for deduplication. I'm not sure how this would look, but in practice
   across-line deduplication makes things confusing to read. In the normal case, we just lose the partial final line's
   worth of deduplication? Because I'm authoring the code, I have the flexibility to do this.
-* [ ] Multi-document support.
-* [x] DONE Implement SA-IS algorithm for O(n) suffix array construction
+- [ ] Multi-document support.
+- [x] DONE Implement SA-IS algorithm for O(n) suffix array construction
 * [x] DONE Implement Kasai's algorithm for O(n) LCP array construction
 * [ ] Consider how to ID and reference deduplicated text
 * [ ] Get serious about understanding encoding (UTF-16 codepoints, byte sequences, etc.)
