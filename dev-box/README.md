@@ -59,9 +59,9 @@ Follow these instructions to build a dev box image and create a VM instance from
      do install
      ```
 5. Start a dev box VM instance
-   - The `dev-box.nu` script in `nushell/scripts/` provides day-to-day commands. Source it via:
+   - The `dev-box.nu` script in `nushell/scripts/` provides day-to-day commands. Overlay it via:
    - ```nushell
-     do source-dev-box
+     overlay use ../nushell/scripts/dev-box.nu
      ```
    - Then start a VM:
    - ```nushell

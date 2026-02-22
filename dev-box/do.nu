@@ -7,7 +7,7 @@ const DIR = path self | path dirname
 
 # The base macOS image to clone from. Cirrus Labs publishes pre-built images on GHCR.
 # The "base" images include Homebrew and basic CLI tools. The "vanilla" images are bare macOS.
-const BASE_IMAGE = "ghcr.io/cirruslabs/macos-sequoia-base:latest"
+const BASE_IMAGE = "ghcr.io/cirruslabs/macos-tahoe-base:latest"
 
 # The name of our dev box VM image. This is the customized image we build on top of the base.
 const IMAGE_NAME = "my-dev-box"

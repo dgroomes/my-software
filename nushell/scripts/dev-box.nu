@@ -21,7 +21,11 @@ export def "dev-box start" [name: string = $DEFAULT_VM, --dir: string] {
     print $"Starting VM '($name)'..."
 
     # Run tart in the background. The VM will keep running until explicitly stopped.
-    ^tart ...$args &
+    let tart_args = $args
+    let job_id = (job spawn -t $"dev-box-start:($name)" {
+        ^tart ...$tart_args | complete
+    })
+    print $"Started background job ($job_id)."
     
     # Wait for the VM to get an IP address
     print "Waiting for VM to be ready..."
@@ -54,7 +58,7 @@ export def "dev-box connect" [name: string = $DEFAULT_VM] {
 }
 
 # Run a command in the dev box VM over SSH and return the output.
-export def "dev-box run" [name: string = $DEFAULT_VM, cmd: string] {
+export def "dev-box run" [cmd: string, name: string = $DEFAULT_VM] {
     let ip = (tart ip $name | str trim)
     (^sshpass -p $VM_PASSWORD
         ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR
