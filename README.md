@@ -106,7 +106,7 @@ General clean-ups, TODOs and things I wish to implement for this project:
   best parts of a task/project manager (Linear) and the low-tech approach of "just ad hoc markdown" (like I've done) and
   get more mileage out of it.
 - [ ] In the scratch area, explore MCP in JetBrains. Maybe consider running Intellij in a DevContainer. Idk.
-- [ ] Strategy. I need to capture some overarching software strategy notes. I need broad and specific stuff. I generally
+- [x] DONE (first cut is at `strategy/`) Strategy. I need to capture some overarching software strategy notes. I need broad and specific stuff. I generally
   don't get a lot of long term leverage out of "text only" work products (that's why I have so many 'playground' repos
   that are code plus lots of "what" and "why" text). But, things have bubbled up. I need essetnially 'cursorrules' for
   myself and other LLMs to follow. For example, "smaller files" (maybe?) is a practical thing right now because the LLM
