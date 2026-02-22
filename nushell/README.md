@@ -69,6 +69,7 @@ General clean-ups, TODOs and things I wish to implement for this project:
 - [ ] Move `LS_COLORS` to `autoload/`. Files in `autoload` are only invoked for interactive scripts I think. Not that this
   really moves the needle on performance but the `LS_COLORS` is so huge that I need it to not clutter the token count of
   `config.nu`.
+- [ ] Script-only beginnings for a macOS VM-based "dev box" workflow. I need the basics: build, start, connect, stop, list. This is another iteration/take like my `docker/my-dev` image and relate scripts. I want to use the Tart CLI and remote it into it with SSH. I need to layer in and install a bunch of stuff in the VM. Eventually I can eject into its own 'dev-box' (name can change) project but for now I can get away with Nu scripting.
 
 
 ## Reference

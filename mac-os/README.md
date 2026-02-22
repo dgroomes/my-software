@@ -407,3 +407,7 @@ to a working Nushell environment, but it's great enough.
     - ```nushell
       rip completions nushell | save ([$nu.default-config-dir vendor/autoload/rip2-completions.nu] | path join)
       ```
+46. Install [Tart](https://github.com/cirruslabs/tart)
+    - ```nushell
+      brew install cirruslabs/cli/tart
+      ```
