@@ -24,6 +24,13 @@ My Bash config and notes about Bash auto-completion (I always forget how to set 
 See the README in [bash/](bash/).
 
 
+### `dev-box/`
+
+A customized macOS development environment box, running as a virtual machine on the host Mac.
+
+See the README in [dev-box/](dev-box/).
+
+
 ### `homebrew/`
 
 A description of my Homebrew strategy.
@@ -133,3 +140,4 @@ General clean-ups, TODOs and things I wish to implement for this project:
    * DONE Allow file write to my conventional '~/.shell-debug.log'
 - [ ] Rewrite Git aliases as just shell aliases (Nushell). I don't see super see the point of git aliases plus I already re-wrap them in shorter shell aliases anyway ('gl' for 'git lg' for 'git log ...')
 - [ ] Actually incorporate the Claude *Skills*. The one I added is LLM inferred (though pretty good) and based on a wide upgrade of my junit-playground.
+- [ ] IN PROGRESS "Dev box". My macOS VM based conventions for a development box for agents to work.

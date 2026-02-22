@@ -79,6 +79,12 @@ const config_registry = {
         backup_success_msg: "'nushell/nu_scripts' sourcer file backed up."
         upstream_success_msg: "'nushell/nu_scripts' sourcer file upstreamed."
     }
+    dev_box: {
+        filename: "scripts/dev-box.nu"
+        backup_success_msg: "Dev box lib file backed up."
+        install_success_msg: "Dev box lib file installed."
+        upstream_success_msg: "Dev box lib file upstreamed."
+    }
     work-trees: {
         filename: "scripts/work-trees.nu",
         backup_success_msg: "Git work trees lib file backed up."
