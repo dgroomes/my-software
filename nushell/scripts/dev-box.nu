@@ -3,9 +3,8 @@
 # These commands handle the "run" side of the dev box lifecycle: starting, stopping, connecting to, and listing VMs.
 # For "build" operations (pulling images, creating VMs, installing tools), see dev-box/do.nu.
 
-# Default credentials for Cirrus Labs base images.
+# Default user for Cirrus Labs base images.
 const VM_USER = "admin"
-const VM_PASSWORD = "admin"
 
 # Default VM name.
 const DEFAULT_VM = "dev-box"
@@ -54,14 +53,13 @@ export def "dev-box list" [] {
 export def "dev-box connect" [name: string = $DEFAULT_VM] {
     let ip = (tart ip $name | str trim)
     print $"Connecting to ($VM_USER)@($ip)..."
-    ^sshpass -p $VM_PASSWORD ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR $"($VM_USER)@($ip)"
+    ^ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR $"($VM_USER)@($ip)"
 }
 
 # Run a command in the dev box VM over SSH and return the output.
 export def "dev-box run" [cmd: string, name: string = $DEFAULT_VM] {
     let ip = (tart ip $name | str trim)
-    (^sshpass -p $VM_PASSWORD
-        ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR
+    (^ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR
         $"($VM_USER)@($ip)"
         $cmd)
 }

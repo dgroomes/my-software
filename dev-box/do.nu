@@ -77,12 +77,4 @@ export def delete [name: string = "dev-box"] {
     print $"VM '($name)' deleted."
 }
 
-# Source the dev-box.nu script from nushell/scripts/ for day-to-day start/stop/connect commands.
-# This is useful for tight iteration loops where you want build + run commands in the same session.
-#
-# Usage:
-#     use dev-box/do.nu
-#     do source-dev-box
-export def --env source-dev-box [] {
-    overlay use ($DIR | path dirname | path join nushell scripts dev-box.nu)
-}
+
