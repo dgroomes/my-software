@@ -12,9 +12,8 @@ const BASE_IMAGE = "ghcr.io/cirruslabs/macos-tahoe-base:latest"
 # The name of our dev box VM image. This is the customized image we build on top of the base.
 const IMAGE_NAME = "my-dev-box"
 
-# Default credentials for Cirrus Labs base images.
+# Default user for Cirrus Labs base images.
 const VM_USER = "admin"
-const VM_PASSWORD = "admin"
 
 # Pull (clone) the base macOS image from the remote OCI registry.
 export def pull [] {
@@ -30,13 +29,29 @@ export def create [name: string = "dev-box"] {
     print $"VM '($name)' created."
 }
 
-# Run a command inside the dev box VM over SSH. The VM must be running.
-def ssh-cmd [vm_name: string, cmd: string] {
-    let ip = (tart ip $vm_name)
-    (sshpass -p $VM_PASSWORD
-        ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR
-        $"($VM_USER)@($ip)"
-        $cmd)
+# Run a shell command inside the dev box VM using Tart Guest Agent.
+#
+# This avoids interactive SSH/password auth during provisioning.
+def vm-cmd [vm_name: string, cmd: string] {
+    tart exec $vm_name /bin/zsh -lc $cmd
+}
+
+def wait-for-vm [name: string, timeout_sec: int = 90] {
+    let max_attempts = ($timeout_sec / 2)
+    mut attempts = 0
+    loop {
+        $attempts = $attempts + 1
+        if $attempts > $max_attempts {
+            error make {msg: $"Timed out waiting for VM '($name)' to be ready."}
+        }
+
+        let ip = (do { tart ip $name } | complete)
+        if $ip.exit_code == 0 and ($ip.stdout | str trim) != "" {
+            return ($ip.stdout | str trim)
+        }
+
+        sleep 2sec
+    }
 }
 
 # Install foundational tools in the dev box VM. The VM must be running.
@@ -48,19 +63,19 @@ export def install [name: string = "dev-box"] {
 
     # Ensure Homebrew is up to date
     print "Updating Homebrew..."
-    ssh-cmd $name "brew update"
+    vm-cmd $name "brew update"
 
     # Install core CLI tools
     print "Installing core CLI tools..."
-    ssh-cmd $name "brew install git curl jq ripgrep fd tree"
+    vm-cmd $name "brew install git curl jq ripgrep fd tree"
 
     # Install Rust toolchain
     print "Installing Rust..."
-    ssh-cmd $name "curl -sSf https://sh.rustup.rs | sh -s -- -y"
+    vm-cmd $name "curl -sSf https://sh.rustup.rs | sh -s -- -y"
 
     # Install Nushell via Cargo
     print "Installing Nushell (this takes a while)..."
-    ssh-cmd $name "source ~/.cargo/env && cargo install nu --locked"
+    vm-cmd $name "source ~/.cargo/env && cargo install nu --locked"
 
     print $"Installation complete for VM '($name)'."
 }
@@ -75,6 +90,47 @@ export def delete [name: string = "dev-box"] {
     print $"Deleting VM '($name)'..."
     tart delete $name
     print $"VM '($name)' deleted."
+}
+
+# Create a VM instance, start it headless, and install a host SSH public key into the guest in one command.
+#
+# This gives you frictionless, key-based SSH without interactive password login.
+# NOTE: I'm not sure about this.
+export def bootstrap [name: string = "dev-box", pubkey_file: string = "~/.ssh/id_ed25519.pub"] {
+    let pubkey_path = ($pubkey_file | path expand)
+    if not ($pubkey_path | path exists) {
+        error make {msg: $"Public key file not found: ($pubkey_path)"}
+    }
+
+    print $"Creating VM '($name)' from image '($IMAGE_NAME)'..."
+    let create_result = (do { tart clone $IMAGE_NAME $name } | complete)
+    if $create_result.exit_code != 0 {
+        let stderr = ($create_result.stderr | default "")
+        if ($stderr | str contains "already exists") {
+            print $"VM '($name)' already exists. Continuing..."
+        } else {
+            error make {msg: $"Failed to create VM '($name)': ($stderr)"}
+        }
+    }
+
+    print $"Starting VM '($name)' in background..."
+    let job_id = (job spawn -t $"dev-box-bootstrap:($name)" {
+        tart run $name --no-graphics | complete
+    })
+    print $"Started background job ($job_id)."
+
+    print "Waiting for VM to become reachable..."
+    let ip = (wait-for-vm $name)
+    print $"VM '($name)' is running at ($ip)"
+
+    let pubkey = (open --raw $pubkey_path | str trim)
+    let escaped_pubkey = ($pubkey | str replace --all "'" "'\"'\"'")
+    let inject_cmd = $"mkdir -p ~/.ssh && chmod 700 ~/.ssh && touch ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys && grep -qxF '($escaped_pubkey)' ~/.ssh/authorized_keys || printf '%s\\n' '($escaped_pubkey)' >> ~/.ssh/authorized_keys"
+
+    print $"Injecting public key from '($pubkey_path)' into VM '($name)'..."
+    vm-cmd $name $inject_cmd
+
+    print $"Done. You can now connect with: ssh ($VM_USER)@($ip)"
 }
 
 
