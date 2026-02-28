@@ -53,6 +53,7 @@ use lib.nu *
 use node.nu *
 use open-jdk.nu *
 use postgres.nu *
+use vm.nu *
 use work-trees.nu *
 use zdu.nu *
 use subject.nu *

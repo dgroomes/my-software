@@ -62,6 +62,12 @@ const config_registry = {
         install_success_msg: "Postgres lib file installed."
         upstream_success_msg: "Postgres lib file upstreamed."
     }
+    vm: {
+        filename: "scripts/vm.nu"
+        backup_success_msg: "VM lib file backed up."
+        install_success_msg: "VM lib file installed."
+        upstream_success_msg: "VM lib file upstreamed."
+    }
     starship: {
         filename: "vendor/autoload/starship.nu",
         backup_success_msg: "Starship configuration file backed up."
