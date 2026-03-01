@@ -34,7 +34,7 @@ From `dev-box-2/`:
      ```
 5. Get a shell in the VM (no SSH, no passwords, no IP lookup).
    - ```nushell
-     vm exec dev-box-2
+     vm shell dev-box-2
      ```
 6. Or SSH in (uses vsock proxy — no IP lookup, no host key prompts).
    - One-time setup to push your SSH key:
@@ -74,6 +74,8 @@ Primary commands:
 - `vm stop`
 - `vm delete`
 - `vm suspend`
-- `vm exec` — interactive shell via guest agent (no SSH)
+- `vm exec` — run a command via guest agent (like docker exec)
+- `vm shell` — interactive shell via guest agent (no SSH)
 - `vm ssh` — SSH via vsock proxy (no IP lookup)
+- `vm forward` — port forwarding (e.g. `vm forward dev-box-2 8080`)
 - `vm setup-ssh` — push SSH key into VM for passwordless access

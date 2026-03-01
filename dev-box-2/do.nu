@@ -62,6 +62,8 @@ export def start [
     print $"Started background job ($job_id) for VM '($name)'."
     let ip = (wait-for-ip $name)
     print $"VM '($name)' is running at ($ip)"
+
+    vm setup-ssh $name
 }
 
 export def list [] {
