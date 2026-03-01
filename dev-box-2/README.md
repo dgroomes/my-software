@@ -32,11 +32,24 @@ From `dev-box-2/`:
    - ```nushell
      do start
      ```
-5. Inspect VMs as structured data.
+5. Get a shell in the VM (no SSH, no passwords, no IP lookup).
+   - ```nushell
+     vm exec dev-box-2
+     ```
+6. Or SSH in (uses vsock proxy — no IP lookup, no host key prompts).
+   - One-time setup to push your SSH key:
+     ```nushell
+     vm setup-ssh dev-box-2
+     ```
+   - Then connect:
+     ```nushell
+     vm ssh dev-box-2
+     ```
+7. Inspect VMs as structured data.
    - ```nushell
      do list
      ```
-6. Stop, suspend, or delete.
+8. Stop, suspend, or delete.
    - ```nushell
      do stop
      do suspend
@@ -61,3 +74,6 @@ Primary commands:
 - `vm stop`
 - `vm delete`
 - `vm suspend`
+- `vm exec` — interactive shell via guest agent (no SSH)
+- `vm ssh` — SSH via vsock proxy (no IP lookup)
+- `vm setup-ssh` — push SSH key into VM for passwordless access

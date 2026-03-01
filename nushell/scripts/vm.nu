@@ -277,6 +277,96 @@ export def "vm suspend" [
 
 export def "vm ip" [
     name: string@vm-running-local-names
+    --wait(-w): int
+    --resolver: string
 ] {
-    ^tart ip $name | str trim
+    mut args = [ip $name]
+    if $wait != null {
+        $args = ($args | append ["--wait" ($wait | into string)])
+    }
+    if $resolver != null {
+        $args = ($args | append ["--resolver" $resolver])
+    }
+    ^tart ...$args | str trim
+}
+
+# Execute a command in a running VM via the guest agent (no SSH needed).
+#
+# With no command, opens an interactive shell.
+export def "vm exec" [
+    name: string@vm-running-local-names
+    --no-interactive(-I)        # Don't attach stdin (default is interactive)
+    --no-tty(-T)                # Don't allocate a PTY (default is TTY when no command given)
+    ...command: string
+] {
+    mut args = [exec]
+
+    let has_command = not ($command | is-empty)
+
+    if not $no_interactive {
+        $args = ($args | append "-i")
+    }
+    if not $no_tty {
+        $args = ($args | append "-t")
+    }
+
+    $args = ($args | append $name)
+
+    if $has_command {
+        $args = ($args | append $command)
+    } else {
+        $args = ($args | append "bash")
+    }
+
+    ^tart ...$args
+}
+
+# SSH into a running VM. Uses the guest agent as a transport (ProxyCommand over vsock).
+#
+# Falls back to direct IP-based SSH if --direct is given.
+export def "vm ssh" [
+    name: string@vm-running-local-names
+    --user(-u): string          # SSH user (default: admin)
+    --direct(-d)                # Use IP-based SSH instead of vsock proxy
+    ...ssh_args: string
+] {
+    let ssh_user = if $user != null { $user } else { "admin" }
+
+    mut args = [
+        "-o" "StrictHostKeyChecking=no"
+        "-o" "UserKnownHostsFile=/dev/null"
+        "-o" "LogLevel=ERROR"
+    ]
+
+    if $direct {
+        let ip = (^tart ip --wait 30 $name | str trim)
+        $args = ($args | append $ssh_args)
+        ^ssh ...$args $"($ssh_user)@($ip)"
+    } else {
+        $args = ($args | append ["-o" $"ProxyCommand=tart exec -i ($name) nc localhost 22"])
+        $args = ($args | append $ssh_args)
+        ^ssh ...$args $"($ssh_user)@($name)"
+    }
+}
+
+# Push your SSH public key into a running VM so future SSH is passwordless.
+export def "vm setup-ssh" [
+    name: string@vm-running-local-names
+    --user(-u): string          # Guest user (default: admin)
+    --key: string               # Path to public key (default: ~/.ssh/id_ed25519.pub)
+] {
+    let ssh_user = if $user != null { $user } else { "admin" }
+    let key_path = if $key != null { $key } else { $"($env.HOME)/.ssh/id_ed25519.pub" }
+
+    if not ($key_path | path exists) {
+        error make { msg: $"Public key not found: ($key_path)" }
+    }
+
+    let pubkey = (open $key_path | str trim)
+
+    let setup_script = $"mkdir -p /home/($ssh_user)/.ssh && chmod 700 /home/($ssh_user)/.ssh && echo '($pubkey)' >> /home/($ssh_user)/.ssh/authorized_keys && chmod 600 /home/($ssh_user)/.ssh/authorized_keys"
+
+    ^tart exec -i $name sh -c $setup_script
+
+    print $"SSH public key installed for '($ssh_user)' on VM '($name)'."
 }
