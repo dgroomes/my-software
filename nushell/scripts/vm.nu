@@ -46,16 +46,6 @@ def tart-list-json [] {
     }
 }
 
-# Best-effort version of tart-list-json for use in completion functions. Returns
-# an empty list on any error so that tab completion never breaks the shell.
-def tart-list-json-safe [] {
-    try {
-        tart-list-json
-    } catch {
-        []
-    }
-}
-
 # ── Completion helpers ──
 #
 # These functions power tab completion for VM name arguments. They filter by
@@ -64,7 +54,7 @@ def tart-list-json-safe [] {
 # stopped/suspended ones.
 
 def vm-local-records [] {
-    tart-list-json-safe | where { |vm| ($vm.Source | str downcase) == "local" }
+    tart-list-json | where { |vm| ($vm.Source | str downcase) == "local" }
 }
 
 def vm-local-names [] {
@@ -328,25 +318,6 @@ export def "vm suspend" [
     name: string@vm-running-local-names
 ] {
     ^tart suspend $name
-}
-
-# Get a running VM's IP address. By default uses the DHCP lease resolver which
-# reads /var/db/dhcpd_leases on the host. The IP is non-deterministic (DHCP),
-# which is why "vm exec" and "vm ssh" (vsock-based) are preferred for
-# connectivity. This command is still useful for debugging network issues.
-export def "vm ip" [
-    name: string@vm-running-local-names
-    --wait(-w): int
-    --resolver: string
-] {
-    mut args = [ip $name]
-    if $wait != null {
-        $args = ($args | append ["--wait" ($wait | into string)])
-    }
-    if $resolver != null {
-        $args = ($args | append ["--resolver" $resolver])
-    }
-    ^tart ...$args | str trim
 }
 
 # Execute a command in a running VM via the Tart guest agent over virtio-socket.

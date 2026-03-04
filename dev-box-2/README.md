@@ -79,3 +79,16 @@ Primary commands:
 - `vm ssh` — SSH via vsock proxy (no IP lookup)
 - `vm forward` — port forwarding (e.g. `vm forward dev-box-2 8080`)
 - `vm setup-ssh` — push SSH key into VM for passwordless access
+
+
+## Wish List
+
+General clean-ups, TODOs and things I wish to implement for this project:
+
+- [ ] IN PROGRESS Flesh out `vm.nu` into a stable "daily-driver" command layer. I like the structured output and completions. I'm not sure I want the ssh setup stuff. I think we just will ssh via tart exect.
+- [ ] First cut at dev-box. We will rename it from dev-box-2 to dev-box. Incorporate some of the "vision" language from the 'dev-box' branch (we are on the dev-box-2 branch), and have a starting point for the next wish list items.
+- [ ] Flesh out `dev-box` environment bootstrap. Add Nushell, core CLI tools, git). This should be like my dev docker container.
+   - This may be challenging. There is no Dockerfile here. What does an install even look like? Some good ole' scripting here.
+- [ ] Explore a proxy-server (external process) for sandboxing API keys and similar secrets. The goal is to keep sensitive credentials out of the VM while still allowing agent workflows to call external APIs through a controlled, auditable host-side boundary.
+- [ ] Figure out what Tart `softnet` actually is, how it behaves in practice, and whether it is needed in `vm.nu` for this project's default path.
+- [ ] Revisit the `vm forward` port-forwarding functionality and decide if we should keep it, simplify it, or replace it with a clearer recommended workflow.
