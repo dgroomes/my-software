@@ -37,8 +37,5 @@ LLMs produce and produce until the pressure of the balloon pops. And it does thi
 
 Let me say it again. Take a few minutes to review those 200 lines. The solution might be as simple as a few words of reprompting, or a few manual edits. This activity is like "signal magnification/ampliation" or "noise reduction". Again... there should be a budget for slop. It is natural to have a buffer for the agent to produce slop just like there is a "there are no dumb ideas" psychological safety mantra which indeed allows people to come up with a good idea, after a series of truly bad ideas during a brainstorming session. But the point is that we have the patience and discipline to "complete the exercise" and get to the fully baked solution. The larger the organization (even a team of 3) and the larger the body of work (any codebase that isn't just a short script) any tolerance for slop quickly vanishes.
 
-Even one more re-iteration: "muddling" works. Puttering to the solution works. Just don't be tempted immortalize the intermediate slop by committing it to the main branch. 
+Even one more re-iteration: "muddling" works. Puttering to the solution works. Just don't be tempted immortalize the intermediate slop by committing it to the main branch.
 
-Interesting, clicking a file link (like `vm.nu`) completely did not work. It somehow launched my browser.
-
-Oh good, window resizing is also a great feature of the agent being in a GUI. The text properly reflows.
