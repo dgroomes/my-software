@@ -1,89 +1,36 @@
-# Structured VM commands over Tart.
+# The 'vm' module defines commands for working with virtual machines. This is mostly a thin wrapper over the excellent
+# Tart toolset and CLI (https://github.com/cirruslabs/tart).
 #
-# This module wraps the Tart CLI to provide a stable "vm" command namespace with
-# Nushell-native structured output, tab completion, and convenient defaults.
+# Cirrus (the maker of Tart) has really useful pre-made VM images. I'm still early in my understanding of them. I'm
+# grateful for the "just works" nature of them, and how they have a "guest agent" Go binary baked in that provides a
+# vsock interface (barely know what that is) that makes "tart exec" work. I'm trying to build a good intuition about
+# connectivity into and out of the VM. It's an ongoing learning journey.
 #
-# Tart is a macOS-native VM manager built on Apple's Virtualization.framework.
-# It manages Linux and macOS guest VMs with OCI image support. These "vm"
-# commands add value over raw Tart by:
-#
-#   - Returning structured records instead of plain text (vm list)
-#   - Providing smart tab completion filtered by VM state (e.g. only running VMs
-#     for stop/exec, only stopped VMs for run)
-#   - Offering connectivity commands (vm exec, vm ssh, vm setup-ssh) that
-#     eliminate the painful manual SSH workflow of IP lookup, host key prompts,
-#     and password entry
-#
-# The connectivity story has two tiers:
-#
-#   1. "vm exec" — Uses the Tart guest agent over virtio-socket (vsock). This is
-#      a hypervisor-level channel that bypasses networking entirely. No SSH, no
-#      IP, no passwords. The guest agent (a Go binary pre-installed in Cirrus
-#      Labs images) listens on vsock port 8080 and fork/execs commands via gRPC.
-#      Security comes from host filesystem permissions on the Unix domain socket
-#      — only the user who owns the VM can connect.
-#
-#   2. "vm ssh" / "vm setup-ssh" — For tools that require SSH (VS Code Remote,
-#      rsync, scp). Uses SSH's ProxyCommand to tunnel the SSH connection through
-#      "tart exec -i <name> nc localhost 22", routing SSH over vsock instead of
-#      the network. This avoids non-deterministic DHCP IPs and host key churn
-#      when VMs are frequently created and destroyed. "vm setup-ssh" handles
-#      both guest-side key injection and host-side ~/.ssh/config.d/ file creation
-#      in one command.
+# Right now, I think ssh-ing with a ProxyCommand into "tart exec" is best because the .ssh/config entries (or VS Code
+# remote dev config) can be stable on the VM name instead of hardcoding to an IP address which is a moving target.
 
-# Fetches the VM list from Tart as structured JSON records. Used by command
-# bodies that need reliable data and should fail loudly on errors.
-def tart-list-json [] {
-    let result = (do { ^tart list --format json } | complete)
-    if $result.exit_code != 0 {
-        error make { msg: $"Failed to execute 'tart list --format json': ($result.stderr | str trim)" }
-    }
-
-    try {
-        $result.stdout | from json
-    } catch {
-        error make { msg: "Failed to parse JSON from 'tart list --format json'." }
-    }
-}
-
-# ── Completion helpers ──
-#
-# These functions power tab completion for VM name arguments. They filter by
-# Source (local only — OCI registry refs are not directly runnable) and by State
-# so that e.g. "vm stop" only offers running VMs and "vm run" only offers
-# stopped/suspended ones.
-
+# Get VM names but filter out the OCI ones because those are like "ghcr.io/cirruslabs/debian" and stuff. I just want to
+# see my images like "dev-box".
 def vm-local-records [] {
-    tart-list-json | where { |vm| ($vm.Source | str downcase) == "local" }
+    tart list --format json | from json | where Source == "local"
 }
 
 def vm-local-names [] {
-    vm-local-records | each { |vm| $vm.Name }
+    vm-local-records | each { $in.Name }
 }
 
 def vm-running-local-names [] {
-    vm-local-records | where { |vm| $vm.State == "running" } | each { |vm| $vm.Name }
+    vm-local-records | where State == "running" | each { $in.Name }
 }
 
 def vm-startable-local-names [] {
-    vm-local-records | where { |vm| $vm.State != "running" } | each { |vm| $vm.Name }
+    vm-local-records | where State != "running" | each { $in.Name }
 }
-
-# ── Flag value completions ──
-#
-# These provide tab completion for flag values (--source, --format, etc.)
 
 def vm-list-sources [] {
     [
         { value: "local", description: "Only local VMs" }
         { value: "oci", description: "Only OCI-backed VMs" }
-    ]
-}
-
-def vm-list-formats [] {
-    [
-        { value: "json", description: "Structured output (recommended)" }
-        { value: "text", description: "Raw Tart text output" }
     ]
 }
 
@@ -109,43 +56,16 @@ def vm-root-disk-opts [] {
     ]
 }
 
-# ── Commands ──
-
-# List VMs as structured Nushell records. Defaults to JSON parsing so you get
-# a table you can filter, sort, and select from. Use --quiet for just names.
+# List VMs. Use --quiet for just names.
 export def "vm list" [
     --source: string@vm-list-sources
-    --format: string@vm-list-formats
-    --quiet(-q)
 ] {
-    mut args = [list]
+    mut args = [list --format json]
     if $source != null {
         $args = ($args | append ["--source" $source])
     }
-    if $quiet {
-        $args = ($args | append "--quiet")
-    }
 
-    let effective_format = if $format == null and not $quiet { "json" } else { $format }
-    if $effective_format != null {
-        $args = ($args | append ["--format" $effective_format])
-    }
-
-    let tart_args = $args
-    let result = (do { ^tart ...$tart_args } | complete)
-    if $result.exit_code != 0 {
-        error make { msg: ($result.stderr | str trim) }
-    }
-
-    if $quiet {
-        return ($result.stdout | lines | where { |line| ($line | str trim) != "" })
-    }
-
-    if $effective_format == "json" {
-        return ($result.stdout | from json)
-    }
-
-    $result.stdout | str trim
+    ^tart ...$args | from json
 }
 
 # Run a local VM. This is a thin wrapper over "tart run" that exposes all of
@@ -327,12 +247,8 @@ export def "vm suspend" [
 # channel). Security is enforced by Unix file permissions on the control socket
 # in ~/.tart/vms/<name>/ — only your macOS user can connect.
 #
-# Like "docker exec", defaults to non-interactive with no PTY. Use -i to attach
-# stdin and -t to allocate a pseudo-terminal.
-#
 # Examples:
 #   vm exec dev-box-2 uname -a           # run a command
-#   vm exec -i dev-box-2 cat < file.txt  # pipe stdin into guest
 #   vm exec -it dev-box-2 bash           # interactive shell (prefer "vm shell")
 export def "vm exec" [
     name: string@vm-running-local-names
@@ -359,9 +275,8 @@ export def "vm exec" [
     ^tart ...$args
 }
 
-# Open an interactive shell in a running VM via the guest agent. This is the
-# fastest way to get a shell — no SSH, no IP, no passwords. Equivalent to
-# "vm exec -it <name> bash" but without the flags.
+# Open an interactive shell in a running VM via the Tart guest agent. This is an interesting alternative to ssh'ing into it.
+# No IP addressing, no SSH keys, no passwords.
 export def "vm shell" [
     name: string@vm-running-local-names
 ] {
