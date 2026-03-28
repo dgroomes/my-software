@@ -316,6 +316,7 @@ struct ParsedArgs {
     example: bool,
     json_in: bool,
     json_out: bool,
+    show_help: bool,
 }
 
 #[derive(Serialize)]
@@ -394,6 +395,10 @@ fn main() {
 
 fn run() -> Result<i32, Box<dyn std::error::Error>> {
     let args = parse_args(env::args().skip(1).collect())?;
+    if args.show_help {
+        return Ok(0);
+    }
+
     let items = read_items(&args)?;
     if items.is_empty() {
         return Ok(NO_MATCH_EXIT_CODE);
@@ -458,6 +463,7 @@ fn parse_args(args: Vec<String>) -> Result<ParsedArgs, Box<dyn std::error::Error
         example: false,
         json_in: false,
         json_out: false,
+        show_help: false,
     };
 
     for arg in args {
@@ -468,7 +474,7 @@ fn parse_args(args: Vec<String>) -> Result<ParsedArgs, Box<dyn std::error::Error
             "--json-out" => parsed.json_out = true,
             "--help" | "-h" => {
                 println!("Usage: my-fuzzy-finder [--debug] [--example] [--json-in] [--json-out]");
-                return Ok(parsed);
+                parsed.show_help = true;
             }
             _ => return Err(format!("unknown argument: {arg}").into()),
         }
