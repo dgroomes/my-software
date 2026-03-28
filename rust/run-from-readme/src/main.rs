@@ -3,7 +3,7 @@ use std::env;
 use std::fmt::{self, Display};
 use std::fs::{self, File, OpenOptions};
 use std::hash::{Hash, Hasher};
-use std::io::{self, Read};
+use std::io::{self};
 use std::path::{Path, PathBuf};
 use std::time::Duration;
 
@@ -196,6 +196,8 @@ impl App {
                 Style::default().fg(ACCENT_COLOR),
             ),
             Span::raw(": run as-is   "),
+            Span::styled("F3", Style::default().fg(ACCENT_COLOR)),
+            Span::raw(": run escaped   "),
             Span::styled("Esc", Style::default().fg(ACCENT_COLOR)),
             Span::raw(": cancel"),
         ]);
@@ -337,6 +339,10 @@ impl App {
             KeyCode::Esc => true,
             KeyCode::F(2) => {
                 self.selection_action = Some(Action::ForceAsIs);
+                true
+            }
+            KeyCode::F(3) => {
+                self.selection_action = Some(Action::ForceEscaped);
                 true
             }
             KeyCode::Enter => {
