@@ -1,5 +1,3 @@
-mod matcher;
-
 use std::collections::HashSet;
 use std::env;
 use std::fs::{File, OpenOptions};
@@ -20,11 +18,13 @@ use ratatui::widgets::{Paragraph, Wrap};
 use ratatui::Terminal;
 use serde::Serialize;
 use unicode_width::UnicodeWidthChar;
+use my_fuzzy_finder_lib as matcher;
 
 const NO_MATCH_EXIT_CODE: i32 = 1;
 const NO_SELECTION_EXIT_CODE: i32 = 130;
 const PROMPT: &str = "Filter: ";
 const QUERY_CHAR_LIMIT: usize = 64;
+const ACCENT_COLOR: Color = Color::Rgb(0xDA, 0x5C, 0xE4);
 
 #[derive(Clone, Debug)]
 struct Match {
@@ -111,7 +111,7 @@ impl App {
             .constraints([Constraint::Length(1), Constraint::Min(1)])
             .split(area);
 
-        let cursor = Span::styled("█", Style::default().fg(Color::Magenta));
+        let cursor = Span::styled("█", Style::default().fg(ACCENT_COLOR));
         let input = Paragraph::new(Line::from(vec![
             Span::styled(PROMPT, Style::default().fg(Color::DarkGray)),
             Span::raw(self.query.clone()),
@@ -492,13 +492,13 @@ fn render_item(item: &str, matched_positions: &[usize], selected: bool, width: u
     let mut lines = Vec::new();
     let matched_positions = matched_positions.iter().copied().collect::<HashSet<_>>();
     let base_style = if selected {
-        Style::default().fg(Color::Magenta)
+        Style::default().fg(ACCENT_COLOR)
     } else {
         Style::default()
     };
     let prefix = if selected { "│ " } else { "  " };
     let prefix_style = if selected {
-        Style::default().fg(Color::Magenta)
+        Style::default().fg(ACCENT_COLOR)
     } else {
         Style::default()
     };

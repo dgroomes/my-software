@@ -6,6 +6,7 @@ edition = "2021"
 [dependencies]
 crossterm = { version = "0.28.1", features = ["use-dev-tty"] }
 libc = "0.2"
+my-fuzzy-finder-lib = { path = "../my-fuzzy-finder-lib" }
 ratatui = "0.28.1"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"

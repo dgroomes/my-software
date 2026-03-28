@@ -198,9 +198,8 @@ fn match_term_set(term_set: &[Term], input: &[char]) -> Option<Vec<usize>> {
                     None
                 }
             }
-            TermType::Contains => {
-                find_subslice(input, &term_chars).map(|start| offsets_to_positions(start, start + term_chars.len()))
-            }
+            TermType::Contains => find_subslice(input, &term_chars)
+                .map(|start| offsets_to_positions(start, start + term_chars.len())),
             TermType::Word => word_match(input, &term_chars),
             TermType::Prefix => {
                 if input.starts_with(&term_chars) {
