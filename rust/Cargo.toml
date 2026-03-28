@@ -2,5 +2,6 @@
 members = [
     "my-fuzzy-finder",
     "my-fuzzy-finder-lib",
+    "run-from-readme",
 ]
 resolver = "2"

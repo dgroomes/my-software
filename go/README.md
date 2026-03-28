@@ -66,6 +66,12 @@ An experimental Rust reimplementation of both `my-fuzzy-finder` and its fuzzy ma
 directory.
 
 
+## `run-from-readme`
+
+`run-from-readme` is a Bubble Tea-based TUI for extracting shell snippets from a README, interactively filtering them,
+and emitting either a Nushell-escaped command or the raw snippet.
+
+
 ## `claude-sandboxed`
 
 Launch Claude Code in a sandbox where network and file system access is restricted. 
@@ -140,17 +146,25 @@ Follow these instructions to build, run and install my software.
     * ```nushell
       do run my-fuzzy-finder --example --debug
       ```
-4. Build all executables:
+4. Build and run the `run-from-readme` program:
+    * ```nushell
+      do run run-from-readme ../mac-os/README.md
+      ```
+    * Type to filter interactively.
+    * Use `Enter` to run the selected snippet with its default action.
+    * Use `Ctrl+O` to run the focused snippet as-is and remember that default for future sessions.
+    * Use `Ctrl+E` to run the focused snippet escaped one time without changing the saved default.
+5. Build all executables:
     * ```nushell
       do build
       ```
     * The executables will be in the `bin/` directory. Try them out as needed to do validation and exploration. If you are satisfied, then you can install the executables globally with the next step.
-5. Build and install the executables to your `GOBIN`:
+6. Build and install the executables to your `GOBIN`:
     * ```nushell
       do install
       ```
     * Now you can run the executables from anywhere on your system.
-6. Demonstrate `my-node-launcher`
+7. Demonstrate `my-node-launcher`
     * Copy the launcher into the example JS app.
     * ```nushell
       cp bin/my-node-launcher example-js-app/capitalize

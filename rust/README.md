@@ -5,7 +5,8 @@ Rust code that supports my personal workflows.
 
 ## Overview
 
-This directory contains an experimental Rust implementation of `my-fuzzy-finder` and its matching library.
+This directory contains an experimental Rust implementation of `my-fuzzy-finder`, a new `run-from-readme-rs`
+prototype, and the matching library they share.
 
 I implemented this with Cursor and cloud agents. The interactive behavior was validated in Cursor Cloud with manual
 computer-use sessions and screen/video capture.
@@ -19,6 +20,12 @@ An experimental Rust commandline fuzzy finder with a JSON API. The compiled bina
 ### `my-fuzzy-finder-lib/`
 
 An experimental Rust library containing the fzf-inspired matching logic used by `my-fuzzy-finder`.
+
+
+### `run-from-readme/`
+
+A Rust TUI prototype for selecting shell snippets from a README and emitting either the escaped Nushell command or the
+raw snippet directly.
 
 
 ## Dependency Notes
@@ -64,13 +71,20 @@ Follow these instructions to build, run and install the Rust code.
    * ```json
      {"index": 1, "value": "Dear reader,\nHello.\nSincerely, writer"}
      ```
-4. Build the executable:
+4. Build and run the `run-from-readme-rs` prototype:
+   * ```nushell
+     do run run-from-readme ../mac-os/README.md
+     ```
+   * Use `Enter` to run the selected snippet with its default mode.
+   * Use `Shift+Enter` when your terminal reports that key combination, or `F2` as a fallback, to run a shell snippet
+     as-is and remember that choice for future sessions.
+5. Build the executables:
    * ```nushell
      do build
      ```
-   * The executable will be copied to `bin/my-fuzzy-finder-rs`.
-5. Install the executable:
+   * The executables will be copied to `bin/my-fuzzy-finder-rs` and `bin/run-from-readme-rs`.
+6. Install the executables:
    * ```nushell
      do install
      ```
-   * This uses `cargo install --path my-fuzzy-finder --force` and installs the `my-fuzzy-finder-rs` binary.
+   * This installs both `my-fuzzy-finder-rs` and `run-from-readme-rs`.

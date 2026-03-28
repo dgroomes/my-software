@@ -18,6 +18,16 @@ export def --wrapped "run my-fuzzy-finder" [...args] {
     }
 }
 
+export def --wrapped "run run-from-readme" [...args] {
+    let _in = $in
+    cd $DIR
+    if ($_in | is-empty) {
+        go run my-software/pkg/run-from-readme ...$args
+    } else {
+        $_in | (go run my-software/pkg/run-from-readme ...$args)
+    }
+}
+
 export def build [] {
     cd $DIR
     mkdir bin; go build -o bin  './...'
