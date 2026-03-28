@@ -1,6 +1,6 @@
 [workspace]
 members = [
     "my-fuzzy-finder",
-    "my-fuzzy-finder-lib",
+    "my-fuzzy-finder-lib", "run-from-readme",
 ]
 resolver = "2"
