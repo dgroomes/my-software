@@ -98,7 +98,11 @@ impl SnippetEntry {
     fn filter_text(&self) -> String {
         format!(
             "{}[{}] [default: {}{}]\n{}",
-            if self.remembered_as_is { "✓ " } else { "" },
+            if self.remembered_as_is {
+                "[saved] "
+            } else {
+                ""
+            },
             self.snippet.language,
             self.default_run_mode(),
             if self.remembered_as_is {
@@ -209,7 +213,7 @@ impl App {
                     .unwrap_or_else(|| "n/a".to_string()),
                 Style::default().fg(Color::Yellow),
             ),
-            Span::raw("   [default: as-is, remembered] means Enter reuses your earlier choice"),
+            Span::raw("   [saved] marks snippets whose default Enter action is remembered"),
         ]);
         frame.render_widget(Paragraph::new(Text::from(vec![help_line_1, help_line_2])), sections[1]);
 
