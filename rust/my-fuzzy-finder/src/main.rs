@@ -4,7 +4,6 @@ use std::collections::HashSet;
 use std::env;
 use std::fs::{File, OpenOptions};
 use std::io::{self, BufRead, BufReader, Write};
-use std::os::fd::AsRawFd;
 use std::time::Duration;
 
 use crossterm::cursor::{Hide, Show};
@@ -325,38 +324,6 @@ struct ReturnItem<'a> {
     value: &'a str,
 }
 
-struct StdinGuard {
-    saved_stdin: i32,
-}
-
-impl StdinGuard {
-    fn replace_with_tty(tty: &File) -> io::Result<Self> {
-        let saved_stdin = unsafe { libc::dup(libc::STDIN_FILENO) };
-        if saved_stdin < 0 {
-            return Err(io::Error::last_os_error());
-        }
-
-        if unsafe { libc::dup2(tty.as_raw_fd(), libc::STDIN_FILENO) } < 0 {
-            let error = io::Error::last_os_error();
-            unsafe {
-                libc::close(saved_stdin);
-            }
-            return Err(error);
-        }
-
-        Ok(Self { saved_stdin })
-    }
-}
-
-impl Drop for StdinGuard {
-    fn drop(&mut self) {
-        unsafe {
-            libc::dup2(self.saved_stdin, libc::STDIN_FILENO);
-            libc::close(self.saved_stdin);
-        }
-    }
-}
-
 struct TerminalGuard {
     terminal: Terminal<CrosstermBackend<File>>,
 }
@@ -408,7 +375,6 @@ fn run() -> Result<i32, Box<dyn std::error::Error>> {
     let mut app = App::new(items, logger);
 
     let tty = OpenOptions::new().read(true).write(true).open("/dev/tty")?;
-    let _stdin_guard = StdinGuard::replace_with_tty(&tty)?;
     let mut terminal = TerminalGuard::new(tty.try_clone()?)?;
     let initial_area = terminal.terminal_mut().size()?;
     app.refresh_matches(initial_area.height, initial_area.width);

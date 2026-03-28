@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-crossterm = "0.28.1"
+crossterm = { version = "0.28.1", features = ["use-dev-tty"] }
 libc = "0.2"
 ratatui = "0.28.1"
 serde = { version = "1", features = ["derive"] }
