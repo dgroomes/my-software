@@ -13,7 +13,7 @@ computer-use sessions and screen/video capture.
 
 ### `my-fuzzy-finder/`
 
-An experimental Rust commandline fuzzy finder with a JSON API.
+An experimental Rust commandline fuzzy finder with a JSON API. The compiled binary is named `my-fuzzy-finder-rs`.
 
 
 ### `my-fuzzy-finder-lib/`
@@ -50,7 +50,7 @@ Follow these instructions to build, run and install the Rust code.
    * ```nushell
      do test
      ```
-3. Build and run the `my-fuzzy-finder` program with the example data:
+3. Build and run the `my-fuzzy-finder-rs` program with the example data:
    * ```nushell
      do run my-fuzzy-finder --example
      ```
@@ -68,10 +68,9 @@ Follow these instructions to build, run and install the Rust code.
    * ```nushell
      do build
      ```
-   * The executable will be copied to `bin/my-fuzzy-finder`.
+   * The executable will be copied to `bin/my-fuzzy-finder-rs`.
 5. Install the executable:
    * ```nushell
      do install
      ```
-   * This uses `cargo install --path my-fuzzy-finder --force` so it can overwrite an already-installed binary, including
-     the Go implementation if that is what is currently on your `PATH`.
+   * This uses `cargo install --path my-fuzzy-finder --force` and installs the `my-fuzzy-finder-rs` binary.

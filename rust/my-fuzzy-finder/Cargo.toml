@@ -1,7 +1,11 @@
 [package]
-name = "my-fuzzy-finder"
+name = "my-fuzzy-finder-rs"
 version = "0.1.0"
 edition = "2021"
+
+[[bin]]
+name = "my-fuzzy-finder-rs"
+path = "src/main.rs"
 
 [dependencies]
 crossterm = { version = "0.28.1", features = ["use-dev-tty"] }
