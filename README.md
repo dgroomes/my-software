@@ -72,6 +72,13 @@ My Nushell configuration and scripts.
 See the README in [nushell/](nushell/).
 
 
+### `rust/`
+
+Rust code that supports my personal workflows.
+
+See the README in [rust/](rust/).
+
+
 ### `starship/`
 
 My config file for Starship.

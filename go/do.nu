@@ -2,6 +2,7 @@ const DIR = path self | path dirname
 
 export def test [] {
     cd $DIR
+    cargo test --manifest-path ../rust/my-fuzzy-finder/Cargo.toml
     go test './...'
 }
 
@@ -11,19 +12,22 @@ export def --wrapped "run my-fuzzy-finder" [...args] {
     let _in = $in
     cd $DIR
     if ($_in | is-empty) {
-        go run my-software/pkg/my-fuzzy-finder ...$args
+        cargo run --quiet --manifest-path ../rust/my-fuzzy-finder/Cargo.toml -- ...$args
     } else {
-        print "in is not empty"
-        $_in | (go run my-software/pkg/my-fuzzy-finder ...$args)
+        $_in | (cargo run --quiet --manifest-path ../rust/my-fuzzy-finder/Cargo.toml -- ...$args)
     }
 }
 
 export def build [] {
     cd $DIR
-    mkdir bin; go build -o bin  './...'
+    mkdir bin
+    go build -o bin './...'
+    cargo build --release --manifest-path ../rust/my-fuzzy-finder/Cargo.toml
+    cp ../rust/my-fuzzy-finder/target/release/my-fuzzy-finder bin/my-fuzzy-finder
 }
 
 export def install [] {
     cd $DIR
     go install './...'
+    cargo install --path ../rust/my-fuzzy-finder --force
 }

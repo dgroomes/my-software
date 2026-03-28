@@ -56,11 +56,11 @@ this out-of-the-box, like `find`, which has the `-print0` option. But for many o
 output with some scripting. For me, I can afford to shape my tools to use structured data instead of injecting this
 structure in an ad-hoc way. I want to avoid particularly gnarly stringly-typed programming.
 
-`my-fuzzy-finder` is a TUI (text user interface) program built using these excellent projects:
+`my-fuzzy-finder` is a TUI (text user interface) program built in Rust using these excellent projects:
 
-- The [Bubble Tea](https://github.com/charmbracelet/bubbletea) TUI framework
-- The [Bubbles](https://github.com/charmbracelet/bubbles) TUI component library
-- The "fuzzy" library <https://github.com/sahilm/fuzzy>.
+- The [ratatui](https://github.com/ratatui/ratatui) TUI framework
+- The [crossterm](https://github.com/crossterm-rs/crossterm) terminal library
+- A local Rust port of my fzf-inspired matching logic.
 
 
 ## `claude-sandboxed`
@@ -111,7 +111,7 @@ Follow these instructions to build, run and install my software.
     * ```nushell
       do test
       ```
-3. Build and run the `my-fuzzy-finder` program with the example data:
+3. Build and run the Rust `my-fuzzy-finder` program with the example data:
     * ```nushell
       do run my-fuzzy-finder --example
       ```
@@ -128,24 +128,25 @@ Follow these instructions to build, run and install my software.
       Hello.
       Sincerely, writer"] | to json | do run my-fuzzy-finder --json-in --json-out
       ```
-    * It will output the selected filename but also the index of that item in the input list. It will look something
+    * It will output the selected item but also the index of that item in the input list. It will look something
       like the following.
     * ```json
-      {"index": 1, "item": "Dear reader,\nHello.\nSincerely, writer"}
+      {"index": 1, "value": "Dear reader,\nHello.\nSincerely, writer"}
       ```
     * Finally, try the program and enable debugging. The logs are printed to a local `my-fuzzy-finder.log` file.
     * ```nushell
       do run my-fuzzy-finder --example --debug
       ```
-4. Build all executables:
+4. Build the executables:
     * ```nushell
       do build
       ```
-    * The executables will be in the `bin/` directory. Try them out as needed to do validation and exploration. If you are satisfied, then you can install the executables globally with the next step.
-5. Build and install the executables to your `GOBIN`:
+    * This still builds the Go executables into `bin/` and also copies the Rust fuzzy finder into `bin/my-fuzzy-finder`. Try them out as needed to do validation and exploration. If you are satisfied, then you can install them globally with the next step.
+5. Build and install the executables:
     * ```nushell
       do install
       ```
+    * This installs the Go executables with `go install './...'` and installs the Rust `my-fuzzy-finder` binary with `cargo install --path ../rust/my-fuzzy-finder --force`.
     * Now you can run the executables from anywhere on your system.
 6. Demonstrate `my-node-launcher`
     * Copy the launcher into the example JS app.
