@@ -118,6 +118,13 @@ function buildHeuristicEdges(nodes: DiagramNode[], lowerPrompt: string): Diagram
   const notifications = findNodeByLabel(nodes, 'Notifications');
   const dataStore = findStorageNode(nodes);
   const observability = findNodeByLabel(nodes, 'Observability');
+  const networkBoundary = findNodeByLabel(nodes, 'Network Boundary');
+
+  if (networkBoundary && gateway) {
+    edges.push(makeEdge('network-ingress', networkBoundary.id, gateway.id, 'ingress', 'flow'));
+  } else if (networkBoundary && lambda) {
+    edges.push(makeEdge('network-entry', networkBoundary.id, lambda.id, 'network path', 'flow'));
+  }
 
   if (user && gateway) {
     edges.push(makeEdge('request', user.id, gateway.id, 'request', 'flow'));

@@ -70,6 +70,37 @@ export function reviseSpecWithReport(spec: DiagramSpec, report: DiagramReport, p
     }
   }
 
+  const networkNode = next.nodes.find((node) => node.kind === 'network');
+  if (networkNode) {
+    const isConnected = next.edges.some((edge) => edge.source === networkNode.id || edge.target === networkNode.id);
+    const gatewayNode = next.nodes.find((node) => node.label === 'API Gateway');
+    const userNode = next.nodes.find((node) => node.kind === 'user');
+    if (!isConnected) {
+      if (gatewayNode) {
+        next.edges.unshift({
+          id: `${networkNode.id}-to-${gatewayNode.id}`,
+          source: networkNode.id,
+          target: gatewayNode.id,
+          label: 'ingress',
+          kind: 'flow',
+        });
+        changed = true;
+      } else if (userNode) {
+        next.edges.unshift({
+          id: `${userNode.id}-to-${networkNode.id}`,
+          source: userNode.id,
+          target: networkNode.id,
+          label: 'network path',
+          kind: 'flow',
+        });
+        changed = true;
+      }
+      if (changed) {
+        next.rationale.push('Connected an otherwise isolated network node after render inspection so the topology reads as a single flow.');
+      }
+    }
+  }
+
   if (report.vertexCount < 3 && next.nodes.length < 3) {
     next.changeSuggestions.push('The diagram is still minimal. Consider adding operational or infrastructure context.');
   }
