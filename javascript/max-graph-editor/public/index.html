@@ -13,6 +13,11 @@
         color: #f0f3f8;
       }
 
+      body.render-only {
+        background: #ffffff;
+        color: #111827;
+      }
+
       header {
         padding: 12px 16px;
         border-bottom: 1px solid #242a33;
@@ -147,6 +152,25 @@
           width: 100%;
           margin-left: 0;
         }
+      }
+
+      body.render-only main {
+        display: block;
+        padding: 0;
+        height: 100vh;
+        min-height: 100vh;
+      }
+
+      body.render-only .panel {
+        background: #ffffff;
+        border: 0;
+        border-radius: 0;
+      }
+
+      body.render-only #graph {
+        margin: 0;
+        border-radius: 0;
+        min-height: 100vh;
       }
     </style>
   </head>

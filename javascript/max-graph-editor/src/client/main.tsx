@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
+  type Cell,
   Graph,
   InternalEvent,
   KeyHandler,
@@ -14,6 +15,41 @@ type SyncMessage = {
   xml?: string;
   source?: string;
   message?: string;
+};
+
+type DiagramNodeReport = {
+  id: string;
+  label: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  style: string;
+};
+
+type DiagramEdgeReport = {
+  id: string;
+  label: string;
+  sourceId: string;
+  sourceLabel: string;
+  targetId: string;
+  targetLabel: string;
+  style: string;
+};
+
+type DiagramReport = {
+  generatedAt: string;
+  vertexCount: number;
+  edgeCount: number;
+  bounds: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  };
+  labels: string[];
+  nodes: DiagramNodeReport[];
+  edges: DiagramEdgeReport[];
 };
 
 type MaxGraphEditorApi = {
@@ -38,6 +74,8 @@ type MaxGraphEditorApi = {
   deleteSelection: () => number;
   getXml: () => string;
   setXml: (xml: string) => void;
+  getDiagramReport: () => DiagramReport;
+  prepareForExport: (options?: { padding?: number; maxScale?: number }) => DiagramReport;
 };
 
 const RECT_STYLE = { rounded: 1, whiteSpace: 'wrap', html: 1, fillColor: '#dae8fc', strokeColor: '#6c8ebf' };
@@ -72,6 +110,14 @@ function App() {
     () => `${location.protocol === 'https:' ? 'wss' : 'ws'}://${location.host}/sync`,
     [],
   );
+  const renderOnly = useMemo(() => new URLSearchParams(location.search).get('mode') === 'render', []);
+
+  useEffect(() => {
+    document.body.classList.toggle('render-only', renderOnly);
+    return () => {
+      document.body.classList.remove('render-only');
+    };
+  }, [renderOnly]);
 
   useEffect(() => {
     const container = graphContainerRef.current;
@@ -82,25 +128,30 @@ function App() {
     container.tabIndex = 0;
     InternalEvent.disableContextMenu(container);
     const graph = new Graph(container);
-    graph.setConnectable(true);
-    graph.setCellsEditable(true);
-    graph.setPanning(true);
+    graph.setConnectable(!renderOnly);
+    graph.setCellsEditable(!renderOnly);
+    graph.setCellsMovable(!renderOnly);
+    graph.setCellsResizable(!renderOnly);
+    graph.setPanning(!renderOnly);
     new RubberBandHandler(graph);
     graph.getDataModel().addListener(InternalEvent.CHANGE, onGraphModelChanged);
     const onSelectionChanged = () => setSelectionCount(graph.getSelectionCount());
     graph.getSelectionModel().addListener(InternalEvent.CHANGE, onSelectionChanged);
 
-    const keyHandler = new KeyHandler(graph, container);
-    keyHandler.bindKey(46, () => {
-      removeSelection();
-    });
-    keyHandler.bindKey(8, () => {
-      removeSelection();
-    });
-    keyHandlerRef.current = keyHandler;
+    let keyHandler: KeyHandler | null = null;
+    if (!renderOnly) {
+      keyHandler = new KeyHandler(graph, container);
+      keyHandler.bindKey(46, () => {
+        removeSelection();
+      });
+      keyHandler.bindKey(8, () => {
+        removeSelection();
+      });
+      keyHandlerRef.current = keyHandler;
+    }
 
     const popupMenuHandler = graph.getPlugin<PopupMenuHandler>('PopupMenuHandler');
-    if (popupMenuHandler) {
+    if (popupMenuHandler && !renderOnly) {
       popupMenuHandler.factoryMethod = (menu, cell, mouseEvent) => {
         const point = graph.getPointForEvent(mouseEvent);
         menu.addItem('Add Box', null, () => {
@@ -136,7 +187,9 @@ function App() {
     const focusGraph = () => {
       container.focus();
     };
-    container.addEventListener('pointerdown', focusGraph);
+    if (!renderOnly) {
+      container.addEventListener('pointerdown', focusGraph);
+    }
 
     onSelectionChanged();
     graphRef.current = graph;
@@ -170,6 +223,12 @@ function App() {
           applyingXmlRef.current = false;
         }
       },
+      getDiagramReport() {
+        return buildDiagramReport();
+      },
+      prepareForExport(options) {
+        return prepareForExport(options);
+      },
     };
     window.__maxGraphEditor = api;
 
@@ -177,15 +236,17 @@ function App() {
       if (window.__maxGraphEditor === api) {
         delete window.__maxGraphEditor;
       }
-      container.removeEventListener('pointerdown', focusGraph);
-      keyHandler.onDestroy();
+      if (!renderOnly) {
+        container.removeEventListener('pointerdown', focusGraph);
+      }
+      keyHandler?.onDestroy();
       keyHandlerRef.current = null;
       graph.getSelectionModel().removeListener(onSelectionChanged);
       graph.getDataModel().removeListener(onGraphModelChanged);
       graph.destroy();
       graphRef.current = null;
     };
-  }, []);
+  }, [renderOnly]);
 
   useEffect(() => {
     void loadInitial();
@@ -273,6 +334,12 @@ function App() {
       renderPreview('render error', String(error));
     } finally {
       applyingXmlRef.current = false;
+    }
+
+    if (renderOnly) {
+      window.setTimeout(() => {
+        prepareForExport();
+      }, 25);
     }
   }
 
@@ -425,44 +492,135 @@ function App() {
     setPreview(`[${new Date().toLocaleTimeString()}] ${source}\n\n${nextXml}`);
   }
 
+  function buildDiagramReport(): DiagramReport {
+    const graph = graphRef.current;
+    if (!graph) {
+      return {
+        generatedAt: new Date().toISOString(),
+        vertexCount: 0,
+        edgeCount: 0,
+        bounds: { x: 0, y: 0, width: 0, height: 0 },
+        labels: [],
+        nodes: [],
+        edges: [],
+      };
+    }
+
+    const parent = graph.getDefaultParent() as Cell;
+    const nodes = parent.getChildVertices().map((cell) => {
+      const geometry = cell.getGeometry();
+      return {
+        id: String(cell.id ?? ''),
+        label: graph.getLabel(cell) ?? '',
+        x: geometry?.x ?? 0,
+        y: geometry?.y ?? 0,
+        width: geometry?.width ?? 0,
+        height: geometry?.height ?? 0,
+        style: String(cell.getStyle() ?? ''),
+      };
+    });
+    const edges = parent.getChildEdges().map((cell) => {
+      const source = cell.getTerminal(true);
+      const target = cell.getTerminal(false);
+      return {
+        id: String(cell.id ?? ''),
+        label: graph.getLabel(cell) ?? '',
+        sourceId: String(source?.id ?? ''),
+        sourceLabel: source ? graph.getLabel(source) ?? '' : '',
+        targetId: String(target?.id ?? ''),
+        targetLabel: target ? graph.getLabel(target) ?? '' : '',
+        style: String(cell.getStyle() ?? ''),
+      };
+    });
+
+    const bounds = graph.getGraphBounds();
+    return {
+      generatedAt: new Date().toISOString(),
+      vertexCount: nodes.length,
+      edgeCount: edges.length,
+      bounds: {
+        x: Math.round(bounds.x),
+        y: Math.round(bounds.y),
+        width: Math.round(bounds.width),
+        height: Math.round(bounds.height),
+      },
+      labels: nodes.map((node) => node.label).filter((label) => label.length > 0),
+      nodes,
+      edges,
+    };
+  }
+
+  function prepareForExport(options?: { padding?: number; maxScale?: number }): DiagramReport {
+    const graph = graphRef.current;
+    const container = graphContainerRef.current;
+    if (!graph || !container) {
+      return buildDiagramReport();
+    }
+
+    const padding = Math.max(0, Number(options?.padding ?? 24));
+    const maxScale = Math.max(0.1, Number(options?.maxScale ?? 1.4));
+    graph.refresh();
+    graph.zoomActual();
+
+    const bounds = graph.getGraphBounds();
+    if (bounds.width > 0 && bounds.height > 0) {
+      const availableWidth = Math.max(200, container.clientWidth - padding * 2);
+      const availableHeight = Math.max(200, container.clientHeight - padding * 2);
+      const scale = Math.min(availableWidth / bounds.width, availableHeight / bounds.height, maxScale);
+      if (Number.isFinite(scale) && scale > 0) {
+        graph.zoomTo(scale, false);
+      }
+      graph.center(true, true);
+    }
+
+    graph.refresh();
+    return buildDiagramReport();
+  }
+
   return (
     <>
-      <header>
-        <strong>MaxGraph Editor + Live Disk Sync</strong>
-        <span className={statusClass}>{status}</span>
-      </header>
+      {!renderOnly && (
+        <header>
+          <strong>MaxGraph Editor + Live Disk Sync</strong>
+          <span className={statusClass}>{status}</span>
+        </header>
+      )}
       <main>
+        {!renderOnly && (
+          <section className="panel">
+            <h2>Diagram XML (mxGraphModel)</h2>
+            <textarea value={xml} spellCheck={false} onChange={(event) => onXmlChanged(event.target.value)} />
+          </section>
+        )}
         <section className="panel">
-          <h2>Diagram XML (mxGraphModel)</h2>
-          <textarea value={xml} spellCheck={false} onChange={(event) => onXmlChanged(event.target.value)} />
-        </section>
-        <section className="panel">
-          <h2>Rendered Diagram (MaxGraph)</h2>
-          <div className="graph-toolbar">
-            <input
-              value={nextLabel}
-              onChange={(event) => setNextLabel(event.target.value)}
-              aria-label="New node label"
-              placeholder="Node label"
-            />
-            <button type="button" onClick={() => insertShape('box')}>
-              Add Box
-            </button>
-            <button type="button" onClick={() => insertShape('ellipse')}>
-              Add Ellipse
-            </button>
-            <button type="button" onClick={() => connectSelection()} disabled={selectionCount < 2}>
-              Connect Selected
-            </button>
-            <button type="button" onClick={() => removeSelection()} disabled={selectionCount < 1}>
-              Delete Selected
-            </button>
-            <span className="selection-summary">
-              {selectionCount} selected. Tip: press Delete/Backspace in the graph pane.
-            </span>
-          </div>
+          {!renderOnly && <h2>Rendered Diagram (MaxGraph)</h2>}
+          {!renderOnly && (
+            <div className="graph-toolbar">
+              <input
+                value={nextLabel}
+                onChange={(event) => setNextLabel(event.target.value)}
+                aria-label="New node label"
+                placeholder="Node label"
+              />
+              <button type="button" onClick={() => insertShape('box')}>
+                Add Box
+              </button>
+              <button type="button" onClick={() => insertShape('ellipse')}>
+                Add Ellipse
+              </button>
+              <button type="button" onClick={() => connectSelection()} disabled={selectionCount < 2}>
+                Connect Selected
+              </button>
+              <button type="button" onClick={() => removeSelection()} disabled={selectionCount < 1}>
+                Delete Selected
+              </button>
+              <span className="selection-summary">
+                {selectionCount} selected. Tip: press Delete/Backspace in the graph pane.
+              </span>
+            </div>
+          )}
           <div ref={graphContainerRef} id="graph" />
-          <pre>{preview}</pre>
+          {!renderOnly && <pre>{preview}</pre>}
         </section>
       </main>
     </>
