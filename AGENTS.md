@@ -27,8 +27,22 @@ This is a personal dotfiles/utilities monorepo with independent subprojects in G
 
 Nushell (`nu`) is installed at `/usr/local/bin/nu` (v0.111.0, prebuilt musl binary). The user's config files from `nushell/` are installed into `~/.config/nushell/`:
 
-- `config.nu` — adapted for Linux (removed macOS Homebrew, pbcopy, Starship, Atuin, and zoxide integrations that depend on macOS-only tools)
-- `scripts/*.nu` — all library scripts installed (zdu, lib, file-set, work-trees, subject, my-dir, etc.)
-- The `vendor/autoload/` configs for Starship, Atuin, and zoxide are **not** installed because those tools are not present in this environment and they hardcode `/opt/homebrew/bin/` paths.
+- `config.nu` — adapted for Linux with nearly full parity to the original:
+  - Starship prompt (installed at `/usr/local/bin/starship`, autoload adapted for Linux path)
+  - zoxide (installed at `~/.local/bin/zoxide`)
+  - Atuin shell history (installed at `~/.atuin/bin/atuin`)
+  - LS_COLORS (vivid-generated, identical to repo)
+  - GRADLE_OPTS, external bash completions, clipboard (`xclip` standing in for `pbcopy`/`pbpaste`)
+  - All aliases: `ll`, `la`, `gs`, `gl`, `gw`, `fz`, `wt`, `da`, `c`/`p` (clipboard), `f`, etc.
+- `scripts/*.nu` — all library scripts installed (zdu, lib, file-set, work-trees, subject, my-dir, node, open-jdk, postgres, bash-completer)
+- `vendor/autoload/` — Starship, zoxide, and Atuin configs in `~/.local/share/nushell/vendor/autoload/` (also sourced explicitly from config.nu)
+- `bash-completer.nu` adapted for Linux bash-completion paths (`/usr` instead of `/opt/homebrew`)
+- `fd` is symlinked from `fdfind` → `/usr/local/bin/fd` so the `fd` wrapper in `lib.nu` works
+
+**Not integrated** (macOS-only, no Linux equivalent):
+- Homebrew keg activation for OpenJDK/Node.js (`advertise-installed-open-jdks`, `advertise-installed-nodes`)
+- `code`, `cursor`, `xcode` commands (macOS `open -a` syntax)
+- `explore-tart.nu` (Tart VM manager, macOS-only)
+- `obsidian.nu` (depends on `~/repos/personal` directory structure)
 
 To start Nushell: just run `nu`. The config loads automatically. To activate a project's `do.nu` overlay: `do activate` (or alias `da`).
