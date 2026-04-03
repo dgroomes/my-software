@@ -1,6 +1,8 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 
+type ServerSocket = Bun.ServerWebSocket<unknown>;
+
 const appRoot = new URL('..', import.meta.url).pathname;
 const publicDir = join(appRoot, 'public');
 
@@ -24,7 +26,7 @@ if (!existsSync(diagramPath)) {
   process.exit(1);
 }
 
-const sockets = new Set<ServerWebSocket<unknown>>();
+const sockets = new Set<ServerSocket>();
 
 const server = Bun.serve({
   port,
@@ -103,7 +105,7 @@ function writeDiagram(xml: string) {
   writeFileSync(diagramPath, xml.endsWith('\n') ? xml : `${xml}\n`, 'utf-8');
 }
 
-function broadcast(message: unknown, except?: ServerWebSocket<unknown>) {
+function broadcast(message: unknown, except?: ServerSocket) {
   const json = JSON.stringify(message);
   for (const socket of sockets) {
     if (socket !== except) {

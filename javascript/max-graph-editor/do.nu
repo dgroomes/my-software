@@ -40,12 +40,12 @@ export def install [] {
 
 export def build-client [] {
     cd $DIR
-    bun build src/client/main.tsx --outfile public/app.js --format esm --target browser
+    run-external bun run build-client
 }
 
 export def check [] {
     cd $DIR
-    bunx tsc --project tsconfig.json --noEmit
+    run-external bun run check
 }
 
 export def run [diagram: string, --port: int = 3000] {
@@ -143,4 +143,9 @@ export def stop [] {
     cd $DIR
     let args = ["stop"]
     run-external bun do.ts ...$args
+}
+
+export def graph-wizard [...args: string] {
+    cd $DIR
+    run-external bun graph-wizard.ts ...$args
 }
