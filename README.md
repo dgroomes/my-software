@@ -72,6 +72,13 @@ My Nushell configuration and scripts.
 See the README in [nushell/](nushell/).
 
 
+### `vscode/`
+
+My Visual Studio Code user settings and keybindings.
+
+See the README in [vscode/](vscode/).
+
+
 ### `starship/`
 
 My config file for Starship.

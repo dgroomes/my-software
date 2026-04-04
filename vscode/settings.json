@@ -1,17 +1,18 @@
 {
-    "workbench.colorTheme": "Default Light Modern",
+    "workbench.colorTheme": "Light Modern",
     "redhat.telemetry.enabled": false,
     "editor.rulers": [
         120
     ],
 
+    // I'm sometimes working in directories that are not Git roots. I don't want VSCode to try to be smart and look
+    // upward for a containing Git root. This, to me, is "undefined behavior" and not desirable.
+    "git.openRepositoryInParentFolders": "never",
+
     // The default indentation (8 pixels) of files-under-folders, like in the project explorer is quite narrow. I like
     // the idea of saving space, but I keep misreading the relationship of files to their parent folder, and thinking a
     // file and its container folder are siblings.
     "workbench.tree.indent": 16,
-
-    // https://code.visualstudio.com/blogs/2025/02/12/next-edit-suggestions
-    "github.copilot.nextEditSuggestions.enabled": true,
 
     "chat.instructionsFilesLocations": {
 
@@ -19,5 +20,10 @@
         "/Users/davidgroomes/.config/llm-agent": true,
         // Also keep the default location. I think I need to explicitly add this because I've overridden the default property value.
         ".github/instructions": true
-    }
+    },
+
+    // I don't want the distraction of a notification sound when Copilot chat needs my attention. If I've left the
+    // window, I'm controlling my own attention. I'll get back to it on my own terms.
+    "chat.notifyWindowOnResponseReceived": "off",
+    "chat.notifyWindowOnConfirmation": "off"
 }
