@@ -5,7 +5,7 @@ My configuration for [Karabiner-Elements][karabiner-elements].
 
 ## Instructions
 
-Follow these instructions to back up, install, or upstream the Karabiner configuration files.
+Follow these instructions to back up, install, or upstream the Karabiner config file.
 
 1. Activate the Nushell `do` module with the following command.
     - ```nushell
@@ -14,15 +14,15 @@ Follow these instructions to back up, install, or upstream the Karabiner configu
 2. Back up the installed Karabiner config file. This backs up `~/.config/karabiner/karabiner.json`
    to a timestamped `.bak` filename if the file exists.
     - ```nushell
-      do backup karabiner
+      do backup
       ```
 3. Install the version-controlled Karabiner config file into `~/.config/karabiner/` with the following command.
     - ```nushell
-      do install karabiner
+      do install
       ```
 4. Upstream the installed Karabiner file back into this repository with the following command.
     - ```nushell
-      do upstream karabiner
+      do upstream
       ```
 
 
