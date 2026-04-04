@@ -62,6 +62,9 @@ structure in an ad-hoc way. I want to avoid particularly gnarly stringly-typed p
 - The [Bubbles](https://github.com/charmbracelet/bubbles) TUI component library
 - The "fuzzy" library <https://github.com/sahilm/fuzzy>.
 
+An experimental Rust reimplementation of both `my-fuzzy-finder` and its fuzzy matcher library lives in the `../rust/`
+directory.
+
 
 ## `claude-sandboxed`
 

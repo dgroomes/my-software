@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "my-fuzzy-finder",
+    "my-fuzzy-finder-lib",
+]
+resolver = "2"

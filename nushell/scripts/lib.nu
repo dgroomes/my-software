@@ -337,9 +337,16 @@ export def --wrapped gw [...args] {
 #
 #   $ glob */** | fz
 #
-export def fz [--filter-column (-f): string]: [list<string> -> string, table -> record] {
-    which my-fuzzy-finder | if ($in | is-empty) {
-        err "The 'my-fuzzy-finder' program is not installed."
+# The optional '--impl' flag controls which fuzzy finder executable is used:
+#   - 'my-fuzzy-finder' uses the original Go implementation
+#   - 'my-fuzzy-finder-rs' uses the experimental Rust reimplementation
+export def fz [--filter-column (-f): string --impl: string = "my-fuzzy-finder"]: [list<string> -> string, table -> record] {
+    if ($impl != "my-fuzzy-finder" and $impl != "my-fuzzy-finder-rs") {
+        err "The '--impl' flag must be either 'my-fuzzy-finder' or 'my-fuzzy-finder-rs'."
+    }
+
+    which $impl | if ($in | is-empty) {
+        err $"The '($impl)' program is not installed."
     }
 
     let _in = $in
@@ -366,25 +373,25 @@ export def fz [--filter-column (-f): string]: [list<string> -> string, table -> 
         }
     }
 
-    let result = $item_strings | to json | my-fuzzy-finder --json-in --json-out | complete
+    let result = $item_strings | to json | run-external $impl --json-in --json-out | complete
 
     match $result.exit_code {
         0 => {
             # Success
         }
         1 => {
-            # This is a normal case. When there are no matches, 'my-fuzzy-finder' exits with a 1 status code. This is
+            # This is a normal case. When there are no matches, the fuzzy finder exits with a 1 status code. This is
             # the same behavior as 'fzf'.
             print "(fz) No match"
             return
         }
         130 => {
-            # This is a normal case. When the user abandons the selection, 'my-fuzzy-finder' exits with a 130 status
+            # This is a normal case. When the user abandons the selection, the fuzzy finder exits with a 130 status
             # code. This is the same behavior as 'fzf'.
             return
         }
         _ => {
-            err "Something went wrong. Received an unexpected status code from 'my-fuzzy-finder'."
+            err $"Something went wrong. Received an unexpected status code from '($impl)'."
         }
     }
 
