@@ -260,32 +260,28 @@ to a working Nushell environment, but it's great enough.
      * Disable phone-home telemetry
      * Configure Docker to use fewer resources. Consider only 2-3 cores and 6GB (but it depends on the need and constraints).
 21. Install Karabiner-Elements <https://github.com/pqrs-org/Karabiner-Elements> from source (or Homebrew) and configure it with.
-     1. First, we must configure Xcode command line tools correctly. Follow these instructions <https://stackoverflow.com/a/61725799>
-     2. Then, install `xcodegen` from source <https://github.com/yonaskolb/XcodeGen>:
-        ```shell
-        git clone --depth 1 https://github.com/yonaskolb/XcodeGen.git ~/repos/opensource/XcodeGen
-        cd ~/repos/opensource/XcodeGen/
-        mkdir -p "$HOME/.local/share" "$HOME/.local/bin"
-        make PREFIX="$HOME/.local" install
-        ```
-     3. ```shell
-        brew install xz
-        brew install cmake
-        ```
-     4. Then, install Karabiner Elements
-        ```shell
-        git clone --depth 1 https://github.com/pqrs-org/Karabiner-Elements.git ~/repos/opensource/Karabiner-Elements
-        cd ~/repos/opensource/Karabiner-Elements
-        git submodule update --init --recursive --depth 1
-        make package
-        ``` 
-     5. Install from the `.dmg` file that was just created in the root of the project. E.g. `Karabiner-Elements-14.12.1.dmg`.
-     6. Then, configure it with my custom settings
-        ```nushell
-        mkdir ~/.config/karabiner/assets/complex_modifications
-        cp karabiner/karabiner.json ~/.config/karabiner
-        cp karabiner/assets/complex_modifications/* ~/.config/karabiner/assets/complex_modifications
-        ```
+     - First, we must configure Xcode command line tools correctly. Follow these instructions <https://stackoverflow.com/a/61725799>
+     - Then, install `xcodegen` from source <https://github.com/yonaskolb/XcodeGen>. Clone XcodeGen with the following command.
+     - ```shell
+       git clone --depth 1 https://github.com/yonaskolb/XcodeGen.git ~/repos/opensource/XcodeGen
+       cd ~/repos/opensource/XcodeGen/
+       mkdir -p "$HOME/.local/share" "$HOME/.local/bin"
+       make PREFIX="$HOME/.local" install
+       ```
+     - Install the package prerequisites with the following command.
+     - ```shell
+       brew install xz
+       brew install cmake
+       ```
+     - Then, install Karabiner Elements. Clone it and build the installer package with the following command.
+     - ```shell
+       git clone --depth 1 https://github.com/pqrs-org/Karabiner-Elements.git ~/repos/opensource/Karabiner-Elements
+       cd ~/repos/opensource/Karabiner-Elements
+       git submodule update --init --recursive --depth 1
+       make package
+       ```
+     - Install from the `.dmg` file that was just created in the root of the project. E.g. `Karabiner-Elements-14.12.1.dmg`.
+     - Then, configure it by following the instructions in `karabiner/README.md`.
 22. Install Go <https://golang.org/dl/>
      * Note: Consider installing manually or using something like Homebrew. There are pros and cons to each approach.
        To install using Homebrew, use the following command.

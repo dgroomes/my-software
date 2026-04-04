@@ -1,4 +1,7 @@
 {
+  "global": {
+    "show_in_menu_bar": false
+  },
   "profiles": [
     {
       "complex_modifications": {
@@ -9,12 +12,19 @@
               {
                 "from": {
                   "key_code": "i",
-                  "modifiers": { "mandatory": ["right_control"] }
+                  "modifiers": {
+                    "mandatory": [
+                      "right_control"
+                    ]
+                  }
                 },
                 "to": [
                   {
                     "key_code": "open_bracket",
-                    "modifiers": ["left_command", "left_shift"]
+                    "modifiers": [
+                      "left_command",
+                      "left_shift"
+                    ]
                   }
                 ],
                 "type": "basic"
@@ -27,12 +37,19 @@
               {
                 "from": {
                   "key_code": "o",
-                  "modifiers": { "mandatory": ["right_control"] }
+                  "modifiers": {
+                    "mandatory": [
+                      "right_control"
+                    ]
+                  }
                 },
                 "to": [
                   {
                     "key_code": "close_bracket",
-                    "modifiers": ["left_command", "left_shift"]
+                    "modifiers": [
+                      "left_command",
+                      "left_shift"
+                    ]
                   }
                 ],
                 "type": "basic"
@@ -46,11 +63,19 @@
                 "from": {
                   "key_code": "h",
                   "modifiers": {
-                    "mandatory": ["right_control"],
-                    "optional": ["left_shift"]
+                    "mandatory": [
+                      "right_control"
+                    ],
+                    "optional": [
+                      "left_shift"
+                    ]
                   }
                 },
-                "to": [{ "key_code": "left_arrow" }],
+                "to": [
+                  {
+                    "key_code": "left_arrow"
+                  }
+                ],
                 "type": "basic"
               }
             ]
@@ -62,11 +87,19 @@
                 "from": {
                   "key_code": "j",
                   "modifiers": {
-                    "mandatory": ["right_control"],
-                    "optional": ["left_shift"]
+                    "mandatory": [
+                      "right_control"
+                    ],
+                    "optional": [
+                      "left_shift"
+                    ]
                   }
                 },
-                "to": [{ "key_code": "down_arrow" }],
+                "to": [
+                  {
+                    "key_code": "down_arrow"
+                  }
+                ],
                 "type": "basic"
               }
             ]
@@ -78,11 +111,19 @@
                 "from": {
                   "key_code": "k",
                   "modifiers": {
-                    "mandatory": ["right_control"],
-                    "optional": ["left_shift"]
+                    "mandatory": [
+                      "right_control"
+                    ],
+                    "optional": [
+                      "left_shift"
+                    ]
                   }
                 },
-                "to": [{ "key_code": "up_arrow" }],
+                "to": [
+                  {
+                    "key_code": "up_arrow"
+                  }
+                ],
                 "type": "basic"
               }
             ]
@@ -94,11 +135,19 @@
                 "from": {
                   "key_code": "l",
                   "modifiers": {
-                    "mandatory": ["right_control"],
-                    "optional": ["left_shift"]
+                    "mandatory": [
+                      "right_control"
+                    ],
+                    "optional": [
+                      "left_shift"
+                    ]
                   }
                 },
-                "to": [{ "key_code": "right_arrow" }],
+                "to": [
+                  {
+                    "key_code": "right_arrow"
+                  }
+                ],
                 "type": "basic"
               }
             ]
@@ -110,14 +159,20 @@
                 "from": {
                   "key_code": "comma",
                   "modifiers": {
-                    "mandatory": ["right_control"],
-                    "optional": ["left_shift"]
+                    "mandatory": [
+                      "right_control"
+                    ],
+                    "optional": [
+                      "left_shift"
+                    ]
                   }
                 },
                 "to": [
                   {
                     "key_code": "left_arrow",
-                    "modifiers": ["left_option"]
+                    "modifiers": [
+                      "left_option"
+                    ]
                   }
                 ],
                 "type": "basic"
@@ -131,14 +186,20 @@
                 "from": {
                   "key_code": "period",
                   "modifiers": {
-                    "mandatory": ["right_control"],
-                    "optional": ["left_shift"]
+                    "mandatory": [
+                      "right_control"
+                    ],
+                    "optional": [
+                      "left_shift"
+                    ]
                   }
                 },
                 "to": [
                   {
                     "key_code": "right_arrow",
-                    "modifiers": ["left_option"]
+                    "modifiers": [
+                      "left_option"
+                    ]
                   }
                 ],
                 "type": "basic"
@@ -151,9 +212,17 @@
               {
                 "from": {
                   "key_code": "n",
-                  "modifiers": { "mandatory": ["right_control"] }
+                  "modifiers": {
+                    "mandatory": [
+                      "right_control"
+                    ]
+                  }
                 },
-                "to": [{ "key_code": "escape" }],
+                "to": [
+                  {
+                    "key_code": "escape"
+                  }
+                ],
                 "type": "basic"
               }
             ]
@@ -164,12 +233,21 @@
               {
                 "from": {
                   "key_code": "m",
-                  "modifiers": { "mandatory": ["right_control"] }
+                  "modifiers": {
+                    "mandatory": [
+                      "right_control"
+                    ]
+                  }
                 },
                 "to": [
                   {
                     "key_code": "m",
-                    "modifiers": ["left_control", "left_command", "left_option", "left_shift"]
+                    "modifiers": [
+                      "left_control",
+                      "left_command",
+                      "left_option",
+                      "left_shift"
+                    ]
                   }
                 ],
                 "type": "basic"
@@ -183,11 +261,20 @@
                 "from": {
                   "key_code": "delete_or_backspace",
                   "modifiers": {
-                    "mandatory": ["shift"],
-                    "optional": ["caps_lock", "option"]
+                    "mandatory": [
+                      "shift"
+                    ],
+                    "optional": [
+                      "caps_lock",
+                      "option"
+                    ]
                   }
                 },
-                "to": [{ "key_code": "delete_forward" }],
+                "to": [
+                  {
+                    "key_code": "delete_forward"
+                  }
+                ],
                 "type": "basic"
               }
             ]
@@ -196,7 +283,9 @@
             "description": "Tab as a modifier (thank you https://github.com/pqrs-org/Karabiner-Elements/issues/831#issuecomment-343720386)",
             "manipulators": [
               {
-                "from": { "key_code": "tab" },
+                "from": {
+                  "key_code": "tab"
+                },
                 "to": [
                   {
                     "set_variable": {
@@ -213,13 +302,17 @@
                     }
                   }
                 ],
-                "to_if_alone": [{ "key_code": "tab" }],
+                "to_if_alone": [
+                  {
+                    "key_code": "tab"
+                  }
+                ],
                 "type": "basic"
               }
             ]
           },
           {
-            "description": "Open Chrome with 'tab + c'",
+            "description": "Open the browser (Safari) with 'tab + s'",
             "manipulators": [
               {
                 "conditions": [
@@ -229,8 +322,37 @@
                     "value": 1
                   }
                 ],
-                "from": { "key_code": "c" },
-                "to": [{ "shell_command": "open -a 'Google Chrome.app'" }],
+                "from": {
+                  "key_code": "b"
+                },
+                "to": [
+                  {
+                    "shell_command": "open -a 'Safari.app'"
+                  }
+                ],
+                "type": "basic"
+              }
+            ]
+          },
+          {
+            "description": "Open the terminal (Ghostty) with 'tab + t'",
+            "manipulators": [
+              {
+                "conditions": [
+                  {
+                    "name": "tab_modifier",
+                    "type": "variable_if",
+                    "value": 1
+                  }
+                ],
+                "from": {
+                  "key_code": "t"
+                },
+                "to": [
+                  {
+                    "shell_command": "open -a 'Ghostty.app'"
+                  }
+                ],
                 "type": "basic"
               }
             ]
@@ -246,25 +368,14 @@
                     "value": 1
                   }
                 ],
-                "from": { "key_code": "i" },
-                "to": [{ "shell_command": "/Users/davidgroomes/dev/jetbrains-scripts/idea" }],
-                "type": "basic"
-              }
-            ]
-          },
-          {
-            "description": "Open iTerm2 with 'tab + t'",
-            "manipulators": [
-              {
-                "conditions": [
+                "from": {
+                  "key_code": "i"
+                },
+                "to": [
                   {
-                    "name": "tab_modifier",
-                    "type": "variable_if",
-                    "value": 1
+                    "shell_command": "open -a 'IntelliJ IDEA.app'"
                   }
                 ],
-                "from": { "key_code": "t" },
-                "to": [{ "shell_command": "open -a 'iTerm.app'" }],
                 "type": "basic"
               }
             ]
@@ -280,25 +391,14 @@
                     "value": 1
                   }
                 ],
-                "from": { "key_code": "v" },
-                "to": [{ "shell_command": "open -a 'Visual Studio Code.app'" }],
-                "type": "basic"
-              }
-            ]
-          },
-          {
-            "description": "Open Insomnia with 'tab + n'",
-            "manipulators": [
-              {
-                "conditions": [
+                "from": {
+                  "key_code": "v"
+                },
+                "to": [
                   {
-                    "name": "tab_modifier",
-                    "type": "variable_if",
-                    "value": 1
+                    "shell_command": "open -a 'Visual Studio Code.app'"
                   }
                 ],
-                "from": { "key_code": "n" },
-                "to": [{ "shell_command": "open -a 'Insomnia.app'" }],
                 "type": "basic"
               }
             ]
@@ -314,25 +414,14 @@
                     "value": 1
                   }
                 ],
-                "from": { "key_code": "f" },
-                "to": [{ "shell_command": "open -a 'Finder.app'" }],
-                "type": "basic"
-              }
-            ]
-          },
-          {
-            "description": "Open Slack with 'tab + s'",
-            "manipulators": [
-              {
-                "conditions": [
+                "from": {
+                  "key_code": "f"
+                },
+                "to": [
                   {
-                    "name": "tab_modifier",
-                    "type": "variable_if",
-                    "value": 1
+                    "shell_command": "open -a 'Finder.app'"
                   }
                 ],
-                "from": { "key_code": "s" },
-                "to": [{ "shell_command": "open -a 'Slack.app'" }],
                 "type": "basic"
               }
             ]
@@ -349,31 +438,70 @@
           "manipulate_caps_lock_led": false,
           "simple_modifications": [
             {
-              "from": { "key_code": "left_command" },
-              "to": [{ "key_code": "left_option" }]
+              "from": {
+                "key_code": "left_command"
+              },
+              "to": [
+                {
+                  "key_code": "left_option"
+                }
+              ]
             },
             {
-              "from": { "key_code": "left_option" },
-              "to": [{ "key_code": "left_command" }]
+              "from": {
+                "key_code": "left_option"
+              },
+              "to": [
+                {
+                  "key_code": "left_command"
+                }
+              ]
             },
             {
-              "from": { "key_code": "right_command" },
-              "to": [{ "key_code": "right_option" }]
+              "from": {
+                "key_code": "right_command"
+              },
+              "to": [
+                {
+                  "key_code": "right_option"
+                }
+              ]
             },
             {
-              "from": { "key_code": "right_option" },
-              "to": [{ "key_code": "right_command" }]
+              "from": {
+                "key_code": "right_option"
+              },
+              "to": [
+                {
+                  "key_code": "right_command"
+                }
+              ]
             }
           ]
+        },
+        {
+          "identifiers": {
+            "is_keyboard": true,
+            "is_pointing_device": true,
+            "product_id": 45091,
+            "vendor_id": 1133
+          },
+          "ignore": false,
+          "ignore_vendor_events": true
         }
       ],
-      "fn_function_keys": [],
       "name": "default",
       "selected": true,
       "simple_modifications": [
         {
-          "from": { "key_code": "caps_lock" },
-          "to": [{ "key_code": "right_control" }]
+          "from": {
+            "key_code": "caps_lock"
+          },
+          "to": [
+            {
+              "key_code": "right_control"
+            }
+          ]
         }
       ],
       "virtual_hid_keyboard": {
