@@ -11,31 +11,18 @@ Follow these instructions to back up, install, or upstream the Karabiner configu
     - ```nushell
       overlay use --prefix do.nu
       ```
-2. Back up the installed Karabiner files. This backs up `~/.config/karabiner/karabiner.json` and each installed complex
-   modification file to a timestamped `.bak` filename if the file exists.
-    - ```nushell
-      do backup all
-      ```
-3. Install the version-controlled Karabiner files into `~/.config/karabiner/` with the following command.
-    - ```nushell
-      do install all
-      ```
-4. Upstream the installed Karabiner files back into this repository with the following command.
-    - ```nushell
-      do upstream all
-      ```
-5. Operate on individual configuration files as needed.
-    - For example, back up only the main `karabiner.json` file with the following command.
+2. Back up the installed Karabiner config file. This backs up `~/.config/karabiner/karabiner.json`
+   to a timestamped `.bak` filename if the file exists.
     - ```nushell
       do backup karabiner
       ```
-    - Install only the `move-between-words` complex modification with the following command.
+3. Install the version-controlled Karabiner config file into `~/.config/karabiner/` with the following command.
     - ```nushell
-      do install move-between-words
+      do install karabiner
       ```
-    - Upstream only the `modal-mode` complex modification with the following command.
+4. Upstream the installed Karabiner file back into this repository with the following command.
     - ```nushell
-      do upstream modal-mode
+      do upstream karabiner
       ```
 
 
