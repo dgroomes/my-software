@@ -389,7 +389,7 @@ to a working Nushell environment, but it's great enough.
       do llm-prompts
       ```
 44. Install DevPod
-    * I used HomeBrew although they don't advertise that for some reason. Also, generate the Bash completion scripts with the following command.
+    * I used Homebrew although they don't advertise that for some reason. Also, generate the Bash completion scripts with the following command.
     * ```nushell
       devpod completion bash | save ~/.local/share/bash-completion/completions/devpod
       ```

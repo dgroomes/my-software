@@ -1,6 +1,8 @@
 ## Done
 
-These are items from the *Wish List* section in the README which are considered done. I'm keeping them version controlled for posterity. I'd like to be able to see the range of content I've worked on, and also have some searchability.
+Items from the *Wish List* that are now considered done, skipped or obsoleted.
+
+I'm keeping these things version controlled for posterity. I'd like to be able to see the range of content I've worked on, and also have some searchability.
 
 Before I decided to version control this content, I had actually just deleted it in this commit <https://github.com/dgroomes/my-software/commit/545de5778421eabe24b787ef10441408b86c4eed>. But now I'd like to keep it.
 
