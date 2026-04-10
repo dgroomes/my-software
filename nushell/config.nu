@@ -50,6 +50,7 @@ $env.DOCKER_SCAN_SUGGEST = false
 use bash-completer.nu *
 use file-set.nu *
 use lib.nu *
+use my-git-module.nu *
 use node.nu *
 use open-jdk.nu *
 use postgres.nu *

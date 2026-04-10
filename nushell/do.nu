@@ -38,6 +38,18 @@ const config_registry = {
         install_success_msg: "Library file installed."
         upstream_success_msg: "Library file upstreamed."
     }
+    my_git_lib: {
+        filename: "scripts/my-git-lib.nu"
+        backup_success_msg: "'my-git' library file backed up."
+        install_success_msg: "'my-git' library file installed."
+        upstream_success_msg: "'my-git' library file upstreamed."
+    }
+    my_git_module: {
+        filename: "scripts/my-git-module.nu"
+        backup_success_msg: "'my-git' module file backed up."
+        install_success_msg: "'my-git' module file installed."
+        upstream_success_msg: "'my-git' module file upstreamed."
+    }
     my-dir: {
         filename: "scripts/my-dir.nu"
         backup_success_msg: "'my-dir' library file backed up."
@@ -161,6 +173,43 @@ export def upstream [name: string@config_names] {
 
     cp --force $installed_file_path $vcs_file_path
     print $config.upstream_success_msg
+}
+
+def test_files [] {
+    glob ([$DIR tests *.nu] | path join) | sort
+}
+
+def test_names [] {
+    test_files | each { |it|
+        $it
+        | path basename
+        | str replace --regex '\.nu$' ''
+    }
+}
+
+# Run standalone Nushell tests from the 'tests/' directory.
+export def test [name?: string@test_names] {
+    cd $DIR
+
+    let test_files = if ($name | is-empty) {
+        test_files
+    } else {
+        let test_file = [$DIR tests $"($name).nu"] | path join
+        if not ($test_file | path exists) {
+            err $"The test file '($test_file)' does not exist."
+        }
+        [$test_file]
+    }
+
+    if ($test_files | is-empty) {
+        print "No Nushell test files found."
+        return
+    }
+
+    for test_file in $test_files {
+        print $"Running ($test_file | path basename)"
+        ^$nu.current-exe $test_file
+    }
 }
 
 # There are many custom completion scripts and other neat scripts in the official "nu_scripts" repository: https://github.com/nushell/nu_scripts/tree/4eab7ea772f0a288c99a79947dd332efc1884315
