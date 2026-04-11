@@ -37,7 +37,7 @@ typical maximum context length of models from OpenAI, Anthropic, Meta, etc.
 
 The `deduplicator` tool will confine large repeated text blocks to only their first occurrence and thus save many
 precious tokens in a prompt. There's no value in repeating a text snippet that is already present in the context. We can
-instead refer to it by something like an alias, a file name plus line number, or a description.
+instead refer to it by something like an alias, a file name plus line number, or a description.[^prior-art-1][^prior-art-2]
 
 
 ## Algorithm
@@ -115,3 +115,6 @@ General clean-ups, TODOs and things I wish to implement for this project:
 * [Stanford CS166 Lecture Notes on SA-IS](https://web.stanford.edu/class/archive/cs/cs166/cs166.1196/lectures/04/Small04.pdf)
 * [Google Research: deduplicate-text-datasets](https://github.com/google-research/deduplicate-text-datasets)
 * [sa-is (Rust)](https://github.com/oguzbilgener/sa-is) - Rust port of Chrome's SA-IS implementation
+
+[^prior-art-1]: IntelliJ's duplicate-code inspection is a structural duplicate detector for navigation, inspection, and refactoring. It is useful prior art, but it is not a prompt-rewriting tool.
+[^prior-art-2]: PMD CPD and JPlag are token-based duplicate/plagiarism detectors, while Google's `deduplicate-text-datasets` is closer to corpus-level exact-substring range detection. These are related references, but they do not by themselves settle the final rewrite semantics for this project.
