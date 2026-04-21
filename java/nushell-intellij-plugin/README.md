@@ -1,6 +1,6 @@
 # nushell-intellij-plugin
 
-**NOTICE**: This plugin was almost fully implemented with a coding agent.
+**NOTICE**: This code was almost fully implemented with a coding agent.
 
 A first-class IntelliJ language plugin for Nushell.
 
@@ -71,7 +71,7 @@ they missed.
 
 - A **commercial** JetBrains IDE (IntelliJ IDEA Ultimate, WebStorm, PhpStorm, …) — the LSP API
   isn't shipped in IntelliJ Community.
-- Build target: 2024.3+.
+- Build target: 2026.1+.
 - The `nu` executable on your `PATH` (used at runtime for `--ide-ast` / `--lsp`).
 - The sidecar binary built and present at `rust/nu-intellij-lex/target/release/nu-intellij-lex`
   (see [the sidecar README](../../rust/nu-intellij-lex/README.md) for the one-line build

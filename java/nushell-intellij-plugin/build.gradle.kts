@@ -21,7 +21,7 @@ dependencies {
 
     intellijPlatform {
         // The IntelliJ LSP API is only shipped in commercial JetBrains IDEs.
-        intellijIdeaUltimate("2024.3")
+        intellijIdeaUltimate("2026.1")
     }
 }
 
@@ -31,7 +31,7 @@ kotlin {
         main {
             languageSettings {
                 // Target the version of Kotlin that powers the IntelliJ Platform at runtime.
-                languageVersion = "1.9"
+                languageVersion = "2.2"
             }
         }
     }

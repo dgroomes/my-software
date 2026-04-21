@@ -1,5 +1,7 @@
 # nushell-client
 
+**NOTICE**: This code was almost fully implemented with a coding agent.
+
 A small Kotlin/JVM library for talking to Nushell from the JVM.
 
 
