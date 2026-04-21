@@ -9,6 +9,7 @@ import dgroomes.nushell.NuLex
 import dgroomes.nushell.NuLexKind
 import dgroomes.nushell.NuLexToken
 import dgroomes.nushell.NuOffsets
+import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.StandardCopyOption
@@ -58,7 +59,15 @@ class NushellNativeLexer : LexerBase() {
     override fun advance() { if (index < tokens.size) index++ }
 
     private fun tokenize(text: String, startOffset: Int): List<Token> {
-        val raw: List<NuLexToken> = NushellLexService.getInstance().lex(text)
+        val raw = try {
+            NushellLexService.getInstance().lex(text)
+        } catch (e: IOException) {
+            log.warn("Falling back to plain-word Nushell tokenization after nu-lex I/O failure", e)
+            return fallbackTokens(text, startOffset)
+        } catch (e: RuntimeException) {
+            log.warn("Falling back to plain-word Nushell tokenization after nu-lex failure", e)
+            return fallbackTokens(text, startOffset)
+        }
 
         val needed = HashSet<Int>(raw.size * 2)
         for (t in raw) { needed += t.byteStart; needed += t.byteEnd }
@@ -75,6 +84,24 @@ class NushellNativeLexer : LexerBase() {
             prevCharEnd = charEnd
         }
         if (prevCharEnd < text.length) emitWhitespace(text, prevCharEnd, text.length, startOffset, out)
+        return out
+    }
+
+    private fun fallbackTokens(text: String, startOffset: Int): List<Token> {
+        if (text.isEmpty()) return emptyList()
+        val out = ArrayList<Token>(8)
+        var i = 0
+        while (i < text.length) {
+            if (text[i].isWhitespace()) {
+                val start = i
+                while (i < text.length && text[i].isWhitespace()) i++
+                emitWhitespace(text, start, i, startOffset, out)
+            } else {
+                val start = i
+                while (i < text.length && !text[i].isWhitespace()) i++
+                out += Token(NushellTokenTypes.WORD, startOffset + start, startOffset + i)
+            }
+        }
         return out
     }
 

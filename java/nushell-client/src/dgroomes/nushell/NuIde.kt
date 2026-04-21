@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import java.io.File
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
+import java.util.concurrent.Callable
+import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 /**
@@ -47,6 +49,9 @@ data class NuRunResult(val exitCode: Int, val stdout: String, val stderr: String
 class NuIde(private val nuExecutable: String, private val timeoutMs: Long = 5_000) {
 
     private val mapper = ObjectMapper()
+    private val ioDrainer = Executors.newCachedThreadPool { runnable ->
+        Thread(runnable, "nu-ide-io").apply { isDaemon = true }
+    }
 
     /**
      * Runs `nu --ide-ast` against [text] and returns the entries with byte offsets translated
@@ -129,15 +134,23 @@ class NuIde(private val nuExecutable: String, private val timeoutMs: Long = 5_00
             cmd.add(tmp.toString())
             val process = ProcessBuilder(cmd).redirectErrorStream(false).start()
             process.outputStream.close()
+            val stdout = ioDrainer.submit(Callable {
+                process.inputStream.bufferedReader(StandardCharsets.UTF_8).use { it.readText() }
+            })
+            val stderr = ioDrainer.submit(Callable {
+                process.errorStream.bufferedReader(StandardCharsets.UTF_8).use { it.readText() }
+            })
             val finished = process.waitFor(timeoutMs, TimeUnit.MILLISECONDS)
             if (!finished) {
                 process.destroyForcibly()
+                stdout.cancel(true)
+                stderr.cancel(true)
                 NuRunResult(-1, "", "Timed out waiting for `nu ${flags.joinToString(" ")}` after ${timeoutMs}ms")
             } else {
                 NuRunResult(
                     exitCode = process.exitValue(),
-                    stdout = process.inputStream.bufferedReader(StandardCharsets.UTF_8).readText(),
-                    stderr = process.errorStream.bufferedReader(StandardCharsets.UTF_8).readText(),
+                    stdout = stdout.get(),
+                    stderr = stderr.get(),
                 )
             }
         } catch (e: Exception) {

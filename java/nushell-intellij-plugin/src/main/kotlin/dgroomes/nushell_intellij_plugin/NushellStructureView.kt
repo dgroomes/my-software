@@ -11,6 +11,7 @@ import com.intellij.ide.util.treeView.smartTree.Sorter
 import com.intellij.lang.PsiStructureViewFactory
 import com.intellij.navigation.ItemPresentation
 import com.intellij.openapi.editor.Editor
+import com.intellij.openapi.fileEditor.OpenFileDescriptor
 import com.intellij.pom.Navigatable
 import com.intellij.psi.PsiFile
 import dgroomes.nushell.NuAstEntry
@@ -104,12 +105,11 @@ private class NushellSymbolElement(
         NushellPresentation(symbol.name, symbol.signature ?: symbol.kind.display, symbol.kind.icon)
 
     override fun navigate(requestFocus: Boolean) {
-        val element = file.findElementAt(symbol.nameStart) ?: return
-        (element as? Navigatable)?.navigate(requestFocus)
-            ?: (element.parent as? Navigatable)?.navigate(requestFocus)
+        val virtualFile = file.virtualFile ?: return
+        OpenFileDescriptor(file.project, virtualFile, symbol.nameStart).navigate(requestFocus)
     }
 
-    override fun canNavigate(): Boolean = file.findElementAt(symbol.nameStart) != null
+    override fun canNavigate(): Boolean = file.virtualFile != null
     override fun canNavigateToSource(): Boolean = canNavigate()
 }
 

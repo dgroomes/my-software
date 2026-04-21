@@ -39,7 +39,7 @@ modularize our code across other files:
 
 General clean-ups, TODOs and things I wish to implement for this project:
 
-- [x] DONE Nushell support in Intellij? Intellij Ultimate has LSP support now and [Nushell has an LSP](https://github.com/nushell/nushell/tree/main/crates/nu-lsp).
+- [x] DONE Nushell support in IntelliJ? IntelliJ Ultimate has LSP support now and [Nushell has an LSP](https://github.com/nushell/nushell/tree/main/crates/nu-lsp).
 - [ ] How can I integrate Nushell with Raycast? I don't want go overboard with an integration, but I want to know what's
   possible.
 - [ ] Use git instead of the `.bak` backup strategy. In general, I've been holding this strategy in my back packet. Seems like a

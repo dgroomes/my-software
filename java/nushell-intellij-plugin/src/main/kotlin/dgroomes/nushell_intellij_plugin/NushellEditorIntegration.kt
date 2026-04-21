@@ -8,7 +8,7 @@ import com.intellij.psi.tree.IElementType
 
 /** Provides the standard `Ctrl+/` line-comment toggle for `.nu` files. */
 class NushellCommenter : Commenter {
-    override fun getLineCommentPrefix(): String = "# "
+    override fun getLineCommentPrefix(): String = "#"
     override fun getBlockCommentPrefix(): String? = null
     override fun getBlockCommentSuffix(): String? = null
     override fun getCommentedBlockCommentPrefix(): String? = null

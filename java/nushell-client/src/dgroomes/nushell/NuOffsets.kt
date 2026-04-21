@@ -17,11 +17,11 @@ object NuOffsets {
      * [text]. Offsets at or past EOF clamp to `text.length`.
      *
      * Fast path: if [text] is ASCII-only (the common case), every byte offset equals the
-     * character offset and a self-mapping is returned without scanning.
+     * character offset and offsets at or past EOF are clamped without scanning.
      */
     fun byteToChar(text: String, byteOffsets: Collection<Int>): Map<Int, Int> {
         if (byteOffsets.isEmpty()) return emptyMap()
-        if (isAscii(text)) return byteOffsets.associateWith { it }
+        if (isAscii(text)) return byteOffsets.associateWith { minOf(it, text.length) }
 
         val sorted = byteOffsets.toSortedSet()
         val out = HashMap<Int, Int>(sorted.size)

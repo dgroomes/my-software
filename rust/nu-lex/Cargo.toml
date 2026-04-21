@@ -11,7 +11,6 @@ publish = false
 
 [dependencies]
 nu-parser = "=0.111.0"
-nu-protocol = { version = "=0.111.0", default-features = false }
 
 [profile.release]
 opt-level = "z"

@@ -6,6 +6,8 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.charset.StandardCharsets
 import java.nio.file.Path
+import java.util.concurrent.Executors
+import java.util.concurrent.Future
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
@@ -61,10 +63,14 @@ enum class NuLexKind {
 class NuLex(private val binaryPath: Path) : AutoCloseable {
 
     private val lock = ReentrantLock()
+    private val stderrDrainer = Executors.newSingleThreadExecutor { runnable ->
+        Thread(runnable, "nu-lex-stderr").apply { isDaemon = true }
+    }
 
     @Volatile private var process: Process? = null
     @Volatile private var stdinChannel: java.io.OutputStream? = null
     @Volatile private var stdoutChannel: DataInputStream? = null
+    @Volatile private var stderrDrainTask: Future<*>? = null
 
     /**
      * Tokenize [text] using the upstream `nu_parser::lex`. Returns the raw token list with
@@ -83,7 +89,7 @@ class NuLex(private val binaryPath: Path) : AutoCloseable {
             out.write(header)
             out.write(payload)
             out.flush()
-            readReply(inp)
+            readReply(inp, payload.size)
         } catch (e: IOException) {
             kill()
             throw e
@@ -94,10 +100,14 @@ class NuLex(private val binaryPath: Path) : AutoCloseable {
         lock.withLock { kill() }
     }
 
-    private fun readReply(inp: DataInputStream): List<NuLexToken> {
+    private fun readReply(inp: DataInputStream, requestBytes: Int): List<NuLexToken> {
         val countBuf = ByteArray(4); inp.readFully(countBuf)
         val count = ByteBuffer.wrap(countBuf).order(ByteOrder.LITTLE_ENDIAN).int
         if (count <= 0) return emptyList()
+        val maxTokens = requestBytes.coerceAtLeast(1) * 2
+        if (count > maxTokens) {
+            throw IOException("nu-lex returned an implausible token count: $count for $requestBytes input bytes")
+        }
         val records = ByteArray(count * 9)
         inp.readFully(records)
         val list = ArrayList<NuLexToken>(count)
@@ -106,7 +116,7 @@ class NuLex(private val binaryPath: Path) : AutoCloseable {
             val kind = bb.get().toInt() and 0xFF
             val start = bb.int
             val end = bb.int
-            list += NuLexToken(KINDS[kind], start, end)
+            list += NuLexToken(KINDS.getOrElse(kind) { NuLexKind.ITEM }, start, end)
         }
         return list
     }
@@ -118,15 +128,25 @@ class NuLex(private val binaryPath: Path) : AutoCloseable {
         process = started
         stdinChannel = started.outputStream
         stdoutChannel = DataInputStream(started.inputStream.buffered())
+        stderrDrainTask = stderrDrainer.submit {
+            started.errorStream.use { stream ->
+                val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
+                while (stream.read(buffer) != -1) {
+                    // Drain stderr so the sidecar cannot block on a full pipe.
+                }
+            }
+        }
     }
 
     private fun kill() {
         try { stdinChannel?.close() } catch (_: Exception) {}
         try { stdoutChannel?.close() } catch (_: Exception) {}
         try { process?.destroy() } catch (_: Exception) {}
+        try { stderrDrainTask?.cancel(true) } catch (_: Exception) {}
         process = null
         stdinChannel = null
         stdoutChannel = null
+        stderrDrainTask = null
     }
 
     private companion object {

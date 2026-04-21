@@ -18,13 +18,12 @@ delegates everything semantic to Nushell itself.
 | Feature                                                        | Backed by                                                       | Code                                                                             |
 |----------------------------------------------------------------|-----------------------------------------------------------------|----------------------------------------------------------------------------------|
 | Custom file type, parser, brace matcher, commenter             | Hand-written (very thin)                                        | `NushellParser.kt`, `NushellEditorIntegration.kt`                                |
-| **Lexer** (every token boundary)                               | The official `nu_parser::lex` running in a sidecar Rust process | `NushellNativeLexer.kt` + [`rust/nu-intellij-lex/`](../../rust/nu-intellij-lex/) |
+| **Lexer** (every token boundary)                               | The official `nu_parser::lex` running in a sidecar Rust process | `NushellNativeLexer.kt` + [`rust/nu-lex/`](../../rust/nu-lex/) |
 | Lexer-driven highlighting (comments, strings, brackets, pipes) | Same official lexer                                             | `NushellSyntaxHighlighter.kt`                                                    |
 | **Semantic highlighting** (every Nushell shape)                | `nu --ide-ast`                                                  | `NushellSemanticAnnotator.kt`                                                    |
 | **Structure View** (top-level declarations)                    | `nu --ide-ast`                                                  | `NushellStructureView.kt`                                                        |
 | AST cache shared between the annotator and structure view      | —                                                               | `NushellAstCache.kt`                                                             |
 | Hover, completion, go-to-definition, find usages, diagnostics  | `nu --lsp`                                                      | `NushellLspServerSupportProvider.kt`                                             |
-| `nu --ide-ast` / `nu --ide-check` inspector                    | `nu --ide-ast`, `nu --ide-check`                                | `NushellAstToolWindow.kt`                                                        |
 | Color Scheme settings page (one attribute per Nushell shape)   | —                                                               | `NushellColorSettingsPage.kt`, `colorSchemes/Nushell*.xml`                       |
 
 
@@ -35,7 +34,7 @@ lexing inside the plugin. There are exactly four ways the plugin learns about th
 a `.nu` file, and **all four are pinned to upstream Nushell**:
 
 1. **`nu_parser::lex`** is the IntelliJ lexer. The actual lexing happens in a separate
-   sidecar Rust process — see [`rust/nu-intellij-lex/`](../../rust/nu-intellij-lex/) — that
+   sidecar Rust process — see [`rust/nu-lex/`](../../rust/nu-lex/) — that
    depends on `nu-parser` from `crates.io` and exposes its `lex()` function over a
    length-prefixed stdin/stdout protocol. [`NushellNativeLexer`](src/main/kotlin/dgroomes/nushell_intellij_plugin/NushellNativeLexer.kt)
    on the Kotlin side spawns one helper process per IDE session, sends each request as
@@ -62,7 +61,7 @@ tools, and Gradle never invokes `cargo`. Per the project-wide convention, polygl
 orchestration belongs in Nushell, not in any individual language's build tool.
 
 What this plugin's Gradle build *does* do: before packaging, it asserts that the prebuilt
-sidecar binary exists at `../../rust/nu-intellij-lex/target/release/nu-intellij-lex`. If
+sidecar binary exists at `../../rust/nu-lex/target/release/nu-lex`. If
 not, it stops with a descriptive error message pointing the user at the `cargo build` step
 they missed.
 
@@ -73,8 +72,8 @@ they missed.
   isn't shipped in IntelliJ Community.
 - Build target: 2026.1+.
 - The `nu` executable on your `PATH` (used at runtime for `--ide-ast` / `--lsp`).
-- The sidecar binary built and present at `rust/nu-intellij-lex/target/release/nu-intellij-lex`
-  (see [the sidecar README](../../rust/nu-intellij-lex/README.md) for the one-line build
+- The sidecar binary built and present at `rust/nu-lex/target/release/nu-lex`
+  (see [the sidecar README](../../rust/nu-lex/README.md) for the one-line build
   command).
 
 
