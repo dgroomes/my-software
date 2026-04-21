@@ -1,6 +1,6 @@
 [versions]
 assertj = "3.26.3" # AssertJ releases: https://github.com/assertj/assertj-core/tags
-intellij-platform-gradle-plugin = "2.0.1" # IntelliJ Platform Gradle Plugin releases: https://github.com/JetBrains/intellij-platform-gradle-plugin/releases
+intellij-platform-gradle-plugin = "2.2.1" # IntelliJ Platform Gradle Plugin releases: https://github.com/JetBrains/intellij-platform-gradle-plugin/releases
 jackson = "2.17.2" # Jackson releases: https://github.com/FasterXML/jackson/wiki/Jackson-Releases
 javaparser = "3.26.2" # JavaParser releases: https://github.com/javaparser/javaparser/releases
 jetbrains-markdown = "0.7.3" # JetBrains Maven releases: https://central.sonatype.com/artifact/org.jetbrains/markdown?smo=true
