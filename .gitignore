@@ -15,3 +15,5 @@ attachments/
 
 # I don't know why Claude Code insists on writing this.
 **/.claude/settings.local.json
+
+rust/nu-lex/target/

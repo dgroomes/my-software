@@ -19,3 +19,6 @@ command=/opt/homebrew/bin/nu
 font-feature=-calt
 font-feature=-liga
 font-feature=-dlig
+
+# Let us scroll back really far (100MB)
+scrollback-limit = 100000000
