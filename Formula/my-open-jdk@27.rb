@@ -7,7 +7,7 @@ class MyOpenJdkAT27 < Formula
 
   version "0.0.0"
 
-  keg_only :versioned_formula
+  keg_only "My external tooling is responsible for locating any and all versions of installed 'my-open-jdk' formula. Linking is not desired."
 
   sha256 "0ef61c5fc056df4e25bd37b234a737efbff2cc6838b92ff8a0ceb5751fedb0fc"
 
