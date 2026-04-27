@@ -3,13 +3,13 @@ class MyOpenJdkAT21 < Formula
 
   homepage "https://github.com/dgroomes/my-software"
 
-  url "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.3%2B9/OpenJDK21U-jdk_aarch64_mac_hotspot_21.0.3_9.tar.gz"
+  url "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.9%2B10/OpenJDK21U-jdk_aarch64_mac_hotspot_21.0.9_10.tar.gz"
 
-  version "0.0.0"
+  version "0.0.1"
 
-  keg_only :versioned_formula
+  keg_only "Linking is not desired. Ideally this should be :versioned_formula but see https://github.com/orgs/Homebrew/discussions/6741"
 
-  sha256 "b6be6a9568be83695ec6b7cb977f4902f7be47d74494c290bc2a5c3c951e254f"
+  sha256 "55a40abeb0e174fdc70f769b34b50b70c3967e0b12a643e6a3e23f9a582aac16"
 
   def install
     libexec.install "Contents"

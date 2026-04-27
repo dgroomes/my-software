@@ -5,9 +5,9 @@ class MyOpenJdkAT25 < Formula
 
   url "https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25%2B36/OpenJDK25U-jdk_aarch64_mac_hotspot_25_36.tar.gz"
 
-  version "0.0.0"
+  version "0.0.1"
 
-  keg_only :versioned_formula
+  keg_only "Linking is not desired. Ideally this should be :versioned_formula but see https://github.com/orgs/Homebrew/discussions/6741"
 
   sha256 "6630ea0f19db61843a8fa84a84b2c71cd120c4155bb5a0e42a74593b0d70fee4"
 
