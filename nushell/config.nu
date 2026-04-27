@@ -269,9 +269,8 @@ $env.LS_COLORS = "*~=0;38;2;122;112;112:bd=0;38;2;102;217;239;48;2;51;51;51:ca=0
 $env.GRADLE_OPTS = "--enable-native-access=ALL-UNNAMED"
 
 do --env {
-    # TODO Consider externalizing these configs. But maybe not.
     let default_java = 25
-    let default_node = "23"
+    let default_node = "24"
     let default_postgres = "17"
     try { activate-my-open-jdk $default_java } catch { print "(warn) A default OpenJDK was not activated." }
     try { activate-my-node $default_node } catch { print "(warn) A default Node.js was not activated." }
