@@ -1,0 +1,20 @@
+[package]
+name = "nu-lex"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+# A tiny long-lived helper process that wraps Nushell's official `nu_parser::lex` and exposes
+# it to client processes via a length-prefixed binary stdio protocol over stdin/stdout.
+# The actual lexing is delegated to the upstream `nu-parser` crate, pinned to the version of
+# `nu` we want to track.
+
+[dependencies]
+nu-parser = "=0.111.0"
+
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+strip = true
+panic = "abort"
