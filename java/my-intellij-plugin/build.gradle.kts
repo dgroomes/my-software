@@ -16,8 +16,7 @@ dependencies {
     compileOnly(libs.slf4j.api)
 
     intellijPlatform {
-        intellijIdeaUltimate("2024.2")
-        instrumentationTools()
+        intellijIdeaUltimate("2026.1")
     }
 }
 
@@ -57,7 +56,10 @@ kotlin {
                 // runtime.
                 //
                 // See https://plugins.jetbrains.com/docs/intellij/using-kotlin.html#kotlin-standard-library
-                languageVersion = "1.9"
+                // But... for some reason the the "Bundled stdlib versions" table shows that 2026.1 bundles Kotlin
+                // 2.3.20 but then the Intellij Platform Gradle plugin warns that 2.3 is experimental. Seems like a
+                // contradiction. Let's go down to 2.2.
+                languageVersion = "2.2"
             }
         }
     }
