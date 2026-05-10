@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.intellij.platform.gradle.plugin)
+    id("org.jetbrains.intellij.platform")
     kotlin("jvm")
 }
 
@@ -12,8 +12,11 @@ repositories {
 }
 
 dependencies {
+    val constraints = platform("my:dependency-constraints")
+    compileOnly(constraints)
+
     // SLF4J is already present in the Intellij Platform at runtime, so we only need it at compile time
-    compileOnly(libs.slf4j.api)
+    compileOnly("org.slf4j:slf4j-api")
 
     intellijPlatform {
         intellijIdeaUltimate("2026.1")

@@ -42,12 +42,16 @@ repositories {
 }
 
 dependencies {
-    implementation(libs.jackson.databind)
-    implementation(libs.jetbrains.markdown)
+    val constraints = platform("my:dependency-constraints")
 
-    runtimeOnly(libs.jackson.kotlin)
 
-    testImplementation(platform(libs.junit.bom))
+    implementation(constraints)
+    implementation("com.fasterxml.jackson.core:jackson-databind")
+    implementation("org.jetbrains:markdown")
+
+    runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
+
+    testImplementation(constraints)
     testImplementation("org.junit.jupiter:junit-jupiter")
 
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")

@@ -22,8 +22,10 @@ repositories {
 }
 
 dependencies {
-    testImplementation(libs.assertj)
-    testImplementation(platform(libs.junit.bom))
+    val constraints = platform("my:dependency-constraints")
+
+    testImplementation(constraints)
+    testImplementation("org.assertj:assertj-core")
     testImplementation("org.junit.jupiter:junit-jupiter")
 
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")

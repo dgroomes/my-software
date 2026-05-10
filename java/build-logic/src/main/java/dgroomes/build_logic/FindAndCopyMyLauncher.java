@@ -1,4 +1,4 @@
-package dgroomes.build_src;
+package dgroomes.build_logic;
 
 import org.gradle.api.DefaultTask;
 import org.gradle.api.tasks.OutputDirectory;

@@ -17,8 +17,12 @@ repositories {
 }
 
 dependencies {
-    implementation(libs.mcp.kotlin.sdk)
-    runtimeOnly(libs.slf4j.simple)
+    val constraints = platform("my:dependency-constraints")
+
+    implementation(constraints)
+    implementation("io.modelcontextprotocol:kotlin-sdk")
+
+    runtimeOnly("org.slf4j:slf4j-simple")
 }
 
 application {

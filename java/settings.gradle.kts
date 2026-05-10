@@ -7,6 +7,9 @@ pluginManagement {
 
 rootProject.name = "java"
 
+includeBuild("dependency-constraints")
+includeBuild("build-logic")
+
 include(
     ":deduplicator",
     ":markdown-code-fence-reader",

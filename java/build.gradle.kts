@@ -8,8 +8,8 @@ plugins {
     //     The Kotlin Gradle plugin was loaded multiple times in different subprojects, which is not supported and may break the build.
     //
     // The effect of declaring a plugin with 'apply false' is that we get it on the classpath of the Gradle build.
-    // Alternatively, you could include the plugin by way of the "dependencies { ... }" block in buildSrc. I've tried
-    // every which way. They are all confusing to reason about.
+    // Alternatively, you could include a plugin by way of the "dependencies { ... }" block in buildSrc/build-logic.
+    // I've tried every which way. There is no best way.
     //
     // Also reference:
     //   - Gradle's support for Kotlin: https://docs.gradle.org/current/userguide/compatibility.html
@@ -17,4 +17,7 @@ plugins {
     //
     kotlin("jvm") version "2.3.21" apply false
     kotlin("plugin.serialization") version "2.3.21" apply false
+
+    // IntelliJ Platform Gradle Plugin releases: https://github.com/JetBrains/intellij-platform-gradle-plugin/releases
+    id("org.jetbrains.intellij.platform") version "2.14.0" apply false
 }

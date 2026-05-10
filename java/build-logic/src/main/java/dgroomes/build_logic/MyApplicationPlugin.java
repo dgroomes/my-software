@@ -1,4 +1,4 @@
-package dgroomes.build_src;
+package dgroomes.build_logic;
 
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
