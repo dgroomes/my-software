@@ -53,3 +53,4 @@ General clean-ups, TODOs and things I wish to implement for this project:
 - [ ] Implement the bootstrapper. Refer to the related SDR.
 - [x] DONE pre-compiled script plugins
 - [ ] Rename packages to 'my' instead of 'dgroomes'. The 'my' convention is broad. I like how concise the word is (anything to save tokens while staying semantic).
+- [ ] Clean up the Nushell IntelliJ plugin. The less code we can get, feasibly, the better. I still don't fully get why we can't rely on just `--ide-ast` and have to call into Nushell's lexer machinery directly. I know invoking `--ide-ast` is expensive and that it is not even possible to OS exec on the EDT (main thread?) but we should be able to cache it right? Alternatively, I experimented with maintaining a shallow fork of Nushell and just enriching the Nushell LSP server with everything needed for a complete IntelliJ language plugin. I started running out of credits, otherwise I would pursue that right away.

@@ -18,7 +18,7 @@ dependencies {
     compileOnly("org.slf4j:slf4j-api")
 
     intellijPlatform {
-        intellijIdeaUltimate("2026.1")
+        intellijIdeaUltimate("2026.1.1")
     }
 }
 

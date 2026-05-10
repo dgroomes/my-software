@@ -17,6 +17,7 @@ Here is an incomplete index:
 - [jetbrains/](jetbrains/): My configuration for JetBrains IDEs (e.g. Intellij and Android Studio).
 - [karabiner/](karabiner/): My configuration for [Karabiner-Elements](https://github.com/pqrs-org/Karabiner-Elements).
 - [nushell/](nushell/): Nushell code and config that supports my personal workflows.
+- [rust/](rust/): Rust code that supports my personal workflows.
 - [sdr/](sdr/): This directory contains my *Software Decision Records* (SDRs).
 - [vscode/](vscode/): My Visual Studio Code user configuration.
 - [starship/](starship/)
