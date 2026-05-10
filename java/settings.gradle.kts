@@ -7,8 +7,8 @@ pluginManagement {
 
 rootProject.name = "java"
 
-includeBuild("dependency-constraints")
-includeBuild("build-logic")
+includeBuild("gradle/dependency-constraints")
+includeBuild("gradle/build-logic")
 
 include(
     ":deduplicator",

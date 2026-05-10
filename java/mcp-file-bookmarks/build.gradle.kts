@@ -1,25 +1,10 @@
 plugins {
-    kotlin("jvm")
-    kotlin("plugin.serialization")
-    id("dgroomes.my-application")
-}
-
-sourceSets {
-    main {
-        java.srcDirs("src")
-        kotlin.srcDirs("src")
-        resources.srcDirs("resources")
-    }
-}
-
-repositories {
-    mavenCentral()
+    id("my-base")
+    id("my-application")
+    id("my-kotlin-serialization")
 }
 
 dependencies {
-    val constraints = platform("my:dependency-constraints")
-
-    implementation(constraints)
     implementation("io.modelcontextprotocol:kotlin-sdk")
 
     runtimeOnly("org.slf4j:slf4j-simple")

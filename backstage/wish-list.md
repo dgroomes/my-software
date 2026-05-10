@@ -51,3 +51,5 @@ General clean-ups, TODOs and things I wish to implement for this project:
 - [ ] Rewrite Git aliases as just shell aliases (Nushell). I don't see super see the point of git aliases plus I already re-wrap them in shorter shell aliases anyway ('gl' for 'git lg' for 'git log ...')
 - [ ] Actually incorporate the Claude *Skills*. The one I added is LLM inferred (though pretty good) and based on a wide upgrade of my junit-playground.
 - [ ] Implement the bootstrapper. Refer to the related SDR.
+- [x] DONE pre-compiled script plugins
+- [ ] Rename packages to 'my' instead of 'dgroomes'. The 'my' convention is broad. I like how concise the word is (anything to save tokens while staying semantic).
