@@ -1,0 +1,52 @@
+<idea-plugin>
+
+    <id>dgroomes.nushellPlugin</id>
+    <name>My Nushell Plugin</name>
+    <vendor url="https://github.com/dgroomes">dgroomes</vendor>
+
+    <description><![CDATA[
+        First-class IntelliJ language support for Nushell, delegating every semantic decision
+        back to Nushell's own tooling:
+        <ul>
+          <li>Lexer: the official <code>nu_parser::lex</code> running in a sidecar process.</li>
+          <li>Semantic syntax highlighting: <code>nu --ide-ast</code>.</li>
+          <li>Structure view: <code>nu --ide-ast</code>.</li>
+          <li>Hover, completion, go-to-definition, find usages, diagnostics: <code>nu --lsp</code>.</li>
+        </ul>
+        Requires the <code>nu</code> executable on your PATH and a commercial JetBrains IDE
+        (LSP support is Ultimate-only).
+        <br><br>
+        See the project on GitHub:
+        <a href="https://github.com/dgroomes/my-software">my-software</a>
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.ultimate</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <fileType name="Nushell"
+                  language="Nushell"
+                  extensions="nu"
+                  implementationClass="dgroomes.nushell_intellij_plugin.NushellFileType"
+                  fieldName="INSTANCE"/>
+
+        <lang.parserDefinition language="Nushell" implementationClass="dgroomes.nushell_intellij_plugin.NushellParserDefinition"/>
+        <lang.syntaxHighlighterFactory language="Nushell" implementationClass="dgroomes.nushell_intellij_plugin.NushellSyntaxHighlighterFactory"/>
+        <lang.commenter language="Nushell" implementationClass="dgroomes.nushell_intellij_plugin.NushellCommenter"/>
+        <lang.braceMatcher language="Nushell" implementationClass="dgroomes.nushell_intellij_plugin.NushellBraceMatcher"/>
+        <lang.psiStructureViewFactory language="Nushell" implementationClass="dgroomes.nushell_intellij_plugin.NushellStructureViewFactory"/>
+        <editorNotificationProvider implementation="dgroomes.nushell_intellij_plugin.NushellSidecarNotificationProvider"/>
+        <notificationGroup id="Nushell sidecar" displayType="STICKY_BALLOON"/>
+
+        <colorSettingsPage implementation="dgroomes.nushell_intellij_plugin.NushellColorSettingsPage"/>
+        <additionalTextAttributes scheme="Default" file="colorSchemes/NushellDefault.xml"/>
+        <additionalTextAttributes scheme="Light" file="colorSchemes/NushellDefault.xml"/>
+
+        <externalAnnotator language="Nushell" implementationClass="dgroomes.nushell_intellij_plugin.NushellSemanticAnnotator"/>
+    </extensions>
+
+    <extensions defaultExtensionNs="com.intellij.platform">
+        <lsp.serverSupportProvider implementation="dgroomes.nushell_intellij_plugin.NushellLspServerSupportProvider"/>
+    </extensions>
+
+</idea-plugin>
