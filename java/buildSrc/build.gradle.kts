@@ -15,7 +15,7 @@ repositories {
     mavenCentral()
 }
 
-val jacksonVersion = "2.17.2" // Jackson releases: https://github.com/FasterXML/jackson/wiki/Jackson-Releases
+val jacksonVersion = "2.21.3" // Jackson releases: https://github.com/FasterXML/jackson/wiki/Jackson-Releases
 
 dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")

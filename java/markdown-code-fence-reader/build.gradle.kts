@@ -47,10 +47,10 @@ dependencies {
 
     runtimeOnly(libs.jackson.kotlin)
 
-    testImplementation(libs.assertj)
-    testImplementation(libs.junit.jupiter.api)
+    testImplementation(platform(libs.junit.bom))
+    testImplementation("org.junit.jupiter:junit-jupiter")
 
-    testRuntimeOnly(libs.junit.jupiter.engine)
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 application {
