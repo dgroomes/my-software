@@ -38,6 +38,12 @@ const config_registry = {
         install_success_msg: "Library file installed."
         upstream_success_msg: "Library file upstreamed."
     }
+    mac_os: {
+        filename: "scripts/mac-os.nu"
+        backup_success_msg: "macOS library file backed up."
+        install_success_msg: "macOS library file installed."
+        upstream_success_msg: "macOS library file upstreamed."
+    }
     my_git_lib: {
         filename: "scripts/my-git-lib.nu"
         backup_success_msg: "'my-git' library file backed up."
