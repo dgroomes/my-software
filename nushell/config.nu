@@ -48,6 +48,7 @@ $env.HOMEBREW_NO_ANALYTICS = 1
 $env.DOCKER_SCAN_SUGGEST = false
 
 use bash-completer.nu *
+use dictation.nu *
 use file-set.nu *
 use lib.nu *
 use mac-os.nu *

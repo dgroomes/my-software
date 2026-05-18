@@ -26,6 +26,12 @@ const config_registry = {
         install_success_msg: "Bash completer library file installed."
         upstream_success_msg: "Bash completer library file upstreamed."
     }
+    dictation: {
+        filename: "scripts/dictation.nu"
+        backup_success_msg: "'dictation' library file backed up."
+        install_success_msg: "'dictation' library file installed."
+        upstream_success_msg: "'dictation' library file upstreamed."
+    }
     file_set: {
         filename: "scripts/file-set.nu"
         backup_success_msg: "'file-set' library file backed up."
