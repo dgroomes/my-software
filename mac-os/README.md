@@ -125,6 +125,10 @@ to a working Nushell environment, but it's great enough.
      * ```nushell
        plugin add nu_plugin_gstat
        ```
+     * Install `nutest` from source and patch a fix for a "spaces in path" problem.
+     * ```nushell
+       do install-nutest
+       ```
 12. Install [Atuin](https://github.com/atuinsh/atuin)
      * Install Atuin and copy over my config with the following commands.
      * ```shell
