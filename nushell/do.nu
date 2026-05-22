@@ -187,43 +187,6 @@ export def upstream [name: string@config_names] {
     print $config.upstream_success_msg
 }
 
-def test_files [] {
-    glob ([$DIR tests *.nu] | path join) | sort
-}
-
-def test_names [] {
-    test_files | each { |it|
-        $it
-        | path basename
-        | str replace --regex '\.nu$' ''
-    }
-}
-
-# Run standalone Nushell tests from the 'tests/' directory.
-export def test [name?: string@test_names] {
-    cd $DIR
-
-    let test_files = if ($name | is-empty) {
-        test_files
-    } else {
-        let test_file = [$DIR tests $"($name).nu"] | path join
-        if not ($test_file | path exists) {
-            err $"The test file '($test_file)' does not exist."
-        }
-        [$test_file]
-    }
-
-    if ($test_files | is-empty) {
-        print "No Nushell test files found."
-        return
-    }
-
-    for test_file in $test_files {
-        print $"Running ($test_file | path basename)"
-        ^$nu.current-exe $test_file
-    }
-}
-
 # There are many custom completion scripts and other neat scripts in the official "nu_scripts" repository: https://github.com/nushell/nu_scripts/tree/4eab7ea772f0a288c99a79947dd332efc1884315
 # We need to generate a script that hardcodes the file paths to a local clone of that repository. This script will source
 # the scripts from the local clone. The script is named "nu-scripts-sourcer.nu".

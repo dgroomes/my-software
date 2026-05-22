@@ -26,6 +26,15 @@ Miscellaneous notes:
 - ```nushell
   do backup config; do install config
   ```
+- ```nushell
+  run-tests
+  ```
+- ```nushell
+  run-tests --display table
+  ```
+- ```nushell
+  run-tests --match-tests 'explicit remote wins' --display table
+  ```
 
 We want to version control quite a bit. There is a tendency of tools like Nushell itself, Atuin and Starship to generate
 a config file that then becomes your own to manage. That's perfectly fine. And the way I manage it is to version control
