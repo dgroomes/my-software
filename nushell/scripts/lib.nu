@@ -629,9 +629,10 @@ export def word-counts-of-files [] {
 # Would create the file `2025-02-13_10-31-23.json` with the contents of whatever was piped into it
 #
 export def stash [extension]: [string -> nothing] {
+    let _in = $in
     let date = date now | format date "%Y-%m-%d_%H-%M-%S"
     let filename = $date + "." + $extension
-    $in | save $filename
+    $_in | save $filename
 }
 
 # Prompt Google's Gemini LLM via API
