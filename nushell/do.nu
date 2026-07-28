@@ -1,6 +1,6 @@
 # I need to source library code by path because this is a bootstrapping problem. On new installs, nothing will be
 # installed into "$nu.default-config-dir/scripts" yet.
-use scripts/zdu.nu err
+use scripts/zdu.nu [err nu-config-backup nu-config-install nu-config-upstream]
 
 const DIR = path self | path dirname
 
@@ -131,60 +131,31 @@ export def backup [name: string@config_names] {
     cd $DIR
 
     let config = $config_registry | get $name
-    let installed_file_path = [$nu.default-config-dir $config.filename] | path join
-    if (not ($installed_file_path | path exists)) { return }
-
-    let backup_name = bak-name-now $installed_file_path
-    mv $installed_file_path $backup_name
-    print $config.backup_success_msg
+    nu-config-backup $config.filename $config.backup_success_msg
 }
 
-# Install a configuration file.
 export def install [name: string@config_names, nu_scripts_dir?: string] {
     cd $DIR
 
     let config = $config_registry | get $name
-    let installed_file_path = [$nu.default-config-dir $config.filename] | path join
-    if ($installed_file_path | path exists) {
-        err $"A configuration file is already installed at '($installed_file_path)'. You must back it up first."
-    }
 
     if ($name == "nu_scripts_sourcer") {
+        let installed_file_path = [$nu.default-config-dir $config.filename] | path join
+        if ($installed_file_path | path exists) {
+            err $"A configuration file is already installed at '($installed_file_path)'. You must back it up first."
+        }
         install-nu-scripts-sourcer $installed_file_path $nu_scripts_dir
         return
     }
 
-    let vcs_file_path = [(pwd) $config.filename] | path join
-    if (not ($vcs_file_path | path exists)) {
-        err $"The configuration file '($vcs_file_path)' does not exist."
-    }
-
-    # Create the containing directory if it doesn't exist. For example, accommodate the 'setup/' directory.
-    mkdir ($installed_file_path | path dirname)
-    cp $vcs_file_path $installed_file_path
-    print $config.install_success_msg
+    nu-config-install $config.filename $config.install_success_msg
 }
 
-# Create a backup-style filename using a the current date and time. For example, when you want to backup a file
-# like 'my-file.txt', use this command to create the name 'my-file.2024-01-02-00-01-02.bak'.
-def bak-name-now [filename] {
-    [$filename . (date now | format date "%Y-%m-%d-%H-%M-%S") .bak] | str join
-}
-
-# Upstream a configuration file from its installed location into the version controlled location.
 export def upstream [name: string@config_names] {
     cd $DIR
 
     let config = $config_registry | get $name
-    let installed_file_path = [$nu.default-config-dir $config.filename] | path join
-    let vcs_file_path = [(pwd) $config.filename] | path join
-
-    if not ($installed_file_path | path exists) {
-        err $"Config file ($installed_file_path) does not exist"
-    }
-
-    cp --force $installed_file_path $vcs_file_path
-    print $config.upstream_success_msg
+    nu-config-upstream $config.filename $config.upstream_success_msg
 }
 
 # There are many custom completion scripts and other neat scripts in the official "nu_scripts" repository: https://github.com/nushell/nu_scripts/tree/4eab7ea772f0a288c99a79947dd332efc1884315

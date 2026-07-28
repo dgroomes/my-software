@@ -135,3 +135,63 @@ export def epoch-into-datetime []: [string -> datetime, int -> datetime, float -
     # formatted date/time string than one in UTC.
     $ts_secs | into datetime -f '%s' | date to-timezone LOCAL
 }
+
+
+# Create a backup-style filename using the current date and time. For example, when you want to backup a file
+# like 'my-file.txt', use this command to create the name 'my-file.2024-01-02-00-01-02.bak'.
+export def bak-name-now [filename] {
+    [$filename . (date now | format date "%Y-%m-%d-%H-%M-%S") .bak] | str join
+}
+
+# Backup an installed Nushell script/config file by renaming it aside with a timestamped '.bak' name.
+#
+export def nu-config-backup [
+    filename: string # The path of the file to back up. Relative to '$nu.default-config-dir'. E.g. "scripts/lib.nu"
+    backup_success_msg: string # A success message to print when the backup succeeds
+] {
+    let installed_file_path = [$nu.default-config-dir $filename] | path join
+
+    # If there's no file there, there's nothing to backup
+    if (not ($installed_file_path | path exists)) { return }
+
+    let backup_name = bak-name-now $installed_file_path
+    mv $installed_file_path $backup_name
+    print $backup_success_msg
+}
+
+# Install a Nushell script/config file
+#
+export def nu-config-install [
+    filename: string # The path of the file to install. This is also the installation path relative to '$nu.default-config-dir'. E.g. "scripts/lib.nu"
+    install_success_msg: string
+] {
+    let installed_file_path = [$nu.default-config-dir $filename] | path join
+    if ($installed_file_path | path exists) {
+        err $"A configuration file is already installed at '($installed_file_path)'. You must back it up first."
+    }
+
+    if (not ($filename | path exists)) {
+        err $"The configuration file '($filename)' does not exist."
+    }
+
+    # Create the containing directory if it doesn't exist. For example, accommodate the 'scripts/' directory.
+    mkdir ($installed_file_path | path dirname)
+    cp $filename $installed_file_path
+    print $install_success_msg
+}
+
+# Upstream a configuration file from its installed location into a local location (like a local Git repo)
+#
+export def nu-config-upstream [
+    filename: string # The path of the file to upstream. Relative to '$nu.default-config-dir'. E.g. "scripts/lib.nu". This is also the local path that the file will be upstreamed to.
+    upstream_success_msg: string
+] {
+    let installed_file_path = [$nu.default-config-dir $filename] | path join
+
+    if not ($installed_file_path | path exists) {
+        err $"Config file ($installed_file_path) does not exist"
+    }
+
+    cp --force $installed_file_path $filename
+    print $upstream_success_msg
+}
