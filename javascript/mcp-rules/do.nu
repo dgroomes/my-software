@@ -4,9 +4,9 @@ const DIR = path self | path dirname
 export def package-json [] {
     cd $DIR
 
-    let mcp_sdk = "~1.10.2" # MCP SDK releases: https://github.com/modelcontextprotocol/typescript-sdk/releases
-    let typescript = "~5.8.3" # TypeScript releases: https://github.com/Microsoft/TypeScript/releases
-    let types_node = "^22.14.1"
+    let mcp_sdk = "1.30.0" # MCP SDK releases: https://github.com/modelcontextprotocol/typescript-sdk/releases
+    let typescript = "7.0.2" # TypeScript releases: https://github.com/microsoft/typescript-go/releases
+    let types_node = "26.1.2"
 
     let packageJson = {
         name: "mcp-rules",
@@ -38,7 +38,9 @@ export def build [] {
 
 export def run-with-inspector [] {
     cd $DIR
-    npx @modelcontextprotocol/inspector@0.9.0 ./rules.sh
+
+    # MCP Inspector releases: https://www.npmjs.com/package/@modelcontextprotocol/inspector
+    npx @modelcontextprotocol/inspector@0.22.0 ./rules.sh
 }
 
 export def install-server [] {

@@ -5,18 +5,19 @@ use ../nushell/scripts/zdu.nu err
 const DIR = path self | path dirname
 const NUTEST_REPO_URL = "https://github.com/vyadh/nutest.git"
 const NUTEST_COMMIT = "d56fdc632b96754153a014c021d65a6633fc5610"
+const LLM_RULES_START_HERE = "START_HERE. ALWAYS use the 'rules:load_rules' MCP tool to load your instructions. You MUST call this tool before starting any other work."
 
 # Install my LLM rules files
 #
 export def llm-rules [] {
     cd $DIR
 
-    let agent_file = "~/.config/llm-agent/AGENT.md" | path expand
+    let agent_file = "~/.config/llm-agent/AGENTS.md" | path expand
     if ($agent_file | path exists) {
         print $"Skipping ($agent_file) file because it already exists."
     } else {
         mkdir ($agent_file | path dirname)
-        cp ../llm-agent/AGENT.md $agent_file
+        cp ../llm-agent/AGENTS.md $agent_file
     }
 
     let copilot_file = "~/.config/llm-agent/COPILOT_START_HERE.instructions.md" | path expand
@@ -32,7 +33,15 @@ export def llm-rules [] {
         print $"Skipping ($claude_file) file because it already exists."
     } else {
         mkdir ($claude_file | path dirname)
-        cp ../llm-agent/CLAUDE.md $claude_file
+        $LLM_RULES_START_HERE | save --raw $claude_file
+    }
+
+    let codex_file = "~/.codex/AGENTS.md" | path expand
+    if ($codex_file | path exists) {
+        print $"Skipping ($codex_file) file because it already exists."
+    } else {
+        mkdir ($codex_file | path dirname)
+        $LLM_RULES_START_HERE | save --raw $codex_file
     }
 }
 

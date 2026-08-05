@@ -5,10 +5,10 @@
   "type": "module",
   "main": "dist/index.js",
   "dependencies": {
-    "@modelcontextprotocol/sdk": "~1.10.2"
+    "@modelcontextprotocol/sdk": "1.30.0"
   },
   "devDependencies": {
-    "typescript": "~5.8.3",
-    "@types/node": "^22.14.1"
+    "typescript": "7.0.2",
+    "@types/node": "26.1.2"
   }
 }

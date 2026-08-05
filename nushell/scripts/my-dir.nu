@@ -5,7 +5,7 @@ use zdu.nu *
 # I use the '.my' directory to build up specific workflows and context for my own development work. This command
 # creates  these conventional files:
 #   - .my/do.nu
-#   - .my/AGENT.md
+#   - .my/AGENTS.md
 #   - .my/PROMPT.md (this is used for bundling up context for a one-shot LLM prompt; not for agents)
 #
 # You are expected to write as much miscellaneous code in the 'do.nu' as you need. The initialized versions of these
@@ -31,7 +31,7 @@ These instructions are for you, an LLM-powered agentic collaborator.
 - Use the below instructions for further guidance on the current task.
 
 # Current task: n/a
-'# | save AGENT.md
+'# | save AGENTS.md
 }
 
 def my-prompt-file [] {

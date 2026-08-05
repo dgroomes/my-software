@@ -6,7 +6,7 @@ import os from "os";
 
 interface AgentFile {
   path: string;
-  context: "user" | "project" | "user-project";
+  context: "user" | "user-project";
 }
 
 /**
@@ -20,10 +20,9 @@ function expandTilde(filePath: string): string {
 }
 
 /**
- * Find all AGENT.md files in the three conventional locations:
- * 1. User rules - ${XDG_CONFIG_HOME}/llm-agent/AGENT.md
- * 2. Project rules - ./AGENT.md (searching upwards from current directory)
- * 3. User-project rules - ./.my/AGENT.md
+ * Find all AGENTS.md files in the two conventional locations:
+ * 1. User rules - ${XDG_CONFIG_HOME}/llm-agent/AGENTS.md
+ * 2. User-project rules - ./.my/AGENTS.md
  */
 async function findAgentFiles(): Promise<AgentFile[]> {
   const files: AgentFile[] = [];
@@ -41,7 +40,7 @@ async function findAgentFiles(): Promise<AgentFile[]> {
     xdgConfigHome = defaultConfigHome;
   }
 
-  const userRulesPath = path.join(xdgConfigHome, "llm-agent", "AGENT.md");
+  const userRulesPath = path.join(xdgConfigHome, "llm-agent", "AGENTS.md");
   try {
     await fs.access(userRulesPath);
     files.push({ path: userRulesPath, context: "user" });
@@ -50,28 +49,8 @@ async function findAgentFiles(): Promise<AgentFile[]> {
     console.error(`No user rules found at: ${userRulesPath}`);
   }
 
-  // 2. Project rules - search upwards from current directory
-  let currentDir = process.cwd();
-  let projectRulesFound = false;
-  while (!projectRulesFound) {
-    const projectRulesPath = path.join(currentDir, "AGENT.md");
-    try {
-      await fs.access(projectRulesPath);
-      files.push({ path: projectRulesPath, context: "project" });
-      console.error(`Found project rules at: ${projectRulesPath}`);
-      projectRulesFound = true;
-    } catch {
-      const parentDir = path.dirname(currentDir);
-      if (parentDir === currentDir) {
-        console.error("No project rules found searching upwards from current directory");
-        break;
-      }
-      currentDir = parentDir;
-    }
-  }
-
-  // 3. User-project rules
-  const userProjectRulesPath = path.join(process.cwd(), ".my", "AGENT.md");
+  // 2. User-project rules
+  const userProjectRulesPath = path.join(process.cwd(), ".my", "AGENTS.md");
   try {
     await fs.access(userProjectRulesPath);
     files.push({ path: userProjectRulesPath, context: "user-project" });
@@ -90,14 +69,13 @@ async function loadRules() {
     const agentFiles = await findAgentFiles();
 
     if (agentFiles.length === 0) {
-      console.error("No AGENT.md files found in any location");
+      console.error("No AGENTS.md files found in any location");
       return {
         content: [{
           type: "text" as const,
-          text: "No AGENT.md files found. Searched locations:\n" +
-                "1. User rules: ${XDG_CONFIG_HOME}/llm-agent/AGENT.md\n" +
-                "2. Project rules: ./AGENT.md (and parent directories)\n" +
-                "3. User-project rules: ./.my/AGENT.md"
+          text: "No AGENTS.md files found. Searched locations:\n" +
+                "1. User rules: ${XDG_CONFIG_HOME}/llm-agent/AGENTS.md\n" +
+                "2. User-project rules: ./.my/AGENTS.md"
         }]
       };
     }
@@ -152,7 +130,7 @@ async function main() {
 
   server.tool(
     "load_rules",
-    "START HERE. Load agent rules from user, project, and user-project locations. ONLY skip this if user explicitly says '!rules off'. You MUST call this tool before starting any other work.",
+    "START HERE. Load agent rules from user and user-project locations. ONLY skip this if user explicitly says '!rules off'. You MUST call this tool before starting any other work.",
     {},
     loadRules
   );

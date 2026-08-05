@@ -5,62 +5,126 @@ An MCP server for bootstrapping LLM agents with user- and project-specific rules
 
 ## Overview
 
-The Rules MCP server implements a fundamental step in LLM workflows: loading context-specific instructions before an agent begins its work. Just as a README file commands readers to "read me first," this server ensures agents load their rules first.
+The Rules MCP server implements a fundamental step in LLM workflows: loading context-specific instructions before an agent begins its work. Just as a README file commands readers to "read me first," this server ensures agents load their rules first. (I think "instructions" makes more sense than "rules", but for brevity and to be consistent with common convention I'll stick to "rules").
 
 The server exposes a single tool:
-* `load_rules()` - Locates and returns agent rules. Searches the conventional _user_, _project_, and _user-project_ locations.
+- `load_rules()` - Locates and returns agent rules. Searches the conventional _user_ and _user-project_ locations.
 
 
 ## The Problem: Competing Conventions
 
-When working with LLM agents, users accumulate effective instructions for the agent about the project's architecture, code style, and more. But, these rules are scattered across different vendor locations:
+When working with LLM agents, users accumulate useful rules for the agent about the project's architecture, code style, and more. But, these rules are scattered across different vendor locations. Confusingly, the tools often cross into the conventions of another vendor (e.g. `CLAUDE.md`):
 
-* Cursor uses `.cursor/rules/{rule_name}.mdc`
-* Copilot uses `.github/copilot-instructions.md`
-* Windsurf uses `.windsurf/rules/{rule_name}.md`
-* Claude Code uses `CLAUDE.md`
-* OpenAI's Codex CLI uses `AGENTS.md`
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th>User Rules</th>
+      <th>Project Rules</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Claude Code</td>
+      <td>
+        <ul>
+          <li><code>~/.claude/CLAUDE.md</code></li>
+          <li><code>~/.claude/rules/*.md</code></li>
+        </ul>
+      </td>
+      <td>
+        <ul>
+          <li><code>CLAUDE.md</code></li>
+          <li><code>.claude/CLAUDE.md</code></li>
+          <li><code>.claude/rules/*.md</code></li>
+          <li><code>CLAUDE.local.md</code></li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>Codex</td>
+      <td>
+        <ul>
+          <li><code>~/.codex/AGENTS.md</code></li>
+        </ul>
+      </td>
+      <td>
+        <ul>
+          <li><code>AGENTS.md</code></li>
+          <li><code>AGENTS.override.md</code></li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>GitHub Copilot</td>
+      <td>
+        <ul>
+          <li><code>~/.copilot/copilot-instructions.md</code></li>
+          <li><code>~/.copilot/instructions/**/*.instructions.md</code></li>
+          <li><code>~/.claude/CLAUDE.md</code> (VS Code)</li>
+        </ul>
+      </td>
+      <td>
+        <ul>
+          <li><code>.github/copilot-instructions.md</code></li>
+          <li><code>.github/instructions/**/*.instructions.md</code></li>
+          <li><code>AGENTS.md</code></li>
+          <li><code>CLAUDE.md</code></li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>Cursor</td>
+      <td>
+        <ul>
+          <li>User rules defined in Cursor Settings</li>
+        </ul>
+      </td>
+      <td>
+        <ul>
+          <li><code>.cursor/rules/*.mdc</code></li>
+          <li><code>AGENTS.md</code></li>
+          <li><code>CLAUDE.md</code></li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 
 How does an agent know which rules to load? Should the agent load all of them?
 
 
-## `AGENT.md`
+## My Solution: Expanded Search and Standardization of AGENTS.md
 
-Emboldened by the "fast software writing and maintenance" power I get from LLMs and the standardization we have with the Model Context Protocol, I'm going to solve this problem for myself by creating my own convention and related tooling: the `AGENT.md` file and the Rules MCP server.
-
-Why the name `AGENT.md`?
-
-* It's short: A single word and short extension.
-* It's familiar: While "agent" means many things broadly, in the context of reading and writing code, we often know it to mean an AI/LLM agent.
-* Precedent: OpenAI's Codex CLI uses `AGENTS.md`, so `AGENT.md` (singular) is a natural variation
+Emboldened by the "fast software writing and maintenance" power I get from LLMs and the standardization we have with the Model Context Protocol, I'm going to solve this problem for myself by creating my own convention and related tooling: standardize on the `AGENTS.md` file and expand its scope to be in both a user location (`~/.config/llm-agent/AGENTS.md`) and user-project locations (`.my/AGENTS.md`).
 
 
 ## The `.my/` Directory
 
 I often create `.my/` directories in my projects to help me work on my current task. I globally git-ignore this directory. I use it for:
 
-* LLM prompts
-* Storing reference files to be used as LLM context
-* Stashing LLM outputs or old code for reference if I need to undo some work
+- Agent plans/prompts for my current task  
+- Project-specific rules
+- Project-specific shell scripts
+- Reference repos (I `git clone ...` in `.my/repos/`)
+- Scratch location for data and experiments 
 
-The Rules server looks in the `.my/` directory for an `AGENT.md` file. This is a form of *user-project* rules because they are user-defined and specific to the current project.
+The Rules server looks in the `.my/` directory for an `AGENTS.md` file. This is a form of *user-project* rules because they are user-defined and specific to the current project.
 
 
 ### Rule File Locations
 
-The Rules server searches for `AGENT.md` files in three contexts:
+The Rules server searches for `AGENTS.md` files in three contexts:
 
-1. **User rules** - `${XDG_CONFIG_HOME}/llm-agent/AGENT.md`
-   * User-specified rules that should apply to all projects
-   * These rules often encode personal workflow/chat preferences like "Always commit after writing code"
-2. **Project rules** - `./AGENT.md` (in current directory and upwards)
-   * Project-specific rules that are agreed upon and shared by the team
-   * Committed to version control
-3. **User-project rules** - `./.my/AGENT.md`
+1. User rules: `${XDG_CONFIG_HOME}/llm-agent/AGENTS.md`
+   - User-specified rules that should apply to all projects
+   - These rules often encode personal workflow/chat preferences like "Always commit after writing code"
+2. User-project rules: `./.my/AGENTS.md`
    - Personal overrides and additions for the current project
    - Git-ignored, not shared with team
 
-I wrestled with using just `~/.AGENT.md` for user rules, but I don't want to clutter the home directory, and the word "agent" in that context is not necessarily obviously related to LLMs. So, I chose `${XDG_CONFIG_HOME}/llm-agent/AGENT.md` to keep it explicitly named and isolated.
+I wrestled with using just `~/.AGENTS.md` for user rules, but I don't want to clutter the home directory, and the word "agent" in that context is not necessarily obviously related to LLMs. So, I chose `${XDG_CONFIG_HOME}/llm-agent/AGENTS.md` to keep it explicitly named and isolated.
 
 
 ## Instructions
@@ -68,27 +132,27 @@ I wrestled with using just `~/.AGENT.md` for user rules, but I don't want to clu
 Follow these instructions to build, test, and run the Rules MCP server:
 
 1. Activate the Nushell `do` module
-   * ```nushell
+   - ```nushell
      do activate
      ```
 2. Generate the `package.json` file (if needed)
-   * ```nushell
+   - ```nushell
      do package-json
      ```
 3. Install dependencies
-   * ```nushell
+   - ```nushell
      do install
      ```
 4. Build the server
-   * ```nushell
+   - ```nushell
      do build
      ```
 5. Start the server with the MCP Inspector
-   * ```nushell
+   - ```nushell
      do run-with-inspector
      ```
 6. Set up the server in your MCP-compatible editor
-   * Add the following to your editor's MCP configuration:
+   - Add the following to your editor's MCP configuration:
      ```json
      {
        "mcp": {
@@ -110,3 +174,7 @@ General clean-ups, TODOs and things I wish to implement for this project:
 - [ ] Consider using an identifying string like `!rules` and supporting skipping rules loading like with a user message "!rules off"
   or listing rules location files with `!rules locations`. Not sure yet.
 - [ ] Consider `.mdc` extension and/or using the standard header metadata for things like the path of the rule file and importance level. Not sure it matters.
+- [x] DONE Consider going to AGENTS.md. I think it would be rude to version control an AGENT.md (singular) file because no one else uses this convention (well, I would only ever do that on a personal repo) 
+- [x] DONE Stop loading "project" rules. While it is a noble goal, in practice, I just really need a solution for common global rules, and project-user rules. And each of the vendor tools are pretty good about loading CLAUDE.md and AGENTS.md and that's what is likely already version controlled in a repo.
+- [ ] Upgrade to MCP inspector 2.0. I tried it but it isn't interacting with the rules MCP server properly. When invoking "load_rules", the UI spins.
+- [ ] Consider calling it "user global" for clarity, to contrast with "user project" (or even name that "user local").

@@ -11,6 +11,8 @@ I'm using my Rules MCP server to auto-load my rules. This takes some bootstrappi
 
 We'll express a "START_HERE and load the rules via the MCP tool" instruction in each of the vendor-specific rules locations. This stinks a bit because we're cluttering the home directory with these files and paying the cost of maintenance, but this will have to do. One day there will likely be standardization.
 
+For Codex, we'll maintain a global `~/.codex/AGENTS.md` file with the instruction.
+
 For Claude, we'll maintain a global `~/.claude/CLAUDE.md` file with the instruction.
 
 For GitHub Copilot in VS Code, it's a bit more complicated. You have to use special front-matter in the markdown file to indicate that the instructions should apply to all files, you have to name the file ending with `.instructions.md`, and there isn't a default global location for rules.
