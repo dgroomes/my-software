@@ -11,7 +11,7 @@ export def package-json [] {
     let packageJson = {
         name: "mcp-rules",
         version: "0.1.0",
-        description: "An MCP server for bootstrapping LLM agents with user- and project-specific rules.",
+        description: "An MCP server for bootstrapping LLM agents with user-global and user-local rules.",
         type: "module",
         main: "dist/index.js",
         dependencies: {
@@ -43,10 +43,16 @@ export def run-with-inspector [] {
     npx @modelcontextprotocol/inspector@0.22.0 ./rules.sh
 }
 
-export def install-server [] {
+export def install-to-claude [] {
     cd $DIR
     let cmd = "rules.sh" | path expand
     claude mcp add --scope user rules $cmd
+}
+
+export def install-to-codex [] {
+    cd $DIR
+    let cmd = "rules.sh" | path expand
+    codex mcp add rules $cmd
 }
 
 export def trunc-and-follow [] {
@@ -56,4 +62,3 @@ export def trunc-and-follow [] {
 
     tail -f rules.in.mcp.jsonl rules.out.mcp.jsonl rules.err.mcp.log
 }
-

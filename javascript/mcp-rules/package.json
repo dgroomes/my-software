@@ -1,7 +1,7 @@
 {
   "name": "mcp-rules",
   "version": "0.1.0",
-  "description": "An MCP server for bootstrapping LLM agents with user- and project-specific rules.",
+  "description": "An MCP server for bootstrapping LLM agents with user-global and user-local rules.",
   "type": "module",
   "main": "dist/index.js",
   "dependencies": {

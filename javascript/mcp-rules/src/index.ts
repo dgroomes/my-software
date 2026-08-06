@@ -6,57 +6,44 @@ import os from "os";
 
 interface AgentFile {
   path: string;
-  context: "user" | "user-project";
-}
-
-/**
- * Expand tilde (~) to home directory if it's at the start of the path
- */
-function expandTilde(filePath: string): string {
-  if (filePath.startsWith('~')) {
-    return path.join(os.homedir(), filePath.slice(1));
-  }
-  return filePath;
+  displayPath: string;
+  context: "user-global" | "user-local";
 }
 
 /**
  * Find all AGENTS.md files in the two conventional locations:
- * 1. User rules - ${XDG_CONFIG_HOME}/llm-agent/AGENTS.md
- * 2. User-project rules - ./.my/AGENTS.md
+ * 1. User-global rules - ~/.config/llm-agent/AGENTS.md
+ * 2. User-local rules - ./.my/AGENTS.md
  */
 async function findAgentFiles(): Promise<AgentFile[]> {
   const files: AgentFile[] = [];
 
-  // 1. User rules
-  const xdgConfigHomeEnv = process.env.XDG_CONFIG_HOME;
-  let xdgConfigHome: string;
-
-  if (xdgConfigHomeEnv) {
-    console.error(`XDG_CONFIG_HOME is set to: ${xdgConfigHomeEnv}`);
-    xdgConfigHome = expandTilde(xdgConfigHomeEnv);
-  } else {
-    const defaultConfigHome = path.join(os.homedir(), ".config");
-    console.error(`XDG_CONFIG_HOME not set, using default: ${defaultConfigHome}`);
-    xdgConfigHome = defaultConfigHome;
+  // 1. User-global rules
+  const userGlobalRulesPath = path.join(os.homedir(), ".config", "llm-agent", "AGENTS.md");
+  try {
+    await fs.access(userGlobalRulesPath);
+    files.push({
+      path: userGlobalRulesPath,
+      displayPath: "~/.config/llm-agent/AGENTS.md",
+      context: "user-global"
+    });
+    console.error(`Found user-global rules at: ${userGlobalRulesPath}`);
+  } catch {
+    console.error(`No user-global rules found at: ${userGlobalRulesPath}`);
   }
 
-  const userRulesPath = path.join(xdgConfigHome, "llm-agent", "AGENTS.md");
+  // 2. User-local rules
+  const userLocalRulesPath = path.join(process.cwd(), ".my", "AGENTS.md");
   try {
-    await fs.access(userRulesPath);
-    files.push({ path: userRulesPath, context: "user" });
-    console.error(`Found user rules at: ${userRulesPath}`);
+    await fs.access(userLocalRulesPath);
+    files.push({
+      path: userLocalRulesPath,
+      displayPath: "./.my/AGENTS.md",
+      context: "user-local"
+    });
+    console.error(`Found user-local rules at: ${userLocalRulesPath}`);
   } catch {
-    console.error(`No user rules found at: ${userRulesPath}`);
-  }
-
-  // 2. User-project rules
-  const userProjectRulesPath = path.join(process.cwd(), ".my", "AGENTS.md");
-  try {
-    await fs.access(userProjectRulesPath);
-    files.push({ path: userProjectRulesPath, context: "user-project" });
-    console.error(`Found user-project rules at: ${userProjectRulesPath}`);
-  } catch {
-    console.error(`No user-project rules found at: ${userProjectRulesPath}`);
+    console.error(`No user-local rules found at: ${userLocalRulesPath}`);
   }
 
   return files;
@@ -74,8 +61,8 @@ async function loadRules() {
         content: [{
           type: "text" as const,
           text: "No AGENTS.md files found. Searched locations:\n" +
-                "1. User rules: ${XDG_CONFIG_HOME}/llm-agent/AGENTS.md\n" +
-                "2. User-project rules: ./.my/AGENTS.md"
+                "1. User-global rules: ~/.config/llm-agent/AGENTS.md\n" +
+                "2. User-local rules: ./.my/AGENTS.md"
         }]
       };
     }
@@ -86,11 +73,11 @@ async function loadRules() {
     for (const agentFile of agentFiles) {
       try {
         const content = await fs.readFile(agentFile.path, "utf-8");
-        combinedRules += `# Rules from ${agentFile.context} context (${agentFile.path})\n\n`;
+        combinedRules += `(rules from ${agentFile.context} context: ${agentFile.displayPath})\n\n`;
         combinedRules += content;
         combinedRules += "\n\n";
       } catch (error) {
-        const msg = `Error reading ${agentFile.path}: ${error instanceof Error ? error.message : String(error)}`;
+        const msg = `Error reading ${agentFile.displayPath}: ${error instanceof Error ? error.message : String(error)}`;
         console.error(msg);
         combinedRules += `# Error loading ${agentFile.context} rules\n${msg}\n\n`;
       }
@@ -128,10 +115,12 @@ async function main() {
     version: "0.1.0"
   });
 
-  server.tool(
+  server.registerTool(
     "load_rules",
-    "START HERE. Load agent rules from user and user-project locations. ONLY skip this if user explicitly says '!rules off'. You MUST call this tool before starting any other work.",
-    {},
+    {
+      description: "START HERE. Load agent rules from user-global and user-local locations. ONLY skip this if user explicitly says '!rules off'. You MUST call this tool before starting any other work.",
+      inputSchema: {}
+    },
     loadRules
   );
 
