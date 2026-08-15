@@ -13,3 +13,8 @@ export def jdk-info [release] {
 
     $assets.binaries.0.package | select link checksum
 }
+
+# Get Gradle release info so that I can create a new Homebrew formula
+export def gradle-info [] {
+    http get "https://services.gradle.org/versions/current" | select version downloadUrl checksum
+}

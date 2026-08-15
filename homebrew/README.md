@@ -21,6 +21,18 @@ Homebrew formulas typically build from source (or are bottles built from the sam
 standard because I'm happy to download the Eclipse Temurin binaries instead of building from source.
 
 
+## Gradle
+
+My OpenJDK formulas work great, so I made a formula for Gradle.
+
+In the past, I've used Homebrew to install Gradle, but this is annoying because it has a ton of dependencies for some
+reason, and isn't even supported by Gradle. It's unofficial. I only need a global Gradle installation
+to bootsrap new projects which don't already include the Gradle wrapper.
+
+Unlike for OpenJDK, I don't need multiple versions of Gradle installed at the same time. If I'm working on an old project
+with a really old Gradle version, it probably already has the wrapper anyway.
+
+
 ## Reference
 
 - [GitHub repository: *homebrew-playground*](https://github.com/dgroomes/homebrew-playground)

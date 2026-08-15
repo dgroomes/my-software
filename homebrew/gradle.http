@@ -1,0 +1,12 @@
+### Gradle Versions service: current release
+#
+# Gradle runs a set of web services at "https://services.gradle.org/", including endpoints to discover versions of
+# Gradle and to download distributions.
+#
+# There isn't any polished documentation for these services. Instead, you can find references to them in Gradle's own
+# source (e.g. https://github.com/gradle/gradle/blob/9e4b9c2284039e0e1a424864a07a5bd777755988/platforms/core-runtime/base-services/src/main/java/org/gradle/util/internal/DistributionLocator.java#L27).
+#
+GET https://services.gradle.org/versions/current
+
+### All versions
+GET https://services.gradle.org/versions/all

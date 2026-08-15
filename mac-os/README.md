@@ -59,14 +59,14 @@ to a working Nushell environment, but it's great enough.
       mkdir -p ~/.local/share/bash-completion/completions && ln -s /opt/homebrew/completions/bash/brew ~/.local/share/bash-completion/completions/brew
       ```
 7. Install my own formulas
-    * This is an experiment. I'm trying out maintaining my own Homebrew formulas.
     * ```shell
       brew tap dgroomes/my-software "$PWD"
-      brew install dgroomes/my-software/my-open-jdk@11
       brew install dgroomes/my-software/my-open-jdk@17
       brew install dgroomes/my-software/my-open-jdk@21
+      brew install dgroomes/my-software/my-open-jdk@25
       brew install dgroomes/my-software/my-node@20
       brew install dgroomes/my-software/my-node@23
+      brew install dgroomes/my-software/my-gradle
       ```
 8. Install Bash
     * macOS uses a years old version of Bash and will never update it because of licensing. We'll use Homebrew to install a modern version of Bash.
