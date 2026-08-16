@@ -41,6 +41,6 @@ dependencies {
         api("org.slf4j:slf4j-simple:$slf4jVersion")
 
         // IntelliJ Platform Gradle Plugin releases: https://github.com/JetBrains/intellij-platform-gradle-plugin/releases
-        api("org.jetbrains.intellij.platform:org.jetbrains.intellij.platform.gradle.plugin:2.16.0")
+        api("org.jetbrains.intellij.platform:org.jetbrains.intellij.platform.gradle.plugin:2.18.1")
     }
 }

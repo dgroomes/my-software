@@ -68,9 +68,7 @@ they missed.
 
 ## Requirements
 
-- A **commercial** JetBrains IDE (IntelliJ IDEA Ultimate, WebStorm, PhpStorm, …) — the LSP API
-  isn't shipped in IntelliJ Community.
-- Build target: 2026.1+.
+- IntelliJ IDEA 2026.2+ (the unified distribution includes the LSP API).
 - The `nu` executable on your `PATH` (used at runtime for `--ide-ast` / `--lsp`).
 - The sidecar binary built and present at `rust/nu-lex/target/release/nu-lex`
   (see [the sidecar README](../../rust/nu-lex/README.md) for the one-line build
@@ -86,7 +84,7 @@ they missed.
 Plugin ZIP: `java/nushell-intellij-plugin/build/distributions/nushell-intellij-plugin.zip`.
 Install with `Settings → Plugins → ⚙ → Install plugin from disk…`.
 
-To try the plugin in a sandboxed IDE (Note: I can't get this to work because it says "Activate Ultimate" and not really sure how to do that for this ephemeral IDE instance):
+To try the plugin in a sandboxed IDE:
 
 ```nushell
 ../gradlew :nushell-intellij-plugin:runIde

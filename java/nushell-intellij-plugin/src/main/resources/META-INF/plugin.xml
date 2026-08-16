@@ -13,15 +13,14 @@
           <li>Structure view: <code>nu --ide-ast</code>.</li>
           <li>Hover, completion, go-to-definition, find usages, diagnostics: <code>nu --lsp</code>.</li>
         </ul>
-        Requires the <code>nu</code> executable on your PATH and a commercial JetBrains IDE
-        (LSP support is Ultimate-only).
+        Requires the <code>nu</code> executable on your PATH.
         <br><br>
         See the project on GitHub:
         <a href="https://github.com/dgroomes/my-software">my-software</a>
     ]]></description>
 
     <depends>com.intellij.modules.platform</depends>
-    <depends>com.intellij.modules.ultimate</depends>
+    <depends optional="true" config-file="lsp.xml">com.intellij.modules.lsp</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <fileType name="Nushell"
@@ -43,10 +42,6 @@
         <additionalTextAttributes scheme="Light" file="colorSchemes/NushellDefault.xml"/>
 
         <externalAnnotator language="Nushell" implementationClass="dgroomes.nushell_intellij_plugin.NushellSemanticAnnotator"/>
-    </extensions>
-
-    <extensions defaultExtensionNs="com.intellij.platform">
-        <lsp.serverSupportProvider implementation="dgroomes.nushell_intellij_plugin.NushellLspServerSupportProvider"/>
     </extensions>
 
 </idea-plugin>

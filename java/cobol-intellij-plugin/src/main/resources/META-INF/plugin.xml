@@ -1,0 +1,33 @@
+<!-- WARNING: Unedited AI output -->
+<idea-plugin>
+
+    <id>dgroomes.cobolPlugin</id>
+    <name>My COBOL Plugin</name>
+    <vendor url="https://github.com/dgroomes">dgroomes</vendor>
+
+    <description><![CDATA[
+        Lean IntelliJ COBOL language support via the Eclipse che4z COBOL LSP server
+        (<code>server.jar</code> from the official GitHub Releases VSIX) and che4z's
+        TextMate grammar for syntax coloring. Completion, hover, navigation, diagnostics,
+        and Structure View come from the IntelliJ LSP client; the plugin does not embed
+        che4z in-process or author a COBOL grammar.
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends config-file="textmate.xml">org.jetbrains.plugins.textmate</depends>
+    <depends optional="true" config-file="lsp.xml">com.intellij.modules.lsp</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <fileType name="COBOL"
+                  language="COBOL"
+                  extensions="cbl;cob;cobol;cpy;copy"
+                  implementationClass="dgroomes.cobol_intellij_plugin.CobolFileType"
+                  fieldName="INSTANCE"/>
+
+        <lang.parserDefinition language="COBOL"
+                               implementationClass="dgroomes.cobol_intellij_plugin.CobolParserDefinition"/>
+        <lang.commenter language="COBOL"
+                        implementationClass="dgroomes.cobol_intellij_plugin.CobolCommenter"/>
+    </extensions>
+
+</idea-plugin>

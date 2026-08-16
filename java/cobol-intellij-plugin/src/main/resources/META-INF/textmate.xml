@@ -1,0 +1,19 @@
+<!-- WARNING: Unedited AI output -->
+<idea-plugin>
+    <extensions defaultExtensionNs="com.intellij">
+        <textmate.bundleProvider
+                implementation="dgroomes.cobol_intellij_plugin.CobolTextMateBundleProvider"/>
+
+        <!-- A claimed COBOL FileType needs both of these or the editor stays uncolored
+             (and can throw "Token type source.cobol is not registered"). The factory
+             is ours so we can look up source.cobol by extension, not only filename.
+             The editor highlighter is TextMate's own provider, registered for our
+             FileType (a regular LexerEditorHighlighter rejects TextMate token types). -->
+        <lang.syntaxHighlighterFactory
+                language="COBOL"
+                implementationClass="dgroomes.cobol_intellij_plugin.CobolTextMateHighlighterFactory"/>
+        <editorHighlighterProvider
+                filetype="COBOL"
+                implementationClass="org.jetbrains.plugins.textmate.language.syntax.highlighting.TextMateEditorHighlighterProvider"/>
+    </extensions>
+</idea-plugin>

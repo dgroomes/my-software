@@ -1,0 +1,6 @@
+<idea-plugin>
+    <extensions defaultExtensionNs="com.intellij">
+        <platform.lsp.serverSupportProvider
+                implementation="dgroomes.nushell_intellij_plugin.NushellLspServerSupportProvider"/>
+    </extensions>
+</idea-plugin>

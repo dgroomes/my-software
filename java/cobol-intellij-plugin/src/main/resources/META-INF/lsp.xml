@@ -1,0 +1,7 @@
+<!-- WARNING: Unedited AI output -->
+<idea-plugin>
+    <extensions defaultExtensionNs="com.intellij">
+        <platform.lsp.integrationProvider
+                implementation="dgroomes.cobol_intellij_plugin.CobolLspIntegrationProvider"/>
+    </extensions>
+</idea-plugin>
