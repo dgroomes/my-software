@@ -33,3 +33,11 @@ disabled = true
 # Use the built-in "status" plugin: https://starship.rs/config/#status
 [status]
 disabled = false
+
+# Gradle version is not interesting. Most projects commit a Gradle wrapper with the right version.
+[gradle]
+disabled = true
+
+# Too noisy. It includes the whole email address.
+[gcloud]
+disabled = true
