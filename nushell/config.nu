@@ -113,7 +113,7 @@ export alias psql_local = psql --username postgres --host localhost
 
 $env.config.completions.external = {
   enable: true
-  completer: { |spans| bash-complete $spans }
+  completer: { |place| bash-complete $place.command }
 }
 
 export alias cdr = cd-repo
