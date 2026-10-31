@@ -1,16 +1,14 @@
 use zdu.nu err
 
+# WARNING: Mostly AI generated. The UX is carefully considered, and I've pared down the complexity.
+
 # Read the weekly ChatGPT subscription quota exposed by Codex.
 # Requires the Codex CLI signed in with ChatGPT (`codex login`).
 #
 # Example:
 #   > gpt-usage
-#   ╭───────────────────┬───────────╮
-#   │ duration          │ 1wk       │
-#   │ used_percent      │ 5         │
-#   │ remaining_percent │ 95        │
-#   │ resets_at         │ in 3 days │
-#   ╰───────────────────┴───────────╯
+#   Weekly · resets in 3d 4h
+#   ███████████████████░ 95% left 🟢 Plenty
 export def gpt-usage [] {
     let result = read-usage
     # We only expect a codex bucket, but OpenAI may change this over time or
@@ -46,11 +44,63 @@ export def gpt-usage [] {
         $nanoseconds | into datetime | date to-timezone local
     }
 
-    {
+    let usage = {
         duration: $duration
         used_percent: $used_percent
         remaining_percent: $remaining_percent
         resets_at: $resets_at
+    }
+    format-usage $usage (date now)
+}
+
+def format-usage [usage: record, now: datetime] {
+    let window = if $usage.duration? == 1wk {
+        "Weekly"
+    } else if $usage.duration? == null {
+        "Usage"
+    } else {
+        $"($usage.duration) window"
+    }
+    let reset = format-reset $usage.resets_at? $now
+    let remaining = $usage.remaining_percent?
+    let meter = if $remaining == null {
+        "???????????????????? ?% left ❔ Unknown"
+    } else {
+        let filled = $remaining / 5 | math floor | into int
+        let full = "" | fill --character "█" --width $filled
+        let empty = "" | fill --character "░" --width (20 - $filled)
+        let status = if $remaining == 100 {
+            "🔋 Full"
+        } else if $remaining >= 60 {
+            "🟢 Plenty"
+        } else if $remaining >= 30 {
+            "🟡 Steady"
+        } else if $remaining > 0 {
+            "🟠 Low"
+        } else {
+            "🪫 Empty"
+        }
+        $"($full)($empty) ($remaining)% left ($status)"
+    }
+    $"($window) · ($reset)\n($meter)"
+}
+
+def format-reset [resets_at: any, now: datetime] {
+    if $resets_at == null { return "reset unknown" }
+    let remaining = $resets_at - $now
+    if $remaining <= 0sec { return "reset due" }
+
+    let days = $remaining / 1day | math floor | into int
+    let hours = ($remaining mod 1day) / 1hr | math floor | into int
+    let minutes = ($remaining mod 1hr) / 1min | math floor | into int
+    if $days > 0 {
+        $"resets in ($days)d ($hours)h"
+    } else if $hours > 0 {
+        $"resets in ($hours)h ($minutes)m"
+    } else if $minutes > 0 {
+        $"resets in ($minutes)m"
+    } else {
+        "resets in <1m"
     }
 }
 

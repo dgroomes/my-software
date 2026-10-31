@@ -4,7 +4,7 @@ use ../nushell/scripts/zdu.nu err
 
 const DIR = path self | path dirname
 const NUTEST_REPO_URL = "https://github.com/vyadh/nutest.git"
-const NUTEST_COMMIT = "d56fdc632b96754153a014c021d65a6633fc5610"
+const NUTEST_COMMIT = "c46af12bc6e3819b95d69f54f35526ca3e5810d6"
 const LLM_RULES_START_HERE = "START_HERE. ALWAYS use the 'rules:load_rules' MCP tool to load your instructions. You MUST call this tool before starting any other work."
 
 # Install my LLM rules files
@@ -59,8 +59,8 @@ export def llm-prompts [] {
 #
 # Call to action: periodically check the upstream and update `NUTEST_COMMIT` as needed.
 #
-# This command also patches a small problem in Nutest. Nutest dynamically constructs some Nu code with `use/source`
-# commands and executes it, but it is not escaping the path. So for me, I was getting parse-time errors like the following:
+# This command also patches a small problem in Nutest. Nutest dynamically constructs some Nu code with a `use`
+# command and executes it, but it is not escaping the runner path. So for me, I was getting parse-time errors like the following:
 #
 #    use /Users/me/Library/Application Support/nushell/scripts/nutest/runner.nu *
 #       ╰── module /Users/me/Library/Application not found
@@ -92,12 +92,6 @@ export def install-nutest [] {
     patch-nutest-file (
         [$source_dir nutest orchestrator.nu] | path join
     ) "use ($runner_module) *" "use ($runner_module | to nuon) *"
-    patch-nutest-file (
-        [$source_dir nutest orchestrator.nu] | path join
-    ) "source ($path)" "source ($path | to nuon)"
-    patch-nutest-file (
-        [$source_dir nutest discover.nu] | path join
-    ) '$"source ($file); ($query)"' '$"source ($file | to nuon); ($query)"'
 
     if ($module_dir | path exists) {
         rm -r -f $module_dir
