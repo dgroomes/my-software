@@ -55,6 +55,7 @@ use mac-os.nu *
 use my-git-module.nu *
 use node.nu *
 use open-jdk.nu *
+use gpt-usage-module.nu *
 use postgres.nu *
 use work-trees.nu *
 use zdu.nu *

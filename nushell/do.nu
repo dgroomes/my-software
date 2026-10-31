@@ -80,6 +80,12 @@ const config_registry = {
         install_success_msg: "OpenJDK library file installed."
         upstream_success_msg: "OpenJDK library file upstreamed."
     }
+    gpt-usage-module: {
+        filename: "scripts/gpt-usage-module.nu"
+        backup_success_msg: "GPT usage module backed up."
+        install_success_msg: "GPT usage module installed."
+        upstream_success_msg: "GPT usage module upstreamed."
+    }
     postgres: {
         filename: "scripts/postgres.nu"
         backup_success_msg: "Postgres lib file backed up."
