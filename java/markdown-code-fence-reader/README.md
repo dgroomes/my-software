@@ -15,16 +15,16 @@ this program. See the accompanying Nushell code elsewhere in this repository.
 
 1. Pre-requisite: Java 21
 2. Run the tests
-    * ```shell
+    - ```shell
       ../gradlew test
       ```
 3. Build and install the program distribution with Homebrew
-    * ```shell
+    - ```shell
       ../gradlew distTar
       ```
-    * Update the formula in the `Formula/` directory in the root of this program. You will need to update the hash. Use
+    - Update the formula in the `Formula/` directory in the root of this program. You will need to update the hash. Use
       the following command to compute the hash.
-    * ```nushell
+    - ```nushell
       open build/distributions/markdown-code-fence-reader.tar | hash sha256 | pbcopy
       ```
 

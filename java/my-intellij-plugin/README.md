@@ -18,16 +18,16 @@ Follow these instructions to build and use the plugin:
 
 1. Use Java 21
 2. Build the plugin and run it
-   * ```shell
+   - ```shell
      ../gradlew runIde
      ```
 3. Build the plugin distribution
-    * ```shell
+    - ```shell
       ../gradlew buildPlugin
       ```
-    * The plugin is a ZIP file at `build/distributions/my-intellij-plugin.zip`.
+    - The plugin is a ZIP file at `build/distributions/my-intellij-plugin.zip`.
 4. Install the plugin
-    * In Intellij, use the command pallet to find and execute the `Install Plugin from Disk` action. Find the ZIP file
+    - In Intellij, use the command pallet to find and execute the `Install Plugin from Disk` action. Find the ZIP file
       in the Finder window and select it. The plugin is now installed.
 
 

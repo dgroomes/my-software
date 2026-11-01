@@ -17,40 +17,40 @@ On first run, mitmproxy generates a certificate authority in `~/.config/claude-p
 Follow these instructions to build and run the proxy.
 
 1. Pre-requisite: Poetry
-    * I'm using Poetry `2.1.3` which I installed via `pipx`.
+    - I'm using Poetry `2.1.3` which I installed via `pipx`.
 2. Pre-requisite: Python
-    * I'm using Python `3.13.3` which is available on my PATH as `python3` and `python3.13`.
+    - I'm using Python `3.13.3` which is available on my PATH as `python3` and `python3.13`.
 3. Install dependencies
-    * ```nushell
+    - ```nushell
       poetry install
       ```
 4. Run the proxy
-    * ```nushell
+    - ```nushell
       poetry run claude-proxy
       ```
-    * The proxy will start on `127.0.0.1:9051` and generate CA certificates in `~/.config/claude-proxy/` on first run.
+    - The proxy will start on `127.0.0.1:9051` and generate CA certificates in `~/.config/claude-proxy/` on first run.
 5. Build a wheel distribution
-    * ```nushell
+    - ```nushell
       poetry build
       ```
 6. Install the wheel distribution
-    * ```nushell
+    - ```nushell
       glob dist/*.whl | first | pipx install --python python3.13 $in
       ```
-    * After installation, you can run the proxy directly with:
-    * ```nushell
+    - After installation, you can run the proxy directly with:
+    - ```nushell
       claude-proxy
       ```
-    * To re-install it again later you could use 'reinstall' or '--force' but I prefer just uninstalling it and the installed it again with the original command. Use the following command to uninstall it.
-    * ```nushell
+    - To re-install it again later you could use 'reinstall' or '--force' but I prefer just uninstalling it and the installed it again with the original command. Use the following command to uninstall it.
+    - ```nushell
       pipx uninstall claude-proxy
       ```
 7. Verify that requests to `api.anthropic.com` work
-    * ```nushell
+    - ```nushell
       curl --proxy http://127.0.0.1:9051 --cacert ~/.config/claude-proxy/mitmproxy-ca-cert.pem --head https://api.anthropic.com
       ```
 8. Verify that requests to other domains are blocked
-    * ```nushell
+    - ```nushell
       curl --proxy http://127.0.0.1:9051 --cacert ~/.config/claude-proxy/mitmproxy-ca-cert.pem --head https://mozilla.org
       ```
 

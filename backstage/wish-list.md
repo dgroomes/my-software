@@ -37,17 +37,17 @@ General clean-ups, TODOs and things I wish to implement for this project:
 - [ ] Consider `my-project-conventions` agent/tools. If it's my project (heuristics, in my GitHub user) and follows some other patterns (e.g. "wish list" section), then find and fix conventional issues (e.g. double newline, naming of sections, single line intro, etc).
 - [ ] I need a way to install the launcher. With the Java launcher, I use a Gradle plugin. But with npm there isn't as strong a story for this (you can make an argument, but I know enough to not try it). I'll just use Nushell.
 - [ ] Consider bringing back any of these archived projects that were removed from this repository in the commit after 31f63e651c3c30921294dfcaccbc668329ed8a4b:
-   * `go/pkg/go-body-omitter`
-   * `go/pkg/posix-nushell-compatibility-checker`
-   * `java/java-body-omitter`
-   * `karabiner/assets/complex_modifications/move-between-tabs.json`
-   * `karabiner/assets/complex_modifications/open-apps.json`
-   * `mcp/` This was neat but just learning from first principles. I've captured the knowledge and tricks elsewhere.
-   * `python/text-condenser` Gestated into a decent vision. Recover the plan/language.
-   * `rust/nushell-ast-printer`
+   - `go/pkg/go-body-omitter`
+   - `go/pkg/posix-nushell-compatibility-checker`
+   - `java/java-body-omitter`
+   - `karabiner/assets/complex_modifications/move-between-tabs.json`
+   - `karabiner/assets/complex_modifications/open-apps.json`
+   - `mcp/` This was neat but just learning from first principles. I've captured the knowledge and tricks elsewhere.
+   - `python/text-condenser` Gestated into a decent vision. Recover the plan/language.
+   - `rust/nushell-ast-printer`
 - [ ] Split up Go programs into own sub-projects. I've really only found Gradle to be an effective monorepo tool. It splits things in separate compilation units and dependency trees. Nothing else is as powerful and that's perfectly fine. I'll keep my Java/Kotlin co-mingled by a single Gradle project, but READMEs have to go in their own sub-projects.
 - [ ] PARTIAL Sandbox profile should allow `mkdir` and `pwd` don't know why these are blocked. `(allow default)` allows sub-processes so what's going on?
-   * DONE Allow file write to my conventional '~/.shell-debug.log'
+   - DONE Allow file write to my conventional '~/.shell-debug.log'
 - [ ] Rewrite Git aliases as just shell aliases (Nushell). I don't see super see the point of git aliases plus I already re-wrap them in shorter shell aliases anyway ('gl' for 'git lg' for 'git log ...')
 - [ ] Actually incorporate the Claude *Skills*. The one I added is LLM inferred (though pretty good) and based on a wide upgrade of my junit-playground.
 - [ ] Implement the bootstrapper. Refer to the related SDR.

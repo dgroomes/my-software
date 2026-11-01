@@ -21,7 +21,7 @@ General clean-ups, TODOs and things I wish to implement for this project:
 - [ ] Bring back the markdown linter code/config I had and make a JS launcher. This means extending my Go-based
   launcher.
 - [ ] Create "json-validator" program (its own distributable?) that communicates via clients on Unix domain socket.
-   * Update: I don't care about this anymore... will probably delete.
+   - Update: I don't care about this anymore... will probably delete.
 - [ ] Consider splitting into independent subprojects. npm workspaces aren't quite there and I want to isolate the
   incidental (large) complexity like webpack from one project to the next. 
 - [ ] Do something interesting with AJV.

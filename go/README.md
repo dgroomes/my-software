@@ -75,14 +75,14 @@ Sandboxing reduces freedom, which means it will be annoying at times. Let's try 
 
 In the future, I might consider:
 
-* Use App Sandbox (unlikely because it does not work well for CLI tools)
-* Use a container/VM (eyes are on the new "containers" project just released at WWDC 2025)
-* Create a system for parameterizing allowed hosts, allowed executables, allowed dirs/files, and allowed environment variables.
-* Genericize the launcher for other commandline agents or tools
-* How to let Claude Code check for updates. Right now it makes a request to the npm registry. Should allow this endpoint flow?
-* Allow passthrough of args from the launcher to Claude Code. As is, we've broken all the '-p' stuff and everything.
-* Clean up these logs : ✅ Proxy server running  Sandbox applied. Running checks...  Unsolicited response received on idle HTTP channel starting with "Denied. This is a sandbox."; err=<nil> Unsolicited response received on idle HTTP channel starting with "Denied. This is a sandbox."; err=<nil>
-* ... or maybe I'll do nothing because Claude Code might solve these things in later releases and/or a new alternative will emerge
+- Use App Sandbox (unlikely because it does not work well for CLI tools)
+- Use a container/VM (eyes are on the new "containers" project just released at WWDC 2025)
+- Create a system for parameterizing allowed hosts, allowed executables, allowed dirs/files, and allowed environment variables.
+- Genericize the launcher for other commandline agents or tools
+- How to let Claude Code check for updates. Right now it makes a request to the npm registry. Should allow this endpoint flow?
+- Allow passthrough of args from the launcher to Claude Code. As is, we've broken all the '-p' stuff and everything.
+- Clean up these logs : ✅ Proxy server running  Sandbox applied. Running checks...  Unsolicited response received on idle HTTP channel starting with "Denied. This is a sandbox."; err=<nil> Unsolicited response received on idle HTTP channel starting with "Denied. This is a sandbox."; err=<nil>
+- ... or maybe I'll do nothing because Claude Code might solve these things in later releases and/or a new alternative will emerge
  
 The ideal user experience for launching Claude Code via the sandboxed launcher is:
 
@@ -104,60 +104,60 @@ Sandbox applied. Running checks...
 Follow these instructions to build, run and install my software.
 
 1. Activate the Nushell `do` module
-    * ```nushell
+    - ```nushell
       do activate
       ```
 2. Build and test the code:
-    * ```nushell
+    - ```nushell
       do test
       ```
 3. Build and run the `my-fuzzy-finder` program with the example data:
-    * ```nushell
+    - ```nushell
       do run my-fuzzy-finder --example
       ```
-    * Next, try fuzzy finding among the filenames in the current directory.
-    * ```nushell
+    - Next, try fuzzy finding among the filenames in the current directory.
+    - ```nushell
       ls | get name | str join (char newline) | do run my-fuzzy-finder
       ```
-    * The output will be the selected filename.
-    * Next, try a similar thing but with the JSON API. This takes a JSON array in and sends JSON out. The advantage of
+    - The output will be the selected filename.
+    - Next, try a similar thing but with the JSON API. This takes a JSON array in and sends JSON out. The advantage of
       using a JSON array for input is that the items can have multiple lines, whereas in the typical newline-delimited
       input, your items can only be exactly one line.
-    * ```nushell
+    - ```nushell
       ["Hello, world!" "Dear reader,
       Hello.
       Sincerely, writer"] | to json | do run my-fuzzy-finder --json-in --json-out
       ```
-    * It will output the selected filename but also the index of that item in the input list. It will look something
+    - It will output the selected filename but also the index of that item in the input list. It will look something
       like the following.
-    * ```json
+    - ```json
       {"index": 1, "item": "Dear reader,\nHello.\nSincerely, writer"}
       ```
-    * Finally, try the program and enable debugging. The logs are printed to a local `my-fuzzy-finder.log` file.
-    * ```nushell
+    - Finally, try the program and enable debugging. The logs are printed to a local `my-fuzzy-finder.log` file.
+    - ```nushell
       do run my-fuzzy-finder --example --debug
       ```
 4. Build all executables:
-    * ```nushell
+    - ```nushell
       do build
       ```
-    * The executables will be in the `bin/` directory. Try them out as needed to do validation and exploration. If you are satisfied, then you can install the executables globally with the next step.
+    - The executables will be in the `bin/` directory. Try them out as needed to do validation and exploration. If you are satisfied, then you can install the executables globally with the next step.
 5. Build and install the executables to your `GOBIN`:
-    * ```nushell
+    - ```nushell
       do install
       ```
-    * Now you can run the executables from anywhere on your system.
+    - Now you can run the executables from anywhere on your system.
 6. Demonstrate `my-node-launcher`
-    * Copy the launcher into the example JS app.
-    * ```nushell
+    - Copy the launcher into the example JS app.
+    - ```nushell
       cp bin/my-node-launcher example-js-app/capitalize
       ```
-    * Try out the launcher. Launch the example program with the following command.
-    * ```nushell
+    - Try out the launcher. Launch the example program with the following command.
+    - ```nushell
       ./example-js-app/capitalize hello world
       ```
-    * It should output the following.
-    * ```text
+    - It should output the following.
+    - ```text
       Hello World
       ```
 

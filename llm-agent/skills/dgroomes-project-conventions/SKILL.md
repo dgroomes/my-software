@@ -49,10 +49,10 @@ This skill captures the conventions and patterns used across dgroomes' personal 
 
 - Start with intro line: "Follow these instructions to..." or "Follow the below instructions to..."
 - Numbered list (1, 2, 3...)
-- Sub-bullets use `*` with 3-space indent for commands and explanations
+- Sub-bullets use `-` with 3-space indent for commands and explanations
 - **STRONG GUIDELINE: Never go more than one indentation level** - no nested sub-sub-bullets
 - Use fenced code blocks with `shell` language
-- Code fences are indented to align with the bullet text (3 spaces + `* ` + fence)
+- Code fences are indented to align with the bullet text (3 spaces + `- ` + fence)
 - Include timing information when demonstrating performance ("The command took X seconds for me")
 
 Example structure:
@@ -63,20 +63,20 @@ Follow these instructions to build and run the project.
 
 1. Pre-requisite: Java 25
 2. Build the program
-   * ```shell
+   - ```shell
      ./gradlew build
      ```
-   * The command took 2.3 seconds for me
+   - The command took 2.3 seconds for me
 3. Run the tests
-   * ```shell
+   - ```shell
      ./gradlew test
      ```
 ```
 
 Note the indentation pattern:
 - Number at column 0
-- `* ` at column 3 (3 spaces)
-- Code fence at column 5 (aligned with text after `* `)
+- `- ` at column 3 (3 spaces)
+- Code fence at column 5 (aligned with text after `- `)
 - Code content at column 5 (same as fence)
 
 ### Wish List Conventions

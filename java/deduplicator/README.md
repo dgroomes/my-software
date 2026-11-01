@@ -62,32 +62,32 @@ SA-IS implementation. See `LICENSES/SA-IS.txt` for the license.
 
 1. Pre-requisite: Java 21
 2. Activate the Nushell overlay
-   * ```nushell
+   - ```nushell
      do activate
      ```
 3. Run the tests
-   * ```nushell
+   - ```nushell
      do test
      ```
 4. Build the program distribution
-   * ```nushell
+   - ```nushell
      do build
      ```
 5. Try it out
-   * ```nushell
+   - ```nushell
      "hihi" | do run --min-length 2
      ```
-   * The output will be the following.
-   * ```text
+   - The output will be the following.
+   - ```text
      hi
      ```
 6. Try other combinations, and experiment
-   * ```nushell
+   - ```nushell
      "hihi" | do run --min-length 3
      "hello hello hi" | do run --min-length 3
      ```
 7. Install the program distribution with a symlink
-   * ```nushell
+   - ```nushell
       do install
       ```
 
@@ -101,20 +101,20 @@ General clean-ups, TODOs and things I wish to implement for this project:
   worth of deduplication? Because I'm authoring the code, I have the flexibility to do this.
 - [ ] Multi-document support.
 - [x] DONE Implement SA-IS algorithm for O(n) suffix array construction
-* [x] DONE Implement Kasai's algorithm for O(n) LCP array construction
-* [ ] Consider how to ID and reference deduplicated text
-* [ ] Get serious about understanding encoding (UTF-16 codepoints, byte sequences, etc.)
-* [ ] Make it faster. In my other branch, Opus 4.5 was able to get performacne down from 20 seconds to around 5 seconds
+- [x] DONE Implement Kasai's algorithm for O(n) LCP array construction
+- [ ] Consider how to ID and reference deduplicated text
+- [ ] Get serious about understanding encoding (UTF-16 codepoints, byte sequences, etc.)
+- [ ] Make it faster. In my other branch, Opus 4.5 was able to get performacne down from 20 seconds to around 5 seconds
   on the Kafka source. Bring in some of those optimizations. Currently we're at 13 seconds. 
 
 
 ## References
 
-* [Wikipedia: *Suffix array*](https://en.wikipedia.org/wiki/Suffix_array)
-* [Wikipedia: *LCP array*](https://en.wikipedia.org/wiki/LCP_array)
-* [Stanford CS166 Lecture Notes on SA-IS](https://web.stanford.edu/class/archive/cs/cs166/cs166.1196/lectures/04/Small04.pdf)
-* [Google Research: deduplicate-text-datasets](https://github.com/google-research/deduplicate-text-datasets)
-* [sa-is (Rust)](https://github.com/oguzbilgener/sa-is) - Rust port of Chrome's SA-IS implementation
+- [Wikipedia: *Suffix array*](https://en.wikipedia.org/wiki/Suffix_array)
+- [Wikipedia: *LCP array*](https://en.wikipedia.org/wiki/LCP_array)
+- [Stanford CS166 Lecture Notes on SA-IS](https://web.stanford.edu/class/archive/cs/cs166/cs166.1196/lectures/04/Small04.pdf)
+- [Google Research: deduplicate-text-datasets](https://github.com/google-research/deduplicate-text-datasets)
+- [sa-is (Rust)](https://github.com/oguzbilgener/sa-is) - Rust port of Chrome's SA-IS implementation
 
 [^prior-art-1]: IntelliJ's duplicate-code inspection is a structural duplicate detector for navigation, inspection, and refactoring. It is useful prior art, but it is not a prompt-rewriting tool.
 [^prior-art-2]: PMD CPD and JPlag are token-based duplicate/plagiarism detectors, while Google's `deduplicate-text-datasets` is closer to corpus-level exact-substring range detection. These are related references, but they do not by themselves settle the final rewrite semantics for this project.

@@ -13,6 +13,6 @@ commands that do command completion things, etc.
 
 The strategy is:
 
-* Nushell for CLIs
-* Nushell for workflows
-* A JSON-emitting program in Java, Go, etc. for non-trivial technical work that is implemented by open source libraries
+- Nushell for CLIs
+- Nushell for workflows
+- A JSON-emitting program in Java, Go, etc. for non-trivial technical work that is implemented by open source libraries

@@ -12,21 +12,21 @@ I'm especially interested in search.
 ## Instructions
 
 1. Pre-requisite: Node.js
-   * I'm using `v23.7.0`
+   - I'm using `v23.7.0`
 2. Activate the Nushell `do` commands
-   * ```nushell
+   - ```nushell
      do activate
      ```
 3. Install dependencies
-   * ```nushell
+   - ```nushell
      do install
      ```
 4. Build the plugin distribution
-   * ```nushell
+   - ```nushell
      do build
      ```
 5. Install the plugin
-   * ```nushell
+   - ```nushell
      do install-plugin
      ```
 
@@ -34,9 +34,9 @@ I'm especially interested in search.
 
 General clean-ups, TODOs and things I wish to implement for this project:
 
-* [ ] Consider Vite (I don't know I'm very happy with esbuild)
+- [ ] Consider Vite (I don't know I'm very happy with esbuild)
 
 ## Reference
 
-* [Obsidian API](https://github.com/obsidianmd/obsidian-api)
-* [Official sample plugin](https://github.com/obsidianmd/obsidian-sample-plugin)
+- [Obsidian API](https://github.com/obsidianmd/obsidian-api)
+- [Official sample plugin](https://github.com/obsidianmd/obsidian-sample-plugin)

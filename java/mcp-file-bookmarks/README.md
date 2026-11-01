@@ -9,16 +9,16 @@ The File Bookmarks MCP server is designed to make it faster to reference frequen
 
 The server exposes a curated list of *bookmarks* which are paths to files. The server has these tools:
 
-* `howto()`
-  * Teach the agent workflows about how to use the tools
-* `list()`
-  * List bookmarks and their descriptions
-* `get(base_path: string, entry_path: string)`
-  * Get the file contents of a bookmark
+- `howto()`
+  - Teach the agent workflows about how to use the tools
+- `list()`
+  - List bookmarks and their descriptions
+- `get(base_path: string, entry_path: string)`
+  - Get the file contents of a bookmark
 
 The vision is that you're in an agentic AI chat session, and you need to reference some content you've read a hundred times but can never remember, like a particular Bash snippet. Let's say you had previously bookmarked a Bash script and used a description that makes it clear that the script contains the snippet. Then, you can make the agent locate the bookmark file and pull in its contents into the chat session with a prompt like this:
 
-* > !fb bash trick for curr dir
+- > !fb bash trick for curr dir
 
 Because of the magic of LLMs, the agent can make sense of what you want.
 
@@ -30,19 +30,19 @@ Because of the magic of LLMs, the agent can make sense of what you want.
 Follow these instructions to build, test, and run the File Bookmarks MCP server:
 
 1. Activate the Nushell `do` module
-   * ```nushell
+   - ```nushell
      do activate
      ```
 2. Build the program distribution
-   * ```nushell
+   - ```nushell
      do build
      ```
 3. Start the server with the MCP Inspector (requires Node.js)
-   * ```nushell
+   - ```nushell
      do run-with-inspector
      ```
 4. Set up the server in VS Code
-   * Add the following to your VS Code settings.json file:
+   - Add the following to your VS Code settings.json file:
      ```json
      {
        "mcp": {

@@ -19,12 +19,12 @@ The `my-dev` Docker image is designed as a base image for my development work th
 
 ## Miscellaneous Notes
 
-* I do *not* want to just use Docker for the sake of using it.
-* I like the ethos of package managers. I want to get leverage out of them, and sprinkle in custom build scripts to fill in the gaps between what they offer and the snowflakes of what I need and the snowflakes of dependencies I use that don't always exist in package managers
-* Right now, I am not intending to build Docker images for a "runtime" workload. So, not sure I'll use build stages much. My workloads are all just more dev environments to build even more software
-* I prefer the Docker *exec* form of `RUN`. I really don't like the *shell* form of `RUN`.
-* I don't like the ergonomics of `Dockerfile` files. I don't like how the ecosystem has chosen to do heavy inheritance-based relationships of "using the Node Docker image for Node apps", or "using the Python Docker image for Python apps". What if you need both?
-* I'd like to inherit from a base Linux distribution image, then layer in the tools I need via COPY'ed in scripts
+- I do *not* want to just use Docker for the sake of using it.
+- I like the ethos of package managers. I want to get leverage out of them, and sprinkle in custom build scripts to fill in the gaps between what they offer and the snowflakes of what I need and the snowflakes of dependencies I use that don't always exist in package managers
+- Right now, I am not intending to build Docker images for a "runtime" workload. So, not sure I'll use build stages much. My workloads are all just more dev environments to build even more software
+- I prefer the Docker *exec* form of `RUN`. I really don't like the *shell* form of `RUN`.
+- I don't like the ergonomics of `Dockerfile` files. I don't like how the ecosystem has chosen to do heavy inheritance-based relationships of "using the Node Docker image for Node apps", or "using the Python Docker image for Python apps". What if you need both?
+- I'd like to inherit from a base Linux distribution image, then layer in the tools I need via COPY'ed in scripts
 
 
 ## Instructions
